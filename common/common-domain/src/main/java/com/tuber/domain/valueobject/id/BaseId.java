@@ -1,4 +1,4 @@
-package com.tuber.domain.valueobject;
+package com.tuber.domain.valueobject.id;
 
 import java.util.Objects;
 
