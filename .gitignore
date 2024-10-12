@@ -39,3 +39,10 @@ build/
 
 ### PHP Storm ###
 .idea/*
+
+### Applcation properties
+**/application.properties
+**/application.yml
+
+### My notes
+notes.txt

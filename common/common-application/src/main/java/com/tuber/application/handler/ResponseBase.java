@@ -1,16 +1,17 @@
 package com.tuber.application.handler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
-@AllArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@FieldDefaults(level = AccessLevel.PROTECTED)
 public class ResponseBase<T> {
-    private String code;
-    private String message;
-    private T data;
+    String code;
+    String message;
+    T data;
 }
