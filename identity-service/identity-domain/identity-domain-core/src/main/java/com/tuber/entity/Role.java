@@ -24,7 +24,15 @@ public class Role extends BaseEntity<EnumId<UserRole>> {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Set<Permission> getPermissions() {
         return permissions;
+    }
+
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
     }
 }

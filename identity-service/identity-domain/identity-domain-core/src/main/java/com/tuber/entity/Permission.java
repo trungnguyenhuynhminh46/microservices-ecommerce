@@ -14,4 +14,8 @@ public class Permission extends BaseEntity<EnumId<UserPermission>> {
     public String getDescription() {
         return description;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
