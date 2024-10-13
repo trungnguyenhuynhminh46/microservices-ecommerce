@@ -7,6 +7,8 @@ import com.tuber.user.repository.UserAccountJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @AllArgsConstructor
 public class UserAccountRepositoryImpl implements UserAccountRepository {
@@ -20,5 +22,19 @@ public class UserAccountRepositoryImpl implements UserAccountRepository {
                         userAccountDataAccessMapper.userAccountEntityToUserAccountJpaEntity(userAccount)
                 )
         );
+    }
+
+    @Override
+    public Optional<UserAccount> findByUsername(String username) {
+        return userAccountJpaRepository
+                .findByUsername(username)
+                .map(userAccountDataAccessMapper::userAccountJpaEntityToUserAccountEntity);
+    }
+
+    @Override
+    public Optional<UserAccount> findByEmail(String email) {
+        return userAccountJpaRepository
+                .findByEmail(email)
+                .map(userAccountDataAccessMapper::userAccountJpaEntityToUserAccountEntity);
     }
 }

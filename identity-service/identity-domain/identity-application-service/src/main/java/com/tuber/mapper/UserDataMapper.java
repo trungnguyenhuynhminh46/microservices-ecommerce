@@ -1,5 +1,6 @@
 package com.tuber.mapper;
 
+import com.tuber.dto.user.account.CreateUserAccountCommand;
 import com.tuber.dto.user.account.CreateUserAccountResponseData;
 import com.tuber.entity.UserAccount;
 import org.mapstruct.Mapper;
@@ -11,4 +12,6 @@ public interface UserDataMapper {
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "roles", ignore = true)
     CreateUserAccountResponseData userAccountEntityToCreateUserAccountResponseData(UserAccount userAccount);
+
+    UserAccount createUserAccountCommandToUserAccount(CreateUserAccountCommand createUserAccountCommand);
 }
