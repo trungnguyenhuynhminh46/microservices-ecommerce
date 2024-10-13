@@ -1,4 +1,4 @@
 package com.tuber.domain.event;
 
-public interface DomainEvent {
+public interface DomainEvent<T> {
 }

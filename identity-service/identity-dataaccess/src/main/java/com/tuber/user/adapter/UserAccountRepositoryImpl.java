@@ -15,6 +15,10 @@ public class UserAccountRepositoryImpl implements UserAccountRepository {
 
     @Override
     public UserAccount save(UserAccount userAccount) {
-        return null;
+        return userAccountDataAccessMapper.userAccountJpaEntityToUserAccountEntity(
+                userAccountJpaRepository.save(
+                        userAccountDataAccessMapper.userAccountEntityToUserAccountJpaEntity(userAccount)
+                )
+        );
     }
 }

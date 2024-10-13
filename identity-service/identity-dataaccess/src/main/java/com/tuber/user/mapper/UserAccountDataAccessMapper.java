@@ -11,7 +11,7 @@ public interface UserAccountDataAccessMapper {
     @Mapping(target = "roles", ignore = true)
     UserAccountJpaEntity userAccountEntityToUserAccountJpaEntity(UserAccount userAccount);
 
-    @Mapping(target = "id", expression = "java(new com.tuber.domain.valueobject.id.UserAccountId(userAccountJpaEntity.getId()))")
+    @Mapping(target = "id", source = "userAccountJpaEntity.getId()")
     @Mapping(target = "roles", ignore = true)
     UserAccount userAccountJpaEntityToUserAccountEntity(UserAccountJpaEntity userAccountJpaEntity);
 }

@@ -5,6 +5,7 @@ import com.tuber.domain.valueobject.id.UserAccountId;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.UUID;
 
 public class UserAccount extends AggregateEntity<UserAccountId> {
     private String username;
@@ -13,6 +14,10 @@ public class UserAccount extends AggregateEntity<UserAccountId> {
     private Set<Role> roles;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+
+    public void setId(UUID id) {
+        super.setId(new UserAccountId(id));
+    }
 
     private UserAccount(Builder builder) {
         super.setId(builder.userAccountId);
