@@ -10,16 +10,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PROTECTED)
-public class ResponseBase<T> {
-    String code;
+public class ApiResponse<T> {
+    @Builder.Default
+    String code = ResponseCode.SUCCESS_RESPONSE.getCode();
     String message;
     T data;
-
-    public static <T> ResponseBase<T> createResponse(String code, String message, T data) {
-        return ResponseBase.<T>builder()
-                .code(code)
-                .message(message)
-                .data(data)
-                .build();
-    }
 }

@@ -1,6 +1,6 @@
 package com.tuber.identity.service.domain;
 
-import com.tuber.application.handler.ResponseBase;
+import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountCommand;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountResponseData;
 import com.tuber.identity.service.domain.handler.CreateUserAccountHandler;
@@ -17,7 +17,7 @@ import org.springframework.validation.annotation.Validated;
 public class IdentityApplicationServiceImpl implements IdentityApplicationService {
     private final CreateUserAccountHandler createUserAccountHandler;
     @Override
-    public ResponseBase<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
+    public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
         return createUserAccountHandler.createUserAccount(createUserAccountCommand);
     }
 }

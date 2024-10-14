@@ -13,10 +13,10 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseBase<Object> handleException(Exception exception) {
+    public ApiResponse<Object> handleException(Exception exception) {
         log.error(exception.getMessage(), exception);
-        return ResponseBase.builder()
-                .code(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode())
+        return ApiResponse.builder()
+                .code(ResponseCode.UNCATEGORIZED_EXCEPTION.getCode())
                 .message("Unexpected error!")
                 .build();
     }
