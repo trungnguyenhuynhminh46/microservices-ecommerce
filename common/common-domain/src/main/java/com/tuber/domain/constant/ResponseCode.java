@@ -5,6 +5,8 @@ public class ResponseCode {
             new ResponseCode(1000, "Your request is processed successfully!");
     public static final ResponseCode UNCATEGORIZED_EXCEPTION =
             new ResponseCode(9999, "Uncategorized error");
+    public static final ResponseCode VALIDATION_ERROR =
+            new ResponseCode(1001, "Validation error");
 
     protected final String serviceName = "common";
     private final String code;

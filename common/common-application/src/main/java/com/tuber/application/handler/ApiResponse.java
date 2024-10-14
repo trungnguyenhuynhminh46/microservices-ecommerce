@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import com.tuber.domain.constant.ResponseCode;
 
+import java.util.List;
+
 @Getter
 @Builder
 @NoArgsConstructor
@@ -15,5 +17,6 @@ public class ApiResponse<T> {
     @Builder.Default
     String code = ResponseCode.SUCCESS_RESPONSE.getCode();
     String message;
+    List<String> messages;
     T data;
 }
