@@ -1,24 +1,30 @@
-package com.tuber.application.handler;
+package com.tuber.domain.constant;
 
-import lombok.Getter;
-import org.springframework.http.HttpStatus;
-
-@Getter
 public class ResponseCode {
     public static final ResponseCode SUCCESS_RESPONSE =
-            new ResponseCode(1000, "Your request is processed successfully!", HttpStatus.OK);
+            new ResponseCode(1000, "Your request is processed successfully!");
     public static final ResponseCode UNCATEGORIZED_EXCEPTION =
-            new ResponseCode(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR);
+            new ResponseCode(9999, "Uncategorized error");
 
     protected final String serviceName = "common";
     private final String code;
     private final String message;
-    private final HttpStatus status;
 
-    protected ResponseCode(int code, String message, HttpStatus status) {
+    protected ResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;
-        this.status = status;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     private String formatErrorCode(int code) {

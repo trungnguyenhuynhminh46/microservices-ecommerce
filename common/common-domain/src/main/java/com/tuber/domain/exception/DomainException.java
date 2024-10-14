@@ -1,11 +1,16 @@
 package com.tuber.domain.exception;
 
+import com.tuber.domain.constant.ResponseCode;
+
 public class DomainException extends RuntimeException {
-    public DomainException(String message) {
-        super(message);
+    private final ResponseCode responseCode;
+
+    public DomainException(ResponseCode responseCode) {
+        super(responseCode.getMessage());
+        this.responseCode = responseCode;
     }
 
-    public DomainException(String message, Throwable cause) {
-        super(message, cause);
+    public ResponseCode getResponseCode() {
+        return responseCode;
     }
 }

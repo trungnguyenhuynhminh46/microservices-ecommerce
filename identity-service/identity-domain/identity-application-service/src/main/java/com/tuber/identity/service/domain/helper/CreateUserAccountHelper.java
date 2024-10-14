@@ -1,6 +1,7 @@
 package com.tuber.identity.service.domain.helper;
 
 import com.tuber.identity.service.domain.IdentityDomainService;
+import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountCommand;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.event.UserAccountCreatedEvent;
@@ -29,7 +30,7 @@ public class CreateUserAccountHelper {
         if (userAccount.isPresent()) {
             String message = String.format("User account with username %s existed", userAccount.get().getUsername());
             log.warn(message);
-            throw new IdentityDomainException(message);
+            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_WITH_USERNAME_EXISTED);
         }
     }
 
@@ -38,12 +39,12 @@ public class CreateUserAccountHelper {
         if (userAccount.isPresent()) {
             String message = String.format("User account with email %s existed", userAccount.get().getEmail());
             log.warn(message);
-            throw new IdentityDomainException(message);
+            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_WITH_EMAIL_EXISTED);
         }
     }
 
     private void encodePassword(UserAccount userAccount) {
-        if(userAccount.isPasswordEncoded()) {
+        if (userAccount.isPasswordEncoded()) {
             return;
         }
         userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
@@ -52,10 +53,10 @@ public class CreateUserAccountHelper {
 
     private void saveUserAccount(UserAccount userAccount) {
         UserAccount savedUserAccount = userAccountRepository.save(userAccount);
-        if(savedUserAccount == null) {
+        if (savedUserAccount == null) {
             String message = String.format("Failed to save user account with username %s", userAccount.getUsername());
             log.error(message);
-            throw new IdentityDomainException(message);
+            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_SAVE_FAILED);
         }
         log.info("User account is saved with id: {}", savedUserAccount.getId().getValue());
     }

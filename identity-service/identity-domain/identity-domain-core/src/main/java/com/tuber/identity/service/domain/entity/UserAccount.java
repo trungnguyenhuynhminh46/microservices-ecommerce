@@ -2,6 +2,7 @@ package com.tuber.identity.service.domain.entity;
 
 import com.tuber.domain.entity.AggregateEntity;
 import com.tuber.domain.valueobject.id.UserAccountId;
+import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
 
 import java.time.LocalDate;
@@ -161,7 +162,7 @@ public class UserAccount extends AggregateEntity<UserAccountId> {
 
     public void validateUserAccount() {
         if (!isValidForInitialization()) {
-            throw new IdentityDomainException("User account is not valid for initialization");
+            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_IN_WRONG_STATE_FOR_INITIALIZATION);
         }
     }
 
