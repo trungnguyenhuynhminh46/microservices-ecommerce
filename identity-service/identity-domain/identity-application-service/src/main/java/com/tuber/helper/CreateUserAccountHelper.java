@@ -9,6 +9,7 @@ import com.tuber.mapper.UserDataMapper;
 import com.tuber.ports.output.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ public class CreateUserAccountHelper {
     private final UserDataMapper userDataMapper;
     private final IdentityDomainService identityDomainService;
     private final UserAccountRepository userAccountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private void checkIfUsernameExist(String username) {
         Optional<UserAccount> userAccount = userAccountRepository.findByUsername(username);
@@ -40,16 +42,33 @@ public class CreateUserAccountHelper {
         }
     }
 
+    private void encodePassword(UserAccount userAccount) {
+        if(userAccount.isPasswordEncoded()) {
+            return;
+        }
+        userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
+        userAccount.setPasswordEncoded(true);
+    }
+
+    private void saveUserAccount(UserAccount userAccount) {
+        UserAccount savedUserAccount = userAccountRepository.save(userAccount);
+        if(savedUserAccount == null) {
+            String message = String.format("Failed to save user account with username %s", userAccount.getUsername());
+            log.error(message);
+            throw new IdentityDomainException(message);
+        }
+        log.info("User account is saved with id: {}", savedUserAccount.getId().getValue());
+    }
+
     @Transactional
     public UserAccountCreatedEvent persistUserAccount(CreateUserAccountCommand createUserAccountCommand) {
         UserAccount userAccount = userDataMapper.createUserAccountCommandToUserAccount(createUserAccountCommand);
-        identityDomainService.validateAndInitializeUserAccount(userAccount);
+        UserAccountCreatedEvent userAccountCreatedEvent = identityDomainService.validateAndInitializeUserAccount(userAccount);
         checkIfEmailExist(userAccount.getEmail());
         checkIfUsernameExist(userAccount.getUsername());
-        // Encode password
-        // Persist user account in database
-        // Logging result
-        // Return UserAccountCreatedEvent
-        return null;
+        encodePassword(userAccount);
+        saveUserAccount(userAccount);
+        log.info("User account is created with id: {}", userAccount.getId().getValue());
+        return userAccountCreatedEvent;
     }
 }

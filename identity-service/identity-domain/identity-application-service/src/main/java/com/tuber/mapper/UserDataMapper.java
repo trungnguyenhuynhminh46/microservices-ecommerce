@@ -10,8 +10,10 @@ import org.mapstruct.Mapping;
 public interface UserDataMapper {
     @Mapping(target = "id", source = "userAccount.getId().getValue()")
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "passwordEncoded", ignore = true)
     @Mapping(target = "roles", ignore = true)
     CreateUserAccountResponseData userAccountEntityToCreateUserAccountResponseData(UserAccount userAccount);
 
+    @Mapping(target = "passwordEncoded", source="false")
     UserAccount createUserAccountCommandToUserAccount(CreateUserAccountCommand createUserAccountCommand);
 }

@@ -9,9 +9,11 @@ import org.mapstruct.Mapping;
 public interface UserAccountDataAccessMapper {
     @Mapping(target = "id", source = "userAccount.getId().getValue()")
     @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "passwordEncoded", ignore = true)
     UserAccountJpaEntity userAccountEntityToUserAccountJpaEntity(UserAccount userAccount);
 
     @Mapping(target = "id", source = "userAccountJpaEntity.getId()")
     @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "passwordEncoded", source = "true")
     UserAccount userAccountJpaEntityToUserAccountEntity(UserAccountJpaEntity userAccountJpaEntity);
 }

@@ -12,6 +12,7 @@ public class UserAccount extends AggregateEntity<UserAccountId> {
     private String username;
     private String email;
     private String password;
+    private boolean passwordEncoded = false;
     private Set<Role> roles;
     private LocalDate createdAt;
     private LocalDate updatedAt;
@@ -56,6 +57,14 @@ public class UserAccount extends AggregateEntity<UserAccountId> {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isPasswordEncoded() {
+        return passwordEncoded;
+    }
+
+    public void setPasswordEncoded(boolean passwordEncoded) {
+        this.passwordEncoded = passwordEncoded;
     }
 
     public Set<Role> getRoles() {
