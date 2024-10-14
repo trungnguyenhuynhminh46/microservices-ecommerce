@@ -16,9 +16,9 @@ public class IdentityGlobalExceptionHandler extends GlobalExceptionHandler {
     ResponseEntity<ApiResponse<Object>> handleException(IdentityDomainException identityDomainException) {
         log.error(identityDomainException.getMessage(), identityDomainException);
         ApiResponse<Object> response = ApiResponse.builder()
-                .code(identityDomainException.getResponseCode().getCode())
+                .code(identityDomainException.getCode())
                 .message(identityDomainException.getMessage())
                 .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return ResponseEntity.status(HttpStatus.valueOf(identityDomainException.getStatusCode())).body(response);
     }
 }

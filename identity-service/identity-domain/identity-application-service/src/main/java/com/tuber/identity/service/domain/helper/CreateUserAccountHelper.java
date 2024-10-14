@@ -10,6 +10,7 @@ import com.tuber.identity.service.domain.mapper.UserDataMapper;
 import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class CreateUserAccountHelper {
         if (userAccount.isPresent()) {
             String message = String.format("User account with username %s existed", userAccount.get().getUsername());
             log.warn(message);
-            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_WITH_USERNAME_EXISTED);
+            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_WITH_USERNAME_EXISTED, HttpStatus.CONFLICT.value());
         }
     }
 
@@ -39,7 +40,7 @@ public class CreateUserAccountHelper {
         if (userAccount.isPresent()) {
             String message = String.format("User account with email %s existed", userAccount.get().getEmail());
             log.warn(message);
-            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_WITH_EMAIL_EXISTED);
+            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_WITH_EMAIL_EXISTED, HttpStatus.CONFLICT.value());
         }
     }
 
@@ -56,7 +57,7 @@ public class CreateUserAccountHelper {
         if (savedUserAccount == null) {
             String message = String.format("Failed to save user account with username %s", userAccount.getUsername());
             log.error(message);
-            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_SAVE_FAILED);
+            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_SAVE_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         log.info("User account is saved with id: {}", savedUserAccount.getId().getValue());
     }

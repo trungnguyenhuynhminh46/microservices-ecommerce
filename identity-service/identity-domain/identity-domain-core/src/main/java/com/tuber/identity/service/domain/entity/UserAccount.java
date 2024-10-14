@@ -162,7 +162,7 @@ public class UserAccount extends AggregateEntity<UserAccountId> {
 
     public void validateUserAccount() {
         if (!isValidForInitialization()) {
-            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_IN_WRONG_STATE_FOR_INITIALIZATION);
+            throw new IdentityDomainException(IdentityResponseCode.USER_ACCOUNT_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
         }
     }
 

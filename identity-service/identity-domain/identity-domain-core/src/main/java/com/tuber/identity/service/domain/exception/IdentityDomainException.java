@@ -5,7 +5,8 @@ import com.tuber.domain.exception.DomainException;
 
 public class IdentityDomainException extends DomainException {
     protected final String serviceName = "identity";
-    public IdentityDomainException(ResponseCode responseCode) {
-        super(responseCode);
+
+    public IdentityDomainException(ResponseCode responseCode, int statusCode) {
+        super(responseCode, statusCode);
     }
 }
