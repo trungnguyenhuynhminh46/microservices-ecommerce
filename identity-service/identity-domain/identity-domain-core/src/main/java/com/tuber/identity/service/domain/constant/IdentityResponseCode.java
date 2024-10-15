@@ -1,9 +1,15 @@
 package com.tuber.identity.service.domain.constant;
-
 import com.tuber.domain.constant.ResponseCode;
+import com.tuber.domain.constant.ResponseCodeBase;
 
-public class IdentityResponseCode extends ResponseCode {
+public class IdentityResponseCode extends ResponseCodeBase {
     protected final String serviceName = "identity";
+    public static final IdentityResponseCode SUCCESS_RESPONSE =
+            new IdentityResponseCode(1000, "Your request is processed successfully!");
+    public static final IdentityResponseCode UNCATEGORIZED_EXCEPTION =
+            new IdentityResponseCode(9999, "Uncategorized error");
+    public static final IdentityResponseCode VALIDATION_ERROR =
+            new IdentityResponseCode(1001, "Validation error");
     public static final IdentityResponseCode USER_ACCOUNT_SAVE_FAILED =
             new IdentityResponseCode(1001, "Cannot save the user account");
     public static final IdentityResponseCode USER_ACCOUNT_WITH_USERNAME_EXISTED =
@@ -19,5 +25,21 @@ public class IdentityResponseCode extends ResponseCode {
     protected IdentityResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;
+    }
+
+    public String getServiceName() {
+        return this.serviceName;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    protected String formatErrorCode(int code) {
+        return String.format("%s_%d", this.serviceName, code);
     }
 }

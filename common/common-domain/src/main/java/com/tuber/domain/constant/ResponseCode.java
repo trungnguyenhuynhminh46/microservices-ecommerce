@@ -1,14 +1,13 @@
 package com.tuber.domain.constant;
 
-public class ResponseCode {
+public class ResponseCode extends ResponseCodeBase {
+    protected final String serviceName = "common";
     public static final ResponseCode SUCCESS_RESPONSE =
             new ResponseCode(1000, "Your request is processed successfully!");
     public static final ResponseCode UNCATEGORIZED_EXCEPTION =
             new ResponseCode(9999, "Uncategorized error");
     public static final ResponseCode VALIDATION_ERROR =
             new ResponseCode(1001, "Validation error");
-
-    protected final String serviceName = "common";
     protected String code;
     protected String message;
 
@@ -21,7 +20,7 @@ public class ResponseCode {
     }
 
     public String getServiceName() {
-        return serviceName;
+        return this.serviceName;
     }
 
     public String getCode() {
@@ -33,6 +32,6 @@ public class ResponseCode {
     }
 
     protected String formatErrorCode(int code) {
-        return String.format("%s_%d", serviceName, code);
+        return String.format("%s_%d", this.serviceName, code);
     }
 }

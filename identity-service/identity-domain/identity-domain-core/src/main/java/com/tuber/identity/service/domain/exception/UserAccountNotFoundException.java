@@ -1,9 +1,9 @@
 package com.tuber.identity.service.domain.exception;
 
-import com.tuber.domain.constant.ResponseCode;
+import com.tuber.domain.constant.ResponseCodeBase;
 
 public class UserAccountNotFoundException extends IdentityDomainException {
-    public UserAccountNotFoundException(ResponseCode responseCode, int statusCode) {
+    public UserAccountNotFoundException(ResponseCodeBase responseCode, int statusCode) {
         super(responseCode, statusCode);
     }
 }
