@@ -8,6 +8,6 @@ import com.tuber.identity.service.domain.dto.user.account.GetUserByIdResponseDat
 import jakarta.validation.Valid;
 
 public interface IdentityApplicationService {
-    ApiResponse<CreateUserAccountResponseData> createUserAccount(@Valid CreateUserAccountCommand createUserAccountCommand);
-    ApiResponse<GetUserByIdResponseData> getUserByUserId(@Valid GetUserByIdQuery getUserByIdQuery);
+    ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand);
+    ApiResponse<GetUserByIdResponseData> getUserByUserId(GetUserByIdQuery getUserByIdQuery);
 }

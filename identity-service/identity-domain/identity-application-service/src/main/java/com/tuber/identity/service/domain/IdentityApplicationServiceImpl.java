@@ -15,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 
 @Service
 @Slf4j
-@Validated
 @RequiredArgsConstructor
 public class IdentityApplicationServiceImpl implements IdentityApplicationService {
     private final CreateUserAccountHandler createUserAccountHandler;

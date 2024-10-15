@@ -6,6 +6,7 @@ import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountRespo
 import com.tuber.identity.service.domain.dto.user.account.GetUserByIdQuery;
 import com.tuber.identity.service.domain.dto.user.account.GetUserByIdResponseData;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class UserAccountController {
     private final IdentityApplicationService identityApplicationService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<CreateUserAccountResponseData>> createUserAccount(@RequestBody CreateUserAccountCommand createUserAccountCommand) {
+    public ResponseEntity<ApiResponse<CreateUserAccountResponseData>> createUserAccount(@RequestBody @Valid CreateUserAccountCommand createUserAccountCommand) {
         log.info("Creating user account with username: {} and email: {}", createUserAccountCommand.getUsername(), createUserAccountCommand.getEmail());
         ApiResponse<CreateUserAccountResponseData> createUserAccountResponse = identityApplicationService.createUserAccount(createUserAccountCommand);
         log.info("User account created with id: {} and username: {}", createUserAccountResponse.getData().getId(), createUserAccountResponse.getData().getUsername());
@@ -29,7 +30,7 @@ public class UserAccountController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<ApiResponse<GetUserByIdResponseData>> getUserByUserId(@PathVariable UUID userId) {
+    public ResponseEntity<ApiResponse<GetUserByIdResponseData>> getUserByUserId(@PathVariable @Valid UUID userId) {
         ApiResponse<GetUserByIdResponseData> getUserByIdResponseData = identityApplicationService.getUserByUserId(GetUserByIdQuery.builder().userId(userId).build());
         log.info("Returning user account with user id: {}", userId);
         return ResponseEntity.ok(getUserByIdResponseData);
