@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @AllArgsConstructor
@@ -35,6 +36,13 @@ public class UserAccountRepositoryImpl implements UserAccountRepository {
     public Optional<UserAccount> findByEmail(String email) {
         return userAccountJpaRepository
                 .findByEmail(email)
+                .map(userAccountDataAccessMapper::userAccountJpaEntityToUserAccountEntity);
+    }
+
+    @Override
+    public Optional<UserAccount> findById(UUID id) {
+        return userAccountJpaRepository
+                .findById(id)
                 .map(userAccountDataAccessMapper::userAccountJpaEntityToUserAccountEntity);
     }
 }

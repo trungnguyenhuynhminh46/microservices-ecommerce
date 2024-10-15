@@ -9,8 +9,11 @@ public class ResponseCode {
             new ResponseCode(1001, "Validation error");
 
     protected final String serviceName = "common";
-    private final String code;
-    private final String message;
+    protected String code;
+    protected String message;
+
+    protected ResponseCode() {
+    }
 
     protected ResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
@@ -29,7 +32,7 @@ public class ResponseCode {
         return message;
     }
 
-    private String formatErrorCode(int code) {
+    protected String formatErrorCode(int code) {
         return String.format("%s_%d", serviceName, code);
     }
 }

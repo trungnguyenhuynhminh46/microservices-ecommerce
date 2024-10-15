@@ -1,6 +1,7 @@
 package com.tuber.identity.service.domain.handler;
 
 import com.tuber.application.handler.ApiResponse;
+import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountCommand;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountResponseData;
 import com.tuber.identity.service.domain.event.UserAccountCreatedEvent;
@@ -27,6 +28,7 @@ public class CreateUserAccountHandler {
         log.info("Returning CreateUserAccountResponseData with user account id: {}", userAccountCreatedEvent.getUserAccount().getId());
 
         return ApiResponse.<CreateUserAccountResponseData>builder()
+                .code(IdentityResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("User account created successfully")
                 .data(createUserAccountResponseData)
                 .build();
