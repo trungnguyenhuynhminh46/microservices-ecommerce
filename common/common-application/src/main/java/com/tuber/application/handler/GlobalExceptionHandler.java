@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = DomainException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResponse<Object> handleException(DomainException domainException) {
+    public ApiResponse<Object> handleDomainException(DomainException domainException) {
         log.error(domainException.getMessage(), domainException);
         return ApiResponse.builder()
                 .code(domainException.getResponseCode().getCode())
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
         return ApiResponse.builder()
                 .code(ResponseCode.UNCATEGORIZED_EXCEPTION.getCode())
-                .message("Unexpected error!")
+                .message(exception.getMessage())
                 .build();
     }
 }
