@@ -3,18 +3,27 @@ package com.tuber.identity.service.domain.mapper;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountCommand;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountResponseData;
 import com.tuber.identity.service.domain.dto.user.account.GetUserByIdResponseData;
+import com.tuber.identity.service.domain.dto.user.account.GetUsersResponseData;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
-public interface UserDataMapper {
+public abstract class UserDataMapper {
     @Mapping(target = "id", expression = "java(userAccount.getId().getValue())")
-    CreateUserAccountResponseData userAccountEntityToCreateUserAccountResponseData(UserAccount userAccount);
+    public abstract CreateUserAccountResponseData userAccountEntityToCreateUserAccountResponseData(UserAccount userAccount);
 
     @Mapping(target = "passwordEncoded", constant = "false")
-    UserAccount createUserAccountCommandToUserAccount(CreateUserAccountCommand createUserAccountCommand);
+    public abstract UserAccount createUserAccountCommandToUserAccount(CreateUserAccountCommand createUserAccountCommand);
 
     @Mapping(target = "id", expression = "java(userAccount.getId().getValue())")
-    GetUserByIdResponseData userAccountEntityToGetUserByIdResponseData(UserAccount userAccount);
+    public abstract GetUserByIdResponseData userAccountEntityToGetUserByIdResponseData(UserAccount userAccount);
+
+    public GetUsersResponseData userAccountEntitiesToGetUsersResponseData(List<UserAccount> allUsers) {
+        return GetUsersResponseData.builder()
+                .users(allUsers.stream().map(this::userAccountEntityToGetUserByIdResponseData).toList())
+                .build();
+    }
 }

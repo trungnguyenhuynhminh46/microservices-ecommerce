@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class IdentityGlobalExceptionHandler extends GlobalExceptionHandler {
     @ExceptionHandler(value = IdentityDomainException.class)
-    ResponseEntity<ApiResponse<Object>> handleException(IdentityDomainException identityDomainException) {
+    ResponseEntity<ApiResponse<Object>> handleIdentityDomainException(IdentityDomainException identityDomainException) {
         log.error(identityDomainException.getMessage(), identityDomainException);
         ApiResponse<Object> response = ApiResponse.builder()
                 .code(identityDomainException.getCode())

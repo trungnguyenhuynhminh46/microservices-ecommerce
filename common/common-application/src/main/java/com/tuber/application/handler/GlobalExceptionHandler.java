@@ -1,9 +1,7 @@
 package com.tuber.application.handler;
 
 import com.tuber.domain.exception.DomainException;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Path;
 import lombok.extern.slf4j.Slf4j;
 import com.tuber.domain.constant.ResponseCode;
 import org.hibernate.validator.internal.engine.path.PathImpl;

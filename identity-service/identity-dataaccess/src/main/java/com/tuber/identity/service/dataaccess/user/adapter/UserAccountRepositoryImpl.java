@@ -7,6 +7,7 @@ import com.tuber.identity.service.dataaccess.user.repository.UserAccountJpaRepos
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,5 +45,14 @@ public class UserAccountRepositoryImpl implements UserAccountRepository {
         return userAccountJpaRepository
                 .findById(id)
                 .map(userAccountDataAccessMapper::userAccountJpaEntityToUserAccountEntity);
+    }
+
+    @Override
+    public List<UserAccount> findAll() {
+        return userAccountJpaRepository
+                .findAll()
+                .stream()
+                .map(userAccountDataAccessMapper::userAccountJpaEntityToUserAccountEntity)
+                .toList();
     }
 }

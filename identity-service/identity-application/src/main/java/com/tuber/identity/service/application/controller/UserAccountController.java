@@ -1,10 +1,7 @@
 package com.tuber.identity.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountCommand;
-import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountResponseData;
-import com.tuber.identity.service.domain.dto.user.account.GetUserByIdQuery;
-import com.tuber.identity.service.domain.dto.user.account.GetUserByIdResponseData;
+import com.tuber.identity.service.domain.dto.user.account.*;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
 import com.tuber.identity.service.domain.validators.ValidUUID;
 import jakarta.validation.Valid;
@@ -37,5 +34,12 @@ public class UserAccountController {
         ApiResponse<GetUserByIdResponseData> getUserByIdResponseData = identityApplicationService.getUserByUserId(GetUserByIdQuery.builder().userId(userId).build());
         log.info("Returning user account with user id: {}", userId);
         return ResponseEntity.ok(getUserByIdResponseData);
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<GetUsersResponseData>> getUsers() {
+        ApiResponse<GetUsersResponseData> getUsersResponseData = identityApplicationService.getUsers();
+        log.info("Returning all user accounts");
+        return ResponseEntity.ok(getUsersResponseData);
     }
 }
