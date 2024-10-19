@@ -12,8 +12,10 @@ import com.tuber.identity.service.domain.ports.input.service.IdentityApplication
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class IdentityApplicationServiceImpl implements IdentityApplicationService {
     private final CreateUserAccountHandler createUserAccountHandler;
@@ -24,12 +26,10 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
         return createUserAccountHandler.createUserAccount(createUserAccountCommand);
     }
-
     @Override
     public ApiResponse<GetUserByIdResponseData> getUserByUserId(GetUserByIdQuery getUserByIdQuery) {
         return getUserByIdHandler.getUserByUserId(getUserByIdQuery);
     }
-
     @Override
     public ApiResponse<GetUsersResponseData> getUsers() {
         return getUsersHandler.getUsers();

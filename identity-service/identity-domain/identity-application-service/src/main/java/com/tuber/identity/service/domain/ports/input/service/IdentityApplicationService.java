@@ -4,11 +4,12 @@ import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.authentication.LoginUserAccountCommand;
 import com.tuber.identity.service.domain.dto.authentication.LoginUserAccountResponseData;
 import com.tuber.identity.service.domain.dto.user.account.*;
+import com.tuber.identity.service.domain.validators.ValidUUID;
 import jakarta.validation.Valid;
 
 public interface IdentityApplicationService {
-    ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand);
-    ApiResponse<GetUserByIdResponseData> getUserByUserId(GetUserByIdQuery getUserByIdQuery);
+    ApiResponse<CreateUserAccountResponseData> createUserAccount(@Valid CreateUserAccountCommand createUserAccountCommand);
+    ApiResponse<GetUserByIdResponseData> getUserByUserId(@ValidUUID GetUserByIdQuery getUserByIdQuery);
     ApiResponse<GetUsersResponseData> getUsers();
-    ApiResponse<LoginUserAccountResponseData> login(LoginUserAccountCommand loginUserAccountCommand);
+    ApiResponse<LoginUserAccountResponseData> login(@Valid LoginUserAccountCommand loginUserAccountCommand);
 }

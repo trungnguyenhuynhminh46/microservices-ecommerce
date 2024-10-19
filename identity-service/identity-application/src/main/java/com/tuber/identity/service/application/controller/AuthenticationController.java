@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@Validated
 @RestController
 @RequestMapping(value = "/auth", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class AuthenticationController {
     private final IdentityApplicationService identityApplicationService;
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<LoginUserAccountResponseData>> login(@RequestBody @Valid LoginUserAccountCommand loginUserAccountCommand) {
+    public ResponseEntity<ApiResponse<LoginUserAccountResponseData>> login(@RequestBody LoginUserAccountCommand loginUserAccountCommand) {
         ApiResponse<LoginUserAccountResponseData> loginUserAccountResponse = identityApplicationService.login(loginUserAccountCommand);
         log.info("Successfully logged in user with username {}", loginUserAccountCommand.getUsername());
         return ResponseEntity.ok(loginUserAccountResponse);
