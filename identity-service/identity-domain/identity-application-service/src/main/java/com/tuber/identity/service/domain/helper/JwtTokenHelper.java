@@ -3,13 +3,16 @@ package com.tuber.identity.service.domain.helper;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.entity.UserAccount;
+import com.tuber.identity.service.domain.exception.IdentityDomainException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -52,7 +55,7 @@ public class JwtTokenHelper {
         return stringJoiner.toString();
     }
 
-    private String generateJwtToken(UserAccount userAccount) throws JOSEException {
+    public String generateJwtToken(UserAccount userAccount) {
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.HS512).build();
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(userAccount.getId().toString())
@@ -66,7 +69,11 @@ public class JwtTokenHelper {
         Payload payload = new Payload(claimsSet.toJSONObject());
         JWSObject jwsObject = new JWSObject(header, payload);
 
-        jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
+        try {
+            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
+        } catch (JOSEException e) {
+            throw new IdentityDomainException(IdentityResponseCode.INVALID_SIGNER_KEY, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
 
         String token = jwsObject.serialize();
         log.info("Generated JWT token: {}", token);

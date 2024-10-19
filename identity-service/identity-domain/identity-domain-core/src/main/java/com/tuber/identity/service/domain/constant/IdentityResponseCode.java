@@ -18,9 +18,20 @@ public class IdentityResponseCode extends ResponseCodeBase {
             new IdentityResponseCode(1003, "User with the email already existed");
     public static final IdentityResponseCode USER_ACCOUNT_IN_WRONG_STATE_FOR_INITIALIZATION =
             new IdentityResponseCode(1004, "User account is in wrong state for initialization");
-
     public static final IdentityResponseCode USER_ACCOUNT_WITH_ID_NOT_FOUND =
             new IdentityResponseCode(1005, "User account with the id not found");
+    public static final IdentityResponseCode USER_ACCOUNT_WITH_USERNAME_NOT_FOUND =
+            new IdentityResponseCode(1006, "User account with the username is not found");
+    public static final IdentityResponseCode USER_ACCOUNT_WITH_EMAIL_NOT_FOUND =
+            new IdentityResponseCode(1007, "User account with the username is not found");
+    public static final IdentityResponseCode FAILED_AUTHENTICATION =
+            new IdentityResponseCode(1008, "Username or password is wrong!");
+    public static final IdentityResponseCode INVALID_JWT_TOKEN =
+            new IdentityResponseCode(1009, "The jwt token is invalid");
+    public static final IdentityResponseCode EXPIRED_JWT_TOKEN =
+            new IdentityResponseCode(1010, "The jwt token is expired");
+    public static final IdentityResponseCode INVALID_SIGNER_KEY =
+            new IdentityResponseCode(1011, "The signer key has invalid format");
 
     protected IdentityResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
