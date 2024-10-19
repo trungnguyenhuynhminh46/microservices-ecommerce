@@ -1,6 +1,5 @@
 package com.tuber.identity.service.domain.helper;
 
-import com.nimbusds.jose.JOSEException;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.dto.authentication.LoginUserAccountCommand;
@@ -24,7 +23,7 @@ public class LoginUserAccountHelper {
         String username = loginUserAccountCommand.getUsername();
         String password = loginUserAccountCommand.getPassword();
 
-        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountExist(username);
+        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
         commonIdentityServiceHelper.verifyPassword(password, userAccount.getPassword());
 
         String token = jwtTokenHelper.generateJwtToken(userAccount);

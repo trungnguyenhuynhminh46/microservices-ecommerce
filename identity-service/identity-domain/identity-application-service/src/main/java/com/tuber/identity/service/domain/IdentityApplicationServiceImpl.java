@@ -34,7 +34,6 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     public ApiResponse<GetUsersResponseData> getUsers() {
         return getUsersHandler.getUsers();
     }
-
     @Override
     public ApiResponse<LoginUserAccountResponseData> login(LoginUserAccountCommand loginUserAccountCommand) {
         return loginUserAccountHelper.login(loginUserAccountCommand);

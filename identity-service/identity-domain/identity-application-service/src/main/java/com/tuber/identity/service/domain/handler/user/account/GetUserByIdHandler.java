@@ -7,6 +7,7 @@ import com.tuber.identity.service.domain.dto.user.account.GetUserByIdResponseDat
 import com.tuber.identity.service.domain.dto.user.account.GetUsersResponseData;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.exception.UserAccountNotFoundException;
+import com.tuber.identity.service.domain.helper.CommonIdentityServiceHelper;
 import com.tuber.identity.service.domain.mapper.UserDataMapper;
 import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,18 +24,10 @@ import java.util.UUID;
 public class GetUserByIdHandler {
     private final UserAccountRepository userAccountRepository;
     private final UserDataMapper userDataMapper;
-
-    private UserAccount checkIfUserAccountWithIdExists(UUID id) {
-        Optional<UserAccount> userAccount = userAccountRepository.findById(id);
-        if(userAccount.isEmpty()) {
-            log.warn("Could not find user account with id: {}", id);
-            throw new UserAccountNotFoundException(IdentityResponseCode.USER_ACCOUNT_WITH_ID_NOT_FOUND, HttpStatus.NOT_FOUND.value());
-        }
-        return userAccount.get();
-    }
+    private final CommonIdentityServiceHelper commonIdentityServiceHelper;
 
     public ApiResponse<GetUserByIdResponseData> getUserByUserId(GetUserByIdQuery getUserByIdQuery) {
-        UserAccount userAccount = checkIfUserAccountWithIdExists(getUserByIdQuery.getUserId());
+        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithIdExist(getUserByIdQuery.getUserId());
         GetUserByIdResponseData getUserByIdResponseData = userDataMapper.userAccountEntityToGetUserByIdResponseData(userAccount);
 
         return ApiResponse.<GetUserByIdResponseData>builder()

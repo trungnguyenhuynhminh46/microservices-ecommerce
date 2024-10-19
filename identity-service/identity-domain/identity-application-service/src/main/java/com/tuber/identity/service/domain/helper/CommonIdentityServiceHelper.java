@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -23,13 +24,22 @@ public class CommonIdentityServiceHelper {
     UserAccountRepository userAccountRepository;
     PasswordEncoder passwordEncoder;
 
-    public UserAccount verifyUserAccountExist(String username) {
+    public UserAccount verifyUserAccountWithUsernameExist(String username) {
         Optional<UserAccount> userAccount = userAccountRepository.findByUsername(username);
         if(userAccount.isEmpty()) {
             log.warn("Could not find user account with username: {}", username);
             throw new UserAccountNotFoundException(IdentityResponseCode.USER_ACCOUNT_WITH_USERNAME_NOT_FOUND, HttpStatus.NOT_FOUND.value());
         }
 
+        return userAccount.get();
+    }
+
+    public UserAccount verifyUserAccountWithIdExist(UUID userId) {
+        Optional<UserAccount> userAccount = userAccountRepository.findById(userId);
+        if(userAccount.isEmpty()) {
+            log.warn("Could not find user account with id: {}", userId);
+            throw new UserAccountNotFoundException(IdentityResponseCode.USER_ACCOUNT_WITH_ID_NOT_FOUND, HttpStatus.NOT_FOUND.value());
+        }
         return userAccount.get();
     }
 
