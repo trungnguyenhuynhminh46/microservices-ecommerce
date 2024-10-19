@@ -45,4 +45,5 @@ build/
 **/application.yml
 
 ### My notes
-notes.txt
+notes.md
+images/

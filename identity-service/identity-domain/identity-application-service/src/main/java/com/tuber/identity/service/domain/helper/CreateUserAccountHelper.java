@@ -8,7 +8,9 @@ import com.tuber.identity.service.domain.event.UserAccountCreatedEvent;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
 import com.tuber.identity.service.domain.mapper.UserDataMapper;
 import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,11 +22,12 @@ import java.util.Optional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreateUserAccountHelper {
-    private final UserDataMapper userDataMapper;
-    private final IdentityDomainService identityDomainService;
-    private final UserAccountRepository userAccountRepository;
-    private final PasswordEncoder passwordEncoder;
+    UserDataMapper userDataMapper;
+    IdentityDomainService identityDomainService;
+    UserAccountRepository userAccountRepository;
+    PasswordEncoder passwordEncoder;
 
     private void checkIfUsernameExist(String username) {
         Optional<UserAccount> userAccount = userAccountRepository.findByUsername(username);
