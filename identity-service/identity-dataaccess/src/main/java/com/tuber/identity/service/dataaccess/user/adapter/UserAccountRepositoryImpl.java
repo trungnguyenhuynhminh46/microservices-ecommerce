@@ -4,7 +4,9 @@ import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
 import com.tuber.identity.service.dataaccess.user.mapper.UserAccountDataAccessMapper;
 import com.tuber.identity.service.dataaccess.user.repository.UserAccountJpaRepository;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,9 +15,10 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserAccountRepositoryImpl implements UserAccountRepository {
-    private final UserAccountJpaRepository userAccountJpaRepository;
-    private final UserAccountDataAccessMapper userAccountDataAccessMapper;
+    UserAccountJpaRepository userAccountJpaRepository;
+    UserAccountDataAccessMapper userAccountDataAccessMapper;
 
     @Override
     public UserAccount save(UserAccount userAccount) {

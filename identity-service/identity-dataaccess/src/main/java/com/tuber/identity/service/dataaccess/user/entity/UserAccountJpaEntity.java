@@ -22,7 +22,7 @@ public class UserAccountJpaEntity {
     String username;
     String email;
     String password;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_account_role",
             joinColumns = @JoinColumn(name = "user_account_id"),

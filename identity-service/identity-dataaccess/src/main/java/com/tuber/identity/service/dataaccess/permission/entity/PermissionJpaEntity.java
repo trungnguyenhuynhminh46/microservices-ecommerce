@@ -21,7 +21,7 @@ public class PermissionJpaEntity {
     @Setter(AccessLevel.NONE)
     UserPermission name;
     String description;
-    @ManyToMany(mappedBy = "permissions")
+    @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
     Set<RoleJpaEntity> roles;
 
     public void setName(final UserPermission name) {
