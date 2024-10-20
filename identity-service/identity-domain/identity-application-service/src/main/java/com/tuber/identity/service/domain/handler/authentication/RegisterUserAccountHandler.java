@@ -32,6 +32,7 @@ public class RegisterUserAccountHandler {
         jwtTokenHelper.persistRefreshToken(RefreshToken.builder()
                 .id(new RefreshTokenId(refreshToken))
                 .userId(userAccount.getId().getValue())
+                .isRevoked(false)
                 .build());
         return RegisterUserAccountResponseData.builder()
                 .accessToken(accessToken)
