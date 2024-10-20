@@ -2,6 +2,7 @@ package com.tuber.identity.service.domain.helper;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.entity.UserAccount;
@@ -26,9 +27,8 @@ import java.util.StringJoiner;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class JwtTokenHelper {
-    @NonFinal
-    @Value("${jwt.signerKey}")
-    String SIGNER_KEY;
+    MACSigner macSigner;
+    MACVerifier macVerifier;
 
     @NonFinal
     @Value("${jwt.valid-duration}")
@@ -70,9 +70,9 @@ public class JwtTokenHelper {
         JWSObject jwsObject = new JWSObject(header, payload);
 
         try {
-            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
+            jwsObject.sign(macSigner);
         } catch (JOSEException e) {
-            throw new IdentityDomainException(IdentityResponseCode.INVALID_SIGNER_KEY, HttpStatus.INTERNAL_SERVER_ERROR.value());
+            throw new IdentityDomainException(IdentityResponseCode.UNCATEGORIZED_EXCEPTION, HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
 
         String token = jwsObject.serialize();
