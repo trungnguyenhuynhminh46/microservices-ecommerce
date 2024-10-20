@@ -93,6 +93,10 @@ public class UserAccount extends AggregateEntity<UserAccountId> {
         this.updatedAt = updatedAt;
     }
 
+    public String getUserId() {
+        return this.getId().getValue().toString();
+    }
+
     public static final class Builder {
         private UserAccountId id;
         private String username;

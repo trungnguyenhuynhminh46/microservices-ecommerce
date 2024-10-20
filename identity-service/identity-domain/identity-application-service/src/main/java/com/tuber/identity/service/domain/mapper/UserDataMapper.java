@@ -1,5 +1,6 @@
 package com.tuber.identity.service.domain.mapper;
 
+import com.tuber.identity.service.domain.dto.authentication.RegisterUserAccountCommand;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountCommand;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountResponseData;
 import com.tuber.identity.service.domain.dto.user.account.GetUserByIdResponseData;
@@ -26,4 +27,6 @@ public abstract class UserDataMapper {
                 .users(allUsers.stream().map(this::userAccountEntityToGetUserByIdResponseData).toList())
                 .build();
     }
+
+    public abstract CreateUserAccountCommand registerUserAccountCommandToCreateUserAccountCommand(RegisterUserAccountCommand registerUserAccountCommand);
 }

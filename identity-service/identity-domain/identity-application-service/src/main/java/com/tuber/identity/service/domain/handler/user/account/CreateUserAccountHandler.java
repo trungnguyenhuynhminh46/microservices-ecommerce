@@ -7,20 +7,23 @@ import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountRespo
 import com.tuber.identity.service.domain.event.UserAccountCreatedEvent;
 import com.tuber.identity.service.domain.helper.CreateUserAccountHelper;
 import com.tuber.identity.service.domain.mapper.UserDataMapper;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreateUserAccountHandler {
-    private final CreateUserAccountHelper createUserAccountHelper;
-    private final UserDataMapper userDataMapper;
+    CreateUserAccountHelper createUserAccountHelper;
+    UserDataMapper userDataMapper;
 
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
         UserAccountCreatedEvent userAccountCreatedEvent = createUserAccountHelper.persistUserAccount(createUserAccountCommand);
-        log.info("User account is created with id: {}", userAccountCreatedEvent.getUserAccount().getId().getValue());
+        log.info("User account is created with id: {}", userAccountCreatedEvent.getUserAccount().getUserId());
         CreateUserAccountResponseData createUserAccountResponseData = userDataMapper.userAccountEntityToCreateUserAccountResponseData(userAccountCreatedEvent.getUserAccount());
 
         // Persist to outbox table if needed

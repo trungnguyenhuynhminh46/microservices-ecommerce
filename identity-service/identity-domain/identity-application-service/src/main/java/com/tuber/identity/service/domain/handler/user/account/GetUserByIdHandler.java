@@ -10,7 +10,9 @@ import com.tuber.identity.service.domain.exception.UserAccountNotFoundException;
 import com.tuber.identity.service.domain.helper.CommonIdentityServiceHelper;
 import com.tuber.identity.service.domain.mapper.UserDataMapper;
 import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -21,10 +23,11 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GetUserByIdHandler {
-    private final UserAccountRepository userAccountRepository;
-    private final UserDataMapper userDataMapper;
-    private final CommonIdentityServiceHelper commonIdentityServiceHelper;
+    UserAccountRepository userAccountRepository;
+    UserDataMapper userDataMapper;
+    CommonIdentityServiceHelper commonIdentityServiceHelper;
 
     public ApiResponse<GetUserByIdResponseData> getUserByUserId(GetUserByIdQuery getUserByIdQuery) {
         UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithIdExist(getUserByIdQuery.getUserId());
