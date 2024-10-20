@@ -25,9 +25,9 @@ public class RegisterUserAccountHandler {
     UserDataMapper userDataMapper;
 
     private RegisterUserAccountResponseData buildResponseData(UserAccount userAccount) {
-        String token = jwtTokenHelper.generateJwtToken(userAccount);
+        String accessToken = jwtTokenHelper.generateJwtAccessToken(userAccount);
         return RegisterUserAccountResponseData.builder()
-                .token(token)
+                .accessToken(accessToken)
                 .build();
     }
 

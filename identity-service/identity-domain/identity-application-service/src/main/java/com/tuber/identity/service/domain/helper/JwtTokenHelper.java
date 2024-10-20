@@ -20,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 import java.util.StringJoiner;
 
 @Slf4j
@@ -31,11 +32,11 @@ public class JwtTokenHelper {
     MACVerifier macVerifier;
 
     @NonFinal
-    @Value("${jwt.valid-duration}")
-    long VALID_DURATION;
+    @Value("${jwt.access-token-lifetime}")
+    long ACCESSIBLE_DURATION;
 
     @NonFinal
-    @Value("${jwt.refreshable-duration}")
+    @Value("${jwt.refresh-token-lifetime}")
     long REFRESHABLE_DURATION;
 
     private String buildScope(UserAccount userAccount) {
@@ -55,17 +56,21 @@ public class JwtTokenHelper {
         return stringJoiner.toString();
     }
 
-    public String generateJwtToken(UserAccount userAccount) {
+    public String generateJwtToken(String subject, String issuer, List<String> claims, long durationInSeconds) {
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.HS512).build();
-        JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                .subject(userAccount.getId().toString())
+
+        JWTClaimsSet.Builder claimsSetBuilder = new JWTClaimsSet.Builder()
+                .subject(subject)
                 .issuer("tuber.com")
-                .claim("email", userAccount.getEmail())
-                .claim("scope", buildScope(userAccount))
                 .expirationTime(new Date(
-                        Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli()
-                ))
-                .build();
+                        Instant.now().plus(durationInSeconds, ChronoUnit.SECONDS).toEpochMilli()
+                ));
+        claims.forEach(claim -> {
+            String[] claimParts = claim.split(":");
+            claimsSetBuilder.claim(claimParts[0], claimParts[1]);
+        });
+        JWTClaimsSet claimsSet = claimsSetBuilder.build();
+
         Payload payload = new Payload(claimsSet.toJSONObject());
         JWSObject jwsObject = new JWSObject(header, payload);
 
@@ -75,8 +80,32 @@ public class JwtTokenHelper {
             throw new IdentityDomainException(IdentityResponseCode.UNCATEGORIZED_EXCEPTION, HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
 
-        String token = jwsObject.serialize();
-        log.info("Generated JWT token: {}", token);
+        return jwsObject.serialize();
+    }
+
+    public String generateJwtAccessToken(UserAccount userAccount) {
+        String token = generateJwtToken(
+                userAccount.getId().toString(),
+                "tuber.com",
+                List.of(
+                        "email:" + userAccount.getEmail(),
+                        "scope:" + buildScope(userAccount)
+                ),
+                ACCESSIBLE_DURATION
+        );
+        log.info("Generated access token: {}", token);
+
+        return token;
+    }
+
+    public String generateJwtRefreshToken() {
+        String token = generateJwtToken(
+                "refresh token",
+                "tuber.com",
+                List.of(),
+                REFRESHABLE_DURATION
+        );
+        log.info("Generated refresh token: {}", token);
 
         return token;
     }

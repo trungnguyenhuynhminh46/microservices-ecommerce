@@ -26,7 +26,7 @@ public class LoginUserAccountHelper {
         UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
         commonIdentityServiceHelper.verifyPassword(password, userAccount.getPassword());
 
-        String token = jwtTokenHelper.generateJwtToken(userAccount);
+        String token = jwtTokenHelper.generateJwtAccessToken(userAccount);
         LoginUserAccountResponseData loginUserAccountResponseData = new LoginUserAccountResponseData(token);
         return ApiResponse.<LoginUserAccountResponseData>builder()
                 .code(IdentityResponseCode.SUCCESS_RESPONSE.getCode())
