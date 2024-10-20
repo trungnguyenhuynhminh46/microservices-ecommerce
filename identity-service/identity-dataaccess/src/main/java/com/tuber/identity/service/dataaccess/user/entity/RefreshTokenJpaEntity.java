@@ -16,7 +16,10 @@ import java.util.UUID;
 public class RefreshTokenJpaEntity {
     @Id
     String token;
+
+    @Column(name = "user_id", nullable = false)
     UUID userId;
+
     boolean isRevoked;
 
     @ManyToOne(fetch = FetchType.LAZY)

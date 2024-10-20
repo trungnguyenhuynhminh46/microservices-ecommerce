@@ -9,10 +9,6 @@ public class RefreshToken extends BaseEntity<RefreshTokenId> {
     private final UUID userId;
     private final boolean isRevoked;
 
-    public void setId(String token) {
-        super.setId(new RefreshTokenId(token));
-    }
-
     private RefreshToken(Builder builder) {
         super.setId(builder.token);
         userId = builder.userId;

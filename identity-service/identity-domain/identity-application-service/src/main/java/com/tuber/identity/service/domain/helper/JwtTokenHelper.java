@@ -5,8 +5,10 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
+import com.tuber.identity.service.domain.entity.RefreshToken;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
+import com.tuber.identity.service.domain.ports.output.repository.RefreshTokenRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.Instant;
@@ -30,6 +33,7 @@ import java.util.StringJoiner;
 public class JwtTokenHelper {
     MACSigner macSigner;
     MACVerifier macVerifier;
+    RefreshTokenRepository refreshTokenRepository;
 
     @NonFinal
     @Value("${jwt.access-token-lifetime}")
@@ -67,7 +71,10 @@ public class JwtTokenHelper {
                 ));
         claims.forEach(claim -> {
             String[] claimParts = claim.split(":");
-            claimsSetBuilder.claim(claimParts[0], claimParts[1]);
+            if (claimParts.length == 2) {
+                claimsSetBuilder.claim(claimParts[0], claimParts[1]);
+            }
+            
         });
         JWTClaimsSet claimsSet = claimsSetBuilder.build();
 
@@ -98,9 +105,9 @@ public class JwtTokenHelper {
         return token;
     }
 
-    public String generateJwtRefreshToken() {
+    public String generateJwtRefreshToken(UserAccount userAccount) {
         String token = generateJwtToken(
-                "refresh token",
+                userAccount.getId().toString(),
                 "tuber.com",
                 List.of(),
                 REFRESHABLE_DURATION
@@ -108,5 +115,14 @@ public class JwtTokenHelper {
         log.info("Generated refresh token: {}", token);
 
         return token;
+    }
+
+    @Transactional
+    public void persistRefreshToken(RefreshToken refreshToken) {
+        RefreshToken savedRefreshToken = refreshTokenRepository.save(refreshToken);
+        if (savedRefreshToken == null) {
+            log.error("Failed to save refresh token: {}", refreshToken);
+            throw new IdentityDomainException(IdentityResponseCode.REFRESH_TOKEN_SAVE_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
     }
 }

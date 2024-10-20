@@ -4,11 +4,13 @@ import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.dto.authentication.RegisterUserAccountCommand;
 import com.tuber.identity.service.domain.dto.authentication.RegisterUserAccountResponseData;
+import com.tuber.identity.service.domain.entity.RefreshToken;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.event.UserAccountCreatedEvent;
 import com.tuber.identity.service.domain.helper.CreateUserAccountHelper;
 import com.tuber.identity.service.domain.helper.JwtTokenHelper;
 import com.tuber.identity.service.domain.mapper.UserDataMapper;
+import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,8 +28,14 @@ public class RegisterUserAccountHandler {
 
     private RegisterUserAccountResponseData buildResponseData(UserAccount userAccount) {
         String accessToken = jwtTokenHelper.generateJwtAccessToken(userAccount);
+        String refreshToken = jwtTokenHelper.generateJwtRefreshToken(userAccount);
+        jwtTokenHelper.persistRefreshToken(RefreshToken.builder()
+                .id(new RefreshTokenId(refreshToken))
+                .userId(userAccount.getId().getValue())
+                .build());
         return RegisterUserAccountResponseData.builder()
                 .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
