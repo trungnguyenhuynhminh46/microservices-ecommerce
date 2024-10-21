@@ -1,10 +1,7 @@
 package com.tuber.identity.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.identity.service.domain.dto.authentication.LoginUserAccountCommand;
-import com.tuber.identity.service.domain.dto.authentication.LoginUserAccountResponseData;
-import com.tuber.identity.service.domain.dto.authentication.RegisterUserAccountCommand;
-import com.tuber.identity.service.domain.dto.authentication.RegisterUserAccountResponseData;
+import com.tuber.identity.service.domain.dto.authentication.*;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,5 +30,10 @@ public class AuthenticationController {
         ApiResponse<LoginUserAccountResponseData> loginUserAccountResponse = identityApplicationService.login(loginUserAccountCommand);
         log.info("Successfully logged in user with username {}", loginUserAccountCommand.getUsername());
         return ResponseEntity.ok(loginUserAccountResponse);
+    }
+
+    @PostMapping("/introspect")
+    public ResponseEntity<ApiResponse<IntrospectUserAccountResponseData>> introspect(@RequestBody IntrospectUserAccountCommand introspectUserAccountCommand) {
+        return null;
     }
 }
