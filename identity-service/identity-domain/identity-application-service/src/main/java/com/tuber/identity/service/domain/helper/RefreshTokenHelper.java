@@ -44,8 +44,8 @@ public class RefreshTokenHelper {
         }
 
         return ApiResponse.<RefreshTokenResponseData>builder()
-                .code(IdentityResponseCode.LOGGED_OUT_ALREADY.getCode())
-                .message("You logged out already. Please login again to continue!")
+                .code(IdentityResponseCode.INVALID_JWT_TOKEN.getCode())
+                .message("Please login again to continue!")
                 .build();
     }
 }

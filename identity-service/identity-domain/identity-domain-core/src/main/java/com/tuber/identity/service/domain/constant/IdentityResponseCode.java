@@ -38,8 +38,6 @@ public class IdentityResponseCode extends ResponseCodeBase {
             new IdentityResponseCode(1013, "Failed to save the refresh token");
     public static final IdentityResponseCode LOGGED_OUT_ALREADY =
             new IdentityResponseCode(1014, "You logged out already. Please login again to continue!");
-    public static final IdentityResponseCode REFRESH_TOKEN_DOES_NOT_EXIST =
-            new IdentityResponseCode(1015, "The refresh token does not exist");
     protected IdentityResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

@@ -97,7 +97,7 @@ public class JwtTokenHelper {
 
     public String generateJwtAccessToken(UserAccount userAccount) {
         String token = generateJwtToken(
-                userAccount.getId().toString(),
+                userAccount.getUserId(),
                 "tuber.com",
                 List.of(
                         "email:" + userAccount.getEmail(),
@@ -112,7 +112,7 @@ public class JwtTokenHelper {
 
     public String generateJwtRefreshToken(UserAccount userAccount) {
         String token = generateJwtToken(
-                userAccount.getId().toString(),
+                userAccount.getUserId(),
                 "tuber.com",
                 List.of(),
                 REFRESHABLE_DURATION
@@ -178,7 +178,7 @@ public class JwtTokenHelper {
     @Transactional
     public String rotateRefreshToken(String refreshToken) {
         if (!refreshTokenRepository.existsByToken(refreshToken)) {
-            throw new RefreshTokenNotFoundException(IdentityResponseCode.REFRESH_TOKEN_DOES_NOT_EXIST, HttpStatus.NOT_FOUND.value());
+            throw new RefreshTokenNotFoundException(IdentityResponseCode.LOGGED_OUT_ALREADY, HttpStatus.NOT_FOUND.value());
         }
         refreshTokenRepository.deleteByToken(refreshToken);
 
