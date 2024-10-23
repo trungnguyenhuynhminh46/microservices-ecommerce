@@ -1,6 +1,5 @@
 package com.tuber.identity.service.domain.dto.authentication;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class IntrospectUserAccountCommand {
-    @NotNull(message = "Access token is required")
+public class RefreshTokenResponseData {
     String accessToken;
+    String refreshToken;
 }

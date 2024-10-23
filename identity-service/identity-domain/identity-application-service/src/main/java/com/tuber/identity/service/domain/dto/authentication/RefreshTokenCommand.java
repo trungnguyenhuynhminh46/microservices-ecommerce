@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class IntrospectUserAccountCommand {
-    @NotNull(message = "Access token is required")
-    String accessToken;
+public class RefreshTokenCommand {
+    @NotNull(message = "Refresh token is required")
+    String refreshToken;
 }

@@ -38,4 +38,11 @@ public class AuthenticationController {
         log.info("Successfully introspected user with refresh token {}", introspectUserAccountCommand.getAccessToken());
         return ResponseEntity.ok(introspectUserAccountResponse);
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<ApiResponse<RefreshTokenResponseData>> refresh(@RequestBody RefreshTokenCommand refreshTokenCommand) {
+        ApiResponse<RefreshTokenResponseData> refreshTokenResponse = identityApplicationService.refresh(refreshTokenCommand);
+        log.info("Successfully refreshed user with refresh token {}", refreshTokenCommand.getRefreshToken());
+        return ResponseEntity.ok(refreshTokenResponse);
+    }
 }

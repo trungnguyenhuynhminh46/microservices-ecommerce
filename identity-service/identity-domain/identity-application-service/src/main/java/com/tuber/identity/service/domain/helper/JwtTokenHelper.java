@@ -4,11 +4,16 @@ import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.entity.RefreshToken;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
+import com.tuber.identity.service.domain.exception.RefreshTokenNotFoundException;
+import com.tuber.identity.service.domain.exception.UserAccountNotFoundException;
 import com.tuber.identity.service.domain.ports.output.repository.RefreshTokenRepository;
+import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
+import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,11 +25,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -34,6 +38,7 @@ public class JwtTokenHelper {
     MACSigner macSigner;
     MACVerifier macVerifier;
     RefreshTokenRepository refreshTokenRepository;
+    UserAccountRepository userAccountRepository;
 
     @NonFinal
     @Value("${jwt.access-token-lifetime}")
@@ -74,7 +79,7 @@ public class JwtTokenHelper {
             if (claimParts.length == 2) {
                 claimsSetBuilder.claim(claimParts[0], claimParts[1]);
             }
-            
+
         });
         JWTClaimsSet claimsSet = claimsSetBuilder.build();
 
@@ -124,5 +129,60 @@ public class JwtTokenHelper {
             log.error("Failed to save refresh token: {}", refreshToken);
             throw new IdentityDomainException(IdentityResponseCode.REFRESH_TOKEN_SAVE_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
+    }
+
+    public boolean verifyToken(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            boolean isValid = signedJWT.verify(macVerifier);
+            Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+            boolean isExpired = expirationTime.before(new Date());
+
+            return isValid && !isExpired;
+        } catch (ParseException | JOSEException e) {
+            throw new IdentityDomainException(IdentityResponseCode.INVALID_FORMAT_JWT_TOKEN, HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    public UUID getUserIdFromToken(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            String userId = signedJWT.getJWTClaimsSet().getSubject();
+            return UUID.fromString(userId);
+        } catch (ParseException e) {
+            throw new IdentityDomainException(IdentityResponseCode.INVALID_FORMAT_JWT_TOKEN, HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    public UserAccount verifyUserAccountExists(UUID userId) {
+        Optional<UserAccount> userAccount = userAccountRepository.findById(userId);
+        if (userAccount.isEmpty()) {
+            log.warn("Could not find user account with id: {}", userId);
+            throw new UserAccountNotFoundException(IdentityResponseCode.USER_ACCOUNT_WITH_ID_NOT_FOUND, HttpStatus.NOT_FOUND.value());
+        }
+        return userAccount.get();
+    }
+
+    private RefreshToken persistNewRefreshToken(String oldRefreshToken) {
+        UUID userId = getUserIdFromToken(oldRefreshToken);
+        UserAccount userAccount = verifyUserAccountExists(userId);
+        RefreshToken newRefreshToken = RefreshToken.builder()
+                .id(new RefreshTokenId(generateJwtRefreshToken(userAccount)))
+                .userId(userId)
+                .isRevoked(false)
+                .build();
+
+        return refreshTokenRepository.save(newRefreshToken);
+    }
+
+    @Transactional
+    public String rotateRefreshToken(String refreshToken) {
+        if (!refreshTokenRepository.existsByToken(refreshToken)) {
+            throw new RefreshTokenNotFoundException(IdentityResponseCode.REFRESH_TOKEN_DOES_NOT_EXIST, HttpStatus.NOT_FOUND.value());
+        }
+        refreshTokenRepository.deleteByToken(refreshToken);
+
+        RefreshToken savedRefreshToken = persistNewRefreshToken(refreshToken);
+        return savedRefreshToken.getId().getValue();
     }
 }

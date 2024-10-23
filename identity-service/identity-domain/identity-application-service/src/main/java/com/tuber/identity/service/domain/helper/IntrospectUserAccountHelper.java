@@ -21,10 +21,10 @@ import java.util.Date;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class IntrospectUserAccountHelper {
-    CommonIdentityServiceHelper commonIdentityServiceHelper;
+    JwtTokenHelper jwtTokenHelper;
 
     private IntrospectUserAccountResponseData buildIntrospectUserAccountResponseData(IntrospectUserAccountCommand introspectUserAccountCommand) {
-        boolean isActive = commonIdentityServiceHelper.verifyToken(introspectUserAccountCommand.getAccessToken());
+        boolean isActive = jwtTokenHelper.verifyToken(introspectUserAccountCommand.getAccessToken());
         if (isActive) {
             log.info("Token is active");
             try {
