@@ -30,10 +30,12 @@ public class IdentityResponseCode extends ResponseCodeBase {
             new IdentityResponseCode(1009, "The jwt token is invalid");
     public static final IdentityResponseCode EXPIRED_JWT_TOKEN =
             new IdentityResponseCode(1010, "The jwt token is expired");
+    public static final IdentityResponseCode INVALID_FORMAT_JWT_TOKEN =
+            new IdentityResponseCode(1011, "The jwt token you provided has invalid format");
     public static final IdentityResponseCode INVALID_SIGNER_KEY =
-            new IdentityResponseCode(1011, "The signer key has invalid format");
+            new IdentityResponseCode(1012, "The signer key has invalid format");
     public static final IdentityResponseCode REFRESH_TOKEN_SAVE_FAILED =
-            new IdentityResponseCode(1012, "Failed to save the refresh token");
+            new IdentityResponseCode(1013, "Failed to save the refresh token");
 
     protected IdentityResponseCode(int code, String message) {
         this.code = formatErrorCode(code);

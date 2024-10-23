@@ -34,6 +34,8 @@ public class AuthenticationController {
 
     @PostMapping("/introspect")
     public ResponseEntity<ApiResponse<IntrospectUserAccountResponseData>> introspect(@RequestBody IntrospectUserAccountCommand introspectUserAccountCommand) {
-        return null;
+        ApiResponse<IntrospectUserAccountResponseData> introspectUserAccountResponse = identityApplicationService.introspect(introspectUserAccountCommand);
+        log.info("Successfully introspected user with refresh token {}", introspectUserAccountCommand.getAccessToken());
+        return ResponseEntity.ok(introspectUserAccountResponse);
     }
 }
