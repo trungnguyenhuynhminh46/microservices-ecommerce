@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class RefreshToken extends BaseEntity<RefreshTokenId> {
     private final UUID userId;
-    private final boolean isRevoked;
+    private boolean isRevoked;
 
     private RefreshToken(Builder builder) {
         super.setId(builder.token);
@@ -54,5 +54,9 @@ public class RefreshToken extends BaseEntity<RefreshTokenId> {
         public RefreshToken build() {
             return new RefreshToken(this);
         }
+    }
+
+    public void setIsRevoked(boolean isRevoked) {
+        this.isRevoked = isRevoked;
     }
 }

@@ -45,4 +45,11 @@ public class AuthenticationController {
         log.info("Successfully refreshed user with refresh token {}", refreshTokenCommand.getRefreshToken());
         return ResponseEntity.ok(refreshTokenResponse);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<LogoutUserAccountResponseData>> logout(@RequestBody LogoutUserAccountCommand logoutUserAccountCommand) {
+        ApiResponse<LogoutUserAccountResponseData> logoutUserAccountResponse = identityApplicationService.logout(logoutUserAccountCommand);
+        log.info("Successfully logged out user with refresh token {}", logoutUserAccountCommand.getRefreshToken());
+        return ResponseEntity.ok(logoutUserAccountResponse);
+    }
 }

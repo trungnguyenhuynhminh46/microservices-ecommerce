@@ -9,6 +9,7 @@ import com.tuber.identity.service.domain.handler.user.account.GetUserByIdHandler
 import com.tuber.identity.service.domain.handler.user.account.GetUsersHandler;
 import com.tuber.identity.service.domain.helper.IntrospectUserAccountHelper;
 import com.tuber.identity.service.domain.helper.LoginUserAccountHelper;
+import com.tuber.identity.service.domain.helper.LogoutUserAccountHelper;
 import com.tuber.identity.service.domain.helper.RefreshTokenHelper;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     private final LoginUserAccountHelper loginUserAccountHelper;
     private final IntrospectUserAccountHelper introspectUserAccountHelper;
     private final RefreshTokenHelper refreshTokenHelper;
+    private final LogoutUserAccountHelper logoutUserAccountHelper;
     @Override
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
         return createUserAccountHandler.createUserAccount(createUserAccountCommand);
@@ -57,5 +59,10 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     @Override
     public ApiResponse<RefreshTokenResponseData> refresh(RefreshTokenCommand refreshTokenCommand) {
         return refreshTokenHelper.refresh(refreshTokenCommand);
+    }
+
+    @Override
+    public ApiResponse<LogoutUserAccountResponseData> logout(LogoutUserAccountCommand logoutUserAccountCommand) {
+        return logoutUserAccountHelper.logout(logoutUserAccountCommand);
     }
 }

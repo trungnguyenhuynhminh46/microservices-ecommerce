@@ -51,4 +51,9 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
     public boolean existsByToken(String token) {
         return refreshTokenJpaRepository.existsByToken(token);
     }
+
+    @Override
+    public boolean existsByTokenAndIsRevoked(String token, boolean isRevoked) {
+        return refreshTokenJpaRepository.existsByTokenAndIsRevoked(token, isRevoked);
+    }
 }
