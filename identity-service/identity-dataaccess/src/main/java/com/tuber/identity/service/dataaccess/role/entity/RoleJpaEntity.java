@@ -23,7 +23,7 @@ public class RoleJpaEntity {
     UserRole name;
     String description;
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    Set<UserAccountJpaEntity> users;
+    Set<UserAccountJpaEntity> users = new HashSet<>();
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "role_permission",

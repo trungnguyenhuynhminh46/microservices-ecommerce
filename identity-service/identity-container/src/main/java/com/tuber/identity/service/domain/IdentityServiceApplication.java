@@ -2,8 +2,8 @@ package com.tuber.identity.service.domain;
 
 import com.tuber.domain.valueobject.enums.UserPermission;
 import com.tuber.domain.valueobject.enums.UserRole;
-import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.domain.entity.Permission;
+import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.domain.ports.output.repository.PermissionRepository;
 import com.tuber.identity.service.domain.ports.output.repository.RoleRepository;
 import lombok.AllArgsConstructor;
@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +30,11 @@ public class IdentityServiceApplication implements CommandLineRunner {
             UserPermission.UPDATE, Permission.builder().id(UserPermission.UPDATE).description("Permission UPDATE").build()
     );
 
+    private final Map<UserRole, Role> rolesMap = Map.of(
+            UserRole.ADMIN, Role.builder().id(UserRole.ADMIN).description("Role ADMIN").build(),
+            UserRole.USER, Role.builder().id(UserRole.USER).description("Role USER").build()
+    );
+
     public static void main(String[] args) {
         SpringApplication.run(IdentityServiceApplication.class, args);
     }
@@ -44,6 +50,15 @@ public class IdentityServiceApplication implements CommandLineRunner {
     }
 
     private void initializeRoles() {
+        rolesMap.values().forEach(roleRepository::save);
+        assignPermissionsToRole(UserRole.ADMIN, Set.of(UserPermission.CREATE, UserPermission.DELETE, UserPermission.UPDATE));
+        assignPermissionsToRole(UserRole.USER, Set.of(UserPermission.CREATE, UserPermission.UPDATE));
+    }
 
+    @Transactional
+    private void assignPermissionsToRole(UserRole roleName, Set<UserPermission> permissionNames) {
+        for (UserPermission permissionName : permissionNames) {
+            roleRepository.assignPermissionsToRole(roleName, permissionName);
+        }
     }
 }

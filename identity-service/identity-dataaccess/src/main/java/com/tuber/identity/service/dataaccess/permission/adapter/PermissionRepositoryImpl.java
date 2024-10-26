@@ -1,5 +1,6 @@
 package com.tuber.identity.service.dataaccess.permission.adapter;
 
+import com.tuber.domain.valueobject.enums.UserPermission;
 import com.tuber.identity.service.dataaccess.permission.mapper.PermissionDataAccessMapper;
 import com.tuber.identity.service.dataaccess.permission.repository.PermissionJpaRepository;
 import com.tuber.identity.service.domain.entity.Permission;
@@ -30,7 +31,7 @@ public class PermissionRepositoryImpl implements PermissionRepository {
     }
 
     @Override
-    public Optional<Permission> findByName(String name) {
+    public Optional<Permission> findByName(UserPermission name) {
         return permissionJpaRepository.findByName(name)
                 .map(permissionDataAccessMapper::permissionJpaEntityToPermissionEntity);
     }
