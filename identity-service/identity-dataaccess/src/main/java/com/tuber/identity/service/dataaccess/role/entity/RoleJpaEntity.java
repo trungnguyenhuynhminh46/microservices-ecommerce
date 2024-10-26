@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -15,18 +16,18 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "role")
 @Entity
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleJpaEntity {
     @Id
     @Enumerated(EnumType.STRING)
     UserRole name;
     String description;
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     Set<UserAccountJpaEntity> users;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "role_permission",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    Set<PermissionJpaEntity> permissions;
+    Set<PermissionJpaEntity> permissions = new HashSet<>();
 }

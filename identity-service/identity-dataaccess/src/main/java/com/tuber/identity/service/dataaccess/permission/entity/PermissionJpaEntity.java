@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -20,6 +21,6 @@ public class PermissionJpaEntity {
     @Enumerated(EnumType.STRING)
     UserPermission name;
     String description;
-    @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
-    Set<RoleJpaEntity> roles;
+    @ManyToMany(mappedBy = "permissions", fetch = FetchType.EAGER)
+    Set<RoleJpaEntity> roles = new HashSet<>();
 }

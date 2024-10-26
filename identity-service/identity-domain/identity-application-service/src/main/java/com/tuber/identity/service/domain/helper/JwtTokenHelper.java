@@ -53,10 +53,10 @@ public class JwtTokenHelper {
 
         if (!CollectionUtils.isEmpty(userAccount.getRoles())) {
             userAccount.getRoles().forEach(role -> {
-                stringJoiner.add("ROLE_" + role.getName());
+                stringJoiner.add("ROLE_" + role.getName().toString());
                 if (!CollectionUtils.isEmpty(role.getPermissions())) {
                     role.getPermissions().forEach(permission -> {
-                        stringJoiner.add(permission.getName());
+                        stringJoiner.add(permission.getName().toString());
                     });
                 }
             });

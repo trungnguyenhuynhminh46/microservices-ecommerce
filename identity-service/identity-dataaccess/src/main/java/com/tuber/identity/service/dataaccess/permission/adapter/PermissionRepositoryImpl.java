@@ -10,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -31,5 +33,13 @@ public class PermissionRepositoryImpl implements PermissionRepository {
     public Optional<Permission> findByName(String name) {
         return permissionJpaRepository.findByName(name)
                 .map(permissionDataAccessMapper::permissionJpaEntityToPermissionEntity);
+    }
+
+    @Override
+    public Set<Permission> findAll() {
+        return permissionJpaRepository.findAll()
+                .stream()
+                .map(permissionDataAccessMapper::permissionJpaEntityToPermissionEntity)
+                .collect(Collectors.toSet());
     }
 }
