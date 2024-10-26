@@ -21,6 +21,6 @@ public class PermissionJpaEntity {
     @Enumerated(EnumType.STRING)
     UserPermission name;
     String description;
-    @ManyToMany(mappedBy = "permissions", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
     Set<RoleJpaEntity> roles = new HashSet<>();
 }

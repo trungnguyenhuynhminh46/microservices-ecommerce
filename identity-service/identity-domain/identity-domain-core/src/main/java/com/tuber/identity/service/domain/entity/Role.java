@@ -42,16 +42,6 @@ public class Role extends BaseEntity<EnumId<UserRole>> {
         return super.getId().getValue();
     }
 
-    public void addPermission(Permission permission) {
-        this.permissions.add(permission);
-        permission.getRoles().add(this);
-    }
-
-    public void removePermission(Permission permission) {
-        this.permissions.remove(permission);
-        permission.getRoles().remove(this);
-    }
-
     public static final class Builder {
         private EnumId<UserRole> id;
         private String description;

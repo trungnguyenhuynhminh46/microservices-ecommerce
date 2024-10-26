@@ -44,17 +44,6 @@ public class IdentityServiceApplication implements CommandLineRunner {
     }
 
     private void initializeRoles() {
-        Role userRole = Role.builder().id(UserRole.USER).description("Role USER").build();
-        userRole.addPermission(permissionsMap.get(UserPermission.CREATE));
-        userRole.addPermission(permissionsMap.get(UserPermission.UPDATE));
-        roleRepository.save(userRole);
 
-        Set<Permission> allPermissions = Set.copyOf(permissionsMap.values());
-        roleRepository.save(Role.builder()
-                .id(UserRole.ADMIN)
-                .description("Role ADMIN")
-                .permissions(allPermissions)
-                .build()
-        );
     }
 }
