@@ -11,21 +11,18 @@ public class Role extends BaseEntity<EnumId<UserRole>> {
 
     private Set<Permission> permissions;
 
-    public Role(EnumId<UserRole> role) {
-        super.setId(role);
+    private Role(Builder builder) {
+        super.setId(builder.id);
+        setDescription(builder.description);
+        setPermissions(builder.permissions);
     }
 
-    public Role(EnumId<UserRole> role, Set<Permission> permissions) {
-        super.setId(role);
-        this.permissions = permissions;
+    public static Builder builder() {
+        return new Builder();
     }
 
     public String getDescription() {
         return description;
-    }
-
-    public String getName() {
-        return super.getId().getValue().toString();
     }
 
     public void setDescription(String description) {
@@ -38,5 +35,38 @@ public class Role extends BaseEntity<EnumId<UserRole>> {
 
     public void setPermissions(Set<Permission> permissions) {
         this.permissions = permissions;
+    }
+
+    public String getName() {
+        return super.getId().getValue().toString();
+    }
+
+
+    public static final class Builder {
+        private EnumId<UserRole> id;
+        private String description;
+        private Set<Permission> permissions;
+
+        private Builder() {
+        }
+
+        public Builder id(UserRole id) {
+            this.id = new EnumId<>(id);
+            return this;
+        }
+
+        public Builder description(String val) {
+            description = val;
+            return this;
+        }
+
+        public Builder permissions(Set<Permission> val) {
+            permissions = val;
+            return this;
+        }
+
+        public Role build() {
+            return new Role(this);
+        }
     }
 }

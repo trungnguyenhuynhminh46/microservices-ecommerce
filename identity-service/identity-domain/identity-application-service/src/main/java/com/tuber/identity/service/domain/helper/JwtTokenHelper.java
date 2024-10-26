@@ -177,7 +177,7 @@ public class JwtTokenHelper {
 
     @Transactional
     public String rotateRefreshToken(String refreshToken) {
-        if (!refreshTokenRepository.existsByToken(refreshToken)) {
+        if (!refreshTokenRepository.existsByTokenAndIsRevoked(refreshToken, false)) {
             throw new RefreshTokenNotFoundException(IdentityResponseCode.LOGGED_OUT_ALREADY, HttpStatus.NOT_FOUND.value());
         }
         refreshTokenRepository.deleteByToken(refreshToken);

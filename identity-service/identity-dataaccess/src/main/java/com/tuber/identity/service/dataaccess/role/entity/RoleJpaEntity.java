@@ -19,7 +19,6 @@ import java.util.Set;
 public class RoleJpaEntity {
     @Id
     @Enumerated(EnumType.STRING)
-    @Setter(AccessLevel.NONE)
     UserRole name;
     String description;
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
@@ -30,12 +29,4 @@ public class RoleJpaEntity {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     Set<PermissionJpaEntity> permissions;
-
-    public void setName(final UserRole name) {
-        this.name = name;
-    }
-
-    public void setName(final String name) {
-        this.name = UserRole.valueOf(name);
-    }
 }

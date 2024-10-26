@@ -18,17 +18,8 @@ import java.util.Set;
 public class PermissionJpaEntity {
     @Id
     @Enumerated(EnumType.STRING)
-    @Setter(AccessLevel.NONE)
     UserPermission name;
     String description;
     @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
     Set<RoleJpaEntity> roles;
-
-    public void setName(final UserPermission name) {
-        this.name = name;
-    }
-
-    public void setName(final String name) {
-        this.name = UserPermission.valueOf(name);
-    }
 }

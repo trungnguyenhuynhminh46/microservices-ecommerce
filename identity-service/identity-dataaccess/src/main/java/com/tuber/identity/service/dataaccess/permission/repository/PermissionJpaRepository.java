@@ -5,6 +5,9 @@ import com.tuber.identity.service.dataaccess.permission.entity.PermissionJpaEnti
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface PermissionJpaRepository extends JpaRepository<PermissionJpaEntity, UserPermission> {
+    Optional<PermissionJpaEntity> findByName(String name);
 }
