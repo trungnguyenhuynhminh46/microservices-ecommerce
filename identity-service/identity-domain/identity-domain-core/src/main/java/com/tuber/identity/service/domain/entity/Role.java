@@ -1,13 +1,11 @@
 package com.tuber.identity.service.domain.entity;
 
 import com.tuber.domain.entity.BaseEntity;
-import com.tuber.domain.valueobject.enums.UserRole;
-import com.tuber.domain.valueobject.id.EnumId;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class Role extends BaseEntity<EnumId<UserRole>> {
+public class Role extends BaseEntity<String> {
     private String description;
 
     private Set<Permission> permissions = new HashSet<>();
@@ -38,20 +36,20 @@ public class Role extends BaseEntity<EnumId<UserRole>> {
         this.permissions = permissions;
     }
 
-    public UserRole getName() {
-        return super.getId().getValue();
+    public String getName() {
+        return super.getId();
     }
 
     public static final class Builder {
-        private EnumId<UserRole> id;
+        private String id;
         private String description;
         private Set<Permission> permissions = new HashSet<>();
 
         private Builder() {
         }
 
-        public Builder id(UserRole id) {
-            this.id = new EnumId<>(id);
+        public Builder id(String id) {
+            this.id = id;
             return this;
         }
 

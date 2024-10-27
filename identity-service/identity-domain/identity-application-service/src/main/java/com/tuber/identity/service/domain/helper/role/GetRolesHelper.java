@@ -1,7 +1,6 @@
 package com.tuber.identity.service.domain.helper.role;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.domain.valueobject.enums.UserRole;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.dto.role.GetRoleResponseData;
 import com.tuber.identity.service.domain.dto.role.GetRolesResponseData;
@@ -33,7 +32,7 @@ public class GetRolesHelper {
                 .build();
     }
 
-    private Role verifyRoleExists(UserRole name) {
+    private Role verifyRoleExists(String name) {
         Optional<Role> role = roleRepository.findByName(name);
         if (role.isEmpty()) {
             throw new RoleNotFoundException(IdentityResponseCode.ROLE_NOT_EXISTS, HttpStatus.NOT_FOUND.value());
@@ -41,7 +40,7 @@ public class GetRolesHelper {
         return role.get();
     }
 
-    public ApiResponse<GetRoleResponseData> getRole(UserRole name) {
+    public ApiResponse<GetRoleResponseData> getRole(String name) {
         return ApiResponse.<GetRoleResponseData>builder()
                 .message("Role retrieved successfully")
                 .data(GetRoleResponseData.builder()

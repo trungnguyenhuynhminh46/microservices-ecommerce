@@ -1,6 +1,5 @@
 package com.tuber.identity.service.domain.dto.role;
 
-import com.tuber.domain.valueobject.enums.UserRole;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,5 +13,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GetRoleQuery {
     @NotNull
-    UserRole name;
+    String name;
 }

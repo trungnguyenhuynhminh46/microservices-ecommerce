@@ -1,7 +1,6 @@
 package com.tuber.identity.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.domain.valueobject.enums.UserRole;
 import com.tuber.identity.service.domain.dto.role.GetRoleResponseData;
 import com.tuber.identity.service.domain.dto.role.GetRoleQuery;
 import com.tuber.identity.service.domain.dto.role.GetRolesResponseData;
@@ -28,11 +27,10 @@ public class RoleController {
         log.info("Returning all roles");
         return ResponseEntity.ok(getRolesResponseData);
     }
-    // Get Role
-    // Remove Role enum
+
     @GetMapping("/{name}")
     public ResponseEntity<ApiResponse<GetRoleResponseData>> getRole(@PathVariable("name") String name) {
-        ApiResponse<GetRoleResponseData> getRoleResponseData = identityApplicationService.getRole(GetRoleQuery.builder().name(UserRole.valueOf(name)).build());
+        ApiResponse<GetRoleResponseData> getRoleResponseData = identityApplicationService.getRole(GetRoleQuery.builder().name(name).build());
         log.info("Returning role with name: {}", name);
         return ResponseEntity.ok(getRoleResponseData);
     }

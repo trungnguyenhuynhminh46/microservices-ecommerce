@@ -1,6 +1,5 @@
 package com.tuber.identity.service.dataaccess.role.mapper;
 
-import com.tuber.domain.valueobject.enums.UserRole;
 import com.tuber.domain.valueobject.id.EnumId;
 import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.dataaccess.role.entity.RoleJpaEntity;
@@ -18,8 +17,4 @@ public abstract class RoleDataAccessMapper {
     @Mapping(target = "id", source = "name")
     @Mapping(target = "permissions", ignore = true)
     public abstract Role roleJpaEntityToRoleEntity(RoleJpaEntity roleJpaEntity);
-
-    protected UserRole map(EnumId<UserRole> id) {
-        return id.getValue();
-    }
 }

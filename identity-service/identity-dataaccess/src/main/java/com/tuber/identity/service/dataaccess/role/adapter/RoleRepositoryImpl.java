@@ -1,7 +1,6 @@
 package com.tuber.identity.service.dataaccess.role.adapter;
 
 import com.tuber.domain.valueobject.enums.UserPermission;
-import com.tuber.domain.valueobject.enums.UserRole;
 import com.tuber.identity.service.dataaccess.permission.entity.PermissionJpaEntity;
 import com.tuber.identity.service.dataaccess.permission.repository.PermissionJpaRepository;
 import com.tuber.identity.service.dataaccess.role.entity.RoleJpaEntity;
@@ -36,14 +35,14 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     @Override
-    public Optional<Role> findByName(UserRole name) {
+    public Optional<Role> findByName(String name) {
         return roleJpaRepository.findByName(name)
                 .map(roleDataAccessMapper::roleJpaEntityToRoleEntity);
     }
 
     @Override
     @Transactional
-    public void assignPermissionsToRole(UserRole roleName, UserPermission permission) {
+    public void assignPermissionsToRole(String roleName, UserPermission permission) {
         Optional<RoleJpaEntity> roleJpaEntity = roleJpaRepository.findByName(roleName);
         Optional<PermissionJpaEntity> permissionJpaEntity = permissionJpaRepository.findByName(permission);
         if (roleJpaEntity.isPresent() && permissionJpaEntity.isPresent()) {
