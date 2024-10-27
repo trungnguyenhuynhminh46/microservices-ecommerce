@@ -1,6 +1,9 @@
 package com.tuber.identity.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
+import com.tuber.domain.valueobject.enums.UserRole;
+import com.tuber.identity.service.domain.dto.role.GetRoleResponseData;
+import com.tuber.identity.service.domain.dto.role.GetRoleQuery;
 import com.tuber.identity.service.domain.dto.role.GetRolesResponseData;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +29,14 @@ public class RoleController {
         return ResponseEntity.ok(getRolesResponseData);
     }
     // Get Role
+    // Remove Role enum
+    @GetMapping("/{name}")
+    public ResponseEntity<ApiResponse<GetRoleResponseData>> getRole(@PathVariable("name") String name) {
+        ApiResponse<GetRoleResponseData> getRoleResponseData = identityApplicationService.getRole(GetRoleQuery.builder().name(UserRole.valueOf(name)).build());
+        log.info("Returning role with name: {}", name);
+        return ResponseEntity.ok(getRoleResponseData);
+    }
+
     // Get Roles By User Id
     // Create Role
     // Delete Role

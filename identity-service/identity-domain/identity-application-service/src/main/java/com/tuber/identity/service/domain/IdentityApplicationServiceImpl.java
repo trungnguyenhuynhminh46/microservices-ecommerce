@@ -2,6 +2,8 @@ package com.tuber.identity.service.domain;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.authentication.*;
+import com.tuber.identity.service.domain.dto.role.GetRoleQuery;
+import com.tuber.identity.service.domain.dto.role.GetRoleResponseData;
 import com.tuber.identity.service.domain.dto.role.GetRolesResponseData;
 import com.tuber.identity.service.domain.dto.user.account.*;
 import com.tuber.identity.service.domain.handler.authentication.RegisterUserAccountHandler;
@@ -75,5 +77,10 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     @Override
     public ApiResponse<GetRolesResponseData> getRoles() {
         return getRolesHelper.getRoles();
+    }
+
+    @Override
+    public ApiResponse<GetRoleResponseData> getRole(GetRoleQuery getRoleQuery) {
+        return getRolesHelper.getRole(getRoleQuery.getName());
     }
 }
