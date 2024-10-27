@@ -5,7 +5,7 @@ import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountCommand;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountResponseData;
 import com.tuber.identity.service.domain.event.UserAccountCreatedEvent;
-import com.tuber.identity.service.domain.helper.CreateUserAccountHelper;
+import com.tuber.identity.service.domain.helper.user.account.CreateUserAccountHelper;
 import com.tuber.identity.service.domain.mapper.UserDataMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

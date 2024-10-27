@@ -5,9 +5,11 @@ import com.tuber.domain.valueobject.enums.UserRole;
 import com.tuber.identity.service.domain.entity.Role;
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface RoleRepository {
     Role save(Role role);
     Optional<Role> findByName(UserRole name);
     void assignPermissionsToRole(UserRole roleName, UserPermission permission);
+    Set<Role> findAll();
 }

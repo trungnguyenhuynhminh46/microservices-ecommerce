@@ -1,4 +1,4 @@
-package com.tuber.identity.service.domain.helper;
+package com.tuber.identity.service.domain.helper.authentication;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
@@ -25,7 +25,7 @@ public class LogoutUserAccountHelper {
 
     private RefreshToken verifyUserNotLoggedOut(String refreshToken) {
         Optional<RefreshToken> savedRefreshToken = refreshTokenRepository.findByToken(refreshToken);
-        boolean isLoggedOut = savedRefreshToken.isEmpty() || savedRefreshToken.get().isRevoked();
+        boolean isLoggedOut = savedRefreshToken.isEmpty() || savedRefreshToken.get().getIsRevoked();
         if (isLoggedOut) {
             throw new LoggedOutAlready(IdentityResponseCode.LOGGED_OUT_ALREADY, HttpStatus.ALREADY_REPORTED.value());
         }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 @AllArgsConstructor
@@ -49,5 +50,13 @@ public class RoleRepositoryImpl implements RoleRepository {
             roleJpaEntity.get().getPermissions().add(permissionJpaEntity.get());
             roleJpaRepository.save(roleJpaEntity.get());
         }
+    }
+
+    @Override
+    public Set<Role> findAll() {
+        return roleJpaRepository.findAll()
+                .stream()
+                .map(roleDataAccessMapper::roleJpaEntityToRoleEntity)
+                .collect(java.util.stream.Collectors.toSet());
     }
 }

@@ -7,8 +7,8 @@ import com.tuber.identity.service.domain.dto.authentication.RegisterUserAccountR
 import com.tuber.identity.service.domain.entity.RefreshToken;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.event.UserAccountCreatedEvent;
-import com.tuber.identity.service.domain.helper.CreateUserAccountHelper;
-import com.tuber.identity.service.domain.helper.JwtTokenHelper;
+import com.tuber.identity.service.domain.helper.user.account.CreateUserAccountHelper;
+import com.tuber.identity.service.domain.helper.authentication.JwtTokenHelper;
 import com.tuber.identity.service.domain.mapper.UserDataMapper;
 import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
 import lombok.AccessLevel;

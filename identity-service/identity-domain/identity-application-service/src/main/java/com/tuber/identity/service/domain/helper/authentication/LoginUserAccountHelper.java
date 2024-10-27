@@ -1,4 +1,4 @@
-package com.tuber.identity.service.domain.helper;
+package com.tuber.identity.service.domain.helper.authentication;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
@@ -6,6 +6,7 @@ import com.tuber.identity.service.domain.dto.authentication.LoginUserAccountComm
 import com.tuber.identity.service.domain.dto.authentication.LoginUserAccountResponseData;
 import com.tuber.identity.service.domain.entity.RefreshToken;
 import com.tuber.identity.service.domain.entity.UserAccount;
+import com.tuber.identity.service.domain.helper.CommonIdentityServiceHelper;
 import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

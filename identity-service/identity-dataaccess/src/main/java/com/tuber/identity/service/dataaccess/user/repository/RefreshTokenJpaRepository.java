@@ -14,5 +14,5 @@ public interface RefreshTokenJpaRepository extends JpaRepository<RefreshTokenJpa
     List<RefreshTokenJpaEntity> findByUserId(UUID userId);
     void deleteByToken(String token);
     boolean existsByToken(String token);
-    boolean existsByTokenAndIsRevoked(String token, boolean isRevoked);
+    boolean existsByTokenAndIsRevoked(String token, Boolean isRevoked);
 }

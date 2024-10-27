@@ -1,4 +1,4 @@
-package com.tuber.identity.service.domain.helper;
+package com.tuber.identity.service.domain.helper.authentication;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;

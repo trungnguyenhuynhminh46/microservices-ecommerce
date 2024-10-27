@@ -1,4 +1,4 @@
-package com.tuber.identity.service.domain.helper;
+package com.tuber.identity.service.domain.helper.authentication;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;

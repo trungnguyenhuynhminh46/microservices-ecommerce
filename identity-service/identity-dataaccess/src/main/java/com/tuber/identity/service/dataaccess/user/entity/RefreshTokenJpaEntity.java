@@ -20,7 +20,7 @@ public class RefreshTokenJpaEntity {
     @Column(name = "user_id", nullable = false)
     UUID userId;
 
-    boolean isRevoked;
+    Boolean isRevoked;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false, insertable = false)

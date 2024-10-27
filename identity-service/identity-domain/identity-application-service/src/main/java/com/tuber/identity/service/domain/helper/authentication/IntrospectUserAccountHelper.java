@@ -1,4 +1,4 @@
-package com.tuber.identity.service.domain.helper;
+package com.tuber.identity.service.domain.helper.authentication;
 
 import com.nimbusds.jwt.SignedJWT;
 import com.tuber.application.handler.ApiResponse;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
-import java.util.Date;
 
 @Slf4j
 @Component

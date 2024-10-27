@@ -2,32 +2,38 @@ package com.tuber.identity.service.domain;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.authentication.*;
+import com.tuber.identity.service.domain.dto.role.GetRolesResponseData;
 import com.tuber.identity.service.domain.dto.user.account.*;
 import com.tuber.identity.service.domain.handler.authentication.RegisterUserAccountHandler;
 import com.tuber.identity.service.domain.handler.user.account.CreateUserAccountHandler;
 import com.tuber.identity.service.domain.handler.user.account.GetUserByIdHandler;
 import com.tuber.identity.service.domain.handler.user.account.GetUsersHandler;
-import com.tuber.identity.service.domain.helper.IntrospectUserAccountHelper;
-import com.tuber.identity.service.domain.helper.LoginUserAccountHelper;
-import com.tuber.identity.service.domain.helper.LogoutUserAccountHelper;
-import com.tuber.identity.service.domain.helper.RefreshTokenHelper;
+import com.tuber.identity.service.domain.helper.authentication.IntrospectUserAccountHelper;
+import com.tuber.identity.service.domain.helper.authentication.LoginUserAccountHelper;
+import com.tuber.identity.service.domain.helper.authentication.LogoutUserAccountHelper;
+import com.tuber.identity.service.domain.helper.authentication.RefreshTokenHelper;
+import com.tuber.identity.service.domain.helper.role.GetRolesHelper;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 @Service
 @Validated
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class IdentityApplicationServiceImpl implements IdentityApplicationService {
-    private final CreateUserAccountHandler createUserAccountHandler;
-    private final GetUserByIdHandler getUserByIdHandler;
-    private final GetUsersHandler getUsersHandler;
-    private final RegisterUserAccountHandler registerUserAccountHandler;
-    private final LoginUserAccountHelper loginUserAccountHelper;
-    private final IntrospectUserAccountHelper introspectUserAccountHelper;
-    private final RefreshTokenHelper refreshTokenHelper;
-    private final LogoutUserAccountHelper logoutUserAccountHelper;
+    CreateUserAccountHandler createUserAccountHandler;
+    GetUserByIdHandler getUserByIdHandler;
+    GetUsersHandler getUsersHandler;
+    RegisterUserAccountHandler registerUserAccountHandler;
+    LoginUserAccountHelper loginUserAccountHelper;
+    IntrospectUserAccountHelper introspectUserAccountHelper;
+    RefreshTokenHelper refreshTokenHelper;
+    LogoutUserAccountHelper logoutUserAccountHelper;
+    GetRolesHelper getRolesHelper;
     @Override
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
         return createUserAccountHandler.createUserAccount(createUserAccountCommand);
@@ -64,5 +70,10 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     @Override
     public ApiResponse<LogoutUserAccountResponseData> logout(LogoutUserAccountCommand logoutUserAccountCommand) {
         return logoutUserAccountHelper.logout(logoutUserAccountCommand);
+    }
+
+    @Override
+    public ApiResponse<GetRolesResponseData> getRoles() {
+        return getRolesHelper.getRoles();
     }
 }
