@@ -2,9 +2,7 @@ package com.tuber.identity.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.authentication.*;
-import com.tuber.identity.service.domain.dto.role.GetRoleQuery;
-import com.tuber.identity.service.domain.dto.role.GetRoleResponseData;
-import com.tuber.identity.service.domain.dto.role.GetRolesResponseData;
+import com.tuber.identity.service.domain.dto.role.*;
 import com.tuber.identity.service.domain.dto.user.account.*;
 import com.tuber.identity.service.domain.validators.ValidUUID;
 import jakarta.validation.Valid;
@@ -22,4 +20,5 @@ public interface IdentityApplicationService {
     ApiResponse<GetRoleResponseData> getRole(GetRoleQuery getRoleQuery);
     ApiResponse<AssignRoleToUserResponseData> assignRoleToUser(AssignRoleToUserCommand assignRoleToUserCommand);
     ApiResponse<GetRolesResponseData> getRolesByUsername(String username);
+    ApiResponse<CreateRoleResponseData> createRole(@Valid CreateRoleCommand createRoleCommand);
 }

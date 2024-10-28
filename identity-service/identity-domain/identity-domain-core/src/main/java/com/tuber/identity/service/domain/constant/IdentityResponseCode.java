@@ -40,6 +40,8 @@ public class IdentityResponseCode extends ResponseCodeBase {
             new IdentityResponseCode(1014, "You logged out already. Please login again to continue!");
     public static final IdentityResponseCode ROLE_NOT_EXISTS =
             new IdentityResponseCode(1015, "The role does not exist");
+    public static final IdentityResponseCode ROLE_EXISTED =
+            new IdentityResponseCode(1016, "The role existed");
     protected IdentityResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

@@ -2,9 +2,7 @@ package com.tuber.identity.service.domain;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.authentication.*;
-import com.tuber.identity.service.domain.dto.role.GetRoleQuery;
-import com.tuber.identity.service.domain.dto.role.GetRoleResponseData;
-import com.tuber.identity.service.domain.dto.role.GetRolesResponseData;
+import com.tuber.identity.service.domain.dto.role.*;
 import com.tuber.identity.service.domain.dto.user.account.*;
 import com.tuber.identity.service.domain.handler.authentication.RegisterUserAccountHandler;
 import com.tuber.identity.service.domain.handler.user.account.CreateUserAccountHandler;
@@ -14,6 +12,7 @@ import com.tuber.identity.service.domain.helper.authentication.IntrospectUserAcc
 import com.tuber.identity.service.domain.helper.authentication.LoginUserAccountHelper;
 import com.tuber.identity.service.domain.helper.authentication.LogoutUserAccountHelper;
 import com.tuber.identity.service.domain.helper.authentication.RefreshTokenHelper;
+import com.tuber.identity.service.domain.helper.role.CreateRoleHelper;
 import com.tuber.identity.service.domain.helper.role.GetRolesHelper;
 import com.tuber.identity.service.domain.helper.user.account.AssignRoleToUserHelper;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
@@ -38,15 +37,18 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     LogoutUserAccountHelper logoutUserAccountHelper;
     GetRolesHelper getRolesHelper;
     AssignRoleToUserHelper assignRoleToUserHelper;
+    CreateRoleHelper createRoleHelper;
 
     @Override
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
         return createUserAccountHandler.createUserAccount(createUserAccountCommand);
     }
+
     @Override
     public ApiResponse<GetUserByIdResponseData> getUserByUserId(GetUserByIdQuery getUserByIdQuery) {
         return getUserByIdHandler.getUserByUserId(getUserByIdQuery);
     }
+
     @Override
     public ApiResponse<GetUsersResponseData> getUsers() {
         return getUsersHandler.getUsers();
@@ -95,5 +97,10 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     @Override
     public ApiResponse<GetRolesResponseData> getRolesByUsername(String username) {
         return getRolesHelper.getRolesByUsername(username);
+    }
+
+    @Override
+    public ApiResponse<CreateRoleResponseData> createRole(CreateRoleCommand createRoleCommand) {
+        return createRoleHelper.createRole(createRoleCommand);
     }
 }

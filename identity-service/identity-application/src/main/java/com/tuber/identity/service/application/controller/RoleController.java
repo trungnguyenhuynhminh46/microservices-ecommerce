@@ -1,18 +1,13 @@
 package com.tuber.identity.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.identity.service.domain.dto.role.GetRoleResponseData;
-import com.tuber.identity.service.domain.dto.role.GetRoleQuery;
-import com.tuber.identity.service.domain.dto.role.GetRolesResponseData;
+import com.tuber.identity.service.domain.dto.role.*;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Validated
@@ -41,6 +36,11 @@ public class RoleController {
         log.info("Returning roles for user with username: {}", username);
         return ResponseEntity.ok(getRolesResponseData);
     }
-    // Create Role
-    // Delete Role
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<CreateRoleResponseData>> createRole(@RequestBody CreateRoleCommand createRoleCommand) {
+        ApiResponse<CreateRoleResponseData> createRoleResponseData = identityApplicationService.createRole(createRoleCommand);
+        log.info("Role created with name: {}", createRoleCommand.getName());
+        return ResponseEntity.ok(createRoleResponseData);
+    }
 }
