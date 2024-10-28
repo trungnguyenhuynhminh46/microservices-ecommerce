@@ -35,7 +35,12 @@ public class RoleController {
         return ResponseEntity.ok(getRoleResponseData);
     }
 
-    // Get Roles By User Id
+    @GetMapping("/users/{username}")
+    public ResponseEntity<ApiResponse<GetRolesResponseData>> getRolesByUsername(@PathVariable("username") String username) {
+        ApiResponse<GetRolesResponseData> getRolesResponseData = identityApplicationService.getRolesByUsername(username);
+        log.info("Returning roles for user with username: {}", username);
+        return ResponseEntity.ok(getRolesResponseData);
+    }
     // Create Role
     // Delete Role
 }

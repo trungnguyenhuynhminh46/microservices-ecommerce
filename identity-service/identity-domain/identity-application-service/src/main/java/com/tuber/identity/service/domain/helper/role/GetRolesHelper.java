@@ -37,4 +37,13 @@ public class GetRolesHelper {
                         .build())
                 .build();
     }
+
+    public ApiResponse<GetRolesResponseData> getRolesByUsername(String username) {
+        return ApiResponse.<GetRolesResponseData>builder()
+                .message(String.format("Roles for user with username %s retrieved successfully", username))
+                .data(GetRolesResponseData.builder()
+                        .roles(roleRepository.findAll())
+                        .build())
+                .build();
+    }
 }

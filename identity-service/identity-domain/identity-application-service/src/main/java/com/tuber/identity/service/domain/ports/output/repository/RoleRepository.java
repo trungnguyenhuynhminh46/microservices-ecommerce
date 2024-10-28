@@ -11,4 +11,5 @@ public interface RoleRepository {
     Optional<Role> findByName(String name);
     void assignPermissionsToRole(String roleName, UserPermission permission);
     Set<Role> findAll();
+    Set<Role> findByUsername(String username);
 }

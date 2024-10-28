@@ -38,6 +38,7 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     LogoutUserAccountHelper logoutUserAccountHelper;
     GetRolesHelper getRolesHelper;
     AssignRoleToUserHelper assignRoleToUserHelper;
+
     @Override
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
         return createUserAccountHandler.createUserAccount(createUserAccountCommand);
@@ -89,5 +90,10 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     @Override
     public ApiResponse<AssignRoleToUserResponseData> assignRoleToUser(AssignRoleToUserCommand assignRoleToUserCommand) {
         return assignRoleToUserHelper.assignRoleToUser(assignRoleToUserCommand);
+    }
+
+    @Override
+    public ApiResponse<GetRolesResponseData> getRolesByUsername(String username) {
+        return getRolesHelper.getRolesByUsername(username);
     }
 }

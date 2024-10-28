@@ -21,4 +21,5 @@ public interface IdentityApplicationService {
     ApiResponse<GetRolesResponseData> getRoles();
     ApiResponse<GetRoleResponseData> getRole(GetRoleQuery getRoleQuery);
     ApiResponse<AssignRoleToUserResponseData> assignRoleToUser(AssignRoleToUserCommand assignRoleToUserCommand);
+    ApiResponse<GetRolesResponseData> getRolesByUsername(String username);
 }

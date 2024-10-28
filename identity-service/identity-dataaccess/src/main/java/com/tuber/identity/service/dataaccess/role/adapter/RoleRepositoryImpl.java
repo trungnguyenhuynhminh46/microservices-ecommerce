@@ -58,4 +58,12 @@ public class RoleRepositoryImpl implements RoleRepository {
                 .map(roleDataAccessMapper::roleJpaEntityToRoleEntity)
                 .collect(java.util.stream.Collectors.toSet());
     }
+
+    @Override
+    public Set<Role> findByUsername(String username) {
+        return roleJpaRepository.findByUsername(username)
+                .stream()
+                .map(roleDataAccessMapper::roleJpaEntityToRoleEntity)
+                .collect(java.util.stream.Collectors.toSet());
+    }
 }
