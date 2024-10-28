@@ -20,4 +20,5 @@ public interface IdentityApplicationService {
     ApiResponse<LogoutUserAccountResponseData> logout(@Valid LogoutUserAccountCommand logoutUserAccountCommand);
     ApiResponse<GetRolesResponseData> getRoles();
     ApiResponse<GetRoleResponseData> getRole(GetRoleQuery getRoleQuery);
+    ApiResponse<AssignRoleToUserResponseData> assignRoleToUser(AssignRoleToUserCommand assignRoleToUserCommand);
 }

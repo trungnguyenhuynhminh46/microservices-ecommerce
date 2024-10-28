@@ -15,6 +15,7 @@ import com.tuber.identity.service.domain.helper.authentication.LoginUserAccountH
 import com.tuber.identity.service.domain.helper.authentication.LogoutUserAccountHelper;
 import com.tuber.identity.service.domain.helper.authentication.RefreshTokenHelper;
 import com.tuber.identity.service.domain.helper.role.GetRolesHelper;
+import com.tuber.identity.service.domain.helper.user.account.AssignRoleToUserHelper;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     RefreshTokenHelper refreshTokenHelper;
     LogoutUserAccountHelper logoutUserAccountHelper;
     GetRolesHelper getRolesHelper;
+    AssignRoleToUserHelper assignRoleToUserHelper;
     @Override
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
         return createUserAccountHandler.createUserAccount(createUserAccountCommand);
@@ -82,5 +84,10 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     @Override
     public ApiResponse<GetRoleResponseData> getRole(GetRoleQuery getRoleQuery) {
         return getRolesHelper.getRole(getRoleQuery.getName());
+    }
+
+    @Override
+    public ApiResponse<AssignRoleToUserResponseData> assignRoleToUser(AssignRoleToUserCommand assignRoleToUserCommand) {
+        return assignRoleToUserHelper.assignRoleToUser(assignRoleToUserCommand);
     }
 }

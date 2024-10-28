@@ -42,4 +42,13 @@ public class UserAccountController {
         log.info("Returning all user accounts");
         return ResponseEntity.ok(getUsersResponseData);
     }
+
+    @PostMapping("/{username}/roles/{roleName}")
+    public ResponseEntity<ApiResponse<AssignRoleToUserResponseData>> assignRoleToUser(@PathVariable("username") String username, @PathVariable("roleName") String roleName) {
+        AssignRoleToUserCommand assignRoleToUserCommand = AssignRoleToUserCommand.builder().username(username).roleName(roleName).build();
+        log.info("Assigning role {} to user with username: {}", roleName, username);
+        ApiResponse<AssignRoleToUserResponseData> assignRoleToUserResponseData = identityApplicationService.assignRoleToUser(assignRoleToUserCommand);
+        log.info("Role {} assigned to user with username: {}", roleName, username);
+        return ResponseEntity.ok(assignRoleToUserResponseData);
+    }
 }

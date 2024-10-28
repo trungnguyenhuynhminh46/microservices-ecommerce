@@ -1,10 +1,12 @@
 package com.tuber.identity.service.domain.helper;
 
-import com.nimbusds.jose.crypto.MACVerifier;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
+import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.exception.AuthenticationException;
+import com.tuber.identity.service.domain.exception.RoleNotFoundException;
 import com.tuber.identity.service.domain.exception.UserAccountNotFoundException;
+import com.tuber.identity.service.domain.ports.output.repository.RoleRepository;
 import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +24,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommonIdentityServiceHelper {
-    UserAccountRepository userAccountRepository;
     PasswordEncoder passwordEncoder;
+    UserAccountRepository userAccountRepository;
+    RoleRepository roleRepository;
 
     public UserAccount verifyUserAccountWithUsernameExist(String username) {
         Optional<UserAccount> userAccount = userAccountRepository.findByUsername(username);
@@ -49,5 +52,14 @@ public class CommonIdentityServiceHelper {
         if (!matched) {
             throw new AuthenticationException(IdentityResponseCode.FAILED_AUTHENTICATION, HttpStatus.FORBIDDEN.value());
         }
+    }
+
+    public Role verifyRoleExist(String roleName) {
+        Optional<Role> savedRole = roleRepository.findByName(roleName);
+        if (savedRole.isEmpty()) {
+            log.warn("Could not find role with name: {}", roleName);
+            throw new RoleNotFoundException(IdentityResponseCode.ROLE_NOT_EXISTS, HttpStatus.NOT_FOUND.value());
+        }
+        return savedRole.get();
     }
 }
