@@ -125,4 +125,14 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     public ApiResponse<GetPermissionResponseData> getPermission(GetPermissionQuery getPermissionQuery) {
         return getPermissionsHelper.getPermission(getPermissionQuery.getName());
     }
+
+    @Override
+    public ApiResponse<GetPermissionsResponseData> getPermissionsByRoleName(String roleName) {
+        return getPermissionsHelper.getPermissionsByRole(roleName);
+    }
+
+    @Override
+    public ApiResponse<GetPermissionsResponseData> getPermissionsByUsername(String username) {
+        return getPermissionsHelper.getPermissionsByUsername(username);
+    }
 }

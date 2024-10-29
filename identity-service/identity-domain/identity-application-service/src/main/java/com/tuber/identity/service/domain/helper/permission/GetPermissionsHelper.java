@@ -41,19 +41,21 @@ public class GetPermissionsHelper {
     }
 
     public ApiResponse<GetPermissionsResponseData> getPermissionsByRole(String roleName) {
+        commonIdentityServiceHelper.verifyRoleExist(roleName);
         return ApiResponse.<GetPermissionsResponseData>builder()
                 .message("Permissions retrieved successfully")
                 .data(GetPermissionsResponseData.builder()
-                        .permissions(permissionRepository.findAll())
+                        .permissions(permissionRepository.findByRoleName(roleName))
                         .build())
                 .build();
     }
 
     public ApiResponse<GetPermissionsResponseData> getPermissionsByUsername(String username) {
+        commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
         return ApiResponse.<GetPermissionsResponseData>builder()
                 .message("Permissions retrieved successfully")
                 .data(GetPermissionsResponseData.builder()
-                        .permissions(permissionRepository.findAll())
+                        .permissions(permissionRepository.findByUsername(username))
                         .build())
                 .build();
     }

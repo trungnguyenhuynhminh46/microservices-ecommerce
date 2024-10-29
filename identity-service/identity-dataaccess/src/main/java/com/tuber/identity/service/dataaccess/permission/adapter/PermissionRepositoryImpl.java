@@ -43,4 +43,20 @@ public class PermissionRepositoryImpl implements PermissionRepository {
                 .map(permissionDataAccessMapper::permissionJpaEntityToPermissionEntity)
                 .collect(Collectors.toSet());
     }
+
+    @Override
+    public Set<Permission> findByRoleName(String roleName) {
+        return permissionJpaRepository.findByRoleName(roleName)
+                .stream()
+                .map(permissionDataAccessMapper::permissionJpaEntityToPermissionEntity)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Permission> findByUsername(String username) {
+        return permissionJpaRepository.findByUsername(username)
+                .stream()
+                .map(permissionDataAccessMapper::permissionJpaEntityToPermissionEntity)
+                .collect(Collectors.toSet());
+    }
 }

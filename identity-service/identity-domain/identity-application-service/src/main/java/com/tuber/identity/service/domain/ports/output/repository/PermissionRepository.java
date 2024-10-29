@@ -10,4 +10,6 @@ public interface PermissionRepository {
     Permission save(Permission permission);
     Optional<Permission> findByName(UserPermission name);
     Set<Permission> findAll();
+    Set<Permission> findByRoleName(String roleName);
+    Set<Permission> findByUsername(String username);
 }

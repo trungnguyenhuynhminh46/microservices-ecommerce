@@ -39,6 +39,19 @@ public class PermissionController {
         return ResponseEntity.ok(getPermissionResponseData);
     }
 
-    // Get Permissions By Rolename
+    @GetMapping("/roles/{roleName}")
+    public ResponseEntity<ApiResponse<GetPermissionsResponseData>> getPermissionsByRoleName(@PathVariable("roleName") String roleName) {
+        ApiResponse<GetPermissionsResponseData> getPermissionsResponseData = identityApplicationService.getPermissionsByRoleName(roleName);
+        log.info("Returning permissions for role with name: {}", roleName);
+        return ResponseEntity.ok(getPermissionsResponseData);
+    }
+
+    @GetMapping("/users/{username}")
+    public ResponseEntity<ApiResponse<GetPermissionsResponseData>> getPermissionsByUsername(@PathVariable("username") String username) {
+        ApiResponse<GetPermissionsResponseData> getPermissionsResponseData = identityApplicationService.getPermissionsByUsername(username);
+        log.info("Returning permissions for user with username: {}", username);
+        return ResponseEntity.ok(getPermissionsResponseData);
+    }
+    // Get Permissions By Username
     // Create Permission
 }
