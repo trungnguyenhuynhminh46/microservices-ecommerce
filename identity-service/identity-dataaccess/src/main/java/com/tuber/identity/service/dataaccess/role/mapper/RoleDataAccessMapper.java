@@ -1,12 +1,11 @@
 package com.tuber.identity.service.dataaccess.role.mapper;
 
-import com.tuber.domain.valueobject.id.EnumId;
+import com.tuber.identity.service.dataaccess.permission.entity.PermissionJpaEntity;
+import com.tuber.identity.service.domain.entity.Permission;
 import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.dataaccess.role.entity.RoleJpaEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public abstract class RoleDataAccessMapper {
@@ -15,6 +14,12 @@ public abstract class RoleDataAccessMapper {
     public abstract RoleJpaEntity roleEntityToRoleJpaEntity(Role role);
 
     @Mapping(target = "id", source = "name")
-    @Mapping(target = "permissions", ignore = true)
     public abstract Role roleJpaEntityToRoleEntity(RoleJpaEntity roleJpaEntity);
+
+    protected Permission map(PermissionJpaEntity permissionJpaEntity) {
+        return Permission.builder()
+                .id(permissionJpaEntity.getName())
+                .description(permissionJpaEntity.getDescription())
+                .build();
+    }
 }
