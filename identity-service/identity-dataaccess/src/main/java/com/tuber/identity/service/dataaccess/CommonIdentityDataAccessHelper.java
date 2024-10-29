@@ -1,5 +1,8 @@
 package com.tuber.identity.service.dataaccess;
 
+import com.tuber.domain.valueobject.enums.UserPermission;
+import com.tuber.identity.service.dataaccess.permission.entity.PermissionJpaEntity;
+import com.tuber.identity.service.dataaccess.permission.repository.PermissionJpaRepository;
 import com.tuber.identity.service.dataaccess.role.entity.RoleJpaEntity;
 import com.tuber.identity.service.dataaccess.role.repository.RoleJpaRepository;
 import com.tuber.identity.service.dataaccess.user.entity.UserAccountJpaEntity;
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class CommonIdentityDataAccessHelper {
     UserAccountJpaRepository userAccountJpaRepository;
     RoleJpaRepository roleJpaRepository;
+    PermissionJpaRepository permissionJpaRepository;
 
     public UserAccountJpaEntity verifyUserAccountWithUsernameExists(String username) {
         Optional<UserAccountJpaEntity> userAccountJpa = userAccountJpaRepository.findByUsername(username);
@@ -42,5 +46,15 @@ public class CommonIdentityDataAccessHelper {
         }
 
         return roleJpa.get();
+    }
+
+    public PermissionJpaEntity verifyPermissionExists(UserPermission permissionName) {
+        Optional<PermissionJpaEntity> permissionJpa = permissionJpaRepository.findByName(permissionName);
+        if (permissionJpa.isEmpty()){
+            log.warn("Could not find permission with name: {}", permissionName);
+            throw new RoleNotFoundException(IdentityResponseCode.PERMISSION_NOT_EXISTS, HttpStatus.NOT_FOUND.value());
+        }
+
+        return permissionJpa.get();
     }
 }

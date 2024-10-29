@@ -15,6 +15,7 @@ import com.tuber.identity.service.domain.helper.authentication.IntrospectUserAcc
 import com.tuber.identity.service.domain.helper.authentication.LoginUserAccountHelper;
 import com.tuber.identity.service.domain.helper.authentication.LogoutUserAccountHelper;
 import com.tuber.identity.service.domain.helper.authentication.RefreshTokenHelper;
+import com.tuber.identity.service.domain.helper.permission.AssignPermissionToRoleHelper;
 import com.tuber.identity.service.domain.helper.permission.GetPermissionsHelper;
 import com.tuber.identity.service.domain.helper.role.CreateRoleHelper;
 import com.tuber.identity.service.domain.helper.role.DeleteRoleHelper;
@@ -45,6 +46,7 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     CreateRoleHelper createRoleHelper;
     DeleteRoleHelper deleteRoleHelper;
     GetPermissionsHelper getPermissionsHelper;
+    AssignPermissionToRoleHelper assignPermissionToRoleHelper;
 
     @Override
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
@@ -134,5 +136,10 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     @Override
     public ApiResponse<GetPermissionsResponseData> getPermissionsByUsername(String username) {
         return getPermissionsHelper.getPermissionsByUsername(username);
+    }
+
+    @Override
+    public ApiResponse<GetPermissionsResponseData> assignPermissionToRole(String roleName, String permissionName) {
+        return assignPermissionToRoleHelper.assignPermissionToRole(roleName, permissionName);
     }
 }

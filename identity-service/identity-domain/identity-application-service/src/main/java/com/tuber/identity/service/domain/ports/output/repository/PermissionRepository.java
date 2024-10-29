@@ -12,4 +12,5 @@ public interface PermissionRepository {
     Set<Permission> findAll();
     Set<Permission> findByRoleName(String roleName);
     Set<Permission> findByUsername(String username);
+    Set<Permission> assignPermissionsToRole(String roleName, Set<UserPermission> permissionNames);
 }

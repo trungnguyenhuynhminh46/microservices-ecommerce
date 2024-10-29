@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Validated
@@ -52,6 +49,11 @@ public class PermissionController {
         log.info("Returning permissions for user with username: {}", username);
         return ResponseEntity.ok(getPermissionsResponseData);
     }
-    // Get Permissions By Username
-    // Create Permission
+
+    @PostMapping("/{permissionName}/roles/{roleName}")
+    public ResponseEntity<ApiResponse<GetPermissionsResponseData>> assignPermissionToRole(@PathVariable("roleName") String roleName, @PathVariable("permissionName") @ValidPermission String permissionName) {
+        ApiResponse<GetPermissionsResponseData> getPermissionsResponseData = identityApplicationService.assignPermissionToRole(roleName, permissionName);
+        log.info("Added permission with name: {} to role with name: {}", permissionName, roleName);
+        return ResponseEntity.ok(getPermissionsResponseData);
+    }
 }
