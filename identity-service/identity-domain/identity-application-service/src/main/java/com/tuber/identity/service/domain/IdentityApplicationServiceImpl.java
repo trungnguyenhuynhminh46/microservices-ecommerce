@@ -2,6 +2,7 @@ package com.tuber.identity.service.domain;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.authentication.*;
+import com.tuber.identity.service.domain.dto.permission.GetPermissionsResponseData;
 import com.tuber.identity.service.domain.dto.role.*;
 import com.tuber.identity.service.domain.dto.user.account.*;
 import com.tuber.identity.service.domain.handler.authentication.RegisterUserAccountHandler;
@@ -12,6 +13,7 @@ import com.tuber.identity.service.domain.helper.authentication.IntrospectUserAcc
 import com.tuber.identity.service.domain.helper.authentication.LoginUserAccountHelper;
 import com.tuber.identity.service.domain.helper.authentication.LogoutUserAccountHelper;
 import com.tuber.identity.service.domain.helper.authentication.RefreshTokenHelper;
+import com.tuber.identity.service.domain.helper.permission.GetPermissionsHelper;
 import com.tuber.identity.service.domain.helper.role.CreateRoleHelper;
 import com.tuber.identity.service.domain.helper.role.DeleteRoleHelper;
 import com.tuber.identity.service.domain.helper.role.GetRolesHelper;
@@ -40,6 +42,7 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     AssignRoleToUserHelper assignRoleToUserHelper;
     CreateRoleHelper createRoleHelper;
     DeleteRoleHelper deleteRoleHelper;
+    GetPermissionsHelper getPermissionsHelper;
 
     @Override
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
@@ -109,5 +112,10 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     @Override
     public ApiResponse<DeleteRoleResponseData> deleteRole(DeleteRoleCommand deleteRoleCommand) {
         return deleteRoleHelper.deleteRole(deleteRoleCommand);
+    }
+
+    @Override
+    public ApiResponse<GetPermissionsResponseData> getPermissions() {
+        return getPermissionsHelper.getPermissions();
     }
 }
