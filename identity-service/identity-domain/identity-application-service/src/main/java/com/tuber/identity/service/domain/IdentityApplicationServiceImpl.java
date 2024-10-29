@@ -13,6 +13,7 @@ import com.tuber.identity.service.domain.helper.authentication.LoginUserAccountH
 import com.tuber.identity.service.domain.helper.authentication.LogoutUserAccountHelper;
 import com.tuber.identity.service.domain.helper.authentication.RefreshTokenHelper;
 import com.tuber.identity.service.domain.helper.role.CreateRoleHelper;
+import com.tuber.identity.service.domain.helper.role.DeleteRoleHelper;
 import com.tuber.identity.service.domain.helper.role.GetRolesHelper;
 import com.tuber.identity.service.domain.helper.user.account.AssignRoleToUserHelper;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
@@ -38,6 +39,7 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     GetRolesHelper getRolesHelper;
     AssignRoleToUserHelper assignRoleToUserHelper;
     CreateRoleHelper createRoleHelper;
+    DeleteRoleHelper deleteRoleHelper;
 
     @Override
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
@@ -102,5 +104,10 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     @Override
     public ApiResponse<CreateRoleResponseData> createRole(CreateRoleCommand createRoleCommand) {
         return createRoleHelper.createRole(createRoleCommand);
+    }
+
+    @Override
+    public ApiResponse<DeleteRoleResponseData> deleteRole(DeleteRoleCommand deleteRoleCommand) {
+        return deleteRoleHelper.deleteRole(deleteRoleCommand);
     }
 }

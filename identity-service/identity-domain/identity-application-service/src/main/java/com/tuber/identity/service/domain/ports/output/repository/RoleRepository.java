@@ -12,4 +12,5 @@ public interface RoleRepository {
     void assignPermissionsToRole(String roleName, UserPermission permission);
     Set<Role> findAll();
     Set<Role> findByUsername(String username);
+    void delete(Role role);
 }

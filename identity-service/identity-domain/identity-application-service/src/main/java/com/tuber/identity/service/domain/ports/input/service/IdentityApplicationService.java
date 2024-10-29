@@ -21,4 +21,5 @@ public interface IdentityApplicationService {
     ApiResponse<AssignRoleToUserResponseData> assignRoleToUser(AssignRoleToUserCommand assignRoleToUserCommand);
     ApiResponse<GetRolesResponseData> getRolesByUsername(String username);
     ApiResponse<CreateRoleResponseData> createRole(@Valid CreateRoleCommand createRoleCommand);
+    ApiResponse<DeleteRoleResponseData> deleteRole(DeleteRoleCommand deleteRoleCommand);
 }

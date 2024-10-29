@@ -43,4 +43,11 @@ public class RoleController {
         log.info("Role created with name: {}", createRoleCommand.getName());
         return ResponseEntity.ok(createRoleResponseData);
     }
+
+    @DeleteMapping("/{name}")
+    public ResponseEntity<ApiResponse<DeleteRoleResponseData>> deleteRole(@PathVariable("name") String name) {
+        ApiResponse<DeleteRoleResponseData> deleteRoleResponseData = identityApplicationService.deleteRole(DeleteRoleCommand.builder().name(name).build());
+        log.info("Role deleted with name: {}", name);
+        return ResponseEntity.ok(deleteRoleResponseData);
+    }
 }

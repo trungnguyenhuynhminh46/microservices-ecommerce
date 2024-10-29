@@ -66,4 +66,9 @@ public class RoleRepositoryImpl implements RoleRepository {
                 .map(roleDataAccessMapper::roleJpaEntityToRoleEntity)
                 .collect(java.util.stream.Collectors.toSet());
     }
+
+    @Override
+    public void delete(Role role) {
+        roleJpaRepository.delete(roleDataAccessMapper.roleEntityToRoleJpaEntity(role));
+    }
 }
