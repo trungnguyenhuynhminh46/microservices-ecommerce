@@ -1,11 +1,15 @@
 package com.tuber.identity.service.domain.helper;
 
+import com.tuber.domain.valueobject.enums.UserPermission;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
+import com.tuber.identity.service.domain.entity.Permission;
 import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.exception.AuthenticationException;
+import com.tuber.identity.service.domain.exception.PermissionNotFoundException;
 import com.tuber.identity.service.domain.exception.RoleNotFoundException;
 import com.tuber.identity.service.domain.exception.UserAccountNotFoundException;
+import com.tuber.identity.service.domain.ports.output.repository.PermissionRepository;
 import com.tuber.identity.service.domain.ports.output.repository.RoleRepository;
 import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
 import lombok.AccessLevel;
@@ -27,6 +31,7 @@ public class CommonIdentityServiceHelper {
     PasswordEncoder passwordEncoder;
     UserAccountRepository userAccountRepository;
     RoleRepository roleRepository;
+    PermissionRepository permissionRepository;
 
     public UserAccount verifyUserAccountWithUsernameExist(String username) {
         Optional<UserAccount> userAccount = userAccountRepository.findByUsername(username);
@@ -61,5 +66,14 @@ public class CommonIdentityServiceHelper {
             throw new RoleNotFoundException(IdentityResponseCode.ROLE_NOT_EXISTS, HttpStatus.NOT_FOUND.value());
         }
         return savedRole.get();
+    }
+
+    public Permission verifyPermissionExists(UserPermission permissionName) {
+        Optional<Permission> savedPermission = permissionRepository.findByName(permissionName);
+        if (savedPermission.isEmpty()) {
+            log.warn("Could not find permission with name: {}", permissionName);
+            throw new PermissionNotFoundException(IdentityResponseCode.PERMISSION_NOT_EXISTS, HttpStatus.NOT_FOUND.value());
+        }
+        return savedPermission.get();
     }
 }

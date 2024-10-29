@@ -2,6 +2,8 @@ package com.tuber.identity.service.domain;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.authentication.*;
+import com.tuber.identity.service.domain.dto.permission.GetPermissionQuery;
+import com.tuber.identity.service.domain.dto.permission.GetPermissionResponseData;
 import com.tuber.identity.service.domain.dto.permission.GetPermissionsResponseData;
 import com.tuber.identity.service.domain.dto.role.*;
 import com.tuber.identity.service.domain.dto.user.account.*;
@@ -117,5 +119,10 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     @Override
     public ApiResponse<GetPermissionsResponseData> getPermissions() {
         return getPermissionsHelper.getPermissions();
+    }
+
+    @Override
+    public ApiResponse<GetPermissionResponseData> getPermission(GetPermissionQuery getPermissionQuery) {
+        return getPermissionsHelper.getPermission(getPermissionQuery.getName());
     }
 }

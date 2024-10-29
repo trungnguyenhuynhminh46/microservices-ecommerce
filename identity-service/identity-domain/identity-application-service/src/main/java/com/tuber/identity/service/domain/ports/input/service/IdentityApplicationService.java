@@ -2,6 +2,8 @@ package com.tuber.identity.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.authentication.*;
+import com.tuber.identity.service.domain.dto.permission.GetPermissionQuery;
+import com.tuber.identity.service.domain.dto.permission.GetPermissionResponseData;
 import com.tuber.identity.service.domain.dto.permission.GetPermissionsResponseData;
 import com.tuber.identity.service.domain.dto.role.*;
 import com.tuber.identity.service.domain.dto.user.account.*;
@@ -24,4 +26,5 @@ public interface IdentityApplicationService {
     ApiResponse<CreateRoleResponseData> createRole(@Valid CreateRoleCommand createRoleCommand);
     ApiResponse<DeleteRoleResponseData> deleteRole(DeleteRoleCommand deleteRoleCommand);
     ApiResponse<GetPermissionsResponseData> getPermissions();
+    ApiResponse<GetPermissionResponseData> getPermission(GetPermissionQuery getPermissionQuery);
 }
