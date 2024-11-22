@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 
 public interface IdentityApplicationService {
     ApiResponse<CreateUserAccountResponseData> createUserAccount(@Valid CreateUserAccountCommand createUserAccountCommand);
-    ApiResponse<GetUserByIdResponseData> getUserByUserId(@ValidUUID GetUserByIdQuery getUserByIdQuery);
+    ApiResponse<GetUserByIdResponseData> getUserByUserId(GetUserByIdQuery getUserByIdQuery);
     ApiResponse<GetUsersResponseData> getUsers();
     ApiResponse<RegisterUserAccountResponseData> register(@Valid RegisterUserAccountCommand registerUserAccountCommand);
     ApiResponse<LoginUserAccountResponseData> login(@Valid LoginUserAccountCommand loginUserAccountCommand);
