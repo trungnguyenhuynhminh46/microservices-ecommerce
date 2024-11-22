@@ -97,7 +97,7 @@ public class JwtTokenHelper {
 
     public String generateJwtAccessToken(UserAccount userAccount) {
         String token = generateJwtToken(
-                userAccount.getUserId(),
+                userAccount.getUsername(),
                 "tuber.com",
                 List.of(
                         "email:" + userAccount.getEmail(),
@@ -112,7 +112,7 @@ public class JwtTokenHelper {
 
     public String generateJwtRefreshToken(UserAccount userAccount) {
         String token = generateJwtToken(
-                userAccount.getUserId(),
+                userAccount.getUsername(),
                 "tuber.com",
                 List.of(),
                 REFRESHABLE_DURATION
@@ -144,31 +144,30 @@ public class JwtTokenHelper {
         }
     }
 
-    public UUID getUserIdFromToken(String token) {
+    public String extractSubjectFromToken(String token) {
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
-            String userId = signedJWT.getJWTClaimsSet().getSubject();
-            return UUID.fromString(userId);
+            return signedJWT.getJWTClaimsSet().getSubject();
         } catch (ParseException e) {
             throw new IdentityDomainException(IdentityResponseCode.INVALID_FORMAT_JWT_TOKEN, HttpStatus.BAD_REQUEST.value());
         }
     }
 
-    public UserAccount verifyUserAccountExists(UUID userId) {
-        Optional<UserAccount> userAccount = userAccountRepository.findById(userId);
+    public UserAccount verifyUserAccountExists(String username) {
+        Optional<UserAccount> userAccount = userAccountRepository.findByUsername(username);
         if (userAccount.isEmpty()) {
-            log.warn("Could not find user account with id: {}", userId);
-            throw new UserAccountNotFoundException(IdentityResponseCode.USER_ACCOUNT_WITH_ID_NOT_FOUND, HttpStatus.NOT_FOUND.value());
+            log.warn("Could not find user account with username: {}", username);
+            throw new UserAccountNotFoundException(IdentityResponseCode.USER_ACCOUNT_WITH_USERNAME_NOT_FOUND, HttpStatus.NOT_FOUND.value());
         }
         return userAccount.get();
     }
 
     private RefreshToken persistNewRefreshToken(String oldRefreshToken) {
-        UUID userId = getUserIdFromToken(oldRefreshToken);
-        UserAccount userAccount = verifyUserAccountExists(userId);
+        String username = extractSubjectFromToken(oldRefreshToken);
+        UserAccount userAccount = verifyUserAccountExists(username);
         RefreshToken newRefreshToken = RefreshToken.builder()
                 .id(new RefreshTokenId(generateJwtRefreshToken(userAccount)))
-                .userId(userId)
+                .userId(userAccount.getId().getValue())
                 .isRevoked(false)
                 .build();
 

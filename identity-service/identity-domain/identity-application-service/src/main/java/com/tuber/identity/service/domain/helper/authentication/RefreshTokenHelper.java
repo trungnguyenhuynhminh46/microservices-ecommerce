@@ -11,8 +11,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -21,8 +19,8 @@ public class RefreshTokenHelper {
     JwtTokenHelper jwtTokenHelper;
 
     private String generateNewAccessToken(String refreshToken) {
-        UUID userId = jwtTokenHelper.getUserIdFromToken(refreshToken);
-        UserAccount userAccount = jwtTokenHelper.verifyUserAccountExists(userId);
+        String username = jwtTokenHelper.extractSubjectFromToken(refreshToken);
+        UserAccount userAccount = jwtTokenHelper.verifyUserAccountExists(username);
 
         return jwtTokenHelper.generateJwtAccessToken(userAccount);
     }
