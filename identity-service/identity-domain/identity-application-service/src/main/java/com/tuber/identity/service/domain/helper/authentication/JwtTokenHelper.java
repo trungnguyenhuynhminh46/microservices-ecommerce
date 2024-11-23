@@ -11,6 +11,7 @@ import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
 import com.tuber.identity.service.domain.exception.RefreshTokenNotFoundException;
 import com.tuber.identity.service.domain.exception.UserAccountNotFoundException;
+import com.tuber.identity.service.domain.helper.CommonIdentityServiceHelper;
 import com.tuber.identity.service.domain.ports.output.repository.RefreshTokenRepository;
 import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
 import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
@@ -39,6 +40,7 @@ public class JwtTokenHelper {
     MACVerifier macVerifier;
     RefreshTokenRepository refreshTokenRepository;
     UserAccountRepository userAccountRepository;
+    CommonIdentityServiceHelper commonIdentityServiceHelper;
 
     @NonFinal
     @Value("${jwt.access-token-lifetime}")
@@ -137,8 +139,14 @@ public class JwtTokenHelper {
             boolean isValid = signedJWT.verify(macVerifier);
             Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
             boolean isExpired = expirationTime.before(new Date());
+            String username = signedJWT.getJWTClaimsSet().getSubject();
 
-            return isValid && !isExpired;
+            boolean tokenIsValid = isValid && !isExpired;
+            if (tokenIsValid) {
+                commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
+            }
+
+            return tokenIsValid;
         } catch (ParseException | JOSEException e) {
             throw new IdentityDomainException(IdentityResponseCode.INVALID_FORMAT_JWT_TOKEN, HttpStatus.BAD_REQUEST.value());
         }
