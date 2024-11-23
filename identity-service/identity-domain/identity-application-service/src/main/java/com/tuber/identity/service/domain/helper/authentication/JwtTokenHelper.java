@@ -10,10 +10,8 @@ import com.tuber.identity.service.domain.entity.RefreshToken;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
 import com.tuber.identity.service.domain.exception.RefreshTokenNotFoundException;
-import com.tuber.identity.service.domain.exception.UserAccountNotFoundException;
 import com.tuber.identity.service.domain.helper.CommonIdentityServiceHelper;
 import com.tuber.identity.service.domain.ports.output.repository.RefreshTokenRepository;
-import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
 import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +37,6 @@ public class JwtTokenHelper {
     MACSigner macSigner;
     MACVerifier macVerifier;
     RefreshTokenRepository refreshTokenRepository;
-    UserAccountRepository userAccountRepository;
     CommonIdentityServiceHelper commonIdentityServiceHelper;
 
     @NonFinal
@@ -161,18 +158,9 @@ public class JwtTokenHelper {
         }
     }
 
-    public UserAccount verifyUserAccountExists(String username) {
-        Optional<UserAccount> userAccount = userAccountRepository.findByUsername(username);
-        if (userAccount.isEmpty()) {
-            log.warn("Could not find user account with username: {}", username);
-            throw new UserAccountNotFoundException(IdentityResponseCode.USER_ACCOUNT_WITH_USERNAME_NOT_FOUND, HttpStatus.NOT_FOUND.value());
-        }
-        return userAccount.get();
-    }
-
     private RefreshToken persistNewRefreshToken(String oldRefreshToken) {
         String username = extractSubjectFromToken(oldRefreshToken);
-        UserAccount userAccount = verifyUserAccountExists(username);
+        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
         RefreshToken newRefreshToken = RefreshToken.builder()
                 .id(new RefreshTokenId(generateJwtRefreshToken(userAccount)))
                 .userId(userAccount.getId().getValue())

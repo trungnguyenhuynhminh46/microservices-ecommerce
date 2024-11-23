@@ -7,7 +7,6 @@ import com.tuber.identity.service.domain.dto.permission.GetPermissionResponseDat
 import com.tuber.identity.service.domain.dto.permission.GetPermissionsResponseData;
 import com.tuber.identity.service.domain.dto.role.*;
 import com.tuber.identity.service.domain.dto.user.account.*;
-import com.tuber.identity.service.domain.validators.ValidUUID;
 import jakarta.validation.Valid;
 
 public interface IdentityApplicationService {

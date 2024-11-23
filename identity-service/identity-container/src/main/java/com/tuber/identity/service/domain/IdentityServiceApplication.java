@@ -3,9 +3,12 @@ package com.tuber.identity.service.domain;
 import com.tuber.domain.valueobject.enums.UserPermission;
 import com.tuber.identity.service.domain.entity.Permission;
 import com.tuber.identity.service.domain.entity.Role;
+import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.ports.output.repository.PermissionRepository;
 import com.tuber.identity.service.domain.ports.output.repository.RoleRepository;
+import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,9 +16,13 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @EnableJpaRepositories(basePackages = {"com.tuber.identity.service.dataaccess", "com.tuber.dataaccess"})
 @EntityScan(basePackages = {"com.tuber.identity.service.dataaccess", "com.tuber.dataaccess"})
 @SpringBootApplication(scanBasePackages = "com.tuber")
@@ -23,6 +30,7 @@ import java.util.Set;
 public class IdentityServiceApplication implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
+    private final UserAccountRepository userAccountRepository;
     private final Map<UserPermission, Permission> permissionsMap = Map.of(
             UserPermission.CREATE, Permission.builder().id(UserPermission.CREATE).description("Permission CREATE").build(),
             UserPermission.DELETE, Permission.builder().id(UserPermission.DELETE).description("Permission DELETE").build(),
@@ -42,6 +50,7 @@ public class IdentityServiceApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         initializePermissions();
         initializeRoles();
+        initializeAdminUser();
     }
 
     private void initializePermissions() {
@@ -52,6 +61,31 @@ public class IdentityServiceApplication implements CommandLineRunner {
         rolesMap.values().forEach(roleRepository::save);
         assignPermissionsToRole("ADMIN", Set.of(UserPermission.CREATE, UserPermission.DELETE, UserPermission.UPDATE));
         assignPermissionsToRole("USER", Set.of(UserPermission.CREATE, UserPermission.UPDATE));
+    }
+
+    private void initializeAdminUser() {
+        String adminUsername = "admin";
+        if (userAccountRepository.existsByUsername(adminUsername)) {
+            return;
+        }
+
+        Optional<Role> adminRole = roleRepository.findByName("ADMIN");
+        Set<Role> rolesOfAdmin = new HashSet<>();
+        adminRole.ifPresent(rolesOfAdmin::add);
+
+        UserAccount adminUser = UserAccount.builder()
+                .username(adminUsername)
+                .email("admin@gmail.com")
+                .password("admin")
+                .passwordEncoded(false)
+                .createdAt(LocalDate.now())
+                .updatedAt(LocalDate.now())
+                .roles(rolesOfAdmin)
+                .build();
+        adminUser.validateUserAccount();
+        adminUser.initializeUserAccount();
+
+        userAccountRepository.save(adminUser);
     }
 
     @Transactional

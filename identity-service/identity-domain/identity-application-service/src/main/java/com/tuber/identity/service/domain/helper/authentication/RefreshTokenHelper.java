@@ -5,6 +5,7 @@ import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.dto.authentication.RefreshTokenCommand;
 import com.tuber.identity.service.domain.dto.authentication.RefreshTokenResponseData;
 import com.tuber.identity.service.domain.entity.UserAccount;
+import com.tuber.identity.service.domain.helper.CommonIdentityServiceHelper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,10 +18,11 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RefreshTokenHelper {
     JwtTokenHelper jwtTokenHelper;
+    CommonIdentityServiceHelper commonIdentityServiceHelper;
 
     private String generateNewAccessToken(String refreshToken) {
         String username = jwtTokenHelper.extractSubjectFromToken(refreshToken);
-        UserAccount userAccount = jwtTokenHelper.verifyUserAccountExists(username);
+        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
 
         return jwtTokenHelper.generateJwtAccessToken(userAccount);
     }
@@ -43,7 +45,7 @@ public class RefreshTokenHelper {
 
         return ApiResponse.<RefreshTokenResponseData>builder()
                 .code(IdentityResponseCode.INVALID_JWT_TOKEN.getCode())
-                .message("Please login again to continue!")
+                .message("The token you input is invalid, please login again to continue!")
                 .build();
     }
 }

@@ -40,6 +40,11 @@ public class UserAccountRepositoryImpl implements UserAccountRepository {
     }
 
     @Override
+    public Boolean existsByUsername(String username) {
+        return userAccountJpaRepository.existsByUsername(username);
+    }
+
+    @Override
     public Optional<UserAccount> findByUsername(String username) {
         return userAccountJpaRepository
                 .findByUsername(username)

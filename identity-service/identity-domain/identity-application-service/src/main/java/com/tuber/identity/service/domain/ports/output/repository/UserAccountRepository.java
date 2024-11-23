@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public interface UserAccountRepository {
    UserAccount save(UserAccount userAccount);
+   Boolean existsByUsername(String username);
    Optional<UserAccount> findByUsername(String username);
    Optional<UserAccount> findByEmail(String email);
    Optional<UserAccount> findById(UUID id);

@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface UserAccountJpaRepository extends JpaRepository<UserAccountJpaEntity, UUID> {
     Optional<UserAccountJpaEntity> findByUsername(String username);
     Optional<UserAccountJpaEntity> findByEmail(String email);
+    Boolean existsByUsername(String username);
 }
