@@ -1,4 +1,5 @@
 package com.tuber.identity.service.domain.constant;
+
 import com.tuber.domain.constant.ResponseCode;
 import com.tuber.domain.constant.ResponseCodeBase;
 
@@ -37,13 +38,14 @@ public class IdentityResponseCode extends ResponseCodeBase {
     public static final IdentityResponseCode REFRESH_TOKEN_SAVE_FAILED =
             new IdentityResponseCode(1013, "Failed to save the refresh token");
     public static final IdentityResponseCode LOGGED_OUT_ALREADY =
-            new IdentityResponseCode(1014, "You logged out already. Please login again to continue!");
+            new IdentityResponseCode(1014, "Your token is invalid or you logged out already. Please login again to continue!");
     public static final IdentityResponseCode ROLE_NOT_EXISTS =
             new IdentityResponseCode(1015, "The role does not exist");
     public static final IdentityResponseCode ROLE_EXISTED =
             new IdentityResponseCode(1016, "The role existed");
     public static final IdentityResponseCode PERMISSION_NOT_EXISTS =
             new IdentityResponseCode(1017, "The role does not exist");
+
     protected IdentityResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

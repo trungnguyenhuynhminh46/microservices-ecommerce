@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    // Cho phép truy cập các endpoints trong authentication
     private static final int PasswordStrength = 10;
 
     @Bean
@@ -24,8 +25,10 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(
                         request -> request
-                                .anyRequest()
+                                .requestMatchers("/auth/**")
                                 .permitAll()
+                                .anyRequest()
+                                .authenticated()
                 );
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
