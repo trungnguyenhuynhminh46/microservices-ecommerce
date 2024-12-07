@@ -47,7 +47,7 @@ public class CreateUserAccountHelper {
         }
     }
 
-    private void encodePassword(UserAccount userAccount) {
+    public void encodePassword(UserAccount userAccount) {
         if (userAccount.isPasswordEncoded()) {
             return;
         }

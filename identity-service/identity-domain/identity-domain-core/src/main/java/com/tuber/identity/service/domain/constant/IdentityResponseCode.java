@@ -45,7 +45,8 @@ public class IdentityResponseCode extends ResponseCodeBase {
             new IdentityResponseCode(1016, "The role existed");
     public static final IdentityResponseCode PERMISSION_NOT_EXISTS =
             new IdentityResponseCode(1017, "The role does not exist");
-
+    public static final IdentityResponseCode UNAUTHENTICATED =
+            new IdentityResponseCode(1018, "You are not authenticated");
     protected IdentityResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;
