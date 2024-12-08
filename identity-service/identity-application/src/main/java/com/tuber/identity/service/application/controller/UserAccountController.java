@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/users", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')")
 public class UserAccountController {
     private final IdentityApplicationService identityApplicationService;
 
@@ -35,7 +36,6 @@ public class UserAccountController {
         return ResponseEntity.ok(getUserByIdResponseData);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<ApiResponse<GetUsersResponseData>> getUsers() {
         ApiResponse<GetUsersResponseData> getUsersResponseData = identityApplicationService.getUsers();
