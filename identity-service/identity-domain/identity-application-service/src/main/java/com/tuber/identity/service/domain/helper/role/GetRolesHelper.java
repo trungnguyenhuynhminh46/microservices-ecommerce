@@ -42,7 +42,7 @@ public class GetRolesHelper {
         return ApiResponse.<GetRolesResponseData>builder()
                 .message(String.format("Roles for user with username %s retrieved successfully", username))
                 .data(GetRolesResponseData.builder()
-                        .roles(roleRepository.findAll())
+                        .roles(roleRepository.findByUsername(username))
                         .build())
                 .build();
     }
