@@ -5,6 +5,8 @@ import com.tuber.identity.service.dataaccess.permission.repository.PermissionJpa
 import com.tuber.identity.service.dataaccess.role.entity.RoleJpaEntity;
 import com.tuber.identity.service.dataaccess.role.mapper.RoleDataAccessMapper;
 import com.tuber.identity.service.dataaccess.role.repository.RoleJpaRepository;
+import com.tuber.identity.service.dataaccess.user.entity.UserAccountJpaEntity;
+import com.tuber.identity.service.dataaccess.user.repository.UserAccountJpaRepository;
 import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.domain.ports.output.repository.RoleRepository;
 import lombok.AccessLevel;
@@ -22,6 +24,7 @@ import java.util.Set;
 public class RoleRepositoryImpl implements RoleRepository {
     RoleJpaRepository roleJpaRepository;
     PermissionJpaRepository permissionJpaRepository;
+    UserAccountJpaRepository userAccountJpaRepository;
     RoleDataAccessMapper roleDataAccessMapper;
 
     @Override
@@ -68,6 +71,12 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public void delete(Role role) {
-        roleJpaRepository.delete(roleDataAccessMapper.roleEntityToRoleJpaEntity(role));
+        RoleJpaEntity roleJpa = roleDataAccessMapper.roleEntityToRoleJpaEntity(role);
+        Set<UserAccountJpaEntity> users = userAccountJpaRepository.findByRoleName(role.getName());
+        for(UserAccountJpaEntity userJpa: users){
+            userJpa.getRoles().remove(roleJpa);
+            userAccountJpaRepository.save(userJpa);
+        }
+        roleJpaRepository.delete(roleJpa);
     }
 }
