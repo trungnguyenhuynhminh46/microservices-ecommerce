@@ -19,6 +19,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleJpaEntity {
     @Id
+    @Column(name = "name", unique = true, nullable = false)
     String name;
     String description;
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)

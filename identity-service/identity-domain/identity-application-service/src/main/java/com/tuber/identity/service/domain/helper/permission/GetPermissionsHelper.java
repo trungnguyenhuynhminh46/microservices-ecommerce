@@ -1,7 +1,6 @@
 package com.tuber.identity.service.domain.helper.permission;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.domain.valueobject.enums.UserPermission;
 import com.tuber.identity.service.domain.dto.permission.GetPermissionResponseData;
 import com.tuber.identity.service.domain.dto.permission.GetPermissionsResponseData;
 import com.tuber.identity.service.domain.entity.Permission;
@@ -30,7 +29,7 @@ public class GetPermissionsHelper {
                 .build();
     }
 
-    public ApiResponse<GetPermissionResponseData> getPermission(UserPermission name) {
+    public ApiResponse<GetPermissionResponseData> getPermission(String name) {
         Permission savedPermission = commonIdentityServiceHelper.verifyPermissionExists(name);
         return ApiResponse.<GetPermissionResponseData>builder()
                 .message(String.format("Permission %s retrieved successfully", name))

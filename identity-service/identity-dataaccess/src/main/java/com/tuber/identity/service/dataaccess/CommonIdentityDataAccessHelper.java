@@ -1,6 +1,5 @@
 package com.tuber.identity.service.dataaccess;
 
-import com.tuber.domain.valueobject.enums.UserPermission;
 import com.tuber.identity.service.dataaccess.permission.entity.PermissionJpaEntity;
 import com.tuber.identity.service.dataaccess.permission.repository.PermissionJpaRepository;
 import com.tuber.identity.service.dataaccess.role.entity.RoleJpaEntity;
@@ -48,7 +47,7 @@ public class CommonIdentityDataAccessHelper {
         return roleJpa.get();
     }
 
-    public PermissionJpaEntity verifyPermissionExists(UserPermission permissionName) {
+    public PermissionJpaEntity verifyPermissionExists(String permissionName) {
         Optional<PermissionJpaEntity> permissionJpa = permissionJpaRepository.findByName(permissionName);
         if (permissionJpa.isEmpty()){
             log.warn("Could not find permission with name: {}", permissionName);

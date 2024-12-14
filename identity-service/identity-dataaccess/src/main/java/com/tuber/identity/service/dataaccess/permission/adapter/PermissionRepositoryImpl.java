@@ -1,6 +1,5 @@
 package com.tuber.identity.service.dataaccess.permission.adapter;
 
-import com.tuber.domain.valueobject.enums.UserPermission;
 import com.tuber.identity.service.dataaccess.CommonIdentityDataAccessHelper;
 import com.tuber.identity.service.dataaccess.permission.entity.PermissionJpaEntity;
 import com.tuber.identity.service.dataaccess.permission.mapper.PermissionDataAccessMapper;
@@ -35,7 +34,7 @@ public class PermissionRepositoryImpl implements PermissionRepository {
     }
 
     @Override
-    public Optional<Permission> findByName(UserPermission name) {
+    public Optional<Permission> findByName(String name) {
         return permissionJpaRepository.findByName(name)
                 .map(permissionDataAccessMapper::permissionJpaEntityToPermissionEntity);
     }
@@ -65,7 +64,7 @@ public class PermissionRepositoryImpl implements PermissionRepository {
     }
 
     @Override
-    public Set<Permission> assignPermissionsToRole(String roleName, Set<UserPermission> permissionNames) {
+    public Set<Permission> assignPermissionsToRole(String roleName, Set<String> permissionNames) {
         RoleJpaEntity role = commonIdentityDataAccessHelper.verifyRoleExists(roleName);
         permissionNames.forEach(
                 permissionName -> {

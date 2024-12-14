@@ -1,6 +1,5 @@
 package com.tuber.identity.service.domain.helper;
 
-import com.tuber.domain.valueobject.enums.UserPermission;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.entity.Permission;
 import com.tuber.identity.service.domain.entity.Role;
@@ -68,7 +67,7 @@ public class CommonIdentityServiceHelper {
         return savedRole.get();
     }
 
-    public Permission verifyPermissionExists(UserPermission permissionName) {
+    public Permission verifyPermissionExists(String permissionName) {
         Optional<Permission> savedPermission = permissionRepository.findByName(permissionName);
         if (savedPermission.isEmpty()) {
             log.warn("Could not find permission with name: {}", permissionName);

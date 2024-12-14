@@ -1,6 +1,5 @@
 package com.tuber.identity.service.dataaccess.permission.entity;
 
-import com.tuber.domain.valueobject.enums.UserPermission;
 import com.tuber.identity.service.dataaccess.role.entity.RoleJpaEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,8 +18,8 @@ import java.util.Set;
 @FieldDefaults(level= AccessLevel.PRIVATE)
 public class PermissionJpaEntity {
     @Id
-    @Enumerated(EnumType.STRING)
-    UserPermission name;
+    @Column(name = "name", unique = true, nullable = false)
+    String name;
     String description;
     @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
     Set<RoleJpaEntity> roles = new HashSet<>();

@@ -1,7 +1,6 @@
 package com.tuber.identity.service.domain.helper.permission;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.domain.valueobject.enums.UserPermission;
 import com.tuber.identity.service.domain.dto.permission.GetPermissionsResponseData;
 import com.tuber.identity.service.domain.entity.Permission;
 import com.tuber.identity.service.domain.ports.output.repository.PermissionRepository;
@@ -21,8 +20,8 @@ import java.util.Set;
 public class AssignPermissionToRoleHelper {
     PermissionRepository permissionRepository;
     public ApiResponse<GetPermissionsResponseData> assignPermissionToRole(String roleName, String permissionName) {
-        Set<UserPermission> permissionsSet = new HashSet<>();
-        permissionsSet.add(UserPermission.valueOf(permissionName));
+        Set<String> permissionsSet = new HashSet<>();
+        permissionsSet.add(permissionName);
 
         Set<Permission> newPermissionsSet = permissionRepository.assignPermissionsToRole(roleName, permissionsSet);
         return ApiResponse.<GetPermissionsResponseData>builder()

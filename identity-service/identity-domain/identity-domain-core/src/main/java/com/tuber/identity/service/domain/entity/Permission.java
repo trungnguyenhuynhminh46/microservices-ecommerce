@@ -1,13 +1,9 @@
 package com.tuber.identity.service.domain.entity;
 
 import com.tuber.domain.entity.BaseEntity;
-import com.tuber.domain.valueobject.enums.UserPermission;
-import com.tuber.domain.valueobject.id.EnumId;
+import com.tuber.domain.valueobject.id.UniqueStringId;
 
-import java.util.HashSet;
-import java.util.Set;
-
-public class Permission extends BaseEntity<EnumId<UserPermission>> {
+public class Permission extends BaseEntity<UniqueStringId> {
     private String description;
 
     private Permission(Builder builder) {
@@ -19,7 +15,7 @@ public class Permission extends BaseEntity<EnumId<UserPermission>> {
         return new Builder();
     }
 
-    public UserPermission getName() {
+    public String getName() {
         return super.getId().getValue();
     }
 
@@ -32,14 +28,14 @@ public class Permission extends BaseEntity<EnumId<UserPermission>> {
     }
 
     public static final class Builder {
-        private EnumId<UserPermission> id;
+        private UniqueStringId id;
         private String description;
 
         private Builder() {
         }
 
-        public Builder id(UserPermission id) {
-            this.id = new EnumId<>(id);
+        public Builder id(String id) {
+            this.id = new UniqueStringId(id);
             return this;
         }
 

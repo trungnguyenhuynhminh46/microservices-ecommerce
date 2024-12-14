@@ -1,12 +1,10 @@
 package com.tuber.identity.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.domain.valueobject.enums.UserPermission;
 import com.tuber.identity.service.domain.dto.permission.GetPermissionQuery;
 import com.tuber.identity.service.domain.dto.permission.GetPermissionResponseData;
 import com.tuber.identity.service.domain.dto.permission.GetPermissionsResponseData;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
-import com.tuber.identity.service.domain.validators.ValidPermission;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +27,8 @@ public class PermissionController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<ApiResponse<GetPermissionResponseData>> getPermission(@PathVariable("name") @ValidPermission String name) {
-        GetPermissionQuery getPermissionQuery = GetPermissionQuery.builder().name(UserPermission.valueOf(name)).build();
+    public ResponseEntity<ApiResponse<GetPermissionResponseData>> getPermission(@PathVariable("name") String name) {
+        GetPermissionQuery getPermissionQuery = GetPermissionQuery.builder().name(name).build();
         ApiResponse<GetPermissionResponseData> getPermissionResponseData = identityApplicationService.getPermission(getPermissionQuery);
         log.info("Returning permission with name: {}", name);
         return ResponseEntity.ok(getPermissionResponseData);
@@ -51,7 +49,7 @@ public class PermissionController {
     }
 
     @PostMapping("/{permissionName}/roles/{roleName}")
-    public ResponseEntity<ApiResponse<GetPermissionsResponseData>> assignPermissionToRole(@PathVariable("roleName") String roleName, @PathVariable("permissionName") @ValidPermission String permissionName) {
+    public ResponseEntity<ApiResponse<GetPermissionsResponseData>> assignPermissionToRole(@PathVariable("roleName") String roleName, @PathVariable("permissionName") String permissionName) {
         ApiResponse<GetPermissionsResponseData> getPermissionsResponseData = identityApplicationService.assignPermissionToRole(roleName, permissionName);
         log.info("Added permission with name: {} to role with name: {}", permissionName, roleName);
         return ResponseEntity.ok(getPermissionsResponseData);

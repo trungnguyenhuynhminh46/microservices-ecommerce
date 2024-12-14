@@ -2,8 +2,8 @@ package com.tuber.domain.valueobject.id;
 
 import java.util.UUID;
 
-public class UserAccountId extends BaseId<UUID> {
-    public UserAccountId(UUID uuid) {
+public class UniqueUUIDId extends BaseId<UUID> {
+    public UniqueUUIDId(UUID uuid) {
         super(uuid);
     }
 }

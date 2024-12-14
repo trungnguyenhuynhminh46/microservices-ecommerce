@@ -1,7 +1,7 @@
 package com.tuber.identity.service.domain.entity;
 
 import com.tuber.domain.entity.AggregateEntity;
-import com.tuber.domain.valueobject.id.UserAccountId;
+import com.tuber.domain.valueobject.id.UniqueUUIDId;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
 
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
-public class UserAccount extends AggregateEntity<UserAccountId> {
+public class UserAccount extends AggregateEntity<UniqueUUIDId> {
     private String username;
     private String email;
     private String password;
@@ -19,7 +19,7 @@ public class UserAccount extends AggregateEntity<UserAccountId> {
     private LocalDate updatedAt;
 
     public void setId(UUID id) {
-        super.setId(new UserAccountId(id));
+        super.setId(new UniqueUUIDId(id));
     }
 
     private UserAccount(Builder builder) {
@@ -98,7 +98,7 @@ public class UserAccount extends AggregateEntity<UserAccountId> {
     }
 
     public static final class Builder {
-        private UserAccountId id;
+        private UniqueUUIDId id;
         private String username;
         private String email;
         private String password;
@@ -110,13 +110,13 @@ public class UserAccount extends AggregateEntity<UserAccountId> {
         private Builder() {
         }
 
-        public Builder id(UserAccountId val) {
+        public Builder id(UniqueUUIDId val) {
             id = val;
             return this;
         }
 
         public Builder id(UUID val) {
-            id = new UserAccountId(val);
+            id = new UniqueUUIDId(val);
             return this;
         }
 
@@ -171,7 +171,7 @@ public class UserAccount extends AggregateEntity<UserAccountId> {
     }
 
     public void initializeUserAccount() {
-        setId(new UserAccountId(UUID.randomUUID()));
+        setId(new UniqueUUIDId(UUID.randomUUID()));
         setCreatedAt(LocalDate.now());
         setUpdatedAt(LocalDate.now());
     }

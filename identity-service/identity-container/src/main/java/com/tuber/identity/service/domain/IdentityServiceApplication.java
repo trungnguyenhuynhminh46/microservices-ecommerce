@@ -1,6 +1,6 @@
 package com.tuber.identity.service.domain;
 
-import com.tuber.domain.valueobject.enums.UserPermission;
+import com.tuber.domain.valueobject.enums.UserPermissionDefault;
 import com.tuber.identity.service.domain.entity.Permission;
 import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.domain.entity.UserAccount;
@@ -35,10 +35,10 @@ public class IdentityServiceApplication implements CommandLineRunner {
     PermissionRepository permissionRepository;
     UserAccountRepository userAccountRepository;
     CreateUserAccountHelper createUserAccountHelper;
-    private final Map<UserPermission, Permission> permissionsMap = Map.of(
-            UserPermission.CREATE, Permission.builder().id(UserPermission.CREATE).description("Permission CREATE").build(),
-            UserPermission.DELETE, Permission.builder().id(UserPermission.DELETE).description("Permission DELETE").build(),
-            UserPermission.UPDATE, Permission.builder().id(UserPermission.UPDATE).description("Permission UPDATE").build()
+    private final Map<UserPermissionDefault, Permission> permissionsMap = Map.of(
+            UserPermissionDefault.CREATE_USER, Permission.builder().id(UserPermissionDefault.CREATE_USER.toString()).description("Permission CREATE_USER").build(),
+            UserPermissionDefault.DELETE_USER, Permission.builder().id(UserPermissionDefault.DELETE_USER.toString()).description("Permission DELETE_USER").build(),
+            UserPermissionDefault.UPDATE_USER, Permission.builder().id(UserPermissionDefault.UPDATE_USER.toString()).description("Permission UPDATE_USER").build()
     );
 
     private final Map<String, Role> rolesMap = Map.of(
@@ -63,8 +63,8 @@ public class IdentityServiceApplication implements CommandLineRunner {
 
     private void initializeRoles() {
         rolesMap.values().forEach(roleRepository::save);
-        assignPermissionsToRole("ADMIN", Set.of(UserPermission.CREATE, UserPermission.DELETE, UserPermission.UPDATE));
-        assignPermissionsToRole("USER", Set.of(UserPermission.CREATE, UserPermission.UPDATE));
+        assignPermissionsToRole("ADMIN", Set.of(UserPermissionDefault.CREATE_USER, UserPermissionDefault.DELETE_USER, UserPermissionDefault.UPDATE_USER));
+        assignPermissionsToRole("USER", Set.of(UserPermissionDefault.CREATE_USER, UserPermissionDefault.UPDATE_USER));
     }
 
     private void initializeAdminUser() {
@@ -92,9 +92,9 @@ public class IdentityServiceApplication implements CommandLineRunner {
     }
 
     @Transactional
-    private void assignPermissionsToRole(String roleName, Set<UserPermission> permissionNames) {
-        for (UserPermission permissionName : permissionNames) {
-            roleRepository.assignPermissionsToRole(roleName, permissionName);
+    private void assignPermissionsToRole(String roleName, Set<UserPermissionDefault> permissionNames) {
+        for (UserPermissionDefault permissionName : permissionNames) {
+            roleRepository.assignPermissionsToRole(roleName, permissionName.toString());
         }
     }
 }
