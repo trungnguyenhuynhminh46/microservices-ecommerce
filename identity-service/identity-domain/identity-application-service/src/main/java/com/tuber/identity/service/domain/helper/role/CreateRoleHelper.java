@@ -39,7 +39,7 @@ public class CreateRoleHelper {
         return ApiResponse.<CreateRoleResponseData>builder()
                 .message(String.format("Role with name %s is successfully created", savedRole.getId()))
                 .data(CreateRoleResponseData.builder()
-                        .name(savedRole.getId())
+                        .name(savedRole.getName())
                         .description(savedRole.getDescription())
                         .build())
                 .build();

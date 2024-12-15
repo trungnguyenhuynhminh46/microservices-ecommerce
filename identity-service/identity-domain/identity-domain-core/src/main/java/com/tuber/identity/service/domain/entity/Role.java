@@ -1,11 +1,12 @@
 package com.tuber.identity.service.domain.entity;
 
 import com.tuber.domain.entity.BaseEntity;
+import com.tuber.domain.valueobject.id.UniqueStringId;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class Role extends BaseEntity<String> {
+public class Role extends BaseEntity<UniqueStringId> {
     private String description;
 
     private Set<Permission> permissions = new HashSet<>();
@@ -37,11 +38,11 @@ public class Role extends BaseEntity<String> {
     }
 
     public String getName() {
-        return super.getId();
+        return super.getId().getValue();
     }
 
     public static final class Builder {
-        private String id;
+        private UniqueStringId id;
         private String description;
         private Set<Permission> permissions = new HashSet<>();
 
@@ -49,7 +50,7 @@ public class Role extends BaseEntity<String> {
         }
 
         public Builder id(String id) {
-            this.id = id;
+            this.id = new UniqueStringId(id);
             return this;
         }
 

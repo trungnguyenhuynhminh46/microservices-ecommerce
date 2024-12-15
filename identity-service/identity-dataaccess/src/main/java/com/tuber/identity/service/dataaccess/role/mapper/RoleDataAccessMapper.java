@@ -1,5 +1,6 @@
 package com.tuber.identity.service.dataaccess.role.mapper;
 
+import com.tuber.domain.valueobject.id.UniqueStringId;
 import com.tuber.identity.service.dataaccess.permission.entity.PermissionJpaEntity;
 import com.tuber.identity.service.dataaccess.permission.mapper.PermissionDataAccessMapper;
 import com.tuber.identity.service.domain.entity.Permission;
@@ -23,5 +24,9 @@ public abstract class RoleDataAccessMapper {
 
     protected Permission map(PermissionJpaEntity permissionJpaEntity) {
         return permissionDataAccessMapper.permissionJpaEntityToPermissionEntity(permissionJpaEntity);
+    }
+
+    protected String map(UniqueStringId id) {
+        return id.getValue();
     }
 }
