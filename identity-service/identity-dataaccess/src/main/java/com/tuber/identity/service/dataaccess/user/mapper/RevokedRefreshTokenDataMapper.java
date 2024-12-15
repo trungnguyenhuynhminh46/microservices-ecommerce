@@ -1,19 +1,19 @@
 package com.tuber.identity.service.dataaccess.user.mapper;
 
-import com.tuber.identity.service.dataaccess.user.entity.RefreshTokenJpaEntity;
-import com.tuber.identity.service.domain.entity.RefreshToken;
+import com.tuber.identity.service.dataaccess.user.entity.RevokedRefreshTokenJpaEntity;
+import com.tuber.identity.service.domain.entity.RevokedRefreshToken;
 import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public abstract class RefreshTokenDataMapper {
+public abstract class RevokedRefreshTokenDataMapper {
     @Mapping(target = "id", source = "token")
-    public abstract RefreshToken refreshTokenJpaEntityToRefreshTokenEntity(RefreshTokenJpaEntity refreshTokenJpaEntity);
+    public abstract RevokedRefreshToken refreshTokenJpaEntityToRefreshTokenEntity(RevokedRefreshTokenJpaEntity revokedRefreshTokenJpaEntity);
 
     @Mapping(target = "token", source = "id")
     @Mapping(target = "userAccount", ignore = true)
-    public abstract RefreshTokenJpaEntity refreshTokenEntityToRefreshTokenJpaEntity(RefreshToken refreshToken);
+    public abstract RevokedRefreshTokenJpaEntity refreshTokenEntityToRefreshTokenJpaEntity(RevokedRefreshToken revokedRefreshToken);
 
     protected RefreshTokenId map(String token) {
         return new RefreshTokenId(token);

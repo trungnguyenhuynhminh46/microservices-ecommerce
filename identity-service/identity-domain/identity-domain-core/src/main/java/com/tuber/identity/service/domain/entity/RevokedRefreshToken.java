@@ -6,12 +6,12 @@ import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
 import java.time.Instant;
 import java.util.UUID;
 
-public class RefreshToken extends BaseEntity<RefreshTokenId> {
+public class RevokedRefreshToken extends BaseEntity<RefreshTokenId> {
     private final UUID userId;
 
     private final Instant expiresIn;
 
-    private RefreshToken(Builder builder) {
+    private RevokedRefreshToken(Builder builder) {
         super.setId(builder.token);
         userId = builder.userId;
         expiresIn = builder.expiresIn;
@@ -53,8 +53,8 @@ public class RefreshToken extends BaseEntity<RefreshTokenId> {
             return this;
         }
 
-        public RefreshToken build() {
-            return new RefreshToken(this);
+        public RevokedRefreshToken build() {
+            return new RevokedRefreshToken(this);
         }
     }
 }

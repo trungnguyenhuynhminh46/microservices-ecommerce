@@ -12,14 +12,13 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "revoked_refresh_token")
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RefreshTokenJpaEntity {
+public class RevokedRefreshTokenJpaEntity {
     @Id
     String token;
     @Column(name = "user_id", nullable = false)
@@ -38,7 +37,7 @@ public class RefreshTokenJpaEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        RefreshTokenJpaEntity that = (RefreshTokenJpaEntity) o;
+        RevokedRefreshTokenJpaEntity that = (RevokedRefreshTokenJpaEntity) o;
         return getToken() != null && Objects.equals(getToken(), that.getToken());
     }
 

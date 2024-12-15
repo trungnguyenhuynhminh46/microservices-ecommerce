@@ -6,11 +6,11 @@ import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
-import com.tuber.identity.service.domain.entity.RefreshToken;
+import com.tuber.identity.service.domain.entity.RevokedRefreshToken;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
 import com.tuber.identity.service.domain.helper.CommonIdentityServiceHelper;
-import com.tuber.identity.service.domain.ports.output.repository.RefreshTokenRepository;
+import com.tuber.identity.service.domain.ports.output.repository.RevokedRefreshTokenRepository;
 import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ import java.util.*;
 public class JwtTokenHelper {
     MACSigner macSigner;
     MACVerifier macVerifier;
-    RefreshTokenRepository refreshTokenRepository;
+    RevokedRefreshTokenRepository revokedRefreshTokenRepository;
     CommonIdentityServiceHelper commonIdentityServiceHelper;
 
     @NonFinal
@@ -160,13 +160,13 @@ public class JwtTokenHelper {
     public String rotateRefreshToken(String refreshToken) {
         String username = extractSubjectFromToken(refreshToken);
         UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
-        RefreshToken revokedRefreshToken = RefreshToken.builder()
+        RevokedRefreshToken revokedRefreshToken = RevokedRefreshToken.builder()
                 .id(new RefreshTokenId(refreshToken))
                 .userId(userAccount.getId().getValue())
                 .expiresIn(extractExpirationTimeFromToken(refreshToken).toInstant())
                 .build();
 
-        refreshTokenRepository.save(revokedRefreshToken);
+        revokedRefreshTokenRepository.save(revokedRefreshToken);
         return generateJwtRefreshToken(userAccount);
     }
 
@@ -182,12 +182,12 @@ public class JwtTokenHelper {
     public void logout(String refreshToken) {
         String username = extractSubjectFromToken(refreshToken);
         UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
-        RefreshToken revokedRefreshToken = RefreshToken.builder()
+        RevokedRefreshToken revokedRefreshToken = RevokedRefreshToken.builder()
                 .id(new RefreshTokenId(refreshToken))
                 .userId(userAccount.getId().getValue())
                 .expiresIn(extractExpirationTimeFromToken(refreshToken).toInstant())
                 .build();
 
-        refreshTokenRepository.save(revokedRefreshToken);
+        revokedRefreshTokenRepository.save(revokedRefreshToken);
     }
 }
