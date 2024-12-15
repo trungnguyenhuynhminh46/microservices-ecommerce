@@ -24,6 +24,13 @@ public class PermissionController {
         return ResponseEntity.ok(getPermissionsResponseData);
     }
 
+    @PostMapping
+    public ResponseEntity<ApiResponse<CreatePermissionResponseData>> createPermission(@RequestBody CreatePermissionCommand createPermissionCommand) {
+        ApiResponse<CreatePermissionResponseData> createPermissionResponseData = identityApplicationService.createPermission(createPermissionCommand);
+        log.info("Created permission with name: {}", createPermissionCommand.getName());
+        return ResponseEntity.ok(createPermissionResponseData);
+    }
+
     @GetMapping("/{name}")
     public ResponseEntity<ApiResponse<GetPermissionResponseData>> getPermission(@PathVariable("name") String name) {
         GetPermissionQuery getPermissionQuery = GetPermissionQuery.builder().name(name).build();
