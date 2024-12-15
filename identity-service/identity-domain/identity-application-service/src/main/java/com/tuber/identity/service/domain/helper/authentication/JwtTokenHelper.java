@@ -9,7 +9,6 @@ import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.entity.RefreshToken;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
-import com.tuber.identity.service.domain.exception.RefreshTokenNotFoundException;
 import com.tuber.identity.service.domain.helper.CommonIdentityServiceHelper;
 import com.tuber.identity.service.domain.ports.output.repository.RefreshTokenRepository;
 import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
@@ -54,7 +53,7 @@ public class JwtTokenHelper {
                 stringJoiner.add("ROLE_" + role.getName());
                 if (!CollectionUtils.isEmpty(role.getPermissions())) {
                     role.getPermissions().forEach(permission -> {
-                        stringJoiner.add(permission.getName().toString());
+                        stringJoiner.add(permission.getName());
                     });
                 }
             });
@@ -120,15 +119,6 @@ public class JwtTokenHelper {
         return token;
     }
 
-    @Transactional
-    public void persistRefreshToken(RefreshToken refreshToken) {
-        RefreshToken savedRefreshToken = refreshTokenRepository.save(refreshToken);
-        if (savedRefreshToken == null) {
-            log.error("Failed to save refresh token: {}", refreshToken);
-            throw new IdentityDomainException(IdentityResponseCode.REFRESH_TOKEN_SAVE_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value());
-        }
-    }
-
     public boolean verifyToken(String token) {
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
@@ -157,26 +147,47 @@ public class JwtTokenHelper {
         }
     }
 
-    private RefreshToken persistNewRefreshToken(String oldRefreshToken) {
-        String username = extractSubjectFromToken(oldRefreshToken);
-        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
-        RefreshToken newRefreshToken = RefreshToken.builder()
-                .id(new RefreshTokenId(generateJwtRefreshToken(userAccount)))
-                .userId(userAccount.getId().getValue())
-                .isRevoked(false)
-                .build();
-
-        return refreshTokenRepository.save(newRefreshToken);
+    public Date extractExpirationTimeFromToken(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            return signedJWT.getJWTClaimsSet().getExpirationTime();
+        } catch (ParseException e) {
+            throw new IdentityDomainException(IdentityResponseCode.INVALID_FORMAT_JWT_TOKEN, HttpStatus.BAD_REQUEST.value());
+        }
     }
 
     @Transactional
     public String rotateRefreshToken(String refreshToken) {
-        if (!refreshTokenRepository.existsByTokenAndIsRevoked(refreshToken, false)) {
-            throw new RefreshTokenNotFoundException(IdentityResponseCode.LOGGED_OUT_ALREADY, HttpStatus.NOT_FOUND.value());
-        }
-        refreshTokenRepository.deleteByToken(refreshToken);
+        String username = extractSubjectFromToken(refreshToken);
+        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
+        RefreshToken revokedRefreshToken = RefreshToken.builder()
+                .id(new RefreshTokenId(refreshToken))
+                .userId(userAccount.getId().getValue())
+                .expiresIn(extractExpirationTimeFromToken(refreshToken).toInstant())
+                .build();
 
-        RefreshToken savedRefreshToken = persistNewRefreshToken(refreshToken);
-        return savedRefreshToken.getId().getValue();
+        refreshTokenRepository.save(revokedRefreshToken);
+        return generateJwtRefreshToken(userAccount);
+    }
+
+    public void verifyAccessTokenAndRefreshTokenHaveSameCreator(String accessToken, String refreshToken) {
+        String accessTokenUsername = extractSubjectFromToken(accessToken);
+        String refreshTokenUsername = extractSubjectFromToken(refreshToken);
+        if (!accessTokenUsername.equals(refreshTokenUsername)) {
+            throw new IdentityDomainException(IdentityResponseCode.REFRESH_TOKEN_OF_ANOTHER_USER, HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    @Transactional
+    public void logout(String refreshToken) {
+        String username = extractSubjectFromToken(refreshToken);
+        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
+        RefreshToken revokedRefreshToken = RefreshToken.builder()
+                .id(new RefreshTokenId(refreshToken))
+                .userId(userAccount.getId().getValue())
+                .expiresIn(extractExpirationTimeFromToken(refreshToken).toInstant())
+                .build();
+
+        refreshTokenRepository.save(revokedRefreshToken);
     }
 }

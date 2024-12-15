@@ -3,16 +3,18 @@ package com.tuber.identity.service.domain.entity;
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public class RefreshToken extends BaseEntity<RefreshTokenId> {
     private final UUID userId;
-    private Boolean isRevoked = false;
+
+    private final Instant expiresIn;
 
     private RefreshToken(Builder builder) {
         super.setId(builder.token);
         userId = builder.userId;
-        isRevoked = builder.isRevoked;
+        expiresIn = builder.expiresIn;
     }
 
     public static Builder builder() {
@@ -23,15 +25,15 @@ public class RefreshToken extends BaseEntity<RefreshTokenId> {
         return userId;
     }
 
-    public boolean getIsRevoked() {
-        return isRevoked;
+    public Instant getExpiresIn() {
+        return expiresIn;
     }
-
 
     public static final class Builder {
         private RefreshTokenId token;
         private UUID userId;
-        private Boolean isRevoked = false;
+
+        private Instant expiresIn;
 
         private Builder() {
         }
@@ -46,17 +48,13 @@ public class RefreshToken extends BaseEntity<RefreshTokenId> {
             return this;
         }
 
-        public Builder isRevoked(Boolean val) {
-            isRevoked = val;
+        public Builder expiresIn(Instant val) {
+            expiresIn = val;
             return this;
         }
 
         public RefreshToken build() {
             return new RefreshToken(this);
         }
-    }
-
-    public void setIsRevoked(Boolean isRevoked) {
-        this.isRevoked = isRevoked;
     }
 }

@@ -1,6 +1,5 @@
 package com.tuber.identity.service.dataaccess.user.adapter;
 
-import com.tuber.identity.service.dataaccess.user.entity.RefreshTokenJpaEntity;
 import com.tuber.identity.service.dataaccess.user.mapper.RefreshTokenDataMapper;
 import com.tuber.identity.service.dataaccess.user.repository.RefreshTokenJpaRepository;
 import com.tuber.identity.service.domain.entity.RefreshToken;
@@ -46,15 +45,5 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
     @Override
     public void deleteByToken(String token) {
         refreshTokenJpaRepository.deleteByToken(token);
-    }
-
-    @Override
-    public boolean existsByToken(String token) {
-        return refreshTokenJpaRepository.existsByToken(token);
-    }
-
-    @Override
-    public boolean existsByTokenAndIsRevoked(String token, Boolean isRevoked) {
-        return refreshTokenJpaRepository.existsByTokenAndIsRevoked(token, isRevoked);
     }
 }

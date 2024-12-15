@@ -49,6 +49,8 @@ public class IdentityResponseCode extends ResponseCodeBase {
             new IdentityResponseCode(1018, "You are not authenticated");
     public static final IdentityResponseCode PERMISSION_EXISTED =
             new IdentityResponseCode(1019, "The permission existed");
+    public static final IdentityResponseCode REFRESH_TOKEN_OF_ANOTHER_USER =
+            new IdentityResponseCode(1020, "The refresh token is of another user");
     protected IdentityResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

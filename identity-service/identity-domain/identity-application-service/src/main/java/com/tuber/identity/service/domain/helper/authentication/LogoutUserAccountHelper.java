@@ -22,24 +22,23 @@ import java.util.Optional;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LogoutUserAccountHelper {
     RefreshTokenRepository refreshTokenRepository;
+    AuthenticationHelper authenticationHelper;
+    JwtTokenHelper jwtTokenHelper;
 
-    private RefreshToken verifyUserNotLoggedOut(String refreshToken) {
+    private void verifyRefreshToken(String refreshToken) {
+        String accessToken = authenticationHelper.getAccessToken();
         Optional<RefreshToken> savedRefreshToken = refreshTokenRepository.findByToken(refreshToken);
-        boolean isLoggedOut = savedRefreshToken.isEmpty() || savedRefreshToken.get().getIsRevoked();
-        if (isLoggedOut) {
+
+        if (savedRefreshToken.isPresent()) {
             throw new LoggedOutAlready(IdentityResponseCode.LOGGED_OUT_ALREADY, HttpStatus.ALREADY_REPORTED.value());
         }
-        return savedRefreshToken.get();
-    }
-
-    private void revokeUserAccount(RefreshToken refreshToken) {
-        refreshToken.setIsRevoked(true);
-        refreshTokenRepository.save(refreshToken);
+        jwtTokenHelper.verifyAccessTokenAndRefreshTokenHaveSameCreator(accessToken, refreshToken);
     }
 
     public ApiResponse<LogoutUserAccountResponseData> logout(LogoutUserAccountCommand logoutUserAccountCommand) {
-        RefreshToken refreshToken = verifyUserNotLoggedOut(logoutUserAccountCommand.getRefreshToken());
-        revokeUserAccount(refreshToken);
+        String refreshToken = logoutUserAccountCommand.getRefreshToken();
+        verifyRefreshToken(refreshToken);
+        jwtTokenHelper.logout(refreshToken);
 
         return ApiResponse.<LogoutUserAccountResponseData>builder()
                 .data(LogoutUserAccountResponseData.builder().success(true).build())

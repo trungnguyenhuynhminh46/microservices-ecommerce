@@ -34,11 +34,6 @@ public class LoginUserAccountHelper {
     private LoginUserAccountResponseData buildUserAccountResponseData(UserAccount userAccount) {
         String accessToken = jwtTokenHelper.generateJwtAccessToken(userAccount);
         String refreshToken = jwtTokenHelper.generateJwtRefreshToken(userAccount);
-        jwtTokenHelper.persistRefreshToken(RefreshToken.builder()
-                .id(new RefreshTokenId(refreshToken))
-                .userId(userAccount.getId().getValue())
-                .isRevoked(false)
-                .build());
         return LoginUserAccountResponseData.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
