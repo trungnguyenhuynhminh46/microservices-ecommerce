@@ -2,9 +2,7 @@ package com.tuber.identity.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.authentication.*;
-import com.tuber.identity.service.domain.dto.permission.GetPermissionQuery;
-import com.tuber.identity.service.domain.dto.permission.GetPermissionResponseData;
-import com.tuber.identity.service.domain.dto.permission.GetPermissionsResponseData;
+import com.tuber.identity.service.domain.dto.permission.*;
 import com.tuber.identity.service.domain.dto.role.*;
 import com.tuber.identity.service.domain.dto.user.account.*;
 import jakarta.validation.Valid;
@@ -28,6 +26,7 @@ public interface IdentityApplicationService {
     ApiResponse<GetPermissionResponseData> getPermission(GetPermissionQuery getPermissionQuery);
     ApiResponse<GetPermissionsResponseData> getPermissionsByRoleName(String roleName);
     ApiResponse<GetPermissionsResponseData> getPermissionsByUsername(String username);
-    ApiResponse<GetPermissionsResponseData> assignPermissionToRole(String roleName, String permissionName);
+    ApiResponse<AlterPermissionsResponseData> assignPermissionToRole(AlterPermissionCommand assignPermissionCommand);
+    ApiResponse<AlterPermissionsResponseData> removePermissionFromRole(AlterPermissionCommand removePermissionCommand);
     ApiResponse<RemoveRoleFromUserResponseData> removeRoleFromUser(RemoveRoleFromUserCommand removeRoleFromUserCommand);
 }

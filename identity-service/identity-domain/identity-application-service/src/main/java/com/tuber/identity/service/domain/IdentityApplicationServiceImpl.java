@@ -2,9 +2,7 @@ package com.tuber.identity.service.domain;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.authentication.*;
-import com.tuber.identity.service.domain.dto.permission.GetPermissionQuery;
-import com.tuber.identity.service.domain.dto.permission.GetPermissionResponseData;
-import com.tuber.identity.service.domain.dto.permission.GetPermissionsResponseData;
+import com.tuber.identity.service.domain.dto.permission.*;
 import com.tuber.identity.service.domain.dto.role.*;
 import com.tuber.identity.service.domain.dto.user.account.*;
 import com.tuber.identity.service.domain.handler.authentication.RegisterUserAccountHandler;
@@ -17,11 +15,12 @@ import com.tuber.identity.service.domain.helper.authentication.LogoutUserAccount
 import com.tuber.identity.service.domain.helper.authentication.RefreshTokenHelper;
 import com.tuber.identity.service.domain.helper.permission.AssignPermissionToRoleHelper;
 import com.tuber.identity.service.domain.helper.permission.GetPermissionsHelper;
+import com.tuber.identity.service.domain.helper.permission.RemovePermissionFromRoleHelper;
 import com.tuber.identity.service.domain.helper.role.CreateRoleHelper;
 import com.tuber.identity.service.domain.helper.role.DeleteRoleHelper;
 import com.tuber.identity.service.domain.helper.role.GetRolesHelper;
-import com.tuber.identity.service.domain.helper.user.account.AssignRoleToUserHelper;
-import com.tuber.identity.service.domain.helper.user.account.RemoveRoleFromUserHelper;
+import com.tuber.identity.service.domain.helper.role.AssignRoleToUserHelper;
+import com.tuber.identity.service.domain.helper.role.RemoveRoleFromUserHelper;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +48,7 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     DeleteRoleHelper deleteRoleHelper;
     GetPermissionsHelper getPermissionsHelper;
     AssignPermissionToRoleHelper assignPermissionToRoleHelper;
+    RemovePermissionFromRoleHelper removePermissionFromRoleHelper;
 
     @Override
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
@@ -147,7 +147,12 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     }
 
     @Override
-    public ApiResponse<GetPermissionsResponseData> assignPermissionToRole(String roleName, String permissionName) {
-        return assignPermissionToRoleHelper.assignPermissionToRole(roleName, permissionName);
+    public ApiResponse<AlterPermissionsResponseData> assignPermissionToRole(AlterPermissionCommand removePermissionCommand) {
+        return assignPermissionToRoleHelper.assignPermissionToRole(removePermissionCommand);
+    }
+
+    @Override
+    public ApiResponse<AlterPermissionsResponseData> removePermissionFromRole(AlterPermissionCommand removePermissionCommand) {
+        return removePermissionFromRoleHelper.removePermissionFromRole(removePermissionCommand);
     }
 }

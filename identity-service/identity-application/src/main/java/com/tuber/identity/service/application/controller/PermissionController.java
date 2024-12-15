@@ -1,9 +1,7 @@
 package com.tuber.identity.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.identity.service.domain.dto.permission.GetPermissionQuery;
-import com.tuber.identity.service.domain.dto.permission.GetPermissionResponseData;
-import com.tuber.identity.service.domain.dto.permission.GetPermissionsResponseData;
+import com.tuber.identity.service.domain.dto.permission.*;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,9 +47,18 @@ public class PermissionController {
     }
 
     @PostMapping("/{permissionName}/roles/{roleName}")
-    public ResponseEntity<ApiResponse<GetPermissionsResponseData>> assignPermissionToRole(@PathVariable("roleName") String roleName, @PathVariable("permissionName") String permissionName) {
-        ApiResponse<GetPermissionsResponseData> getPermissionsResponseData = identityApplicationService.assignPermissionToRole(roleName, permissionName);
+    public ResponseEntity<ApiResponse<AlterPermissionsResponseData>> assignPermissionToRole(@PathVariable("roleName") String roleName, @PathVariable("permissionName") String permissionName) {
+        AlterPermissionCommand assignPermissionCommand = AlterPermissionCommand.builder().roleName(roleName).permissionName(permissionName).build();
+        ApiResponse<AlterPermissionsResponseData> getPermissionsResponseData = identityApplicationService.assignPermissionToRole(assignPermissionCommand);
         log.info("Added permission with name: {} to role with name: {}", permissionName, roleName);
+        return ResponseEntity.ok(getPermissionsResponseData);
+    }
+
+    @DeleteMapping("/{permissionName}/roles/{roleName}")
+    public ResponseEntity<ApiResponse<AlterPermissionsResponseData>> removePermissionFromRole(@PathVariable("roleName") String roleName, @PathVariable("permissionName") String permissionName) {
+        AlterPermissionCommand removePermissionCommand = AlterPermissionCommand.builder().roleName(roleName).permissionName(permissionName).build();
+        ApiResponse<AlterPermissionsResponseData> getPermissionsResponseData = identityApplicationService.removePermissionFromRole(removePermissionCommand);
+        log.info("Removed permission with name: {} from role with name: {}", permissionName, roleName);
         return ResponseEntity.ok(getPermissionsResponseData);
     }
 }

@@ -1,4 +1,4 @@
-package com.tuber.identity.service.domain.helper.user.account;
+package com.tuber.identity.service.domain.helper.role;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.user.account.AssignRoleToUserCommand;

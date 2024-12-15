@@ -5,6 +5,7 @@ import com.tuber.identity.service.dataaccess.permission.entity.PermissionJpaEnti
 import com.tuber.identity.service.dataaccess.permission.mapper.PermissionDataAccessMapper;
 import com.tuber.identity.service.dataaccess.permission.repository.PermissionJpaRepository;
 import com.tuber.identity.service.dataaccess.role.entity.RoleJpaEntity;
+import com.tuber.identity.service.dataaccess.role.repository.RoleJpaRepository;
 import com.tuber.identity.service.domain.entity.Permission;
 import com.tuber.identity.service.domain.ports.output.repository.PermissionRepository;
 import lombok.AccessLevel;
@@ -23,6 +24,7 @@ public class PermissionRepositoryImpl implements PermissionRepository {
     PermissionJpaRepository permissionJpaRepository;
     PermissionDataAccessMapper permissionDataAccessMapper;
     CommonIdentityDataAccessHelper commonIdentityDataAccessHelper;
+    private final RoleJpaRepository roleJpaRepository;
 
     @Override
     public Permission save(Permission permission) {
@@ -70,7 +72,21 @@ public class PermissionRepositoryImpl implements PermissionRepository {
                 permissionName -> {
                     PermissionJpaEntity permission = commonIdentityDataAccessHelper.verifyPermissionExists(permissionName);
                     role.getPermissions().add(permission);
-                    permissionJpaRepository.save(permission);
+                    roleJpaRepository.save(role);
+                }
+        );
+
+        return role.getPermissions().stream().map(permissionDataAccessMapper::permissionJpaEntityToPermissionEntity).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Permission> removePermissionsFromRole(String roleName, Set<String> permissionNames) {
+        RoleJpaEntity role = commonIdentityDataAccessHelper.verifyRoleExists(roleName);
+        permissionNames.forEach(
+                permissionName -> {
+                    PermissionJpaEntity permission = commonIdentityDataAccessHelper.verifyPermissionExists(permissionName);
+                    role.getPermissions().remove(permission);
+                    roleJpaRepository.save(role);
                 }
         );
 
