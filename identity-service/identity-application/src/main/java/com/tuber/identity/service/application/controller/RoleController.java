@@ -2,6 +2,10 @@ package com.tuber.identity.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.role.*;
+import com.tuber.identity.service.domain.dto.user.account.AssignRoleToUserCommand;
+import com.tuber.identity.service.domain.dto.user.account.AssignRoleToUserResponseData;
+import com.tuber.identity.service.domain.dto.user.account.RemoveRoleFromUserCommand;
+import com.tuber.identity.service.domain.dto.user.account.RemoveRoleFromUserResponseData;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,5 +53,23 @@ public class RoleController {
         ApiResponse<DeleteRoleResponseData> deleteRoleResponseData = identityApplicationService.deleteRole(DeleteRoleCommand.builder().name(name).build());
         log.info("Role deleted with name: {}", name);
         return ResponseEntity.ok(deleteRoleResponseData);
+    }
+
+    @PostMapping("/{roleName}/users/{username}")
+    public ResponseEntity<ApiResponse<AssignRoleToUserResponseData>> assignRoleToUser(@PathVariable("username") String username, @PathVariable("roleName") String roleName) {
+        AssignRoleToUserCommand assignRoleToUserCommand = AssignRoleToUserCommand.builder().username(username).roleName(roleName).build();
+        log.info("Assigning role {} to user with username: {}", roleName, username);
+        ApiResponse<AssignRoleToUserResponseData> assignRoleToUserResponseData = identityApplicationService.assignRoleToUser(assignRoleToUserCommand);
+        log.info("Role {} assigned to user with username: {}", roleName, username);
+        return ResponseEntity.ok(assignRoleToUserResponseData);
+    }
+
+    @DeleteMapping("/{roleName}/users/{username}")
+    public ResponseEntity<ApiResponse<RemoveRoleFromUserResponseData>> removeRoleFromUser(@PathVariable("username") String username, @PathVariable("roleName") String roleName) {
+        RemoveRoleFromUserCommand removeRoleFromUserCommand = RemoveRoleFromUserCommand.builder().username(username).roleName(roleName).build();
+        log.info("Removing role {} from user with username: {}", roleName, username);
+        ApiResponse<RemoveRoleFromUserResponseData> removeRoleFromUserResponseData = identityApplicationService.removeRoleFromUser(removeRoleFromUserCommand);
+        log.info("Role {} removed from user with username: {}", roleName, username);
+        return ResponseEntity.ok(removeRoleFromUserResponseData);
     }
 }

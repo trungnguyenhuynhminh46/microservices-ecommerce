@@ -29,4 +29,5 @@ public interface IdentityApplicationService {
     ApiResponse<GetPermissionsResponseData> getPermissionsByRoleName(String roleName);
     ApiResponse<GetPermissionsResponseData> getPermissionsByUsername(String username);
     ApiResponse<GetPermissionsResponseData> assignPermissionToRole(String roleName, String permissionName);
+    ApiResponse<RemoveRoleFromUserResponseData> removeRoleFromUser(RemoveRoleFromUserCommand removeRoleFromUserCommand);
 }

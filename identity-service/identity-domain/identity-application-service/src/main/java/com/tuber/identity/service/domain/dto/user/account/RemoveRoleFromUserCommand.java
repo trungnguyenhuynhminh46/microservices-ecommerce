@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AssignRoleToUserCommand {
+public class RemoveRoleFromUserCommand {
     @NotNull
     @NotBlank(message = "Username is mandatory")
     @Size(min = 6, message = "Username must be at least 6 characters long")

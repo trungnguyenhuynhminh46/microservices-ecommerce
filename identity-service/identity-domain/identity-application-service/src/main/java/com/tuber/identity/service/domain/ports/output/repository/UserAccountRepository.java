@@ -16,4 +16,5 @@ public interface UserAccountRepository {
    Optional<UserAccount> findById(UUID id);
    List<UserAccount> findAll();
    Set<Role> assignRolesToUser(String username, Set<String> roleNames);
+   Set<Role> removeRolesFromUser(String username, Set<String> roleNames);
 }

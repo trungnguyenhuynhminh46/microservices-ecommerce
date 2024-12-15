@@ -1,8 +1,8 @@
 package com.tuber.identity.service.domain.helper.user.account;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.identity.service.domain.dto.user.account.AssignRoleToUserCommand;
-import com.tuber.identity.service.domain.dto.user.account.AssignRoleToUserResponseData;
+import com.tuber.identity.service.domain.dto.user.account.RemoveRoleFromUserCommand;
+import com.tuber.identity.service.domain.dto.user.account.RemoveRoleFromUserResponseData;
 import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.domain.ports.output.repository.UserAccountRepository;
 import lombok.AccessLevel;
@@ -17,18 +17,18 @@ import java.util.Set;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AssignRoleToUserHelper {
+public class RemoveRoleFromUserHelper {
     UserAccountRepository userAccountRepository;
 
     @Transactional
-    public ApiResponse<AssignRoleToUserResponseData> assignRoleToUser(AssignRoleToUserCommand assignRoleToUserCommand) {
-        String username = assignRoleToUserCommand.getUsername();
+    public ApiResponse<RemoveRoleFromUserResponseData> removeRoleFromUser(RemoveRoleFromUserCommand removeRoleFromUserCommand) {
+        String username = removeRoleFromUserCommand.getUsername();
         Set<String> rolesSet = new HashSet<>();
-        rolesSet.add(assignRoleToUserCommand.getRoleName());
+        rolesSet.add(removeRoleFromUserCommand.getRoleName());
 
-        Set<Role> newRolesSet = userAccountRepository.assignRolesToUser(username, rolesSet);
-        return ApiResponse.<AssignRoleToUserResponseData>builder()
-                .data(AssignRoleToUserResponseData.builder().username(username).roles(newRolesSet).build())
+        Set<Role> newRolesSet = userAccountRepository.removeRolesFromUser(username, rolesSet);
+        return ApiResponse.<RemoveRoleFromUserResponseData>builder()
+                .data(RemoveRoleFromUserResponseData.builder().username(username).roles(newRolesSet).build())
                 .build();
     }
 }

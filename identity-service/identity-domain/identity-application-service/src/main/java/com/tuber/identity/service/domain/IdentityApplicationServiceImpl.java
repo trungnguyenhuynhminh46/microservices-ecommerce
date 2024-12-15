@@ -21,6 +21,7 @@ import com.tuber.identity.service.domain.helper.role.CreateRoleHelper;
 import com.tuber.identity.service.domain.helper.role.DeleteRoleHelper;
 import com.tuber.identity.service.domain.helper.role.GetRolesHelper;
 import com.tuber.identity.service.domain.helper.user.account.AssignRoleToUserHelper;
+import com.tuber.identity.service.domain.helper.user.account.RemoveRoleFromUserHelper;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,7 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     LogoutUserAccountHelper logoutUserAccountHelper;
     GetRolesHelper getRolesHelper;
     AssignRoleToUserHelper assignRoleToUserHelper;
+    RemoveRoleFromUserHelper removeRoleFromUserHelper;
     CreateRoleHelper createRoleHelper;
     DeleteRoleHelper deleteRoleHelper;
     GetPermissionsHelper getPermissionsHelper;
@@ -101,6 +103,12 @@ public class IdentityApplicationServiceImpl implements IdentityApplicationServic
     @Override
     public ApiResponse<AssignRoleToUserResponseData> assignRoleToUser(AssignRoleToUserCommand assignRoleToUserCommand) {
         return assignRoleToUserHelper.assignRoleToUser(assignRoleToUserCommand);
+    }
+
+
+    @Override
+    public ApiResponse<RemoveRoleFromUserResponseData> removeRoleFromUser(RemoveRoleFromUserCommand removeRoleFromUserCommand) {
+        return removeRoleFromUserHelper.removeRoleFromUser(removeRoleFromUserCommand);
     }
 
     @Override

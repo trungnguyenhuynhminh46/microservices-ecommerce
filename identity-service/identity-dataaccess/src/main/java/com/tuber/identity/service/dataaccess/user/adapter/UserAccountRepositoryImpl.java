@@ -88,4 +88,18 @@ public class UserAccountRepositoryImpl implements UserAccountRepository {
 
         return userAccount.getRoles().stream().map(roleDataAccessMapper::roleJpaEntityToRoleEntity).collect(Collectors.toSet());
     }
+
+    @Override
+    public Set<Role> removeRolesFromUser(String username, Set<String> roleNames) {
+        UserAccountJpaEntity userAccount = commonIdentityDataAccessHelper.verifyUserAccountWithUsernameExists(username);
+        roleNames.forEach(
+                roleName -> {
+                    RoleJpaEntity role = commonIdentityDataAccessHelper.verifyRoleExists(roleName);
+                    userAccount.getRoles().remove(role);
+                    userAccountJpaRepository.save(userAccount);
+                }
+        );
+
+        return userAccount.getRoles().stream().map(roleDataAccessMapper::roleJpaEntityToRoleEntity).collect(Collectors.toSet());
+    }
 }
