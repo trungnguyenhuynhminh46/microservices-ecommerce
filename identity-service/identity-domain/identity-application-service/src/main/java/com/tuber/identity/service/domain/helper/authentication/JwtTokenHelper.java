@@ -9,6 +9,7 @@ import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.entity.RevokedRefreshToken;
 import com.tuber.identity.service.domain.entity.UserAccount;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
+import com.tuber.identity.service.domain.exception.LoggedOutAlready;
 import com.tuber.identity.service.domain.helper.CommonIdentityServiceHelper;
 import com.tuber.identity.service.domain.ports.output.repository.RevokedRefreshTokenRepository;
 import com.tuber.identity.service.domain.valueobject.RefreshTokenId;
@@ -37,6 +38,7 @@ public class JwtTokenHelper {
     MACVerifier macVerifier;
     RevokedRefreshTokenRepository revokedRefreshTokenRepository;
     CommonIdentityServiceHelper commonIdentityServiceHelper;
+    AuthenticationHelper authenticationHelper;
 
     @NonFinal
     @Value("${jwt.access-token-lifetime}")
@@ -189,5 +191,15 @@ public class JwtTokenHelper {
                 .build();
 
         revokedRefreshTokenRepository.save(revokedRefreshToken);
+    }
+
+    public void verifyRefreshToken(String refreshToken) {
+        String accessToken = authenticationHelper.getAccessToken();
+        Optional<RevokedRefreshToken> savedRefreshToken = revokedRefreshTokenRepository.findByToken(refreshToken);
+
+        if (savedRefreshToken.isPresent()) {
+            throw new LoggedOutAlready(IdentityResponseCode.LOGGED_OUT_ALREADY, HttpStatus.ALREADY_REPORTED.value());
+        }
+        verifyAccessTokenAndRefreshTokenHaveSameCreator(accessToken, refreshToken);
     }
 }

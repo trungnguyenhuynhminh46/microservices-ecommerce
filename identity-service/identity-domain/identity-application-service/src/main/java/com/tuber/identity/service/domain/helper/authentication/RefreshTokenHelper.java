@@ -5,13 +5,11 @@ import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.dto.authentication.RefreshTokenCommand;
 import com.tuber.identity.service.domain.dto.authentication.RefreshTokenResponseData;
 import com.tuber.identity.service.domain.entity.UserAccount;
-import com.tuber.identity.service.domain.exception.RefreshTokenNotFoundException;
 import com.tuber.identity.service.domain.helper.CommonIdentityServiceHelper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -31,12 +29,7 @@ public class RefreshTokenHelper {
 
     public ApiResponse<RefreshTokenResponseData> refresh(RefreshTokenCommand refreshTokenCommand) {
         String refreshToken = refreshTokenCommand.getRefreshToken();
-        boolean isActive = jwtTokenHelper.verifyToken(refreshToken);
-
-
-        if (!isActive) {
-            throw new RefreshTokenNotFoundException(IdentityResponseCode.LOGGED_OUT_ALREADY, HttpStatus.NOT_FOUND.value());
-        }
+        jwtTokenHelper.verifyRefreshToken(refreshToken);
 
         RefreshTokenResponseData refreshTokenResponseData = RefreshTokenResponseData.builder()
                 .accessToken(generateNewAccessToken(refreshToken))

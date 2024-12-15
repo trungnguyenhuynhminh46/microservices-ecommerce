@@ -33,17 +33,4 @@ public class RevokedRefreshTokenRepositoryImpl implements RevokedRefreshTokenRep
         return refreshTokenJpaRepository.findByToken(token)
                 .map(revokedRefreshTokenDataMapper::refreshTokenJpaEntityToRefreshTokenEntity);
     }
-
-    @Override
-    public List<RevokedRefreshToken> findByUserId(UUID userId) {
-        return refreshTokenJpaRepository.findByUserId(userId)
-                .stream()
-                .map(revokedRefreshTokenDataMapper::refreshTokenJpaEntityToRefreshTokenEntity)
-                .toList();
-    }
-
-    @Override
-    public void deleteByToken(String token) {
-        refreshTokenJpaRepository.deleteByToken(token);
-    }
 }

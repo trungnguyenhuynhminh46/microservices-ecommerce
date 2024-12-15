@@ -1,6 +1,5 @@
 package com.tuber.identity.service.domain.constant;
 
-import com.tuber.domain.constant.ResponseCode;
 import com.tuber.domain.constant.ResponseCodeBase;
 
 public class IdentityResponseCode extends ResponseCodeBase {
