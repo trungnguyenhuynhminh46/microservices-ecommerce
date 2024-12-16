@@ -79,4 +79,9 @@ public class RoleRepositoryImpl implements RoleRepository {
         }
         roleJpaRepository.delete(roleJpa);
     }
+
+    @Override
+    public Boolean existsByNameAndUsername(String username, String roleName) {
+        return roleJpaRepository.existsByNameAndUserName(username, roleName);
+    }
 }

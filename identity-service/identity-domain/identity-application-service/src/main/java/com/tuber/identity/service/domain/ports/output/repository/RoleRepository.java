@@ -12,4 +12,5 @@ public interface RoleRepository {
     Set<Role> findAll();
     Set<Role> findByUsername(String username);
     void delete(Role role);
+    Boolean existsByNameAndUsername(String username, String roleName);
 }

@@ -92,4 +92,9 @@ public class PermissionRepositoryImpl implements PermissionRepository {
 
         return role.getPermissions().stream().map(permissionDataAccessMapper::permissionJpaEntityToPermissionEntity).collect(Collectors.toSet());
     }
+
+    @Override
+    public Boolean existsByNameAndRoleName(String roleName, String permissionName) {
+        return permissionJpaRepository.existsByNameAndRoleName(roleName, permissionName);
+    }
 }

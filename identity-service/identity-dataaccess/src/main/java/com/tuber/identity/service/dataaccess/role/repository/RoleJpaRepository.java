@@ -14,4 +14,12 @@ public interface RoleJpaRepository extends JpaRepository<RoleJpaEntity, String> 
 
     @Query("SELECT r FROM RoleJpaEntity r JOIN r.users u WHERE u.username = :username")
     Set<RoleJpaEntity> findByUsername(String username);
+
+    @Query("""
+            SELECT COUNT(1) > 0
+             FROM RoleJpaEntity r
+             JOIN r.users u
+             WHERE u.username = :username AND r.name = :roleName
+            """)
+    Boolean existsByNameAndUserName(String username, String roleName);
 }

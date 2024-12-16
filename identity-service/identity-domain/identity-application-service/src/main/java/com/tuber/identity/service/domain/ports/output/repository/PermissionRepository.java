@@ -13,4 +13,5 @@ public interface PermissionRepository {
     Set<Permission> findByUsername(String username);
     Set<Permission> assignPermissionsToRole(String roleName, Set<String> permissionNames);
     Set<Permission> removePermissionsFromRole(String roleName, Set<String> permissionNames);
+    Boolean existsByNameAndRoleName(String roleName, String permissionName);
 }

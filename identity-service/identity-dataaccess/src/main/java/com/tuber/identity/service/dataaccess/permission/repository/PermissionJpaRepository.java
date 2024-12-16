@@ -23,4 +23,12 @@ public interface PermissionJpaRepository extends JpaRepository<PermissionJpaEnti
              WHERE u.username = :username
             """)
     Set<PermissionJpaEntity> findByUsername(String username);
+
+    @Query("""
+            SELECT COUNT(1) > 0
+             FROM PermissionJpaEntity p
+             JOIN p.roles r
+             WHERE r.name = :roleName AND p.name = :permissionName
+            """)
+    Boolean existsByNameAndRoleName(String roleName, String permissionName);
 }
