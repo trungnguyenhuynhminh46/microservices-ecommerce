@@ -30,7 +30,7 @@ public class RemoveRoleFromUserHelper {
         String username = removeRoleFromUserCommand.getUsername();
         String roleName = removeRoleFromUserCommand.getRoleName();
         if (!roleRepository.existsByNameAndUsername(username, roleName)) {
-            throw new IdentityDomainException(IdentityResponseCode.ROLE_NOT_EXISTS, HttpStatus.BAD_REQUEST.value());
+            throw new IdentityDomainException(IdentityResponseCode.ROLE_NOT_EXIST_IN_USER_ACCOUNT, HttpStatus.BAD_REQUEST.value(), username, roleName);
         }
         Set<String> rolesSet = new HashSet<>();
         rolesSet.add(roleName);

@@ -27,7 +27,7 @@ public class RemovePermissionFromRoleHelper {
         String roleName = removePermissionCommand.getRoleName();
         String permissionName = removePermissionCommand.getPermissionName();
         if(!permissionRepository.existsByNameAndRoleName(roleName, permissionName)) {
-            throw new IdentityDomainException(IdentityResponseCode.PERMISSION_NOT_EXISTS, HttpStatus.BAD_REQUEST.value());
+            throw new IdentityDomainException(IdentityResponseCode.PERMISSION_NOT_EXIST_IN_ROLE, HttpStatus.BAD_REQUEST.value(), roleName, permissionName);
         }
         Set<String> permissionsSet = new HashSet<>();
         permissionsSet.add(removePermissionCommand.getPermissionName());

@@ -29,9 +29,8 @@ public class AssignRoleToUserHelper {
     public ApiResponse<AssignRoleToUserResponseData> assignRoleToUser(AssignRoleToUserCommand assignRoleToUserCommand) {
         String username = assignRoleToUserCommand.getUsername();
         String roleName = assignRoleToUserCommand.getRoleName();
-        Object debug = roleRepository.existsByNameAndUsername(username, roleName);
         if (roleRepository.existsByNameAndUsername(username, roleName)) {
-            throw new IdentityDomainException(IdentityResponseCode.ROLE_EXISTED, HttpStatus.BAD_REQUEST.value());
+            throw new IdentityDomainException(IdentityResponseCode.ROLE_EXISTED_IN_USER_ACCOUNT, HttpStatus.BAD_REQUEST.value(), username, roleName);
         }
         Set<String> rolesSet = new HashSet<>();
         rolesSet.add(roleName);

@@ -29,7 +29,7 @@ public class AssignPermissionToRoleHelper {
         String roleName = removePermissionCommand.getRoleName();
         String permissionName = removePermissionCommand.getPermissionName();
         if (permissionRepository.existsByNameAndRoleName(roleName, permissionName)) {
-            throw new IdentityDomainException(IdentityResponseCode.PERMISSION_EXISTED, HttpStatus.BAD_REQUEST.value());
+            throw new IdentityDomainException(IdentityResponseCode.PERMISSION_EXISTED_IN_ROLE, HttpStatus.BAD_REQUEST.value(), roleName, permissionName);
         }
         Set<String> permissionsSet = new HashSet<>();
         permissionsSet.add(permissionName);

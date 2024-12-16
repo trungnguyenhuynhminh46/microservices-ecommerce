@@ -8,8 +8,8 @@ public class DomainException extends RuntimeException {
 
     private int statusCode = OK;
 
-    public DomainException(ResponseCodeBase responseCode, int statusCode) {
-        super(responseCode.getMessage());
+    public DomainException(ResponseCodeBase responseCode, int statusCode, Object ...args) {
+        super(String.format(responseCode.getMessage(), args));
         this.responseCode = responseCode;
         this.statusCode = statusCode;
     }

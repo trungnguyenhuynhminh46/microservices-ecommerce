@@ -51,13 +51,13 @@ public class IdentityResponseCode extends ResponseCodeBase {
     public static final IdentityResponseCode REFRESH_TOKEN_OF_ANOTHER_USER =
             new IdentityResponseCode(1020, "The refresh token is of another user");
     public static final IdentityResponseCode ROLE_EXISTED_IN_USER_ACCOUNT =
-            new IdentityResponseCode(1021, "The user has this role already");
+            new IdentityResponseCode(1021, "The user %s has role %s already");
     public static final IdentityResponseCode ROLE_NOT_EXIST_IN_USER_ACCOUNT =
-            new IdentityResponseCode(1022, "The user does not have this role yet");
+            new IdentityResponseCode(1022, "The user %s does not have role %s yet");
     public static final IdentityResponseCode PERMISSION_EXISTED_IN_ROLE =
-            new IdentityResponseCode(1023, "The role has this permission already");
+            new IdentityResponseCode(1023, "The role %s has permission %s already");
     public static final IdentityResponseCode PERMISSION_NOT_EXIST_IN_ROLE =
-            new IdentityResponseCode(1024, "The role does not have this permission yet");
+            new IdentityResponseCode(1024, "The role %s does not have permission %s yet");
 
     protected IdentityResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
