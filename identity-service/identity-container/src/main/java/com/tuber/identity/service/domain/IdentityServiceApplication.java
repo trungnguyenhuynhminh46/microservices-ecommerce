@@ -1,6 +1,7 @@
 package com.tuber.identity.service.domain;
 
-import com.tuber.domain.valueobject.enums.UserPermissionDefault;
+import com.tuber.domain.valueobject.enums.PermissionsDefault;
+import com.tuber.domain.valueobject.enums.RolesDefault;
 import com.tuber.identity.service.domain.entity.Permission;
 import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.domain.entity.UserAccount;
@@ -29,21 +30,21 @@ import java.util.Set;
 @EntityScan(basePackages = {"com.tuber.identity.service.dataaccess", "com.tuber.dataaccess"})
 @SpringBootApplication(scanBasePackages = "com.tuber")
 @AllArgsConstructor
-@FieldDefaults(level= AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class IdentityServiceApplication implements CommandLineRunner {
     RoleRepository roleRepository;
     PermissionRepository permissionRepository;
     UserAccountRepository userAccountRepository;
     CreateUserAccountHelper createUserAccountHelper;
-    private final Map<UserPermissionDefault, Permission> permissionsMap = Map.of(
-            UserPermissionDefault.CREATE_USER, Permission.builder().id(UserPermissionDefault.CREATE_USER.toString()).description("Permission CREATE_USER").build(),
-            UserPermissionDefault.DELETE_USER, Permission.builder().id(UserPermissionDefault.DELETE_USER.toString()).description("Permission DELETE_USER").build(),
-            UserPermissionDefault.UPDATE_USER, Permission.builder().id(UserPermissionDefault.UPDATE_USER.toString()).description("Permission UPDATE_USER").build()
-    );
 
-    private final Map<String, Role> rolesMap = Map.of(
-            "ADMIN", Role.builder().id("ADMIN").description("Role ADMIN").build(),
-            "USER", Role.builder().id("USER").description("Role USER").build()
+    private final Map<RolesDefault, Set<PermissionsDefault>> roleDefaultSetMap = Map.of(
+            RolesDefault.ADMIN, Set.of(
+                    PermissionsDefault.CREATE_USER, PermissionsDefault.DELETE_USER, PermissionsDefault.UPDATE_USER,
+                    PermissionsDefault.CREATE_ROLE, PermissionsDefault.UPDATE_ROLE, PermissionsDefault.DELETE_ROLE,
+                    PermissionsDefault.CREATE_PERMISSION, PermissionsDefault.UPDATE_PERMISSION, PermissionsDefault.DELETE_PERMISSION
+            ),
+            RolesDefault.USER, Set.of(PermissionsDefault.GET_AVAILABLE_DRIVERS, PermissionsDefault.BOOK_RIDE, PermissionsDefault.CANCEL_RIDE),
+            RolesDefault.DRIVER, Set.of(PermissionsDefault.GET_AVAILABLE_BOOKS, PermissionsDefault.ACCEPT_RIDE, PermissionsDefault.CANCEL_RIDE)
     );
 
     public static void main(String[] args) {
@@ -58,13 +59,26 @@ public class IdentityServiceApplication implements CommandLineRunner {
     }
 
     private void initializePermissions() {
-        permissionsMap.values().forEach(permissionRepository::save);
+        for (PermissionsDefault permissionDefault : PermissionsDefault.values()) {
+            Permission permission = Permission.builder()
+                    .id(permissionDefault.toString())
+                    .description("Permission " + permissionDefault)
+                    .build();
+            permissionRepository.save(permission);
+        }
     }
 
     private void initializeRoles() {
-        rolesMap.values().forEach(roleRepository::save);
-        assignPermissionsToRole("ADMIN", Set.of(UserPermissionDefault.CREATE_USER, UserPermissionDefault.DELETE_USER, UserPermissionDefault.UPDATE_USER));
-        assignPermissionsToRole("USER", Set.of(UserPermissionDefault.CREATE_USER, UserPermissionDefault.UPDATE_USER));
+        for (Map.Entry<RolesDefault, Set<PermissionsDefault>> entry : roleDefaultSetMap.entrySet()) {
+            String roleName = entry.getKey().toString();
+            Set<PermissionsDefault> permissions = entry.getValue();
+            Role role = Role.builder()
+                    .id(roleName)
+                    .description("Role " + roleName)
+                    .build();
+            roleRepository.save(role);
+            assignPermissionsToRole(roleName, permissions);
+        }
     }
 
     private void initializeAdminUser() {
@@ -79,7 +93,7 @@ public class IdentityServiceApplication implements CommandLineRunner {
         UserAccount adminUser = UserAccount.builder()
                 .username(adminUsername)
                 .email("admin@gmail.com")
-                .password("admin!m8UFV4pdR")
+                .password(adminUsername)
                 .passwordEncoded(false)
                 .createdAt(LocalDate.now())
                 .updatedAt(LocalDate.now())
@@ -92,8 +106,8 @@ public class IdentityServiceApplication implements CommandLineRunner {
     }
 
     @Transactional
-    private void assignPermissionsToRole(String roleName, Set<UserPermissionDefault> permissionNames) {
-        for (UserPermissionDefault permissionName : permissionNames) {
+    private void assignPermissionsToRole(String roleName, Set<PermissionsDefault> permissionNames) {
+        for (PermissionsDefault permissionName : permissionNames) {
             roleRepository.assignPermissionsToRole(roleName, permissionName.toString());
         }
     }
