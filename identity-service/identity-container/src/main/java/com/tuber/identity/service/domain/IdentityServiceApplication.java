@@ -39,9 +39,9 @@ public class IdentityServiceApplication implements CommandLineRunner {
 
     private final Map<RolesDefault, Set<PermissionsDefault>> roleDefaultSetMap = Map.of(
             RolesDefault.ADMIN, Set.of(
-                    PermissionsDefault.CREATE_USER, PermissionsDefault.DELETE_USER, PermissionsDefault.UPDATE_USER,
-                    PermissionsDefault.CREATE_ROLE, PermissionsDefault.UPDATE_ROLE, PermissionsDefault.DELETE_ROLE,
-                    PermissionsDefault.CREATE_PERMISSION, PermissionsDefault.UPDATE_PERMISSION, PermissionsDefault.DELETE_PERMISSION
+                    PermissionsDefault.GET_USERS_INFO, PermissionsDefault.CREATE_USER, PermissionsDefault.DELETE_USER, PermissionsDefault.UPDATE_USER,
+                    PermissionsDefault.GET_ROLES, PermissionsDefault.CREATE_ROLE, PermissionsDefault.UPDATE_ROLE, PermissionsDefault.DELETE_ROLE,
+                    PermissionsDefault.GET_PERMISSIONS, PermissionsDefault.CREATE_PERMISSION, PermissionsDefault.UPDATE_PERMISSION, PermissionsDefault.DELETE_PERMISSION
             ),
             RolesDefault.USER, Set.of(PermissionsDefault.GET_AVAILABLE_DRIVERS, PermissionsDefault.BOOK_RIDE, PermissionsDefault.CANCEL_RIDE),
             RolesDefault.DRIVER, Set.of(PermissionsDefault.GET_AVAILABLE_BOOKS, PermissionsDefault.ACCEPT_RIDE, PermissionsDefault.CANCEL_RIDE)

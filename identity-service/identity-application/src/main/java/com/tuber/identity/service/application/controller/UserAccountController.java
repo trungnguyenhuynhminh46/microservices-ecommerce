@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/users", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
 public class UserAccountController {
     private final IdentityApplicationService identityApplicationService;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREATE_USER')")
     public ResponseEntity<ApiResponse<CreateUserAccountResponseData>> createUserAccount(@RequestBody @Valid CreateUserAccountCommand createUserAccountCommand) {
         log.info("Creating user account with username: {} and email: {}", createUserAccountCommand.getUsername(), createUserAccountCommand.getEmail());
         ApiResponse<CreateUserAccountResponseData> createUserAccountResponse = identityApplicationService.createUserAccount(createUserAccountCommand);
@@ -30,6 +30,7 @@ public class UserAccountController {
     }
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAuthority('GET_USERS_INFO')")
     public ResponseEntity<ApiResponse<GetUserByIdResponseData>> getUserByUserId(@ValidUUID @PathVariable("userId") String userId) {
         ApiResponse<GetUserByIdResponseData> getUserByIdResponseData = identityApplicationService.getUserByUserId(GetUserByIdQuery.builder().userId(userId).build());
         log.info("Returning user account with user id: {}", userId);
@@ -37,6 +38,7 @@ public class UserAccountController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('GET_USERS_INFO')")
     public ResponseEntity<ApiResponse<GetUsersResponseData>> getUsers() {
         ApiResponse<GetUsersResponseData> getUsersResponseData = identityApplicationService.getUsers();
         log.info("Returning all user accounts");

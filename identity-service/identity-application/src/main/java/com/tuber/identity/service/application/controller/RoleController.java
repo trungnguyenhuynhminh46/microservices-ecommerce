@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class RoleController {
     private final IdentityApplicationService identityApplicationService;
+
     @GetMapping
+    @PreAuthorize("hasAuthority('GET_ROLES')")
     public ResponseEntity<ApiResponse<GetRolesResponseData>> getRoles() {
         ApiResponse<GetRolesResponseData> getRolesResponseData = identityApplicationService.getRoles();
         log.info("Returning all roles");
@@ -29,6 +31,7 @@ public class RoleController {
     }
 
     @GetMapping("/{name}")
+    @PreAuthorize("hasAuthority('GET_ROLES')")
     public ResponseEntity<ApiResponse<GetRoleResponseData>> getRole(@PathVariable("name") String name) {
         ApiResponse<GetRoleResponseData> getRoleResponseData = identityApplicationService.getRole(GetRoleQuery.builder().name(name).build());
         log.info("Returning role with name: {}", name);
@@ -36,6 +39,7 @@ public class RoleController {
     }
 
     @GetMapping("/users/{username}")
+    @PreAuthorize("hasAuthority('GET_ROLES')")
     public ResponseEntity<ApiResponse<GetRolesResponseData>> getRolesByUsername(@PathVariable("username") String username) {
         ApiResponse<GetRolesResponseData> getRolesResponseData = identityApplicationService.getRolesByUsername(username);
         log.info("Returning roles for user with username: {}", username);
@@ -43,6 +47,7 @@ public class RoleController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREATE_ROLE')")
     public ResponseEntity<ApiResponse<CreateRoleResponseData>> createRole(@RequestBody CreateRoleCommand createRoleCommand) {
         ApiResponse<CreateRoleResponseData> createRoleResponseData = identityApplicationService.createRole(createRoleCommand);
         log.info("Role created with name: {}", createRoleCommand.getName());
@@ -50,6 +55,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{name}")
+    @PreAuthorize("hasAuthority('DELETE_ROLE')")
     public ResponseEntity<ApiResponse<DeleteRoleResponseData>> deleteRole(@PathVariable("name") String name) {
         ApiResponse<DeleteRoleResponseData> deleteRoleResponseData = identityApplicationService.deleteRole(DeleteRoleCommand.builder().name(name).build());
         log.info("Role deleted with name: {}", name);
@@ -57,6 +63,7 @@ public class RoleController {
     }
 
     @PostMapping("/{roleName}/users/{username}")
+    @PreAuthorize("hasAuthority('UPDATE_ROLE')")
     public ResponseEntity<ApiResponse<AssignRoleToUserResponseData>> assignRoleToUser(@PathVariable("username") String username, @PathVariable("roleName") String roleName) {
         AssignRoleToUserCommand assignRoleToUserCommand = AssignRoleToUserCommand.builder().username(username).roleName(roleName).build();
         log.info("Assigning role {} to user with username: {}", roleName, username);
@@ -66,6 +73,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{roleName}/users/{username}")
+    @PreAuthorize("hasAuthority('UPDATE_ROLE')")
     public ResponseEntity<ApiResponse<RemoveRoleFromUserResponseData>> removeRoleFromUser(@PathVariable("username") String username, @PathVariable("roleName") String roleName) {
         RemoveRoleFromUserCommand removeRoleFromUserCommand = RemoveRoleFromUserCommand.builder().username(username).roleName(roleName).build();
         log.info("Removing role {} from user with username: {}", roleName, username);

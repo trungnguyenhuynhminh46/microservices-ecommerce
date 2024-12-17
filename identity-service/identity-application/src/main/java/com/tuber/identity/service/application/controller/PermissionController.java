@@ -19,6 +19,7 @@ public class PermissionController {
     private final IdentityApplicationService identityApplicationService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('GET_PERMISSIONS')")
     public ResponseEntity<ApiResponse<GetPermissionsResponseData>> getPermissions() {
         ApiResponse<GetPermissionsResponseData> getPermissionsResponseData = identityApplicationService.getPermissions();
         log.info("Returning all permissions");
@@ -26,6 +27,7 @@ public class PermissionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREATE_PERMISSION')")
     public ResponseEntity<ApiResponse<CreatePermissionResponseData>> createPermission(@RequestBody CreatePermissionCommand createPermissionCommand) {
         ApiResponse<CreatePermissionResponseData> createPermissionResponseData = identityApplicationService.createPermission(createPermissionCommand);
         log.info("Created permission with name: {}", createPermissionCommand.getName());
@@ -33,6 +35,7 @@ public class PermissionController {
     }
 
     @GetMapping("/{name}")
+    @PreAuthorize("hasAuthority('GET_PERMISSIONS')")
     public ResponseEntity<ApiResponse<GetPermissionResponseData>> getPermission(@PathVariable("name") String name) {
         GetPermissionQuery getPermissionQuery = GetPermissionQuery.builder().name(name).build();
         ApiResponse<GetPermissionResponseData> getPermissionResponseData = identityApplicationService.getPermission(getPermissionQuery);
@@ -41,6 +44,7 @@ public class PermissionController {
     }
 
     @GetMapping("/roles/{roleName}")
+    @PreAuthorize("hasAuthority('GET_PERMISSIONS')")
     public ResponseEntity<ApiResponse<GetPermissionsResponseData>> getPermissionsByRoleName(@PathVariable("roleName") String roleName) {
         ApiResponse<GetPermissionsResponseData> getPermissionsResponseData = identityApplicationService.getPermissionsByRoleName(roleName);
         log.info("Returning permissions for role with name: {}", roleName);
@@ -48,6 +52,7 @@ public class PermissionController {
     }
 
     @GetMapping("/users/{username}")
+    @PreAuthorize("hasAuthority('GET_PERMISSIONS')")
     public ResponseEntity<ApiResponse<GetPermissionsResponseData>> getPermissionsByUsername(@PathVariable("username") String username) {
         ApiResponse<GetPermissionsResponseData> getPermissionsResponseData = identityApplicationService.getPermissionsByUsername(username);
         log.info("Returning permissions for user with username: {}", username);
@@ -55,6 +60,7 @@ public class PermissionController {
     }
 
     @PostMapping("/{permissionName}/roles/{roleName}")
+    @PreAuthorize("hasAuthority('UPDATE_PERMISSION')")
     public ResponseEntity<ApiResponse<AlterPermissionsResponseData>> assignPermissionToRole(@PathVariable("roleName") String roleName, @PathVariable("permissionName") String permissionName) {
         AlterPermissionCommand assignPermissionCommand = AlterPermissionCommand.builder().roleName(roleName).permissionName(permissionName).build();
         ApiResponse<AlterPermissionsResponseData> getPermissionsResponseData = identityApplicationService.assignPermissionToRole(assignPermissionCommand);
@@ -63,6 +69,7 @@ public class PermissionController {
     }
 
     @DeleteMapping("/{permissionName}/roles/{roleName}")
+    @PreAuthorize("hasAuthority('UPDATE_PERMISSION')")
     public ResponseEntity<ApiResponse<AlterPermissionsResponseData>> removePermissionFromRole(@PathVariable("roleName") String roleName, @PathVariable("permissionName") String permissionName) {
         AlterPermissionCommand removePermissionCommand = AlterPermissionCommand.builder().roleName(roleName).permissionName(permissionName).build();
         ApiResponse<AlterPermissionsResponseData> getPermissionsResponseData = identityApplicationService.removePermissionFromRole(removePermissionCommand);
