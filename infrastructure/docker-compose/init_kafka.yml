@@ -1,4 +1,9 @@
 version: '3.7'
+
+networks:
+  tuber:
+    driver: bridge
+
 services:
   init-kafka:
     image: confluentinc/cp-kafka:${KAFKA_VERSION}
