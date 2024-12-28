@@ -27,6 +27,9 @@
         <org.mapstruct.version>1.6.2</org.mapstruct.version>
         <lombok.version>1.18.34</lombok.version>
         <spring.security.version>3.3.4</spring.security.version>
+        <spring-kafka.version>3.2.4</spring-kafka.version>
+        <kafka-avro-serializer.version>7.6.0</kafka-avro-serializer.version>
+        <avro.version>1.11.3</avro.version>
     </properties>
 
     <dependencyManagement>
@@ -81,6 +84,21 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
                 <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>kafka-consumer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>kafka-producer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>kafka-config-data</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
