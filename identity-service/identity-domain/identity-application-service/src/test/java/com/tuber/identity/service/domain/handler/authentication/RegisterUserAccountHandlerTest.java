@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -58,8 +59,8 @@ public class RegisterUserAccountHandlerTest {
     @Test
     void registerUserAccountSuccessfully() {
         ApiResponse<RegisterUserAccountResponseData> response = registerUserAccountHandler.register(registerUserAccountCommand);
-        assert response.getCode().equals(IdentityResponseCode.SUCCESS_RESPONSE.getCode());
-        assert response.getData().getAccessToken().equals("access-token");
-        assert response.getData().getRefreshToken().equals("refresh-token");
+        assertEquals(response.getCode(), IdentityResponseCode.SUCCESS_RESPONSE.getCode());
+        assertEquals(response.getData().getAccessToken(), "access-token");
+        assertEquals(response.getData().getRefreshToken(), "refresh-token");
     }
 }
