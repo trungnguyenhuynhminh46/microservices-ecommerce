@@ -12,6 +12,8 @@
         <module>identity-service</module>
         <module>common</module>
         <module>infrastructure</module>
+        <module>profile-service</module>
+        <module>profile-service/profile-domain/profile-domain-core</module>
     </modules>
 
     <parent>
