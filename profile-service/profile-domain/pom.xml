@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>profile-application-service</module>
+        <module>profile-domain-core</module>
     </modules>
 
     <properties>
