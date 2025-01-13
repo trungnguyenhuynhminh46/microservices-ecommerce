@@ -1,4 +1,4 @@
-package com.tuber.identity.service.domain.validators;
+package com.tuber.application.validators;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

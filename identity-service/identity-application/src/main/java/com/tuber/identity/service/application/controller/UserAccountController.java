@@ -1,9 +1,9 @@
 package com.tuber.identity.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
+import com.tuber.application.validators.ValidUUID;
 import com.tuber.identity.service.domain.dto.user.account.*;
 import com.tuber.identity.service.domain.ports.input.service.IdentityApplicationService;
-import com.tuber.identity.service.domain.validators.ValidUUID;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

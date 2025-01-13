@@ -16,6 +16,10 @@
             <groupId>com.tuber</groupId>
             <artifactId>profile-application-service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.tuber</groupId>
+            <artifactId>common-application</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

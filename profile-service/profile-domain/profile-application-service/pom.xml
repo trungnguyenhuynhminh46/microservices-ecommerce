@@ -16,6 +16,14 @@
             <groupId>com.tuber</groupId>
             <artifactId>profile-domain-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.tuber</groupId>
+            <artifactId>common-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.tuber</groupId>
+            <artifactId>common-application</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
