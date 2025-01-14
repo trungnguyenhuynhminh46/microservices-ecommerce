@@ -1,6 +1,7 @@
 package com.tuber.profile.service.domain.dto.user.profile;
 
 import com.tuber.application.validators.ValidDob;
+import com.tuber.application.validators.ValidUUID;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 public class CreateUserProfileCommand {
     @NotNull
     @NotBlank(message = "UserId is mandatory")
+    @ValidUUID
     String userId;
     @NotNull
     @NotBlank(message = "FirstName is mandatory")
