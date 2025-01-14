@@ -1,6 +1,6 @@
 package com.tuber.profile.service.domain.entity;
 
-import com.tuber.domain.entity.AggregateEntity;
+import com.tuber.domain.entity.AggregateRoot;
 import com.tuber.domain.valueobject.id.UniqueUUIDId;
 import com.tuber.profile.service.domain.constant.ProfileResponseCode;
 import com.tuber.profile.service.domain.exception.ProfileDomainException;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.UUID;
 
-public class UserProfile extends AggregateEntity<UniqueUUIDId> {
+public class UserProfile extends AggregateRoot<UniqueUUIDId> {
     private final int MIN_AGE = 16;
     private String userId;
     private String firstName;

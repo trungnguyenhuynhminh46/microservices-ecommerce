@@ -1,6 +1,6 @@
 package com.tuber.identity.service.domain.entity;
 
-import com.tuber.domain.entity.AggregateEntity;
+import com.tuber.domain.entity.AggregateRoot;
 import com.tuber.domain.valueobject.id.UniqueUUIDId;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
-public class UserAccount extends AggregateEntity<UniqueUUIDId> {
+public class UserAccount extends AggregateRoot<UniqueUUIDId> {
     private String username;
     private String email;
     private String password;
