@@ -28,8 +28,14 @@ public class UserProfileRepositoryImpl implements UserProfileRepository {
     }
 
     @Override
-    public Optional<UserProfile> findById(String userId) {
-        return userProfileNeo4jRepository.findById(userId)
+    public Optional<UserProfile> findById(String profileId) {
+        return userProfileNeo4jRepository.findById(profileId)
+                .map(userProfileNodeDataMapper::userProfileNodeToUserProfile);
+    }
+
+    @Override
+    public Optional<UserProfile> findByUserId(String userId) {
+        return userProfileNeo4jRepository.findByUserId(userId)
                 .map(userProfileNodeDataMapper::userProfileNodeToUserProfile);
     }
 }

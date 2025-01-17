@@ -7,7 +7,7 @@ import com.tuber.profile.service.domain.dto.user.profile.CreateUserProfileComman
 import com.tuber.profile.service.domain.dto.user.profile.UserProfileResponseData;
 import com.tuber.profile.service.domain.entity.UserProfile;
 import com.tuber.profile.service.domain.exception.ProfileDomainException;
-import com.tuber.profile.service.domain.helper.CommonHelper;
+import com.tuber.profile.service.domain.helper.ProfileCommonHelper;
 import com.tuber.profile.service.domain.mapper.UserProfileDataMapper;
 import com.tuber.profile.service.domain.ports.output.repository.UserProfileRepository;
 import lombok.AccessLevel;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserProfileHelper {
     UserProfileDataMapper userProfileDataMapper;
-    CommonHelper commonHelper;
+    ProfileCommonHelper profileCommonHelper;
     ProfileDomainService profileDomainService;
     UserProfileRepository userProfileRepository;
 
@@ -42,7 +42,8 @@ public class UserProfileHelper {
 
     public ApiResponse<UserProfileResponseData> persistUserProfile(CreateUserProfileCommand createUserProfileCommand) {
         UserProfile invalidatedUserProfile = userProfileDataMapper.createUserProfileCommandToUserProfile(createUserProfileCommand);
-        commonHelper.checkCityExists(invalidatedUserProfile.getCity());
+        profileCommonHelper.verifyIfUserIdExisted(invalidatedUserProfile);
+        profileCommonHelper.checkCityExists(invalidatedUserProfile.getCity());
         UserProfile userProfile = profileDomainService.validateAndInitializeUserProfile(invalidatedUserProfile);
         return ApiResponse.<UserProfileResponseData>builder()
                 .data(userProfileDataMapper.userProfileToUserProfileResponseData(saveUserProfile(userProfile)))

@@ -8,5 +8,6 @@ import java.util.Optional;
 @Repository
 public interface UserProfileRepository {
     UserProfile save(UserProfile userProfile);
-    Optional<UserProfile> findById(String userId);
+    Optional<UserProfile> findById(String profileId);
+    Optional<UserProfile> findByUserId(String userId);
 }
