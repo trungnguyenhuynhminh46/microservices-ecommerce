@@ -8,6 +8,11 @@ public class ResponseCode extends ResponseCodeBase {
             new ResponseCode(9999, "Uncategorized error");
     public static final ResponseCode VALIDATION_ERROR =
             new ResponseCode(1001, "Validation error");
+    public static final ResponseCode INVALID_REQUEST_PARAM_VALUE =
+            new ResponseCode(1002, "Invalid request parameter value");
+    public static final ResponseCode INVALID_REQUEST_BODY =
+            new ResponseCode(1003, "Invalid request body");
+
     protected String code;
     protected String message;
 

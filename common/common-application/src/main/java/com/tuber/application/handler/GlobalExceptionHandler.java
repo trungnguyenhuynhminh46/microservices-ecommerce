@@ -1,17 +1,21 @@
 package com.tuber.application.handler;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.tuber.domain.exception.DomainException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import com.tuber.domain.constant.ResponseCode;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -88,6 +92,26 @@ public class GlobalExceptionHandler {
         return ApiResponse.builder()
                 .code(ResponseCode.UNCATEGORIZED_EXCEPTION.getCode())
                 .message(exception.getMessage())
+                .build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
+        Throwable cause = ex.getCause();
+        if (cause instanceof InvalidFormatException invalidFormatException) {
+            String value = invalidFormatException.getValue().toString();
+            String targetType = invalidFormatException.getTargetType().getSimpleName();
+            String errorMessage = String.format("Can not parse '%s' to %s.", value, targetType);
+            return ApiResponse.builder()
+                    .code(ResponseCode.INVALID_REQUEST_PARAM_VALUE.getCode())
+                    .message(errorMessage)
+                    .build();
+        }
+        return ApiResponse.builder()
+                .code(ResponseCode.INVALID_REQUEST_BODY.getCode())
+                .message(ResponseCode.INVALID_REQUEST_PARAM_VALUE.getMessage())
                 .build();
     }
 }
