@@ -2,12 +2,19 @@ package com.tuber.profile.service.domain.helper;
 
 import com.tuber.profile.service.domain.constant.ProfileResponseCode;
 import com.tuber.profile.service.domain.exception.ProfileDomainException;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Slf4j
+@Component
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommonHelper {
     public List<String> getProvincesList() {
         return List.of(
