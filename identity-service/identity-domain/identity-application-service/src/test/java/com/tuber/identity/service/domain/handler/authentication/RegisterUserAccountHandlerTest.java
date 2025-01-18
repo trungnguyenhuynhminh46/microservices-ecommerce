@@ -81,6 +81,6 @@ public class RegisterUserAccountHandlerTest {
         assertEquals(response.getCode(), IdentityResponseCode.SUCCESS_RESPONSE.getCode());
         assertEquals(response.getData().getAccessToken(), "access-token");
         assertEquals(response.getData().getRefreshToken(), "refresh-token");
-        verify(profileServiceClient, times(1)).createProfile(createUserProfileCommand);
+        verify(profileServiceClient, times(1)).createUserProfile(createUserProfileCommand);
     }
 }

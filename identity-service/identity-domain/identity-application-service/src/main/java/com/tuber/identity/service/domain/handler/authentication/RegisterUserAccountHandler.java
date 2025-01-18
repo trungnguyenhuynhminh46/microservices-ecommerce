@@ -40,7 +40,7 @@ public class RegisterUserAccountHandler {
     public ApiResponse<RegisterUserAccountResponseData> register(RegisterUserAccountCommand registerUserAccountCommand) {
         UserAccountCreatedEvent userAccountCreatedEvent = createUserAccountHelper.persistUserAccount(userDataMapper.registerUserAccountCommandToCreateUserAccountCommand(registerUserAccountCommand));
 
-        profileServiceClient.createProfile(profileServiceDataMapper.registerUserAccountCommandToCreateUserProfileCommand(registerUserAccountCommand, userAccountCreatedEvent.getUserAccount().getUserId()));
+        profileServiceClient.createUserProfile(profileServiceDataMapper.registerUserAccountCommandToCreateUserProfileCommand(registerUserAccountCommand, userAccountCreatedEvent.getUserAccount().getUserId()));
 
         log.info("User account is created with id: {}", userAccountCreatedEvent.getUserAccount().getUserId());
         UserAccount userAccount = userAccountCreatedEvent.getUserAccount();

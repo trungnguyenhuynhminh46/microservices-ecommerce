@@ -80,6 +80,6 @@ public class CreateUserAccountHandlerTest {
         ApiResponse<CreateUserAccountResponseData> response = createUserAccountHandler.createUserAccount(createUserAccountCommand);
         assertEquals(response.getCode(), IdentityResponseCode.SUCCESS_RESPONSE.getCode());
         assertEquals(response.getData(), createUserAccountResponseData);
-        verify(profileServiceClient, times(1)).createProfile(createUserProfileCommand);
+        verify(profileServiceClient, times(1)).createUserProfile(createUserProfileCommand);
     }
 }
