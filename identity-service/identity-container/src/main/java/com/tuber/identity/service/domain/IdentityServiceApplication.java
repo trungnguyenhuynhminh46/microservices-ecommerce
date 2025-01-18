@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Slf4j
-@EnableFeignClients
+@EnableFeignClients(basePackages = "com.tuber.identity.service.domain.ports.output.http.client")
 @EnableJpaRepositories(basePackages = {"com.tuber.identity.service.dataaccess", "com.tuber.dataaccess"})
 @EntityScan(basePackages = {"com.tuber.identity.service.dataaccess", "com.tuber.dataaccess"})
 @SpringBootApplication(scanBasePackages = "com.tuber")
