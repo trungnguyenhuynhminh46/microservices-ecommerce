@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "profile-service", url = "${profile-service.url}")
 public interface ProfileServiceClient {
-    @PostMapping(value = "/internal", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/internal", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<ApiResponse<UserProfileResponseData>> createUserProfile(@RequestBody CreateUserProfileCommand command);
 }
