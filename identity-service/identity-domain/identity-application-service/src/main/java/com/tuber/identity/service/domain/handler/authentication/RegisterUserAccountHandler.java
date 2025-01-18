@@ -9,6 +9,8 @@ import com.tuber.identity.service.domain.event.UserAccountCreatedEvent;
 import com.tuber.identity.service.domain.helper.user.account.CreateUserAccountHelper;
 import com.tuber.identity.service.domain.helper.authentication.JwtTokenHelper;
 import com.tuber.identity.service.domain.mapper.UserDataMapper;
+import com.tuber.identity.service.domain.mapper.http.client.ProfileServiceDataMapper;
+import com.tuber.identity.service.domain.ports.output.http.client.ProfileServiceClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,6 +25,8 @@ public class RegisterUserAccountHandler {
     CreateUserAccountHelper createUserAccountHelper;
     JwtTokenHelper jwtTokenHelper;
     UserDataMapper userDataMapper;
+    ProfileServiceClient profileServiceClient;
+    ProfileServiceDataMapper profileServiceDataMapper;
 
     private RegisterUserAccountResponseData buildResponseData(UserAccount userAccount) {
         String accessToken = jwtTokenHelper.generateJwtAccessToken(userAccount);
@@ -35,6 +39,9 @@ public class RegisterUserAccountHandler {
 
     public ApiResponse<RegisterUserAccountResponseData> register(RegisterUserAccountCommand registerUserAccountCommand) {
         UserAccountCreatedEvent userAccountCreatedEvent = createUserAccountHelper.persistUserAccount(userDataMapper.registerUserAccountCommandToCreateUserAccountCommand(registerUserAccountCommand));
+
+        profileServiceClient.createProfile(profileServiceDataMapper.registerUserAccountCommandToCreateUserProfileCommand(registerUserAccountCommand, userAccountCreatedEvent.getUserAccount().getUserId()));
+
         log.info("User account is created with id: {}", userAccountCreatedEvent.getUserAccount().getUserId());
         UserAccount userAccount = userAccountCreatedEvent.getUserAccount();
 
