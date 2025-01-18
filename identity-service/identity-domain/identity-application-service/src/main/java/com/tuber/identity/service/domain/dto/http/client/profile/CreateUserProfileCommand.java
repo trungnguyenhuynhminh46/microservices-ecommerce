@@ -1,8 +1,10 @@
-package com.tuber.identity.service.domain.dto.user.account;
+package com.tuber.identity.service.domain.dto.http.client.profile;
 
 import com.tuber.application.validators.ValidDob;
 import com.tuber.application.validators.ValidUUID;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,24 +17,11 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CreateUserAccountCommand {
+public class CreateUserProfileCommand {
     @NotNull
-    @NotBlank(message = "Username is mandatory")
-    @Size(min = 6, message = "Username must be at least 6 characters long")
-    String username;
-
-    @NotNull
-    @NotBlank(message = "Email is mandatory")
-    @Size(min = 6, message = "Email must be at least 6 characters long")
-    @Email(message = "Invalid email format")
-    String email;
-
-    @NotNull
-    @NotBlank(message = "Password is mandatory")
-    @Size(min = 8, message = "Password must be at least 8 characters long")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\\d@$!%*?&]{8,}$",
-            message = "Password must contain at least one uppercase letter and one lowercase letter")
-    private String password;
+    @NotBlank(message = "UserId is mandatory")
+    @ValidUUID
+    String userId;
 
     @NotNull
     @NotBlank(message = "FirstName is mandatory")

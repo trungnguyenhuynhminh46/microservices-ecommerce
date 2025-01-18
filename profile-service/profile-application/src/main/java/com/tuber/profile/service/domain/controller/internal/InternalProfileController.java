@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping(value = "/internal/profile", produces = "application/vnd.api.v1+json")
+@RequestMapping(value = "/profile/internal", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class InternalProfileController {

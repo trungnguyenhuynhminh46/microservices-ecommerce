@@ -7,6 +7,8 @@ import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountRespo
 import com.tuber.identity.service.domain.event.UserAccountCreatedEvent;
 import com.tuber.identity.service.domain.helper.user.account.CreateUserAccountHelper;
 import com.tuber.identity.service.domain.mapper.UserDataMapper;
+import com.tuber.identity.service.domain.mapper.http.client.ProfileServiceDataMapper;
+import com.tuber.identity.service.domain.ports.output.http.client.ProfileServiceClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,16 +22,19 @@ import org.springframework.stereotype.Component;
 public class CreateUserAccountHandler {
     CreateUserAccountHelper createUserAccountHelper;
     UserDataMapper userDataMapper;
+    ProfileServiceClient profileServiceClient;
+    ProfileServiceDataMapper profileServiceDataMapper;
 
     public ApiResponse<CreateUserAccountResponseData> createUserAccount(CreateUserAccountCommand createUserAccountCommand) {
         UserAccountCreatedEvent userAccountCreatedEvent = createUserAccountHelper.persistUserAccount(createUserAccountCommand);
+
+        profileServiceClient.createProfile(profileServiceDataMapper.createUserAccountCommandToCreateUserProfileCommand(createUserAccountCommand, userAccountCreatedEvent.getUserAccount().getUserId()));
+
         log.info("User account is created with id: {}", userAccountCreatedEvent.getUserAccount().getUserId());
         CreateUserAccountResponseData createUserAccountResponseData = userDataMapper.userAccountEntityToCreateUserAccountResponseData(userAccountCreatedEvent.getUserAccount());
-
         // Persist to outbox table if needed
 
         log.info("Returning CreateUserAccountResponseData with user account id: {}", userAccountCreatedEvent.getUserAccount().getId());
-
         return ApiResponse.<CreateUserAccountResponseData>builder()
                 .code(IdentityResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("User account created successfully")
