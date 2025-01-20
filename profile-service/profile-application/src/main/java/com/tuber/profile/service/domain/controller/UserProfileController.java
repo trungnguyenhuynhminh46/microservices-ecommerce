@@ -1,6 +1,5 @@
 package com.tuber.profile.service.domain.controller;
 
-
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.application.validators.ValidUUID;
 import com.tuber.profile.service.domain.dto.user.profile.UserProfileResponseData;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping(value= "/profile", produces = "application/vnd.api.v1+json")
+@RequestMapping(value= "/${service.name}/users", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserProfileController {

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/auth", produces = "application/vnd.api.v1+json")
+@RequestMapping(value = "/${service.name}/auth", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final IdentityApplicationService identityApplicationService;

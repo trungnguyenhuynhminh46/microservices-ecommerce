@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping(value = "/users", produces = "application/vnd.api.v1+json")
+@RequestMapping(value = "/${service.name}/users", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor
 public class UserAccountController {
     private final IdentityApplicationService identityApplicationService;

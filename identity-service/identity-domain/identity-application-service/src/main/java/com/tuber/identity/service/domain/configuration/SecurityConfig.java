@@ -3,6 +3,7 @@ package com.tuber.identity.service.domain.configuration;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -21,9 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfig {
-    private final String[] PUBLIC_ENDPOINTS = {
-            "/auth/register", "/auth/login"
-    };
+    PublicEndpointsProducer publicEndpointsProducer;
     CustomJwtDecoder customJwtDecoder;
     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -32,7 +31,7 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS)
+                                .requestMatchers(HttpMethod.POST, publicEndpointsProducer.getPublicEndpoints())
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

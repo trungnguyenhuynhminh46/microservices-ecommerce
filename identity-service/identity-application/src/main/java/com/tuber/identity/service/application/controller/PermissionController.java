@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping(value = "/permissions", produces = "application/vnd.api.v1+json")
+@RequestMapping(value = "/${service.name}/permissions", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor
 public class PermissionController {
     private final IdentityApplicationService identityApplicationService;
