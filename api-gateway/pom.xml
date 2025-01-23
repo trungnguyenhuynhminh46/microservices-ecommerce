@@ -12,7 +12,7 @@
 	<artifactId>api-gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>api-gateway</name>
-	<description>A api-gatewya</description>
+	<description>A api-gateway</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -29,11 +29,23 @@
 	<properties>
 		<java.version>21</java.version>
 		<spring-cloud.version>2024.0.0</spring-cloud.version>
+		<projectlombok-lombok.version>1.18.30</projectlombok-lombok.version>
+		<netty.version>4.1.117.Final</netty.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${projectlombok-lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
 		</dependency>
 
 		<dependency>
@@ -55,6 +67,11 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-all</artifactId>
+				<version>${netty.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

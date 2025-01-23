@@ -19,7 +19,8 @@ public class PublicEndpointsProducer {
     public void init() {
         String[] baseRoutes = {
                 "/auth/register",
-                "/auth/login"
+                "/auth/login",
+                "/auth/introspect"
         };
 
         publicEndpoints = Arrays.stream(baseRoutes)
