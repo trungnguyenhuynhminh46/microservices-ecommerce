@@ -12,6 +12,8 @@ public class ResponseCode extends ResponseCodeBase {
             new ResponseCode(1002, "Invalid request parameter value");
     public static final ResponseCode INVALID_REQUEST_BODY =
             new ResponseCode(1003, "Invalid request body");
+    public static final ResponseCode UNAUTHENTICATED =
+            new ResponseCode(1004, "You are not authenticated");
 
     protected String code;
     protected String message;

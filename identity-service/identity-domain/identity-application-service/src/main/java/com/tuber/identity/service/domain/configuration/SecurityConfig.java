@@ -1,12 +1,13 @@
 package com.tuber.identity.service.domain.configuration;
 
+import com.tuber.application.configuration.CustomJwtDecoder;
+import com.tuber.application.configuration.JwtAuthenticationEntryPoint;
+import com.tuber.application.configuration.PublicEndpointsProducer;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

@@ -1,4 +1,4 @@
-package com.tuber.identity.service.domain.configuration;
+package com.tuber.application.configuration;
 
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;

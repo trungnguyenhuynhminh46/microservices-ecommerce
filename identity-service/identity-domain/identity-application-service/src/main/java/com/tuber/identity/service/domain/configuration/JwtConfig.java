@@ -10,10 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-
-import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 public class JwtConfig {
@@ -38,13 +34,4 @@ public class JwtConfig {
             throw new IdentityDomainException(IdentityResponseCode.INVALID_SIGNER_KEY, HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
     }
-
-    @Bean
-    NimbusJwtDecoder nimbusJwtDecoder() {
-        SecretKeySpec secretKeySpec = new SecretKeySpec(SIGNER_KEY.getBytes(), "HS512");
-        return NimbusJwtDecoder.withSecretKey(secretKeySpec)
-                .macAlgorithm(MacAlgorithm.HS512)
-                .build();
-    }
-
 }
