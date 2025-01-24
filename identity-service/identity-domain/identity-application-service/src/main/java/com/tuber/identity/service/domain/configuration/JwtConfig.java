@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+
+import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 public class JwtConfig {
