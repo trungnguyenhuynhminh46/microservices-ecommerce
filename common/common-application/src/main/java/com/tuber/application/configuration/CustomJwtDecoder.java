@@ -1,6 +1,9 @@
 package com.tuber.application.configuration;
 
 import com.nimbusds.jwt.SignedJWT;
+import com.tuber.domain.constant.ResponseCode;
+import com.tuber.domain.exception.DomainException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtException;
@@ -12,15 +15,10 @@ import java.time.Instant;
 @Component
 public class CustomJwtDecoder implements JwtDecoder {
     private Instant convertToInstant(String time) {
-        if (time == null || time.isEmpty()) {
-            throw new IllegalArgumentException("Input time cannot be null or empty");
-        }
-
         try {
-            long timestamp = Long.parseLong(time);
-            return Instant.ofEpochSecond(timestamp);
+            return (time == null || time.isEmpty()) ? null : Instant.ofEpochSecond(Long.parseLong(time));
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid time format, must be a Unix timestamp: " + time, e);
+            return null;
         }
     }
 
@@ -38,7 +36,7 @@ public class CustomJwtDecoder implements JwtDecoder {
             );
 
         } catch (ParseException e) {
-            throw new JwtException("Invalid token");
+            throw new DomainException(ResponseCode.INVALID_TOKEN, HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
     }
 }
