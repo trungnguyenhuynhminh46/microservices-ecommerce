@@ -8,13 +8,16 @@ import com.tuber.api_gateway.service.IdentityService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -30,6 +33,46 @@ import java.util.List;
 public class AuthenticationFilter implements GlobalFilter, Ordered {
     IdentityService identityService;
     ObjectMapper objectMapper;
+
+    @NonFinal
+    private String[] publicEndpoints = {
+            "/identity/auth/register",
+            "/identity/auth/login",
+            "/identity/auth/introspect"
+    };
+
+    @Value("${app.api-prefix}")
+    @NonFinal
+    private String apiPrefix;
+
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        log.info("AuthenticationFilter was called");
+        if (isPublicEndpoint(exchange.getRequest())) {
+            return chain.filter(exchange);
+        }
+
+        String token = getAuthorizationToken(exchange);
+        if (token == null) {
+            return unauthenticated(exchange.getResponse());
+        }
+        return handleIntrospectionResponse(exchange, chain, token);
+    }
+
+    @Override
+    public int getOrder() {
+        return -1;
+    }
+
+    Mono<Void> unauthenticated(ServerHttpResponse response) {
+        ApiResponse<Object> apiResponse = createUnauthenticatedApiResponse();
+        String body = convertApiResponseToJson(apiResponse);
+
+        response.setStatusCode(HttpStatus.UNAUTHORIZED);
+        response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+
+        return response.writeWith(Mono.just(response.bufferFactory().wrap(body.getBytes())));
+    }
 
     private Mono<Void> handleIntrospectionResponse(ServerWebExchange exchange, GatewayFilterChain chain, String token) {
         return identityService.introspect(token).flatMap(introspectResponse -> {
@@ -66,28 +109,13 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         }
     }
 
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info("AuthenticationFilter was called");
-        String token = getAuthorizationToken(exchange);
-        if(token == null) {
-            return unauthenticated(exchange.getResponse());
+    private boolean isPublicEndpoint(ServerHttpRequest request) {
+        String path = request.getURI().getPath();
+        for (String publicEndpoint : publicEndpoints) {
+            if (path.matches(apiPrefix + publicEndpoint)) {
+                return true;
+            }
         }
-        return handleIntrospectionResponse(exchange, chain, token);
-    }
-
-    @Override
-    public int getOrder() {
-        return -1;
-    }
-
-    Mono<Void> unauthenticated(ServerHttpResponse response) {
-        ApiResponse<Object> apiResponse = createUnauthenticatedApiResponse();
-        String body = convertApiResponseToJson(apiResponse);
-
-        response.setStatusCode(HttpStatus.UNAUTHORIZED);
-        response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-
-        return response.writeWith(Mono.just(response.bufferFactory().wrap(body.getBytes())));
+        return false;
     }
 }

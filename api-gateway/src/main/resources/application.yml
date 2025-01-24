@@ -14,7 +14,10 @@ spring:
         - id: identity_service
           uri: http://localhost:8081
           predicates:
-            - Path=${app.api-prefix}/identity/**
+            - Path=${app.api-prefix}/identity/auth/**,
+              ${app.api-prefix}/identity/users/**,
+              ${app.api-prefix}/identity/roles/**,
+              ${app.api-prefix}/identity/permissions/**
           filters:
             - StripPrefix=1
         - id: profile_service
