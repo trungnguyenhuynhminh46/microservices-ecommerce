@@ -8,3 +8,7 @@ spring:
     authentication:
       username: neo4j
       password: password
+jwt:
+  signerKey: oZ5aUBF9OoDbUccFmwnGp5mVwgDB8E4eU1/CtbpByh6A1r3HFlb6RBaUdTGKoy+PksCqtxsEMTVoTccL/SjO5Q==
+  access-token-lifetime: 3600 # in second
+  refresh-token-lifetime: 36000 # in seconds
