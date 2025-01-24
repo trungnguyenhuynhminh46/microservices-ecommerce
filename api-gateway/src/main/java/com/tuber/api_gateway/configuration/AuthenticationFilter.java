@@ -31,29 +31,49 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     IdentityService identityService;
     ObjectMapper objectMapper;
 
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info("AuthenticationFilter was called");
-        // Get token from authorization header
-        List<String> authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
-        if (CollectionUtils.isEmpty(authHeader)) {
-            log.error("No authorization header found");
-            return unauthenticated(exchange.getResponse());
-        }
-        // Verify token
-        String token = authHeader.getFirst().replace("Bearer ", "");
-        log.info("Authentication token: {}", token);
-        identityService.introspect(token).flatMap(introspectResponse -> {
+    private Mono<Void> handleIntrospectionResponse(ServerWebExchange exchange, GatewayFilterChain chain, String token) {
+        return identityService.introspect(token).flatMap(introspectResponse -> {
             if (introspectResponse.getBody().getData().isActive()) {
                 return chain.filter(exchange);
             }
             return unauthenticated(exchange.getResponse());
         });
+    }
 
-        // Delegate identity service
+    private String getAuthorizationToken(ServerWebExchange exchange) {
+        List<String> authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
+        if (CollectionUtils.isEmpty(authHeader)) {
+            log.error("No authorization header found");
+            return null;
+        }
+        String token = authHeader.getFirst().replace("Bearer ", "");
+        log.info("Authentication token: {}", token);
+        return token;
+    }
 
-        // Go to next filter
-        return chain.filter(exchange);
+    private ApiResponse<Object> createUnauthenticatedApiResponse() {
+        return ApiResponse.builder()
+                .code(ResponseCode.UNAUTHENTICATED.getCode())
+                .message(ResponseCode.UNAUTHENTICATED.getMessage())
+                .build();
+    }
+
+    private String convertApiResponseToJson(ApiResponse<Object> apiResponse) {
+        try {
+            return objectMapper.writeValueAsString(apiResponse);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        log.info("AuthenticationFilter was called");
+        String token = getAuthorizationToken(exchange);
+        if(token == null) {
+            return unauthenticated(exchange.getResponse());
+        }
+        return handleIntrospectionResponse(exchange, chain, token);
     }
 
     @Override
@@ -62,22 +82,12 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     }
 
     Mono<Void> unauthenticated(ServerHttpResponse response) {
-        ApiResponse<?> apiResponse = ApiResponse.builder()
-                .code(ResponseCode.UNAUTHENTICATED.getCode())
-                .message(ResponseCode.UNAUTHENTICATED.getMessage())
-                .build();
-
-        String body = null;
-        try {
-            body = objectMapper.writeValueAsString(apiResponse);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        ApiResponse<Object> apiResponse = createUnauthenticatedApiResponse();
+        String body = convertApiResponseToJson(apiResponse);
 
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
-        response.setStatusCode(HttpStatus.UNAUTHORIZED);
         return response.writeWith(Mono.just(response.bufferFactory().wrap(body.getBytes())));
     }
 }
