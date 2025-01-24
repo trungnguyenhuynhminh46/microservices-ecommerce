@@ -69,7 +69,8 @@ public class JwtTokenHelper {
 
         JWTClaimsSet.Builder claimsSetBuilder = new JWTClaimsSet.Builder()
                 .subject(subject)
-                .issuer("tuber.com")
+                .issuer(issuer)
+                .issueTime(new Date())
                 .expirationTime(new Date(
                         Instant.now().plus(durationInSeconds, ChronoUnit.SECONDS).toEpochMilli()
                 ));
@@ -78,12 +79,10 @@ public class JwtTokenHelper {
             if (claimParts.length == 2) {
                 claimsSetBuilder.claim(claimParts[0], claimParts[1]);
             }
-
         });
         JWTClaimsSet claimsSet = claimsSetBuilder.build();
 
-        Payload payload = new Payload(claimsSet.toJSONObject());
-        JWSObject jwsObject = new JWSObject(header, payload);
+        JWSObject jwsObject = new JWSObject(header, new Payload(claimsSet.toJSONObject()));
 
         try {
             jwsObject.sign(macSigner);
