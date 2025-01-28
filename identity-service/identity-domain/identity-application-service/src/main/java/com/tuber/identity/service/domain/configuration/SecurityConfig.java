@@ -26,7 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfig {
     @Value("${public-endpoints}")
-    private String[] publicEndpoints;
+    private String[] PUBLIC_ENDPOINTS;
     CustomJwtDecoder customJwtDecoder;
     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -36,7 +36,7 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers(HttpMethod.POST, publicEndpoints)
+                                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS)
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
