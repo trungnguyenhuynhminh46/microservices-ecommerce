@@ -4,6 +4,7 @@ import com.tuber.application.handler.ApiResponse;
 import com.tuber.profile.service.domain.ProfileDomainService;
 import com.tuber.profile.service.domain.constant.ProfileResponseCode;
 import com.tuber.profile.service.domain.dto.user.profile.CreateUserProfileCommand;
+import com.tuber.profile.service.domain.dto.user.profile.QueryUserProfilesResponseData;
 import com.tuber.profile.service.domain.dto.user.profile.UserProfileResponseData;
 import com.tuber.profile.service.domain.entity.UserProfile;
 import com.tuber.profile.service.domain.exception.ProfileDomainException;
@@ -37,6 +38,12 @@ public class UserProfileHelper {
         }
         return ApiResponse.<UserProfileResponseData>builder()
                 .data(userProfileDataMapper.userProfileToUserProfileResponseData(userProfile.get()))
+                .build();
+    }
+
+    public ApiResponse<QueryUserProfilesResponseData> getAllUserProfiles() {
+        return ApiResponse.<QueryUserProfilesResponseData>builder()
+                .data(userProfileDataMapper.userProfilesToQueryUserProfilesResponseData(userProfileRepository.findAll()))
                 .build();
     }
 

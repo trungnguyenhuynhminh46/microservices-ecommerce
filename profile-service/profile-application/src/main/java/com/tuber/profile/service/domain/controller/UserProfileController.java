@@ -2,6 +2,7 @@ package com.tuber.profile.service.domain.controller;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.application.validators.ValidUUID;
+import com.tuber.profile.service.domain.dto.user.profile.QueryUserProfilesResponseData;
 import com.tuber.profile.service.domain.dto.user.profile.UserProfileResponseData;
 import com.tuber.profile.service.domain.ports.input.service.ProfileApplicationService;
 import lombok.AccessLevel;
@@ -27,6 +28,13 @@ public class UserProfileController {
     ResponseEntity<ApiResponse<UserProfileResponseData>> getProfile(@PathVariable @ValidUUID String profileId) {
         log.info("Getting profile with id: {}", profileId);
         ApiResponse<UserProfileResponseData> response = profileApplicationService.getProfile(profileId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    ResponseEntity<ApiResponse<QueryUserProfilesResponseData>> getUserProfiles() {
+        log.info("Getting all user profiles");
+        ApiResponse<QueryUserProfilesResponseData> response = profileApplicationService.getAllUserProfiles();
         return ResponseEntity.ok(response);
     }
 }

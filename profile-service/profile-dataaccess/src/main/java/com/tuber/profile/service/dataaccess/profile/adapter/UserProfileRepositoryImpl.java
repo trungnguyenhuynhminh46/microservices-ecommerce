@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -37,5 +38,13 @@ public class UserProfileRepositoryImpl implements UserProfileRepository {
     public Optional<UserProfile> findByUserId(String userId) {
         return userProfileNeo4jRepository.findByUserId(userId)
                 .map(userProfileNodeDataMapper::userProfileNodeToUserProfile);
+    }
+
+    @Override
+    public List<UserProfile> findAll() {
+        return userProfileNeo4jRepository.findAll()
+                .stream()
+                .map(userProfileNodeDataMapper::userProfileNodeToUserProfile)
+                .toList();
     }
 }
