@@ -123,7 +123,7 @@ public class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
         return ApiResponse.builder()
                 .code(ResponseCode.AUTHORIZATION_DENIED.getCode())
-                .message(exception.getMessage())
+                .message(ResponseCode.AUTHORIZATION_DENIED.getMessage())
                 .build();
     }
 }

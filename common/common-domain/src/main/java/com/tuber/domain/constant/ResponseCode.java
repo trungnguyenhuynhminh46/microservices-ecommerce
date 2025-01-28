@@ -17,7 +17,7 @@ public class ResponseCode extends ResponseCodeBase {
     public static final ResponseCode INVALID_TOKEN =
             new ResponseCode(1005, "Invalid token");
     public static final ResponseCode AUTHORIZATION_DENIED =
-            new ResponseCode(1006, "Authorization denied");
+            new ResponseCode(1006, "You need permission to perform this action");
 
     protected String code;
     protected String message;
