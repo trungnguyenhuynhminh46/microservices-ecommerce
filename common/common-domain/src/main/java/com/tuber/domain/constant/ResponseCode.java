@@ -16,6 +16,8 @@ public class ResponseCode extends ResponseCodeBase {
             new ResponseCode(1004, "You are not authenticated");
     public static final ResponseCode INVALID_TOKEN =
             new ResponseCode(1005, "Invalid token");
+    public static final ResponseCode AUTHORIZATION_DENIED =
+            new ResponseCode(1006, "Authorization denied");
 
     protected String code;
     protected String message;

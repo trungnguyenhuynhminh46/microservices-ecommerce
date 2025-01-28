@@ -9,6 +9,7 @@ import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -112,6 +113,17 @@ public class GlobalExceptionHandler {
         return ApiResponse.builder()
                 .code(ResponseCode.INVALID_REQUEST_BODY.getCode())
                 .message(ResponseCode.INVALID_REQUEST_PARAM_VALUE.getMessage())
+                .build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = AuthorizationDeniedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<Object> handleAuthorizationDeniedException(AuthorizationDeniedException exception) {
+        log.error(exception.getMessage(), exception);
+        return ApiResponse.builder()
+                .code(ResponseCode.AUTHORIZATION_DENIED.getCode())
+                .message(exception.getMessage())
                 .build();
     }
 }
