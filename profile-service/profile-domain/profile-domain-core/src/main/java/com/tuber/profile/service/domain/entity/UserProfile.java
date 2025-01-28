@@ -1,7 +1,7 @@
 package com.tuber.profile.service.domain.entity;
 
 import com.tuber.domain.entity.AggregateRoot;
-import com.tuber.domain.valueobject.id.UniqueUUIDId;
+import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.profile.service.domain.constant.ProfileResponseCode;
 import com.tuber.profile.service.domain.exception.ProfileDomainException;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.UUID;
 
-public class UserProfile extends AggregateRoot<UniqueUUIDId> {
+public class UserProfile extends AggregateRoot<UniqueUUID> {
     private final int MIN_AGE = 16;
     private String userId;
     private String firstName;
@@ -32,12 +32,12 @@ public class UserProfile extends AggregateRoot<UniqueUUIDId> {
     }
 
     public void setId(UUID id) {
-        super.setId(new UniqueUUIDId(id));
+        super.setId(new UniqueUUID(id));
     }
 
 
     public static final class Builder {
-        private UniqueUUIDId id;
+        private UniqueUUID id;
         private String userId;
         private String firstName;
         private String lastName;
@@ -47,7 +47,7 @@ public class UserProfile extends AggregateRoot<UniqueUUIDId> {
         private Builder() {
         }
 
-        public Builder id(UniqueUUIDId val) {
+        public Builder id(UniqueUUID val) {
             id = val;
             return this;
         }
@@ -109,7 +109,7 @@ public class UserProfile extends AggregateRoot<UniqueUUIDId> {
     }
 
     public UserProfile initialize() {
-        setId(new UniqueUUIDId(UUID.randomUUID()));
+        setId(new UniqueUUID(UUID.randomUUID()));
         return this;
     }
 

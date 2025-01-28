@@ -1,7 +1,7 @@
 package com.tuber.identity.service.domain.entity;
 
 import com.tuber.domain.entity.AggregateRoot;
-import com.tuber.domain.valueobject.id.UniqueUUIDId;
+import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.identity.service.domain.constant.IdentityResponseCode;
 import com.tuber.identity.service.domain.exception.IdentityDomainException;
 
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
-public class UserAccount extends AggregateRoot<UniqueUUIDId> {
+public class UserAccount extends AggregateRoot<UniqueUUID> {
     private String username;
     private String email;
     private String password;
@@ -19,7 +19,7 @@ public class UserAccount extends AggregateRoot<UniqueUUIDId> {
     private LocalDate updatedAt;
 
     public void setId(UUID id) {
-        super.setId(new UniqueUUIDId(id));
+        super.setId(new UniqueUUID(id));
     }
 
     private UserAccount(Builder builder) {
@@ -98,7 +98,7 @@ public class UserAccount extends AggregateRoot<UniqueUUIDId> {
     }
 
     public static final class Builder {
-        private UniqueUUIDId id;
+        private UniqueUUID id;
         private String username;
         private String email;
         private String password;
@@ -110,13 +110,13 @@ public class UserAccount extends AggregateRoot<UniqueUUIDId> {
         private Builder() {
         }
 
-        public Builder id(UniqueUUIDId val) {
+        public Builder id(UniqueUUID val) {
             id = val;
             return this;
         }
 
         public Builder id(UUID val) {
-            id = new UniqueUUIDId(val);
+            id = new UniqueUUID(val);
             return this;
         }
 
@@ -171,7 +171,7 @@ public class UserAccount extends AggregateRoot<UniqueUUIDId> {
     }
 
     public void initializeUserAccount() {
-        setId(new UniqueUUIDId(UUID.randomUUID()));
+        setId(new UniqueUUID(UUID.randomUUID()));
         setCreatedAt(LocalDate.now());
         setUpdatedAt(LocalDate.now());
     }
