@@ -16,6 +16,9 @@ jwt:
   signerKey: oZ5aUBF9OoDbUccFmwnGp5mVwgDB8E4eU1/CtbpByh6A1r3HFlb6RBaUdTGKoy+PksCqtxsEMTVoTccL/SjO5Q==
   access-token-lifetime: 3600 # in second
   refresh-token-lifetime: 36000 # in seconds
-
 profile-service:
   url: http://localhost:8082/profile
+public-endpoints:
+  /${service.name}/auth/login, 
+  /${service.name}/auth/register, 
+  /${service.name}/auth/introspect

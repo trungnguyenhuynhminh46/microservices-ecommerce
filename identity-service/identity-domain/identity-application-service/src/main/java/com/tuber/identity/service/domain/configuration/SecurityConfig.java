@@ -2,10 +2,11 @@ package com.tuber.identity.service.domain.configuration;
 
 import com.tuber.application.configuration.CustomJwtDecoder;
 import com.tuber.application.configuration.JwtAuthenticationEntryPoint;
-import com.tuber.application.configuration.PublicEndpointsProducer;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,22 +18,25 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfig {
-    PublicEndpointsProducer publicEndpointsProducer;
+    @Value("${public-endpoints}")
+    private String[] publicEndpoints;
     CustomJwtDecoder customJwtDecoder;
     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers(HttpMethod.POST, publicEndpointsProducer.getPublicEndpoints())
+                                .requestMatchers(HttpMethod.POST, publicEndpoints)
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
