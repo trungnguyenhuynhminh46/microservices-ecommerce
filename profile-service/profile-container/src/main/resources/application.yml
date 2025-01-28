@@ -8,3 +8,5 @@ spring:
     authentication:
       username: neo4j
       password: password
+public-endpoints:
+  /${service.name}/internal
