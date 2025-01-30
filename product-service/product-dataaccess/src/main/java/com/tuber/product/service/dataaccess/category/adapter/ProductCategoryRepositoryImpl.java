@@ -1,0 +1,32 @@
+package com.tuber.product.service.dataaccess.category.adapter;
+
+import com.tuber.product.service.dataaccess.category.mapper.ProductCategoryJpaMapper;
+import com.tuber.product.service.dataaccess.category.repository.ProductCategoryJpaRepository;
+import com.tuber.product.service.domain.entity.ProductCategory;
+import com.tuber.product.service.domain.ports.output.repository.ProductCategoryRepository;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
+
+@Component
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class ProductCategoryRepositoryImpl implements ProductCategoryRepository {
+    ProductCategoryJpaMapper productCategoryJpaMapper;
+    ProductCategoryJpaRepository productCategoryJpaRepository;
+
+    @Override
+    public ProductCategory save(ProductCategory productCategory) {
+        return productCategoryJpaMapper.productCategoryJpaEntityToProductCategoryEntity(
+                productCategoryJpaRepository.save(
+                        productCategoryJpaMapper.productCategoryEntityToProductCategoryJpaEntity(productCategory)
+                )
+        );
+    }
+
+    @Override
+    public Boolean existsByCode(String code) {
+        return productCategoryJpaRepository.existsById(code);
+    }
+}
