@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.tuber</groupId>
-            <artifactId>identity-application-service</artifactId>
+            <artifactId>product-application-service</artifactId>
         </dependency>
     </dependencies>
 
