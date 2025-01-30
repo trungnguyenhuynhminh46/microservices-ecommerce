@@ -10,6 +10,14 @@ public class ProductResponseCode extends ResponseCodeBase {
             new ProductResponseCode(9999, "Uncategorized error");
     public static final ProductResponseCode PRODUCT_IN_WRONG_STATE_FOR_INITIALIZATION =
             new ProductResponseCode(1001, "Product is in wrong state for initialization");
+    public static final ProductResponseCode PRODUCT_CATEGORY_IN_WRONG_STATE_FOR_INITIALIZATION =
+            new ProductResponseCode(1002, "Product category is in wrong state for initialization");
+    public static final ProductResponseCode PRODUCT_ATTRIBUTE_IN_WRONG_STATE_FOR_INITIALIZATION =
+            new ProductResponseCode(1003, "Product attribute is in wrong state for initialization");
+    public static final ProductResponseCode PRODUCT_CATEGORY_WITH_CODE_EXISTED =
+            new ProductResponseCode(1004, "Product category with code %s existed in the database");
+    public static final ProductResponseCode PRODUCT_CATEGORY_SAVE_FAILED =
+            new ProductResponseCode(1005, "Failed to save product category with code %s");
     protected ProductResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

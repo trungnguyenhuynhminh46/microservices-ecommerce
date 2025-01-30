@@ -2,8 +2,14 @@ package com.tuber.product.service.domain.entity;
 
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.id.UniqueStringId;
+import com.tuber.product.service.domain.constant.ProductResponseCode;
+import com.tuber.product.service.domain.exception.ProductDomainException;
 
+import java.text.Normalizer;
 import java.time.LocalDate;
+import java.util.Base64;
+import java.util.Locale;
+import java.util.UUID;
 
 public class ProductCategory extends BaseEntity<UniqueStringId> {
     private String name;
@@ -107,5 +113,33 @@ public class ProductCategory extends BaseEntity<UniqueStringId> {
         public ProductCategory build() {
             return new ProductCategory(this);
         }
+    }
+
+    public boolean isValidForInitialization() {
+        return getName() != null;
+    }
+
+    public void validateProductCategory() {
+        if(!isValidForInitialization()) {
+            throw new ProductDomainException(ProductResponseCode.PRODUCT_CATEGORY_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
+        }
+    }
+
+    public void initializeProductCategory() {
+        setCode(generateCode(getName()));
+        setCreatedAt(LocalDate.now());
+        setUpdatedAt(LocalDate.now());
+    }
+
+    public static String generateCode(String categoryName) {
+        String slug = toSlug(categoryName);
+        String base64 = Base64.getEncoder().encodeToString(categoryName.getBytes());
+        return slug + "-" + base64;
+    }
+
+    private static String toSlug(String input) {
+        String nonWhitespace = input.trim().replaceAll("\\s+", "-");
+        String normalized = Normalizer.normalize(nonWhitespace, Normalizer.Form.NFD);
+        return normalized.replaceAll("[^\\w-]", "").toLowerCase(Locale.ENGLISH);
     }
 }
