@@ -5,16 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.tuber</groupId>
-        <artifactId>profile-service</artifactId>
+        <artifactId>product-service</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>profile-application</artifactId>
+    <artifactId>product-messaging</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.tuber</groupId>
-            <artifactId>profile-application-service</artifactId>
+            <artifactId>identity-application-service</artifactId>
         </dependency>
     </dependencies>
 

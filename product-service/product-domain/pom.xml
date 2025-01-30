@@ -5,17 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.tuber</groupId>
-        <artifactId>profile-service</artifactId>
+        <artifactId>product-service</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>profile-application</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.tuber</groupId>
-            <artifactId>profile-application-service</artifactId>
-        </dependency>
-    </dependencies>
+    <artifactId>product-domain</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>product-application-service</module>
+        <module>product-domain-core</module>
+    </modules>
 
 </project>

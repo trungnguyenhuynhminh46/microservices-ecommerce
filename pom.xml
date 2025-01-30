@@ -13,6 +13,7 @@
         <module>infrastructure</module>
         <module>profile-service</module>
         <module>identity-service</module>
+        <module>product-service</module>
     </modules>
 
     <parent>
@@ -43,6 +44,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Identity service           -->
             <dependency>
                 <groupId>com.tuber</groupId>
                 <artifactId>identity-application</artifactId>
@@ -68,6 +70,8 @@
                 <artifactId>identity-messaging</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <!-- Profile service           -->
             <dependency>
                 <groupId>com.tuber</groupId>
                 <artifactId>profile-application</artifactId>
@@ -94,6 +98,34 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <!-- Product service           -->
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>product-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>product-dataaccess</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>product-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>product-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>product-messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Common           -->
             <dependency>
                 <groupId>com.tuber</groupId>
                 <artifactId>common-domain</artifactId>
