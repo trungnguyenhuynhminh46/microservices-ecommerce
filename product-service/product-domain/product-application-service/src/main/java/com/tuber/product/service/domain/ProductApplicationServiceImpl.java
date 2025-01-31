@@ -3,6 +3,7 @@ package com.tuber.product.service.domain;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
 import com.tuber.product.service.domain.helper.category.CreateCategoryHelper;
+import com.tuber.product.service.domain.helper.category.DeleteCategoryHelper;
 import com.tuber.product.service.domain.helper.category.ReadCategoryHelper;
 import com.tuber.product.service.domain.helper.category.UpdateCategoryHelper;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
@@ -20,6 +21,7 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     CreateCategoryHelper createCategoryHelper;
     ReadCategoryHelper readCategoryHelper;
     UpdateCategoryHelper updateCategoryHelper;
+    DeleteCategoryHelper deleteCategoryHelper;
 
     @Override
     public ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
@@ -43,6 +45,6 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
 
     @Override
     public ApiResponse<ProductCategoryResponseData> deleteProductCategory(DeleteProductCategoryCommand deleteProductCategoryCommand) {
-        return null;
+        return deleteCategoryHelper.deleteProductCategory(deleteProductCategoryCommand);
     }
 }

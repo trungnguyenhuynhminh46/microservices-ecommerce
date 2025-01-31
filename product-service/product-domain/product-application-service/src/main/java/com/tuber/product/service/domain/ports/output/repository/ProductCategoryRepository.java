@@ -9,4 +9,5 @@ public interface ProductCategoryRepository {
     Boolean existsByCode(String code);
     ProductCategory findByCode(String code);
     Set<ProductCategory> findAll();
+    void delete(ProductCategory productCategory);
 }

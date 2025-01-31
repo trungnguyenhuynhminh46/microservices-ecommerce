@@ -45,4 +45,11 @@ public class ProductCategoryRepositoryImpl implements ProductCategoryRepository 
                 .map(productCategoryJpaMapper::productCategoryJpaEntityToProductCategoryEntity)
                 .collect(java.util.stream.Collectors.toSet());
     }
+
+    @Override
+    public void delete(ProductCategory productCategory) {
+        productCategoryJpaRepository.delete(
+                productCategoryJpaMapper.productCategoryEntityToProductCategoryJpaEntity(productCategory)
+        );
+    }
 }

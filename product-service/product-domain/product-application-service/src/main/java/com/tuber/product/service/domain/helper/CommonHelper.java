@@ -40,4 +40,10 @@ public class CommonHelper {
         }
         return savedProductCategory;
     }
+
+    public ProductCategory deleteProductCategory(String code) {
+        ProductCategory savedProductCategory = this.verifyProductCategoryExist(code);
+        productCategoryRepository.delete(savedProductCategory);
+        return savedProductCategory;
+    }
 }
