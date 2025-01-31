@@ -37,7 +37,7 @@ public class CreateRoleHelper {
         Role newRole = verifyRoleNotExists(createRoleCommand.getName(), createRoleCommand.getDescription());
         Role savedRole = roleRepository.save(newRole);
         return ApiResponse.<CreateRoleResponseData>builder()
-                .message(String.format("Role with name %s is successfully created", savedRole.getId()))
+                .message(String.format("Role with name %s is successfully created", savedRole.getId().getValue()))
                 .data(CreateRoleResponseData.builder()
                         .name(savedRole.getName())
                         .description(savedRole.getDescription())
