@@ -4,4 +4,5 @@ import com.tuber.product.service.dataaccess.category.entity.ProductCategoryJpaEn
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductCategoryJpaRepository extends JpaRepository<ProductCategoryJpaEntity, String> {
+    ProductCategoryJpaEntity findByCode(String code);
 }

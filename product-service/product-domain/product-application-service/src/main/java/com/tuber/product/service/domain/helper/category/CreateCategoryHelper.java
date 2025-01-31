@@ -9,6 +9,7 @@ import com.tuber.product.service.domain.dto.category.ProductCategoryResponseData
 import com.tuber.product.service.domain.entity.ProductCategory;
 import com.tuber.product.service.domain.event.ProductCategoryCreatedEvent;
 import com.tuber.product.service.domain.exception.ProductDomainException;
+import com.tuber.product.service.domain.helper.CommonHelper;
 import com.tuber.product.service.domain.mapper.ProductCategoryMapper;
 import com.tuber.product.service.domain.ports.output.repository.ProductCategoryRepository;
 import lombok.AccessLevel;
@@ -26,13 +27,7 @@ public class CreateCategoryHelper {
     ProductDomainService productDomainService;
     ProductCategoryMapper productCategoryMapper;
     ProductCategoryRepository productCategoryRepository;
-
-    private void verifyProductCategoryNotExist(String code) {
-        if (productCategoryRepository.existsByCode(code)) {
-            log.error(String.format("Product category with code %s existed", code));
-            throw new ProductDomainException(ProductResponseCode.PRODUCT_CATEGORY_WITH_CODE_EXISTED, HttpStatus.INTERNAL_SERVER_ERROR.value(), code);
-        }
-    }
+    CommonHelper commonHelper;
 
     private ProductCategory saveProductCategory(ProductCategory category) {
         ProductCategory savedProductCategory = productCategoryRepository.save(category);
@@ -47,10 +42,8 @@ public class CreateCategoryHelper {
         ProductCategory category = productCategoryMapper.createProductCategoryCommandToProductCategory(createProductCategoryCommand);
         ProductCategoryCreatedEvent productCategoryCreatedEvent = productDomainService.validateAndInitializeProductCategory(category);
 
-        // Do something with event if needed
-
         ProductCategory initializedCategory = productCategoryCreatedEvent.getProductCategory();
-        this.verifyProductCategoryNotExist(initializedCategory.getCode());
+        commonHelper.verifyProductCategoryNotExist(initializedCategory.getCode());
         ProductCategoryResponseData createUserAccountResponseData =
                 productCategoryMapper.productCategoryToProductCategoryResponseData(
                         this.saveProductCategory(initializedCategory)

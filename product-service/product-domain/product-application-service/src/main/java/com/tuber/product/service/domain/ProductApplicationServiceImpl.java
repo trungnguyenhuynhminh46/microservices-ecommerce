@@ -3,6 +3,7 @@ package com.tuber.product.service.domain;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
 import com.tuber.product.service.domain.helper.category.CreateCategoryHelper;
+import com.tuber.product.service.domain.helper.category.ReadCategoryHelper;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductApplicationServiceImpl implements ProductApplicationService {
     CreateCategoryHelper createCategoryHelper;
+    ReadCategoryHelper readCategoryHelper;
 
     @Override
     public ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
@@ -24,12 +26,12 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
 
     @Override
     public ApiResponse<ProductCategoryResponseData> getProductCategory(GetProductCategoryQuery getProductCategoryQuery) {
-        return null;
+        return readCategoryHelper.getProductCategory(getProductCategoryQuery);
     }
 
     @Override
     public ApiResponse<ProductCategoryListResponseData> getAllProductCategories() {
-        return null;
+        return readCategoryHelper.getAllProductCategories();
     }
 
     @Override

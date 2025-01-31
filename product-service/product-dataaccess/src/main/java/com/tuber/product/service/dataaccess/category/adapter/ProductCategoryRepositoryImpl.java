@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -28,5 +30,19 @@ public class ProductCategoryRepositoryImpl implements ProductCategoryRepository 
     @Override
     public Boolean existsByCode(String code) {
         return productCategoryJpaRepository.existsById(code);
+    }
+
+    @Override
+    public ProductCategory findByCode(String code) {
+        return productCategoryJpaMapper.productCategoryJpaEntityToProductCategoryEntity(
+                productCategoryJpaRepository.findByCode(code)
+        );
+    }
+
+    @Override
+    public Set<ProductCategory> findAll() {
+        return productCategoryJpaRepository.findAll().stream()
+                .map(productCategoryJpaMapper::productCategoryJpaEntityToProductCategoryEntity)
+                .collect(java.util.stream.Collectors.toSet());
     }
 }
