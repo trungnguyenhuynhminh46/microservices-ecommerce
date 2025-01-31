@@ -5,13 +5,16 @@ service:
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
-    generate-ddl: true
   datasource:
     url: jdbc:mysql://localhost:3306/identity_service
     username: root
     password: 123456789
+  sql:
+    init:
+      mode: ALWAYS
+      schema-locations: classpath:/db/schema.sql
 jwt:
   signerKey: oZ5aUBF9OoDbUccFmwnGp5mVwgDB8E4eU1/CtbpByh6A1r3HFlb6RBaUdTGKoy+PksCqtxsEMTVoTccL/SjO5Q==
   access-token-lifetime: 3600 # in second

@@ -1,6 +1,6 @@
 package com.tuber.domain.valueobject.enums;
 
-public enum PermissionsDefault {
+public enum Permissions {
     GET_USERS_INFO, CREATE_USER, UPDATE_USER, DELETE_USER,
     GET_ROLES, CREATE_ROLE, UPDATE_ROLE, DELETE_ROLE,
     GET_PERMISSIONS, CREATE_PERMISSION, UPDATE_PERMISSION, DELETE_PERMISSION,

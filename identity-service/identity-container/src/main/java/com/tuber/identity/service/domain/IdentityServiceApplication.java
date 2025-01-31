@@ -1,6 +1,6 @@
 package com.tuber.identity.service.domain;
 
-import com.tuber.domain.valueobject.enums.PermissionsDefault;
+import com.tuber.domain.valueobject.enums.Permissions;
 import com.tuber.domain.valueobject.enums.RolesDefault;
 import com.tuber.identity.service.domain.entity.Permission;
 import com.tuber.identity.service.domain.entity.Role;
@@ -39,14 +39,14 @@ public class IdentityServiceApplication implements CommandLineRunner {
     UserAccountRepository userAccountRepository;
     CreateUserAccountHelper createUserAccountHelper;
 
-    private final Map<RolesDefault, Set<PermissionsDefault>> roleDefaultSetMap = Map.of(
+    private final Map<RolesDefault, Set<Permissions>> roleDefaultSetMap = Map.of(
             RolesDefault.ADMIN, Set.of(
-                    PermissionsDefault.GET_USERS_INFO, PermissionsDefault.CREATE_USER, PermissionsDefault.DELETE_USER, PermissionsDefault.UPDATE_USER,
-                    PermissionsDefault.GET_ROLES, PermissionsDefault.CREATE_ROLE, PermissionsDefault.UPDATE_ROLE, PermissionsDefault.DELETE_ROLE,
-                    PermissionsDefault.GET_PERMISSIONS, PermissionsDefault.CREATE_PERMISSION, PermissionsDefault.UPDATE_PERMISSION, PermissionsDefault.DELETE_PERMISSION
+                    Permissions.GET_USERS_INFO, Permissions.CREATE_USER, Permissions.DELETE_USER, Permissions.UPDATE_USER,
+                    Permissions.GET_ROLES, Permissions.CREATE_ROLE, Permissions.UPDATE_ROLE, Permissions.DELETE_ROLE,
+                    Permissions.GET_PERMISSIONS, Permissions.CREATE_PERMISSION, Permissions.UPDATE_PERMISSION, Permissions.DELETE_PERMISSION
             ),
-            RolesDefault.USER, Set.of(PermissionsDefault.GET_AVAILABLE_DRIVERS, PermissionsDefault.BOOK_RIDE, PermissionsDefault.CANCEL_RIDE),
-            RolesDefault.DRIVER, Set.of(PermissionsDefault.GET_AVAILABLE_BOOKS, PermissionsDefault.ACCEPT_RIDE, PermissionsDefault.CANCEL_RIDE)
+            RolesDefault.USER, Set.of(Permissions.GET_AVAILABLE_DRIVERS, Permissions.BOOK_RIDE, Permissions.CANCEL_RIDE),
+            RolesDefault.DRIVER, Set.of(Permissions.GET_AVAILABLE_BOOKS, Permissions.ACCEPT_RIDE, Permissions.CANCEL_RIDE)
     );
 
     public static void main(String[] args) {
@@ -61,7 +61,7 @@ public class IdentityServiceApplication implements CommandLineRunner {
     }
 
     private void initializePermissions() {
-        for (PermissionsDefault permissionDefault : PermissionsDefault.values()) {
+        for (Permissions permissionDefault : Permissions.values()) {
             Permission permission = Permission.builder()
                     .id(permissionDefault.toString())
                     .description("Permission " + permissionDefault)
@@ -71,9 +71,9 @@ public class IdentityServiceApplication implements CommandLineRunner {
     }
 
     private void initializeRoles() {
-        for (Map.Entry<RolesDefault, Set<PermissionsDefault>> entry : roleDefaultSetMap.entrySet()) {
+        for (Map.Entry<RolesDefault, Set<Permissions>> entry : roleDefaultSetMap.entrySet()) {
             String roleName = entry.getKey().toString();
-            Set<PermissionsDefault> permissions = entry.getValue();
+            Set<Permissions> permissions = entry.getValue();
             Role role = Role.builder()
                     .id(roleName)
                     .description("Role " + roleName)
@@ -108,8 +108,8 @@ public class IdentityServiceApplication implements CommandLineRunner {
     }
 
     @Transactional
-    private void assignPermissionsToRole(String roleName, Set<PermissionsDefault> permissionNames) {
-        for (PermissionsDefault permissionName : permissionNames) {
+    private void assignPermissionsToRole(String roleName, Set<Permissions> permissionNames) {
+        for (Permissions permissionName : permissionNames) {
             roleRepository.assignPermissionsToRole(roleName, permissionName.toString());
         }
     }
