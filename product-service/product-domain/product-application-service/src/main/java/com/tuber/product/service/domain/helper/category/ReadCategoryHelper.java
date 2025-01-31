@@ -27,8 +27,7 @@ public class ReadCategoryHelper {
     CommonHelper commonHelper;
 
     public ApiResponse<ProductCategoryResponseData> getProductCategory(GetProductCategoryQuery getProductCategoryQuery) {
-        commonHelper.verifyProductCategoryNotExist(getProductCategoryQuery.getCode());
-        ProductCategory category = productCategoryRepository.findByCode(getProductCategoryQuery.getCode());
+        ProductCategory category = commonHelper.verifyProductCategoryExist(getProductCategoryQuery.getCode());
         return ApiResponse.<ProductCategoryResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Product category retrieved successfully")

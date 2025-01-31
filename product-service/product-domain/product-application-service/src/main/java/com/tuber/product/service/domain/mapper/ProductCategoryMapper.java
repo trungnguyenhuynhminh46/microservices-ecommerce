@@ -1,10 +1,11 @@
 package com.tuber.product.service.domain.mapper;
 
 import com.tuber.product.service.domain.dto.category.CreateProductCategoryCommand;
+import com.tuber.product.service.domain.dto.category.ModifyProductCategoryCommand;
 import com.tuber.product.service.domain.dto.category.ProductCategoryListResponseData;
 import com.tuber.product.service.domain.dto.category.ProductCategoryResponseData;
 import com.tuber.product.service.domain.entity.ProductCategory;
-import org.mapstruct.Mapper;
+import org.mapstruct.*;
 
 import java.util.List;
 import java.util.Set;
@@ -25,4 +26,7 @@ public abstract class ProductCategoryMapper {
                 .total(total)
                 .build();
     }
+    @Mapping(target = "id", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    public abstract ProductCategory updateProductCategory(ModifyProductCategoryCommand data, @MappingTarget ProductCategory productCategory);
 }

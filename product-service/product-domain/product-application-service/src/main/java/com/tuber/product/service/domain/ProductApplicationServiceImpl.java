@@ -4,6 +4,7 @@ import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
 import com.tuber.product.service.domain.helper.category.CreateCategoryHelper;
 import com.tuber.product.service.domain.helper.category.ReadCategoryHelper;
+import com.tuber.product.service.domain.helper.category.UpdateCategoryHelper;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 public class ProductApplicationServiceImpl implements ProductApplicationService {
     CreateCategoryHelper createCategoryHelper;
     ReadCategoryHelper readCategoryHelper;
+    UpdateCategoryHelper updateCategoryHelper;
 
     @Override
     public ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
@@ -36,7 +38,7 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
 
     @Override
     public ApiResponse<ProductCategoryResponseData> updateProductCategory(ModifyProductCategoryCommand modifyProductCategoryCommand) {
-        return null;
+        return updateCategoryHelper.updateProductCategory(modifyProductCategoryCommand);
     }
 
     @Override

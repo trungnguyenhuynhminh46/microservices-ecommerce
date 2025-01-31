@@ -18,6 +18,8 @@ public class ProductResponseCode extends ResponseCodeBase {
             new ProductResponseCode(1004, "Product category with code %s existed in the database");
     public static final ProductResponseCode PRODUCT_CATEGORY_SAVE_FAILED =
             new ProductResponseCode(1005, "Failed to save product category with code %s");
+    public static final ProductResponseCode PRODUCT_CATEGORY_NOT_FOUND =
+            new ProductResponseCode(1006, "Product category with code %s not found");
     protected ProductResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;
