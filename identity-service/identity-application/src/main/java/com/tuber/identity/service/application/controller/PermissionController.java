@@ -52,7 +52,7 @@ public class PermissionController {
     }
 
     @PostMapping("/{permissionName}/roles/{roleName}")
-    @PreAuthorize("hasAuthority('UPDATE_PERMISSION')")
+    @PreAuthorize("hasAuthority('REASSIGN_PERMISSION')")
     public ResponseEntity<ApiResponse<AlterPermissionsResponseData>> assignPermissionToRole(@PathVariable("roleName") String roleName, @PathVariable("permissionName") String permissionName) {
         AlterPermissionCommand assignPermissionCommand = AlterPermissionCommand.builder().roleName(roleName).permissionName(permissionName).build();
         ApiResponse<AlterPermissionsResponseData> getPermissionsResponseData = identityApplicationService.assignPermissionToRole(assignPermissionCommand);
@@ -61,7 +61,7 @@ public class PermissionController {
     }
 
     @DeleteMapping("/{permissionName}/roles/{roleName}")
-    @PreAuthorize("hasAuthority('UPDATE_PERMISSION')")
+    @PreAuthorize("hasAuthority('REASSIGN_PERMISSION')")
     public ResponseEntity<ApiResponse<AlterPermissionsResponseData>> removePermissionFromRole(@PathVariable("roleName") String roleName, @PathVariable("permissionName") String permissionName) {
         AlterPermissionCommand removePermissionCommand = AlterPermissionCommand.builder().roleName(roleName).permissionName(permissionName).build();
         ApiResponse<AlterPermissionsResponseData> getPermissionsResponseData = identityApplicationService.removePermissionFromRole(removePermissionCommand);
