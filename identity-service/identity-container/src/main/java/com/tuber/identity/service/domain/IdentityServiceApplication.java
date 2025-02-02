@@ -2,10 +2,12 @@ package com.tuber.identity.service.domain;
 
 import com.tuber.domain.valueobject.enums.Permissions;
 import com.tuber.domain.valueobject.enums.RolesDefault;
+import com.tuber.identity.service.domain.dto.user.account.AssignRoleToUserCommand;
 import com.tuber.identity.service.domain.dto.user.account.CreateUserAccountCommand;
 import com.tuber.identity.service.domain.entity.Permission;
 import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.domain.event.UserAccountCreatedEvent;
+import com.tuber.identity.service.domain.helper.role.AssignRoleToUserHelper;
 import com.tuber.identity.service.domain.helper.user.account.CreateUserAccountHelper;
 import com.tuber.identity.service.domain.mapper.http.client.ProfileServiceDataMapper;
 import com.tuber.identity.service.domain.ports.output.http.client.ProfileServiceClient;
@@ -39,6 +41,7 @@ public class IdentityServiceApplication implements CommandLineRunner {
     RoleRepository roleRepository;
     PermissionRepository permissionRepository;
     CreateUserAccountHelper createUserAccountHelper;
+    AssignRoleToUserHelper assignRoleToUserHelper;
     ProfileServiceClient profileServiceClient;
     ProfileServiceDataMapper profileServiceDataMapper;
     UserAccountRepository userAccountRepository;
@@ -85,6 +88,7 @@ public class IdentityServiceApplication implements CommandLineRunner {
         }
     }
 
+    @Transactional
     private void initializeAdminUser() {
         String adminUsername = "admin!m8UFV4pdR";
         if (userAccountRepository.existsByUsername(adminUsername)) {
@@ -101,6 +105,12 @@ public class IdentityServiceApplication implements CommandLineRunner {
                 .build();
         UserAccountCreatedEvent userAccountCreatedEvent = createUserAccountHelper.persistUserAccount(createUserAccountCommand);
         profileServiceClient.createUserProfile(profileServiceDataMapper.createUserAccountCommandToCreateUserProfileCommand(createUserAccountCommand, userAccountCreatedEvent.getUserAccount().getUserId()));
+
+        AssignRoleToUserCommand assignRoleToUserCommand = AssignRoleToUserCommand.builder()
+                .username(adminUsername)
+                .roleName(RolesDefault.ADMIN.toString())
+                .build();
+        assignRoleToUserHelper.assignRoleToUser(assignRoleToUserCommand);
     }
 
     @Transactional
