@@ -82,7 +82,6 @@ public class Price {
         private Double discount;
         private Double tax;
         private Money shippingCost;
-        private Money finalPrice;
 
         private Builder() {
         }
@@ -104,11 +103,6 @@ public class Price {
 
         public Builder shippingCost(Money val) {
             shippingCost = val;
-            return this;
-        }
-
-        public Builder finalPrice(Money val) {
-            finalPrice = val;
             return this;
         }
 
