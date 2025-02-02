@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class Money {
     private final BigDecimal amount;
+    public static final Money ZERO = new Money(BigDecimal.ZERO);
 
     public Money(BigDecimal amount) {
         if (amount == null) {
@@ -47,12 +48,16 @@ public class Money {
         return new Money(amount.subtract(money.amount));
     }
 
-    public Money multiply(int multiplier) {
-        return new Money(amount.multiply(new BigDecimal(multiplier)));
+    public Money multiply(Double multiplier) {
+        return new Money(amount.multiply(setScale(new BigDecimal(multiplier))));
     }
 
     public boolean isGreaterThanZero() {
         return amount != null && amount.compareTo(BigDecimal.ZERO) > 0;
+    }
+
+    public boolean isSmallerThanZero() {
+        return amount != null && amount.compareTo(BigDecimal.ZERO) < 0;
     }
 
     public boolean isGreaterThan(Money money) {
