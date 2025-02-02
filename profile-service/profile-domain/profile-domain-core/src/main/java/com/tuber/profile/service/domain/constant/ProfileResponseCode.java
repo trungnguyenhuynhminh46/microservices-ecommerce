@@ -4,7 +4,7 @@ import com.tuber.domain.constant.ResponseCodeBase;
 
 public class ProfileResponseCode extends ResponseCodeBase {
     protected final int defaultResponseCode = 1000;
-    protected final String serviceName = "identity";
+    protected final String serviceName = "profile";
     public static final ProfileResponseCode DEFAULT_RESPONSE_CODE = new ProfileResponseCode(1000, "%s");
     public static final ProfileResponseCode USER_PROFILE_NOT_FOUND = new ProfileResponseCode(1001, "User profile with profile id {} not found");
     public static final ProfileResponseCode USER_PROFILE_SAVE_FAILED = new ProfileResponseCode(1002, "Cannot save the user profile of user with id %s");

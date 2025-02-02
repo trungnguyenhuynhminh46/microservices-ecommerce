@@ -30,6 +30,11 @@ public class ResponseCode extends ResponseCodeBase {
         this.message = message;
     }
 
+    public ResponseCode(String formattedCode, String message) {
+        this.code = formattedCode;
+        this.message = message;
+    }
+
     public String getServiceName() {
         return this.serviceName;
     }
