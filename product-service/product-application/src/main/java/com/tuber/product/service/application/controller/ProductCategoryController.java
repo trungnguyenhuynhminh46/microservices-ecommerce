@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/${service.name}/category", produces = "application/vnd.api.v1+json")
+@RequestMapping(value = "/${service.name}/categories", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor
 public class ProductCategoryController {
     private final ProductApplicationService productApplicationService;
