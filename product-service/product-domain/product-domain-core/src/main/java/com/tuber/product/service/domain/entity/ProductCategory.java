@@ -2,6 +2,7 @@ package com.tuber.product.service.domain.entity;
 
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.id.UniqueStringId;
+import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.exception.ProductDomainException;
 
@@ -11,14 +12,16 @@ import java.util.Base64;
 import java.util.Locale;
 import java.util.UUID;
 
-public class ProductCategory extends BaseEntity<UniqueStringId> {
+public class ProductCategory extends BaseEntity<UniqueUUID> {
+    private String code;
     private String name;
     private String description;
     LocalDate createdAt;
     LocalDate updatedAt;
 
     private ProductCategory(Builder builder) {
-        super.setId(builder.code);
+        super.setId(builder.id);
+        setCode(builder.code);
         setName(builder.name);
         setDescription(builder.description);
         setCreatedAt(builder.createdAt);
@@ -30,11 +33,11 @@ public class ProductCategory extends BaseEntity<UniqueStringId> {
     }
 
     public String getCode() {
-        return getId().getValue();
+        return code;
     }
 
     public void setCode(String code) {
-        setId(new UniqueStringId(code));
+        this.code = code;
     }
 
     public String getName() {
@@ -71,7 +74,8 @@ public class ProductCategory extends BaseEntity<UniqueStringId> {
 
 
     public static final class Builder {
-        private UniqueStringId code;
+        private UniqueUUID id;
+        private String code;
         private String name;
         private String description;
         private LocalDate createdAt;
@@ -80,13 +84,18 @@ public class ProductCategory extends BaseEntity<UniqueStringId> {
         private Builder() {
         }
 
-        public Builder code(UniqueStringId val) {
-            code = val;
+        public Builder id(UniqueUUID val) {
+            id = val;
+            return this;
+        }
+
+        public Builder id(UUID val) {
+            id = new UniqueUUID(val);
             return this;
         }
 
         public Builder code(String val) {
-            code = new UniqueStringId(val);
+            code = val;
             return this;
         }
 
@@ -116,7 +125,7 @@ public class ProductCategory extends BaseEntity<UniqueStringId> {
     }
 
     public boolean isValidForInitialization() {
-        return getName() != null;
+        return getName() != null && getId() == null;
     }
 
     public void validateProductCategory() {
@@ -126,6 +135,7 @@ public class ProductCategory extends BaseEntity<UniqueStringId> {
     }
 
     public void initializeProductCategory() {
+        setId(new UniqueUUID(UUID.randomUUID()));
         setCode(generateCode(getName()));
         setCreatedAt(LocalDate.now());
         setUpdatedAt(LocalDate.now());

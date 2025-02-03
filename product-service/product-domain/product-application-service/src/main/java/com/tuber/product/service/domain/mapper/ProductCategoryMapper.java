@@ -1,5 +1,6 @@
 package com.tuber.product.service.domain.mapper;
 
+import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.product.service.domain.dto.category.CreateProductCategoryCommand;
 import com.tuber.product.service.domain.dto.category.ModifyProductCategoryCommand;
 import com.tuber.product.service.domain.dto.category.ProductCategoryListResponseData;
@@ -10,6 +11,7 @@ import org.mapstruct.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public abstract class ProductCategoryMapper {
@@ -35,4 +37,8 @@ public abstract class ProductCategoryMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     protected abstract void updateProductCategoryFields(ModifyProductCategoryCommand data, @MappingTarget ProductCategory productCategory);
+
+    public UUID map(UniqueUUID id) {
+        return id.getValue();
+    }
 }

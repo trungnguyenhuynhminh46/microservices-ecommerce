@@ -3,7 +3,6 @@ package com.tuber.identity.service.dataaccess.user.adapter;
 import com.tuber.identity.service.dataaccess.CommonIdentityDataAccessHelper;
 import com.tuber.identity.service.dataaccess.role.entity.RoleJpaEntity;
 import com.tuber.identity.service.dataaccess.role.mapper.RoleDataAccessMapper;
-import com.tuber.identity.service.dataaccess.role.repository.RoleJpaRepository;
 import com.tuber.identity.service.dataaccess.user.entity.UserAccountJpaEntity;
 import com.tuber.identity.service.domain.entity.Role;
 import com.tuber.identity.service.domain.entity.UserAccount;
@@ -30,7 +29,6 @@ public class UserAccountRepositoryImpl implements UserAccountRepository {
     UserAccountDataAccessMapper userAccountDataAccessMapper;
     CommonIdentityDataAccessHelper commonIdentityDataAccessHelper;
     RoleDataAccessMapper roleDataAccessMapper;
-    private final RoleJpaRepository roleJpaRepository;
 
     @Override
     public UserAccount save(UserAccount userAccount) {

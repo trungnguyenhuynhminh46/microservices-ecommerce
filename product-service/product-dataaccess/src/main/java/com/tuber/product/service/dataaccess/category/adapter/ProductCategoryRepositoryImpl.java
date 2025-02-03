@@ -29,7 +29,7 @@ public class ProductCategoryRepositoryImpl implements ProductCategoryRepository 
 
     @Override
     public Boolean existsByCode(String code) {
-        return productCategoryJpaRepository.existsById(code);
+        return productCategoryJpaRepository.existsByCode(code);
     }
 
     @Override

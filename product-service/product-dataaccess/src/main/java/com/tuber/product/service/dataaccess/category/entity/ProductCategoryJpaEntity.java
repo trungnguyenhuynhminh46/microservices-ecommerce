@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductCategoryJpaEntity {
     @Id
+    UUID id;
     @Column(name = "code", unique = true, nullable = false)
     String code;
     @Column(name = "name", nullable = false)
