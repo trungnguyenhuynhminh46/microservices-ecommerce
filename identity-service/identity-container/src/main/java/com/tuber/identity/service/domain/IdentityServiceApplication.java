@@ -67,7 +67,7 @@ public class IdentityServiceApplication implements CommandLineRunner {
                     .lastName("Super")
                     .dob(LocalDate.of(2001, 6, 4))
                     .city("Hồ Chí Minh")
-                    .roleName(List.of(RolesDefault.ADMIN.toString()))
+                    .roleName(List.of(RolesDefault.ADMIN.toString(), RolesDefault.STORE_ADMIN.toString()))
                     .build(),
             UserData.builder()
                     .username("store_admin!m8UFV4pdR")

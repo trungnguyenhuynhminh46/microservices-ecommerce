@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ProductServiceBeanConfiguration {
+public class BeanConfiguration {
     @Bean
     public ProductDomainService productDomainService() {
         return new ProductDomainServiceImpl();
