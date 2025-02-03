@@ -1,4 +1,4 @@
 package com.tuber.domain.valueobject.enums;
 public enum RolesDefault {
-    ADMIN
+    ADMIN, STORE_ADMIN
 }
