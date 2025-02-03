@@ -21,8 +21,16 @@ public class UpdateCategoryHelper {
     ProductCategoryMapper productCategoryMapper;
     CommonHelper commonHelper;
 
+    private String generateNewProductCategoryCode(String name) {
+        String code = ProductCategory.generateCode(name);
+        commonHelper.verifyProductCategoryNotExist(code);
+        return code;
+    }
+
     public ApiResponse<ProductCategoryResponseData> updateProductCategory(ModifyProductCategoryCommand modifyProductCategoryCommand) {
         ProductCategory savedProductCategory = commonHelper.verifyProductCategoryExist(modifyProductCategoryCommand.getCode());
+        String newCode = this.generateNewProductCategoryCode(modifyProductCategoryCommand.getName());
+        modifyProductCategoryCommand.setCode(newCode);
         ProductCategory updatedProductCategory = productCategoryMapper.updateProductCategory(modifyProductCategoryCommand, savedProductCategory);
         return ApiResponse.<ProductCategoryResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())

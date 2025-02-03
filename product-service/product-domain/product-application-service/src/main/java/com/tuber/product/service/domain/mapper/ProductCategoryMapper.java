@@ -26,7 +26,6 @@ public abstract class ProductCategoryMapper {
                 .total(total)
                 .build();
     }
-    @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     public abstract ProductCategory updateProductCategory(ModifyProductCategoryCommand data, @MappingTarget ProductCategory productCategory);
 }
