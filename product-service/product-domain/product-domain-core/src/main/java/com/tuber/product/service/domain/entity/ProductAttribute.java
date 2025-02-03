@@ -1,22 +1,32 @@
 package com.tuber.product.service.domain.entity;
 
 import com.tuber.domain.entity.BaseEntity;
-import com.tuber.domain.valueobject.id.UniqueUUID;
+import com.tuber.domain.valueobject.id.LongId;
 
 import java.util.*;
 
-public class ProductAttribute extends BaseEntity<UniqueUUID> {
+public class ProductAttribute extends BaseEntity<LongId> {
+    private UUID productId;
     private String name;
     private String options;
 
     private ProductAttribute(Builder builder) {
         super.setId(builder.id);
+        setProductId(builder.productId);
         setName(builder.name);
         setOptions(builder.options);
     }
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public UUID getProductId() {
+        return productId;
+    }
+
+    public void setProductId(UUID productId) {
+        this.productId = productId;
     }
 
     public String getName() {
@@ -35,36 +45,27 @@ public class ProductAttribute extends BaseEntity<UniqueUUID> {
         this.options = options;
     }
 
-    public void addOption(String option) {
-        if (options == null || options.isEmpty()) {
-            setOptions(option);
-            return;
-        }
-        options += "," + option;
-    }
-
-    public void removeOption(String option) {
-        Set<String> currentOptions = new HashSet<>(Arrays.asList(options.split(",")));
-        currentOptions.remove(option);
-        options = String.join(",", currentOptions);
-    }
-
-
     public static final class Builder {
-        private UniqueUUID id;
+        private LongId id;
+        private UUID productId;
         private String name;
         private String options;
 
         private Builder() {
         }
 
-        public Builder id(UniqueUUID val) {
+        public Builder id(Long val) {
+            id = new LongId(val);
+            return this;
+        }
+
+        public Builder id(LongId val) {
             id = val;
             return this;
         }
 
-        public Builder id(UUID val) {
-            id = new UniqueUUID(val);
+        public Builder productId(UUID val) {
+            productId = val;
             return this;
         }
 
