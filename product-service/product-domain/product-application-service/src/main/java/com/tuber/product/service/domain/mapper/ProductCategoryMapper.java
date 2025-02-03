@@ -7,6 +7,7 @@ import com.tuber.product.service.domain.dto.category.ProductCategoryResponseData
 import com.tuber.product.service.domain.entity.ProductCategory;
 import org.mapstruct.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +27,12 @@ public abstract class ProductCategoryMapper {
                 .total(total)
                 .build();
     }
+    public ProductCategory updateProductCategory(ModifyProductCategoryCommand data, ProductCategory productCategory) {
+        productCategory.setUpdatedAt(LocalDate.now());
+        this.updateProductCategoryFields(data, productCategory);
+        return productCategory;
+    }
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    public abstract ProductCategory updateProductCategory(ModifyProductCategoryCommand data, @MappingTarget ProductCategory productCategory);
+    protected abstract void updateProductCategoryFields(ModifyProductCategoryCommand data, @MappingTarget ProductCategory productCategory);
 }
