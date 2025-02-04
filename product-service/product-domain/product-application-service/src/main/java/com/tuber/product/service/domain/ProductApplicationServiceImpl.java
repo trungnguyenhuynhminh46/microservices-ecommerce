@@ -2,6 +2,8 @@ package com.tuber.product.service.domain;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
+import com.tuber.product.service.domain.dto.product.CreateProductCommand;
+import com.tuber.product.service.domain.dto.product.ProductResponseData;
 import com.tuber.product.service.domain.helper.category.CreateCategoryHelper;
 import com.tuber.product.service.domain.helper.category.DeleteCategoryHelper;
 import com.tuber.product.service.domain.helper.category.ReadCategoryHelper;
@@ -46,5 +48,10 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     @Override
     public ApiResponse<ProductCategoryResponseData> deleteProductCategory(DeleteProductCategoryCommand deleteProductCategoryCommand) {
         return deleteCategoryHelper.deleteProductCategory(deleteProductCategoryCommand);
+    }
+
+    @Override
+    public ApiResponse<ProductResponseData> createProduct(CreateProductCommand createProductCommand) {
+        return null;
     }
 }
