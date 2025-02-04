@@ -21,6 +21,10 @@ public class ProductAttribute extends BaseEntity<LongId> {
         return new Builder();
     }
 
+    public Long getAttributeId() {
+        return super.getId().getValue();
+    }
+
     public UUID getProductId() {
         return productId;
     }
@@ -37,8 +41,8 @@ public class ProductAttribute extends BaseEntity<LongId> {
         this.name = name;
     }
 
-    public Set<String> getOptions() {
-        return Set.of(options.split(","));
+    public String getOptions() {
+        return options;
     }
 
     public void setOptions(String options) {

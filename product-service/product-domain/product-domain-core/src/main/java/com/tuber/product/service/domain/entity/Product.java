@@ -2,20 +2,22 @@ package com.tuber.product.service.domain.entity;
 
 import com.tuber.domain.entity.AggregateRoot;
 import com.tuber.domain.valueobject.id.UniqueUUID;
+import com.tuber.domain.valueobject.valueobject.Money;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.exception.ProductDomainException;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 public class Product extends AggregateRoot<UniqueUUID> {
     private String name;
-    private Integer price;
+    private Money price;
     private String description;
     private String tags;
     private Float rating;
-    private ProductCategory category;
+    private UniqueUUID categoryId;
     private List<ProductAttribute> attributes;
     private LocalDate createdAt;
     private LocalDate updatedAt;
@@ -27,7 +29,7 @@ public class Product extends AggregateRoot<UniqueUUID> {
         description = builder.description;
         tags = builder.tags;
         rating = builder.rating;
-        category = builder.category;
+        categoryId = builder.categoryId;
         attributes = builder.attributes;
         createdAt = builder.createdAt;
         updatedAt = builder.updatedAt;
@@ -45,11 +47,11 @@ public class Product extends AggregateRoot<UniqueUUID> {
     public static final class Builder {
         private UniqueUUID id;
         private String name;
-        private Integer price;
+        private Money price;
         private String description;
         private String tags;
         private Float rating;
-        private ProductCategory category;
+        private UniqueUUID categoryId;
         private List<ProductAttribute> attributes;
         private LocalDate createdAt;
         private LocalDate updatedAt;
@@ -72,8 +74,13 @@ public class Product extends AggregateRoot<UniqueUUID> {
             return this;
         }
 
-        public Builder price(Integer val) {
+        public Builder price(Money val) {
             price = val;
+            return this;
+        }
+
+        public Builder price(BigDecimal val) {
+            price = new Money(val);
             return this;
         }
 
@@ -92,8 +99,13 @@ public class Product extends AggregateRoot<UniqueUUID> {
             return this;
         }
 
-        public Builder category(ProductCategory val) {
-            category = val;
+        public Builder categoryId(UniqueUUID val) {
+            categoryId = val;
+            return this;
+        }
+
+        public Builder categoryId(UUID val) {
+            categoryId = new UniqueUUID(val);
             return this;
         }
 
@@ -125,12 +137,16 @@ public class Product extends AggregateRoot<UniqueUUID> {
         this.name = name;
     }
 
-    public Integer getPrice() {
+    public Money getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Money price) {
         this.price = price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = new Money(price);
     }
 
     public String getDescription() {
@@ -157,12 +173,16 @@ public class Product extends AggregateRoot<UniqueUUID> {
         this.rating = rating;
     }
 
-    public ProductCategory getCategory() {
-        return category;
+    public UUID getCategoryId() {
+        return categoryId.getValue();
     }
 
-    public void setCategory(ProductCategory category) {
-        this.category = category;
+    public void setCategoryId(UniqueUUID categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = new UniqueUUID(categoryId);
     }
 
     public List<ProductAttribute> getAttributes() {

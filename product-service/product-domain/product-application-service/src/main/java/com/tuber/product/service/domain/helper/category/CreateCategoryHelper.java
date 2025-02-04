@@ -30,14 +30,14 @@ public class CreateCategoryHelper {
 
         ProductCategory initializedCategory = productCategoryCreatedEvent.getProductCategory();
         commonHelper.verifyProductCategoryNotExist(initializedCategory.getCode());
-        ProductCategoryResponseData createUserAccountResponseData =
+        ProductCategoryResponseData createProductCategoryResponseData =
                 productCategoryMapper.productCategoryToProductCategoryResponseData(
                         commonHelper.saveProductCategory(initializedCategory)
                 );
         return ApiResponse.<ProductCategoryResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Product category created successfully")
-                .data(createUserAccountResponseData)
+                .data(createProductCategoryResponseData)
                 .build();
     }
 }

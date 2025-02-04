@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Builder
@@ -22,7 +23,7 @@ public class CreateProductCommand {
     @NotNull(message = "Price is mandatory")
     BigDecimal price;
     String description;
-    String categoryId;
-    List<ProductAttribute> attributes;
     String tags;
+    UUID categoryId;
+    List<ProductAttribute> attributes;
 }

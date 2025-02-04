@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Component
 @AllArgsConstructor
@@ -36,6 +37,13 @@ public class ProductCategoryRepositoryImpl implements ProductCategoryRepository 
     public ProductCategory findByCode(String code) {
         return productCategoryJpaMapper.productCategoryJpaEntityToProductCategoryEntity(
                 productCategoryJpaRepository.findByCode(code)
+        );
+    }
+
+    @Override
+    public ProductCategory findById(UUID id) {
+        return productCategoryJpaMapper.productCategoryJpaEntityToProductCategoryEntity(
+                productCategoryJpaRepository.findById(id).orElse(null)
         );
     }
 

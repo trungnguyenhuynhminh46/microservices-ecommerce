@@ -8,16 +8,19 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductResponseData {
+    UUID id;
     String name;
     BigDecimal price;
     String description;
-    String categoryId;
-    List<ProductAttribute> attributes;
     String tags;
+    Float rating;
+    UUID categoryId;
+    List<ProductAttribute> attributes;
 }

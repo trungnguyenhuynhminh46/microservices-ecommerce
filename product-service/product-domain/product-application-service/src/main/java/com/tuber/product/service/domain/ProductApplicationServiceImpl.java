@@ -8,6 +8,7 @@ import com.tuber.product.service.domain.helper.category.CreateCategoryHelper;
 import com.tuber.product.service.domain.helper.category.DeleteCategoryHelper;
 import com.tuber.product.service.domain.helper.category.ReadCategoryHelper;
 import com.tuber.product.service.domain.helper.category.UpdateCategoryHelper;
+import com.tuber.product.service.domain.helper.product.CreateProductHelper;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     ReadCategoryHelper readCategoryHelper;
     UpdateCategoryHelper updateCategoryHelper;
     DeleteCategoryHelper deleteCategoryHelper;
+    CreateProductHelper createProductHelper;
 
     @Override
     public ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
@@ -52,6 +54,6 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
 
     @Override
     public ApiResponse<ProductResponseData> createProduct(CreateProductCommand createProductCommand) {
-        return null;
+        return createProductHelper.persistProduct(createProductCommand);
     }
 }
