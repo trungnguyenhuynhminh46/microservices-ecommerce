@@ -1,7 +1,6 @@
 package com.tuber.product.service.domain.entity;
 
 import com.tuber.domain.entity.BaseEntity;
-import com.tuber.domain.valueobject.id.UniqueStringId;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.exception.ProductDomainException;
@@ -128,13 +127,13 @@ public class ProductCategory extends BaseEntity<UniqueUUID> {
         return getName() != null && getId() == null;
     }
 
-    public void validateProductCategory() {
+    public void validateForInitialization() {
         if(!isValidForInitialization()) {
             throw new ProductDomainException(ProductResponseCode.PRODUCT_CATEGORY_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
         }
     }
 
-    public void initializeProductCategory() {
+    public void initialize() {
         setId(new UniqueUUID(UUID.randomUUID()));
         setCode(generateCode(getName()));
         setCreatedAt(LocalDate.now());

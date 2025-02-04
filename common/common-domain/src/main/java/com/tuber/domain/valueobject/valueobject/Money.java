@@ -52,12 +52,20 @@ public class Money {
         return new Money(amount.multiply(setScale(new BigDecimal(multiplier))));
     }
 
+    public int compareTo(Money money) {
+        return amount.compareTo(money.amount);
+    }
+
     public boolean isGreaterThanZero() {
         return amount != null && amount.compareTo(BigDecimal.ZERO) > 0;
     }
 
     public boolean isSmallerThanZero() {
         return amount != null && amount.compareTo(BigDecimal.ZERO) < 0;
+    }
+
+    public boolean isSmallerThanOrEqualToZero() {
+        return amount != null && amount.compareTo(BigDecimal.ZERO) <= 0;
     }
 
     public boolean isGreaterThan(Money money) {

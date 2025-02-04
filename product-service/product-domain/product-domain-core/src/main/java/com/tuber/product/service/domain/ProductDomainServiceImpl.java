@@ -10,14 +10,17 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductDomainServiceImpl implements ProductDomainService {
     @Override
     public ProductCategoryCreatedEvent validateAndInitializeProductCategory(ProductCategory productCategory) {
-        productCategory.validateProductCategory();
-        productCategory.initializeProductCategory();
+        productCategory.validateForInitialization();
+        productCategory.initialize();
         log.info("Product category with id: {} is initiated", productCategory.getCode());
         return new ProductCategoryCreatedEvent(productCategory);
     }
 
     @Override
     public ProductCreatedEvent validateAndInitializeProduct(Product product) {
-        return null;
+        product.validateForInitialization();
+        product.initialize();
+        log.info("Validating product with id: {}", product.getId());
+        return new ProductCreatedEvent(product);
     }
 }

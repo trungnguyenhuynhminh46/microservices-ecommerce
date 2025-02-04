@@ -210,12 +210,55 @@ public class Product extends AggregateRoot<UniqueUUID> {
     }
 
     public boolean isValidForInitialization() {
-        return getName() != null && getPrice() != null && getId() != null;
+        return getName() != null && getPrice() != null && getId() == null && getRating() == null && getCreatedAt() == null && getUpdatedAt() == null;
     }
 
-    public void validateProduct() {
+    public void validatePrice() {
+        if (getPrice() == null || getPrice().isSmallerThanOrEqualToZero()) {
+            throw new IllegalArgumentException("Product price can not be null and must be larger than zero");
+        }
+    }
+
+    public void validateTags() {
+        if (getTags() != null && getTags().matches("([a-zA-Z0-9]+,?)+")) {
+            throw new IllegalArgumentException("Product tags must follow format: [tag1],[tag2],[tag3]. For example: 'electronics,smartphone,apple'");
+        }
+    }
+
+    public void validateRating() {
+        if (getRating() != null && (getRating() < 0 || getRating() > 5)) {
+            throw new IllegalArgumentException("Product rating must be between 0 and 5");
+        }
+    }
+
+    public void validateAttributes() {
+        if (getAttributes() != null) {
+            getAttributes().forEach(ProductAttribute::validateForInitialization);
+        }
+    }
+
+    private void initializeProductAttributes() {
+        long attributeId = 1;
+        for(ProductAttribute attribute : getAttributes()) {
+            attribute.initialize(attributeId++, getId().getValue());
+        }
+    }
+
+    public void validateForInitialization() {
         if (!isValidForInitialization()) {
             throw new ProductDomainException(ProductResponseCode.PRODUCT_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
         }
+        validatePrice();
+        validateTags();
+        validateRating();
+        validateAttributes();
+    }
+
+    public void initialize() {
+        setId(new UniqueUUID(UUID.randomUUID()));
+        setRating(0.0f);
+        setCreatedAt(LocalDate.now());
+        setUpdatedAt(LocalDate.now());
+        initializeProductAttributes();
     }
 }
