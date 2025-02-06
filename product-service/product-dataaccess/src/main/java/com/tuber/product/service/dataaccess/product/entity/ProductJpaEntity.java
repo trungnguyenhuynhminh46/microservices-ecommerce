@@ -1,13 +1,13 @@
-package com.tuber.product.service.dataaccess.category.entity;
+package com.tuber.product.service.dataaccess.product.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.tuber.product.service.dataaccess.category.entity.ProductCategoryJpaEntity;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -16,17 +16,22 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "category")
+@Table(name = "product")
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductCategoryJpaEntity {
+public class ProductJpaEntity {
     @Id
     UUID id;
-    @Column(name = "code", unique = true, nullable = false)
-    String code;
-    @Column(name = "name", nullable = false)
     String name;
+    BigDecimal price;
     String description;
+    String tags;
+    Float rating;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
+    ProductCategoryJpaEntity category;
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    List<ProductAttributeJpaEntity> attributes;
     @Column(columnDefinition = "DATE")
     LocalDate createdAt;
     @Column(columnDefinition = "DATE")
@@ -36,7 +41,7 @@ public class ProductCategoryJpaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductCategoryJpaEntity that = (ProductCategoryJpaEntity) o;
+        ProductJpaEntity that = (ProductJpaEntity) o;
         return Objects.equals(id, that.id);
     }
 
