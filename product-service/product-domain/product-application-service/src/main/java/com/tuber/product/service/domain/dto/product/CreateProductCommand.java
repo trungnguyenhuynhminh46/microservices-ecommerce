@@ -25,5 +25,5 @@ public class CreateProductCommand {
     String description;
     String tags;
     UUID categoryId;
-    List<ProductAttribute> attributes;
+    List<ProductAttributeDTO> attributes;
 }

@@ -22,5 +22,5 @@ public class ProductResponseData {
     String tags;
     Float rating;
     UUID categoryId;
-    List<ProductAttribute> attributes;
+    List<ProductAttributeDTO> attributes;
 }

@@ -27,9 +27,7 @@ public class ProductJpaEntity {
     String description;
     String tags;
     Float rating;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
-    ProductCategoryJpaEntity category;
+    UUID categoryId;
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<ProductAttributeJpaEntity> attributes;
     @Column(columnDefinition = "DATE")

@@ -22,6 +22,10 @@ public class Product extends AggregateRoot<UniqueUUID> {
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
+    public Product(UUID productId) {
+        super.setId(new UniqueUUID(productId));
+    }
+
     private Product(Builder builder) {
         super.setId(builder.id);
         name = builder.name;

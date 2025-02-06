@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ProductAttribute {
+public class ProductAttributeDTO {
     @NotNull
     String name;
     @NotNull
