@@ -7,7 +7,6 @@ import com.tuber.product.service.dataaccess.product.entity.ProductJpaEntity;
 import com.tuber.product.service.domain.entity.Product;
 import com.tuber.product.service.domain.entity.ProductAttribute;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
