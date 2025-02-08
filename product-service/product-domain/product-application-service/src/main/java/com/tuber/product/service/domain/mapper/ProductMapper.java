@@ -4,15 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.domain.valueobject.valueobject.Money;
-import com.tuber.product.service.domain.dto.product.CreateProductCommand;
-import com.tuber.product.service.domain.dto.product.ProductAttributeOption;
-import com.tuber.product.service.domain.dto.product.ProductResponseData;
-import com.tuber.product.service.domain.dto.product.ProductsListResponseData;
+import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.entity.Product;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +25,27 @@ public abstract class ProductMapper {
     public abstract Product createProductCommandToProduct(CreateProductCommand createProductCommand);
 
     public abstract ProductResponseData productToProductResponseData(Product product);
+
+    public ProductsListResponseData productsListToProductsListResponseData(List<Product> products) {
+        List<ProductResponseData> productResponseDataList = products.stream()
+                .map(this::productToProductResponseData)
+                .toList();
+        Integer total = productResponseDataList.size();
+        return ProductsListResponseData.builder()
+                .products(productResponseDataList)
+                .total(total)
+                .build();
+    }
+
+    public Product updateProduct(ModifyProductCommand data, Product product) {
+        product.setUpdatedAt(LocalDate.now());
+        this.updateProductFields(data, product);
+        product.initializeProductAttributes();
+        return product;
+    }
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    protected abstract void updateProductFields(ModifyProductCommand data, @MappingTarget Product product);
 
     protected String map(List<ProductAttributeOption> options) {
         try {
@@ -49,14 +71,11 @@ public abstract class ProductMapper {
         return uniqueUUID.getValue();
     }
 
-    public ProductsListResponseData productsListToProductsListResponseData(List<Product> products) {
-        List<ProductResponseData> productResponseDataList = products.stream()
-                .map(this::productToProductResponseData)
-                .toList();
-        Integer total = productResponseDataList.size();
-        return ProductsListResponseData.builder()
-                .products(productResponseDataList)
-                .total(total)
-                .build();
+    protected UniqueUUID map(UUID uuid) {
+        return new UniqueUUID(uuid);
+    }
+
+    protected Money map(BigDecimal bigDecimal) {
+        return new Money(bigDecimal);
     }
 }

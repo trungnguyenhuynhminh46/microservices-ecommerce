@@ -2,15 +2,14 @@ package com.tuber.product.service.domain;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
-import com.tuber.product.service.domain.dto.product.CreateProductCommand;
-import com.tuber.product.service.domain.dto.product.ProductResponseData;
-import com.tuber.product.service.domain.dto.product.ProductsListResponseData;
+import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.helper.category.CreateCategoryHelper;
 import com.tuber.product.service.domain.helper.category.DeleteCategoryHelper;
 import com.tuber.product.service.domain.helper.category.ReadCategoryHelper;
 import com.tuber.product.service.domain.helper.category.UpdateCategoryHelper;
 import com.tuber.product.service.domain.helper.product.CreateProductHelper;
 import com.tuber.product.service.domain.helper.product.ReadProductHelper;
+import com.tuber.product.service.domain.helper.product.UpdateProductHelper;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +30,7 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     DeleteCategoryHelper deleteCategoryHelper;
     CreateProductHelper createProductHelper;
     ReadProductHelper readProductHelper;
+    UpdateProductHelper updateProductHelper;
 
     @Override
     public ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
@@ -63,12 +63,22 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     }
 
     @Override
-    public ApiResponse<ProductResponseData> getSingleProduct(UUID productId) {
-        return readProductHelper.getSingleProduct(productId);
+    public ApiResponse<ProductResponseData> getSingleProduct(GetProductQuery getProductQuery) {
+        return readProductHelper.getSingleProduct(getProductQuery.getId());
     }
 
     @Override
     public ApiResponse<ProductsListResponseData> getAllProducts() {
         return readProductHelper.getAllProducts();
+    }
+
+    @Override
+    public ApiResponse<ProductResponseData> updateProduct(ModifyProductCommand modifyProductCommand) {
+        return updateProductHelper.updateProduct(modifyProductCommand);
+    }
+
+    @Override
+    public ApiResponse<ProductResponseData> deleteProduct(DeleteProductCommand deleteProductCommand) {
+        return null;
     }
 }

@@ -2,9 +2,7 @@ package com.tuber.product.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
-import com.tuber.product.service.domain.dto.product.CreateProductCommand;
-import com.tuber.product.service.domain.dto.product.ProductResponseData;
-import com.tuber.product.service.domain.dto.product.ProductsListResponseData;
+import com.tuber.product.service.domain.dto.product.*;
 
 import java.util.UUID;
 
@@ -15,6 +13,8 @@ public interface ProductApplicationService {
     ApiResponse<ProductCategoryResponseData> updateProductCategory(ModifyProductCategoryCommand modifyProductCategoryCommand);
     ApiResponse<ProductCategoryResponseData> deleteProductCategory(DeleteProductCategoryCommand deleteProductCategoryCommand);
     ApiResponse<ProductResponseData> createProduct(CreateProductCommand createProductCommand);
-    ApiResponse<ProductResponseData> getSingleProduct(UUID productId);
+    ApiResponse<ProductResponseData> getSingleProduct(GetProductQuery getProductQuery);
     ApiResponse<ProductsListResponseData> getAllProducts();
+    ApiResponse<ProductResponseData> updateProduct(ModifyProductCommand modifyProductCommand);
+    ApiResponse<ProductResponseData> deleteProduct(DeleteProductCommand deleteProductCommand);
 }

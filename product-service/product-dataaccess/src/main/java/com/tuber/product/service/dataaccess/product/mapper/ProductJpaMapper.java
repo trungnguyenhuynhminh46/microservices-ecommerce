@@ -19,11 +19,11 @@ public abstract class ProductJpaMapper {
     @Autowired
     ProductAttributeJpaMapper productAttributeJpaMapper;
     public abstract Product productJpaEntityToProductEntity(ProductJpaEntity productJpaEntity);
+    public abstract ProductJpaEntity productEntityToProductJpaEntity(Product product);
     @AfterMapping
     protected void afterMapping(@MappingTarget ProductJpaEntity productJpaEntity) {
         productJpaEntity.getAttributes().forEach(productAttributeJpaEntity -> productAttributeJpaEntity.setProduct(productJpaEntity));
     }
-    public abstract ProductJpaEntity productEntityToProductJpaEntity(Product product);
     protected UUID map (UniqueUUID id) {
         return id.getValue();
     }

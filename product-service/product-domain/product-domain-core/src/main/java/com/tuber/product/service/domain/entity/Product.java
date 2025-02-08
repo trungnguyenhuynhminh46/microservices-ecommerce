@@ -253,7 +253,7 @@ public class Product extends AggregateRoot<UniqueUUID> {
         }
     }
 
-    private void initializeProductAttributes() {
+    public void initializeProductAttributes() {
         if(getAttributes() == null || getAttributes().isEmpty()) {
             setAttributes(List.of());
             return;

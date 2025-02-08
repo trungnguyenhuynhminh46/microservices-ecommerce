@@ -63,11 +63,11 @@ public class CommonHelper {
         return savedProductCategory;
     }
 
-    public Product saveProduct(Product initializedProduct) {
-        Product savedProduct = productRepository.save(initializedProduct);
+    public Product saveProduct(Product product) {
+        Product savedProduct = productRepository.save(product);
         if (savedProduct == null) {
-            log.error(String.format("Failed to save product %s", initializedProduct.getName()));
-            throw new ProductDomainException(ProductResponseCode.PRODUCT_SAVE_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value(), initializedProduct.getName());
+            log.error(String.format("Failed to save product %s", product.getName()));
+            throw new ProductDomainException(ProductResponseCode.PRODUCT_SAVE_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value(), product.getName());
         }
         return savedProduct;
     }
