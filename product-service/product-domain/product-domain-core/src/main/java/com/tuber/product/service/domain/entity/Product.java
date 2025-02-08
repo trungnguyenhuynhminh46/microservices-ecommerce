@@ -241,7 +241,23 @@ public class Product extends AggregateRoot<UniqueUUID> {
         }
     }
 
+    private void initializeDescription() {
+        if(getDescription() == null) {
+            setDescription("");
+        }
+    }
+
+    private void initializeTags() {
+        if(getTags() == null) {
+            setTags("");
+        }
+    }
+
     private void initializeProductAttributes() {
+        if(getAttributes() == null || getAttributes().isEmpty()) {
+            setAttributes(List.of());
+            return;
+        }
         long attributeId = 1;
         for(ProductAttribute attribute : getAttributes()) {
             attribute.initialize(attributeId++, getId().getValue());
@@ -263,6 +279,8 @@ public class Product extends AggregateRoot<UniqueUUID> {
         setRating(0.0f);
         setCreatedAt(LocalDate.now());
         setUpdatedAt(LocalDate.now());
+        initializeDescription();
+        initializeTags();
         initializeProductAttributes();
     }
 }
