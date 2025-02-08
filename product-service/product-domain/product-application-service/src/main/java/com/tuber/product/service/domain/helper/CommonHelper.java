@@ -71,4 +71,13 @@ public class CommonHelper {
         }
         return savedProduct;
     }
+
+    public Product verifyProductExist(UUID productId) {
+        Product product = productRepository.findById(productId);
+        if (product == null) {
+            log.error(String.format("Product with id %s not found", productId));
+            throw new ProductDomainException(ProductResponseCode.PRODUCT_NOT_FOUND, HttpStatus.NOT_FOUND.value(), productId.toString());
+        }
+        return product;
+    }
 }

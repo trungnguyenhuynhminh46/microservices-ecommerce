@@ -7,6 +7,7 @@ import com.tuber.domain.valueobject.valueobject.Money;
 import com.tuber.product.service.domain.dto.product.CreateProductCommand;
 import com.tuber.product.service.domain.dto.product.ProductAttributeOption;
 import com.tuber.product.service.domain.dto.product.ProductResponseData;
+import com.tuber.product.service.domain.dto.product.ProductsListResponseData;
 import com.tuber.product.service.domain.entity.Product;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,16 @@ public abstract class ProductMapper {
 
     protected UUID map(UniqueUUID uniqueUUID) {
         return uniqueUUID.getValue();
+    }
+
+    public ProductsListResponseData productsListToProductsListResponseData(List<Product> products) {
+        List<ProductResponseData> productResponseDataList = products.stream()
+                .map(this::productToProductResponseData)
+                .toList();
+        Integer total = productResponseDataList.size();
+        return ProductsListResponseData.builder()
+                .products(productResponseDataList)
+                .total(total)
+                .build();
     }
 }

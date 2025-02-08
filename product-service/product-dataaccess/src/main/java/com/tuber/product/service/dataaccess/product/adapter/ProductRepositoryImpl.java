@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.UUID;
+
 @Component
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -23,5 +26,24 @@ public class ProductRepositoryImpl implements ProductRepository {
                         productJpaMapper.productEntityToProductJpaEntity(product)
                 )
         );
+    }
+
+    @Override
+    public Boolean existsById(UUID id) {
+        return productJpaRepository.existsById(id);
+    }
+
+    @Override
+    public Product findById(UUID id) {
+        return productJpaMapper.productJpaEntityToProductEntity(
+                productJpaRepository.findById(id).orElse(null)
+        );
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return productJpaRepository.findAll().stream()
+                .map(productJpaMapper::productJpaEntityToProductEntity)
+                .toList();
     }
 }

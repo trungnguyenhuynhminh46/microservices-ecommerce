@@ -4,6 +4,9 @@ import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
 import com.tuber.product.service.domain.dto.product.CreateProductCommand;
 import com.tuber.product.service.domain.dto.product.ProductResponseData;
+import com.tuber.product.service.domain.dto.product.ProductsListResponseData;
+
+import java.util.UUID;
 
 public interface ProductApplicationService {
     ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand);
@@ -12,4 +15,6 @@ public interface ProductApplicationService {
     ApiResponse<ProductCategoryResponseData> updateProductCategory(ModifyProductCategoryCommand modifyProductCategoryCommand);
     ApiResponse<ProductCategoryResponseData> deleteProductCategory(DeleteProductCategoryCommand deleteProductCategoryCommand);
     ApiResponse<ProductResponseData> createProduct(CreateProductCommand createProductCommand);
+    ApiResponse<ProductResponseData> getSingleProduct(UUID productId);
+    ApiResponse<ProductsListResponseData> getAllProducts();
 }
