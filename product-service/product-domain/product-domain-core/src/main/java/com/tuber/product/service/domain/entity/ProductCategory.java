@@ -4,6 +4,7 @@ import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.exception.ProductDomainException;
+import com.tuber.product.service.domain.helper.SlugGenerator;
 
 import java.text.Normalizer;
 import java.time.LocalDate;
@@ -141,14 +142,8 @@ public class ProductCategory extends BaseEntity<UniqueUUID> {
     }
 
     public static String generateCode(String categoryName) {
-        String slug = toSlug(categoryName);
+        String slug = SlugGenerator.slug(categoryName);
         String base64 = Base64.getEncoder().encodeToString(categoryName.getBytes());
         return slug + "-" + base64;
-    }
-
-    private static String toSlug(String input) {
-        String nonWhitespace = input.trim().replaceAll("\\s+", "-");
-        String normalized = Normalizer.normalize(nonWhitespace, Normalizer.Form.NFD);
-        return normalized.replaceAll("[^\\w-]", "").toLowerCase(Locale.ENGLISH);
     }
 }
