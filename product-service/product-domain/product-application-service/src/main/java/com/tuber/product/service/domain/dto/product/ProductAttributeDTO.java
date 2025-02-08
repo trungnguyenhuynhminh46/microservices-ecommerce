@@ -16,6 +16,7 @@ import java.util.List;
 public class ProductAttributeDTO {
     @NotNull
     String name;
+    String defaultValue;
     @NotNull
     List<ProductAttributeOption> options;
 }

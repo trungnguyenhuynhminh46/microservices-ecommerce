@@ -23,6 +23,7 @@ public class ProductAttributeJpaEntity {
     @JoinColumn(name = "product_id")
     private ProductJpaEntity product;
     String name;
+    String defaultValue;
     String options;
 
     @Override

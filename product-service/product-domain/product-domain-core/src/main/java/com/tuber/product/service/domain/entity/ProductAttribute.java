@@ -14,12 +14,14 @@ public class ProductAttribute extends BaseEntity<LongId> {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private UUID productId;
     private String name;
+    private String defaultValue;
     private String options;
 
     private ProductAttribute(Builder builder) {
         super.setId(builder.id);
         setProductId(builder.productId);
         setName(builder.name);
+        setDefaultValue(builder.defaultValue);
         setOptions(builder.options);
     }
 
@@ -47,6 +49,14 @@ public class ProductAttribute extends BaseEntity<LongId> {
         this.name = name;
     }
 
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
     public String getOptions() {
         return options;
     }
@@ -59,6 +69,7 @@ public class ProductAttribute extends BaseEntity<LongId> {
         private LongId id;
         private UUID productId;
         private String name;
+        private String defaultValue;
         private String options;
 
         private Builder() {
@@ -84,6 +95,11 @@ public class ProductAttribute extends BaseEntity<LongId> {
             return this;
         }
 
+        public Builder defaultValue(String val) {
+            defaultValue = val;
+            return this;
+        }
+
         public Builder options(String val) {
             options = val;
             return this;
@@ -98,13 +114,15 @@ public class ProductAttribute extends BaseEntity<LongId> {
         return getName() != null && getOptions() != null && getId() == null && getProductId() == null;
     }
 
-    public void validateOptionsString() {
+    public void validateOptionsAndDefaultValue() {
         try {
             JsonNode rootNode = objectMapper.readTree(getOptions());
 
             if (!rootNode.isArray()) {
                 throw new IllegalArgumentException("Product attribute options after being decoded must be an array");
             }
+
+            boolean defaultValueValid = false;
 
             for (JsonNode node : rootNode) {
                 if (!node.has("name") || !node.has("changeAmount")) {
@@ -120,6 +138,14 @@ public class ProductAttribute extends BaseEntity<LongId> {
                 if (!changeAmountNode.isNumber()) {
                     throw new IllegalArgumentException("Product attribute options must have a numeric 'changeAmount' field");
                 }
+
+                if (nameNode.asText().equals(getDefaultValue())) {
+                    defaultValueValid = true;
+                }
+            }
+
+            if (getDefaultValue() != null && !defaultValueValid) {
+                throw new IllegalArgumentException(String.format("Product attribute default value '%s' is not in the options list", getDefaultValue()));
             }
         }
         catch(JsonProcessingException e) {
@@ -131,7 +157,7 @@ public class ProductAttribute extends BaseEntity<LongId> {
         if (!isValidForInitialization()) {
             throw new ProductDomainException(ProductResponseCode.PRODUCT_ATTRIBUTE_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
         }
-        validateOptionsString();
+        validateOptionsAndDefaultValue();
     }
     public void initialize(Long attributeId, UUID productId) {
         setId(new LongId(attributeId));
