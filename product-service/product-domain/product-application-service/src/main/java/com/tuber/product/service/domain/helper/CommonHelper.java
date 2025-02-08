@@ -80,4 +80,10 @@ public class CommonHelper {
         }
         return product;
     }
+
+    public Product deleteProduct(UUID productId) {
+        Product product = this.verifyProductExist(productId);
+        productRepository.delete(product);
+        return product;
+    }
 }

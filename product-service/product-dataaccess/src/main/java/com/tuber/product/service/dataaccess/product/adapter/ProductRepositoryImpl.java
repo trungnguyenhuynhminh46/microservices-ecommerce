@@ -46,4 +46,11 @@ public class ProductRepositoryImpl implements ProductRepository {
                 .map(productJpaMapper::productJpaEntityToProductEntity)
                 .toList();
     }
+
+    @Override
+    public void delete(Product product) {
+        productJpaRepository.delete(
+                productJpaMapper.productEntityToProductJpaEntity(product)
+        );
+    }
 }

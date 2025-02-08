@@ -10,4 +10,5 @@ public interface ProductRepository {
     Boolean existsById(UUID id);
     Product findById(UUID id);
     List<Product> findAll();
+    void delete(Product product);
 }
