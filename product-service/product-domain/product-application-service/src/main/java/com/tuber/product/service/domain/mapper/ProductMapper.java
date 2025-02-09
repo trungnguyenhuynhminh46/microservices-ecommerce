@@ -40,6 +40,7 @@ public abstract class ProductMapper {
     public Product updateProduct(ModifyProductCommand data, Product product) {
         product.setUpdatedAt(LocalDate.now());
         this.updateProductFields(data, product);
+        product.validateProperties();
         product.initializeProductAttributes();
         return product;
     }

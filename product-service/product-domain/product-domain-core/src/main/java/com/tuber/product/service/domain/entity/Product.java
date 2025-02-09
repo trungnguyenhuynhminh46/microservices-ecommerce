@@ -264,14 +264,18 @@ public class Product extends AggregateRoot<UniqueUUID> {
         }
     }
 
-    public void validateForInitialization() {
-        if (!isValidForInitialization()) {
-            throw new ProductDomainException(ProductResponseCode.PRODUCT_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
-        }
+    public void validateProperties() {
         validatePrice();
         validateTags();
         validateRating();
         validateAttributes();
+    }
+
+    public void validateForInitialization() {
+        if (!isValidForInitialization()) {
+            throw new ProductDomainException(ProductResponseCode.PRODUCT_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
+        }
+        this.validateProperties();
     }
 
     public void initialize() {
