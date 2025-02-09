@@ -27,7 +27,7 @@ public class ProductJpaEntity {
     String tags;
     Float rating;
     UUID categoryId;
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     List<ProductAttributeJpaEntity> attributes;
     @Column(columnDefinition = "DATE")
     LocalDate createdAt;

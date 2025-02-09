@@ -7,11 +7,13 @@ import com.tuber.product.service.domain.dto.product.ProductResponseData;
 import com.tuber.product.service.domain.entity.Product;
 import com.tuber.product.service.domain.helper.CommonHelper;
 import com.tuber.product.service.domain.mapper.ProductMapper;
+import com.tuber.product.service.domain.ports.output.repository.ProductAttributeRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
@@ -20,9 +22,12 @@ import org.springframework.stereotype.Component;
 public class UpdateProductHelper {
     ProductMapper productMapper;
     CommonHelper commonHelper;
+    ProductAttributeRepository productAttributeRepository;
 
+    @Transactional
     public ApiResponse<ProductResponseData> updateProduct(ModifyProductCommand modifyProductCommand) {
         Product savedProduct = commonHelper.verifyProductExist(modifyProductCommand.getId());
+        productAttributeRepository.deleteByProductId(modifyProductCommand.getId());
         Product updatedProduct = productMapper.updateProduct(modifyProductCommand, savedProduct);
         return ApiResponse.<ProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
