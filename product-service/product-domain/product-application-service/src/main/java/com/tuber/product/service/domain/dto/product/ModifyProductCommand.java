@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,8 +23,8 @@ public class ModifyProductCommand {
     String name;
     @NotNull(message = "Price is mandatory")
     BigDecimal price;
-    String description;
-    String tags;
-    UUID categoryId;
-    List<ProductAttributeDTO> attributes;
+    JsonNullable<String> description;
+    JsonNullable<String> tags;
+    JsonNullable<UUID> categoryId;
+    JsonNullable<List<ProductAttributeDTO>> attributes;
 }

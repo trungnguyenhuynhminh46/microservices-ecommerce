@@ -2,14 +2,14 @@ package com.tuber.product.service.domain.mapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tuber.application.mapper.JsonNullableMapper;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.domain.valueobject.valueobject.Money;
 import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.entity.Product;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import com.tuber.product.service.domain.entity.ProductAttribute;
+import org.mapstruct.*;
+import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -17,7 +17,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@Mapper(componentModel = "spring")
+@Mapper(uses = JsonNullableMapper.class,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        componentModel = "spring")
 public abstract class ProductMapper {
     @Autowired
     ObjectMapper objectMapper;
@@ -45,8 +47,23 @@ public abstract class ProductMapper {
         return product;
     }
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @InheritConfiguration
+    @Mapping(target = "description", conditionQualifiedByName = "isValidJsonNullable")
+    @Mapping(target = "tags", conditionQualifiedByName = "isValidJsonNullable")
+    @Mapping(target = "categoryId", conditionQualifiedByName = "isValidJsonNullable")
+    @Mapping(target = "attributes", conditionQualifiedByName = "isValidJsonNullable")
     protected abstract void updateProductFields(ModifyProductCommand data, @MappingTarget Product product);
+
+    protected List<ProductAttribute> map(JsonNullable<List<ProductAttributeDTO>> attributes) {
+        List<ProductAttributeDTO> attributesList = attributes.orElse(null);
+        return attributesList == null ? List.of() : attributesList.stream()
+                .map(attribute -> ProductAttribute.builder()
+                        .name(attribute.getName())
+                        .defaultValue(attribute.getDefaultValue())
+                        .options(map(attribute.getOptions()))
+                        .build())
+                .toList();
+    }
 
     protected String map(List<ProductAttributeOption> options) {
         try {
