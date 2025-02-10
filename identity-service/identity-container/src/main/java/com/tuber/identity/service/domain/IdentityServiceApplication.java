@@ -54,7 +54,8 @@ public class IdentityServiceApplication implements CommandLineRunner {
                     Permissions.GET_PERMISSIONS, Permissions.REASSIGN_PERMISSION
             ),
             RolesDefault.STORE_ADMIN, Set.of(
-                    Permissions.GET_PRODUCT_CATEGORY, Permissions.CREATE_PRODUCT_CATEGORY, Permissions.UPDATE_PRODUCT_CATEGORY, Permissions.DELETE_PRODUCT_CATEGORY
+                    Permissions.GET_PRODUCT_CATEGORY, Permissions.CREATE_PRODUCT_CATEGORY, Permissions.UPDATE_PRODUCT_CATEGORY, Permissions.DELETE_PRODUCT_CATEGORY,
+                    Permissions.CREATE_TEMPLATE, Permissions.UPDATE_TEMPLATE, Permissions.DELETE_TEMPLATE
             )
     );
 

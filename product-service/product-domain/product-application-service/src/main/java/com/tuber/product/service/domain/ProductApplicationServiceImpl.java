@@ -11,6 +11,7 @@ import com.tuber.product.service.domain.helper.product.CreateProductHelper;
 import com.tuber.product.service.domain.helper.product.DeleteProductHelper;
 import com.tuber.product.service.domain.helper.product.ReadProductHelper;
 import com.tuber.product.service.domain.helper.product.UpdateProductHelper;
+import com.tuber.product.service.domain.helper.template.product.CreateTemplateProductHelper;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     ReadProductHelper readProductHelper;
     UpdateProductHelper updateProductHelper;
     DeleteProductHelper deleteProductHelper;
+    CreateTemplateProductHelper createTemplateProductHelper;
 
     @Override
     public ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
@@ -82,5 +84,30 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     @Override
     public ApiResponse<ProductResponseData> deleteProduct(DeleteProductCommand deleteProductCommand) {
         return deleteProductHelper.deleteProduct(deleteProductCommand);
+    }
+
+    @Override
+    public ApiResponse<ProductResponseData> createTemplateProduct(CreateProductCommand createProductCommand) {
+        return createTemplateProductHelper.persistTemplateProduct(createProductCommand);
+    }
+
+    @Override
+    public ApiResponse<ProductResponseData> getSingleTemplateProduct(GetProductQuery getProductQuery) {
+        return null;
+    }
+
+    @Override
+    public ApiResponse<ProductsListResponseData> getAllTemplateProducts() {
+        return null;
+    }
+
+    @Override
+    public ApiResponse<ProductResponseData> updateTemplateProduct(ModifyProductCommand modifyProductCommand) {
+        return null;
+    }
+
+    @Override
+    public ApiResponse<ProductResponseData> deleteTemplateProduct(DeleteProductCommand deleteProductCommand) {
+        return null;
     }
 }

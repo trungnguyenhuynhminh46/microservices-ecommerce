@@ -26,6 +26,16 @@ public class ProductResponseCode extends ResponseCodeBase {
             new ProductResponseCode(1008, "Product with id %s not found or has been deleted already");
     public static final ProductResponseCode PRODUCT_ATTRIBUTE_INVALID =
             new ProductResponseCode(1009, "Product attribute is invalid");
+    public static final ProductResponseCode TEMPLATE_PRODUCT_IN_WRONG_STATE_FOR_INITIALIZATION =
+            new ProductResponseCode(1010, "Template product is in wrong state for initialization");
+    public static final ProductResponseCode TEMPLATE_PRODUCT_ATTRIBUTE_IN_WRONG_STATE_FOR_INITIALIZATION =
+            new ProductResponseCode(1011, "Product attribute is in wrong state for initialization");
+    public static final ProductResponseCode TEMPLATE_PRODUCT_SAVE_FAILED =
+            new ProductResponseCode(1012, "Failed to save product %s");
+    public static final ProductResponseCode TEMPLATE_PRODUCT_NOT_FOUND =
+            new ProductResponseCode(1013, "Product with id %s not found or has been deleted already");
+    public static final ProductResponseCode TEMPLATE_PRODUCT_ATTRIBUTE_INVALID =
+            new ProductResponseCode(1014, "Product attribute is invalid");
 
     protected ProductResponseCode(int code, String message) {
         this.code = formatErrorCode(code);

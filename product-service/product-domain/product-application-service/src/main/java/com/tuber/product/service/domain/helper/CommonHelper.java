@@ -3,9 +3,11 @@ package com.tuber.product.service.domain.helper;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.entity.Product;
 import com.tuber.product.service.domain.entity.ProductCategory;
+import com.tuber.product.service.domain.entity.TemplateProduct;
 import com.tuber.product.service.domain.exception.ProductDomainException;
 import com.tuber.product.service.domain.ports.output.repository.ProductCategoryRepository;
 import com.tuber.product.service.domain.ports.output.repository.ProductRepository;
+import com.tuber.product.service.domain.ports.output.repository.TemplateProductRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,6 +24,7 @@ import java.util.UUID;
 public class CommonHelper {
     ProductCategoryRepository productCategoryRepository;
     ProductRepository productRepository;
+    TemplateProductRepository templateProductRepository;
 
     public ProductCategory verifyProductCategoryExist(String code) {
         ProductCategory productCategory = productCategoryRepository.findByCode(code);
@@ -85,5 +88,29 @@ public class CommonHelper {
         Product product = this.verifyProductExist(productId);
         productRepository.delete(product);
         return product;
+    }
+
+    public TemplateProduct saveTemplateProduct(TemplateProduct product) {
+        TemplateProduct savedTemplateProduct = templateProductRepository.save(product);
+        if (savedTemplateProduct == null) {
+            log.error(String.format("Failed to save template product %s", product.getName()));
+            throw new ProductDomainException(ProductResponseCode.TEMPLATE_PRODUCT_SAVE_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value(), product.getName());
+        }
+        return savedTemplateProduct;
+    }
+
+    public TemplateProduct verifyTemplateProductExist(UUID templateProductId) {
+        TemplateProduct templateProduct = templateProductRepository.findById(templateProductId);
+        if (templateProduct == null) {
+            log.error(String.format("Template product with id %s not found", templateProductId));
+            throw new ProductDomainException(ProductResponseCode.TEMPLATE_PRODUCT_NOT_FOUND, HttpStatus.NOT_FOUND.value(), templateProductId.toString());
+        }
+        return templateProduct;
+    }
+
+    public TemplateProduct deleteTemplateProduct(UUID templateProductId) {
+        TemplateProduct templateProduct = this.verifyTemplateProductExist(templateProductId);
+        templateProductRepository.delete(templateProduct);
+        return templateProduct;
     }
 }
