@@ -25,7 +25,7 @@ public class DeleteProductHelper {
         Product deletedProduct = commonHelper.deleteProduct(deleteProductCommand.getId());
         return ApiResponse.<ProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
-                .message("Product updated successfully")
+                .message("Product deleted successfully")
                 .data(productMapper.productToProductResponseData(deletedProduct))
                 .build();
     }
