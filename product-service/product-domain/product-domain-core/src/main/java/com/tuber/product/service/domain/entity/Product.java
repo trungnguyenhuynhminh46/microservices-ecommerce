@@ -158,7 +158,7 @@ public class Product extends AggregateRoot<UniqueUUID> {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description == null ? "" : description;
     }
 
     public String getTags() {
@@ -166,7 +166,7 @@ public class Product extends AggregateRoot<UniqueUUID> {
     }
 
     public void setTags(String tags) {
-        this.tags = tags;
+        this.tags = tags == null ? "" : tags;
     }
 
     public Float getRating() {
@@ -174,7 +174,7 @@ public class Product extends AggregateRoot<UniqueUUID> {
     }
 
     public void setRating(Float rating) {
-        this.rating = rating;
+        this.rating = rating == null ? 0.0f : rating;
     }
 
     public UUID getCategoryId() {
@@ -194,7 +194,7 @@ public class Product extends AggregateRoot<UniqueUUID> {
     }
 
     public void setAttributes(List<ProductAttribute> attributes) {
-        this.attributes = attributes;
+        this.attributes = attributes == null ? List.of() : attributes;
     }
 
     public LocalDate getCreatedAt() {
@@ -235,9 +235,15 @@ public class Product extends AggregateRoot<UniqueUUID> {
         }
     }
 
-    public void validateAttributes() {
+    public void validateInitializeAttributes() {
         if (getAttributes() != null) {
             getAttributes().forEach(ProductAttribute::validateForInitialization);
+        }
+    }
+
+    public void validateAttributes() {
+        if (getAttributes() != null) {
+            getAttributes().forEach(ProductAttribute::validateProperties);
         }
     }
 
@@ -276,6 +282,7 @@ public class Product extends AggregateRoot<UniqueUUID> {
             throw new ProductDomainException(ProductResponseCode.PRODUCT_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
         }
         this.validateProperties();
+        validateInitializeAttributes();
     }
 
     public void initialize() {

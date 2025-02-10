@@ -24,6 +24,8 @@ public class ProductResponseCode extends ResponseCodeBase {
             new ProductResponseCode(1007, "Failed to save product %s");
     public static final ProductResponseCode PRODUCT_NOT_FOUND =
             new ProductResponseCode(1008, "Product with id %s not found or has been deleted already");
+    public static final ProductResponseCode PRODUCT_ATTRIBUTE_INVALID =
+            new ProductResponseCode(1009, "Product attribute is invalid");
 
     protected ProductResponseCode(int code, String message) {
         this.code = formatErrorCode(code);

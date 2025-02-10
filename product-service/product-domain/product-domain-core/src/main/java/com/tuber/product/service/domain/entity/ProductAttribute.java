@@ -110,8 +110,13 @@ public class ProductAttribute extends BaseEntity<LongId> {
         }
     }
 
+    public boolean isValid() {
+        return getName() != null && getOptions() != null;
+    }
+
+
     public boolean isValidForInitialization() {
-        return getName() != null && getOptions() != null && getId() == null && getProductId() == null;
+        return isValid() && getId() == null && getProductId() == null;
     }
 
     public void validateOptionsAndDefaultValue() {
@@ -151,6 +156,13 @@ public class ProductAttribute extends BaseEntity<LongId> {
         catch(JsonProcessingException e) {
             throw new IllegalArgumentException("Product attribute options is not a valid JSON string");
         }
+    }
+
+    public void validateProperties() {
+        if (!isValid()) {
+            throw new ProductDomainException(ProductResponseCode.PRODUCT_ATTRIBUTE_INVALID, 406);
+        }
+        validateOptionsAndDefaultValue();
     }
 
     public void validateForInitialization() {
