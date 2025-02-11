@@ -18,6 +18,6 @@ public class ProductCategoryResponseData {
     String code;
     String name;
     String description;
-    LocalDate createdAt;
-    LocalDate updatedAt;
+    String createdAt;
+    String updatedAt;
 }
