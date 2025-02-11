@@ -39,7 +39,7 @@ public abstract class TemplateProductMapper {
                 .build();
     }
 
-    public TemplateProduct updateProduct(ModifyProductCommand data, TemplateProduct templateProduct) {
+    public TemplateProduct updateTemplateProduct(ModifyProductCommand data, TemplateProduct templateProduct) {
         templateProduct.setUpdatedAt(LocalDate.now());
         this.updateProductFields(data, templateProduct);
         templateProduct.validateProperties();
