@@ -6,6 +6,8 @@ import com.tuber.application.mapper.JsonNullableMapper;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.domain.valueobject.valueobject.Money;
 import com.tuber.product.service.domain.dto.product.*;
+import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
+import com.tuber.product.service.domain.dto.shared.ProductAttributeOption;
 import com.tuber.product.service.domain.entity.Product;
 import com.tuber.product.service.domain.entity.ProductAttribute;
 import org.mapstruct.*;

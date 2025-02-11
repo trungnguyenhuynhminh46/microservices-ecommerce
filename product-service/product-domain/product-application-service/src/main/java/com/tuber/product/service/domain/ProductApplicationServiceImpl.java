@@ -3,6 +3,10 @@ package com.tuber.product.service.domain;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
 import com.tuber.product.service.domain.dto.product.*;
+import com.tuber.product.service.domain.dto.template.attribute.CreateTemplateAttributeCommand;
+import com.tuber.product.service.domain.dto.template.attribute.GetTemplateAttributeQuery;
+import com.tuber.product.service.domain.dto.template.attribute.ModifyTemplateAttributeCommand;
+import com.tuber.product.service.domain.dto.template.attribute.TemplateAttributeResponseData;
 import com.tuber.product.service.domain.helper.category.CreateCategoryHelper;
 import com.tuber.product.service.domain.helper.category.DeleteCategoryHelper;
 import com.tuber.product.service.domain.helper.category.ReadCategoryHelper;
@@ -21,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.UUID;
 
 @Service
 @Validated
@@ -113,5 +119,30 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     @Override
     public ApiResponse<ProductResponseData> deleteTemplateProduct(DeleteProductCommand deleteProductCommand) {
         return deleteTemplateProductHelper.deleteTemplateProduct(deleteProductCommand);
+    }
+
+    @Override
+    public ApiResponse<TemplateAttributeResponseData> createTemplateAttribute(CreateTemplateAttributeCommand createTemplateAttributeCommand) {
+        return null;
+    }
+
+    @Override
+    public ApiResponse<TemplateAttributeResponseData> getSingleTemplateAttribute(GetTemplateAttributeQuery getTemplateAttributeQuery) {
+        return null;
+    }
+
+    @Override
+    public ApiResponse<TemplateAttributeResponseData> getAllTemplateAttributes() {
+        return null;
+    }
+
+    @Override
+    public ApiResponse<TemplateAttributeResponseData> updateTemplateAttribute(ModifyTemplateAttributeCommand modifyTemplateAttributeCommand) {
+        return null;
+    }
+
+    @Override
+    public ApiResponse<TemplateAttributeResponseData> deleteTemplateAttribute(UUID templateAttributeId) {
+        return null;
     }
 }

@@ -1,6 +1,6 @@
-package com.tuber.product.service.domain.dto.product;
+package com.tuber.product.service.domain.dto.template.attribute;
 
-import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
+import com.tuber.product.service.domain.dto.shared.ProductAttributeOption;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -9,22 +9,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CreateProductCommand {
+public class CreateTemplateAttributeCommand {
     @NotNull
-    @NotBlank(message = "Product name is mandatory")
+    @NotBlank(message = "Template attribute name is mandatory")
     String name;
-    @NotNull(message = "Price is mandatory")
-    BigDecimal price;
     String description;
-    String tags;
-    UUID categoryId;
-    List<ProductAttributeDTO> attributes;
+    @NotNull(message = "You must add at least one option to the attribute")
+    List<ProductAttributeOption> options;
 }

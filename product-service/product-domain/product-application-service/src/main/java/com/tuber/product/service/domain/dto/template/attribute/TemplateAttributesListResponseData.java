@@ -1,6 +1,5 @@
-package com.tuber.product.service.domain.dto.product;
+package com.tuber.product.service.domain.dto.template.attribute;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,10 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ProductAttributeDTO {
-    @NotNull
-    String name;
-    String defaultValue;
-    @NotNull
-    List<ProductAttributeOption> options;
+public class TemplateAttributesListResponseData {
+    List<TemplateAttributeResponseData> templateAttributes;
+    Integer total;
 }

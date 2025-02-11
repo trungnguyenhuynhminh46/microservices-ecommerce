@@ -1,5 +1,6 @@
 package com.tuber.product.service.domain.dto.product;
 
+import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
