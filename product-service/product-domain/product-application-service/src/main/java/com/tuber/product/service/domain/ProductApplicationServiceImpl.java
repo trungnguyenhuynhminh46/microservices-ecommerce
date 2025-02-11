@@ -12,7 +12,9 @@ import com.tuber.product.service.domain.helper.product.DeleteProductHelper;
 import com.tuber.product.service.domain.helper.product.ReadProductHelper;
 import com.tuber.product.service.domain.helper.product.UpdateProductHelper;
 import com.tuber.product.service.domain.helper.template.product.CreateTemplateProductHelper;
+import com.tuber.product.service.domain.helper.template.product.DeleteTemplateProductHelper;
 import com.tuber.product.service.domain.helper.template.product.ReadTemplateProductHelper;
+import com.tuber.product.service.domain.helper.template.product.UpdateTemplateProductHelper;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,8 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     DeleteProductHelper deleteProductHelper;
     CreateTemplateProductHelper createTemplateProductHelper;
     ReadTemplateProductHelper readTemplateProductHelper;
+    UpdateTemplateProductHelper updateTemplateProductHelper;
+    DeleteTemplateProductHelper deleteTemplateProductHelper;
 
     @Override
     public ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
@@ -105,11 +109,11 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
 
     @Override
     public ApiResponse<ProductResponseData> updateTemplateProduct(ModifyProductCommand modifyProductCommand) {
-        return null;
+        return updateTemplateProductHelper.updateTemplateProduct(modifyProductCommand);
     }
 
     @Override
     public ApiResponse<ProductResponseData> deleteTemplateProduct(DeleteProductCommand deleteProductCommand) {
-        return null;
+        return deleteTemplateProductHelper.deleteTemplateProduct(deleteProductCommand);
     }
 }

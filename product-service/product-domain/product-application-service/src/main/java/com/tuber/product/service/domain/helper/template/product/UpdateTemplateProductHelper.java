@@ -25,7 +25,7 @@ public class UpdateTemplateProductHelper {
     TemplateAttributeRepository templateAttributeRepository;
 
     @Transactional
-    public ApiResponse<ProductResponseData> updateProduct(ModifyProductCommand modifyProductCommand) {
+    public ApiResponse<ProductResponseData> updateTemplateProduct(ModifyProductCommand modifyProductCommand) {
         TemplateProduct savedTemplateProduct = commonHelper.verifyTemplateProductExist(modifyProductCommand.getId());
         templateAttributeRepository.deleteByTemplateProductId(modifyProductCommand.getId());
         TemplateProduct updatedTemplateProduct = templateProductMapper.updateTemplateProduct(modifyProductCommand, savedTemplateProduct);
