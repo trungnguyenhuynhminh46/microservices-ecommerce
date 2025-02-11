@@ -18,13 +18,13 @@ import java.util.*;
 public class TemplateAttributeJpaEntity {
     @Id
     UUID id;
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "template_product_template_attribute",
             joinColumns = @JoinColumn(name = "template_attribute_id"),
             inverseJoinColumns = @JoinColumn(name = "template_product_id")
     )
-    List<TemplateProductJpaEntity> templateProducts = List.of();
+    List<TemplateProductJpaEntity> templateProducts = new ArrayList<>();
     String name;
     String defaultValue;
     String options;

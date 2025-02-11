@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class TemplateProductJpaEntity {
     Float rating;
     UUID categoryId;
     @ManyToMany(mappedBy = "templateProducts", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    List<TemplateAttributeJpaEntity> templateAttributes = List.of();
+    List<TemplateAttributeJpaEntity> templateAttributes = new ArrayList<>();
     @Column(columnDefinition = "DATE")
     LocalDate createdAt;
     @Column(columnDefinition = "DATE")
