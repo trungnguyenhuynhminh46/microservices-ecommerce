@@ -5,25 +5,26 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(TemplateAttributeId.class)
 @Table(name = "template_attribute")
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TemplateAttributeJpaEntity {
     @Id
-    private Long id;
-    @Id
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "template_product_id")
-    private TemplateProductJpaEntity templateProduct;
-
+    UUID id;
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "template_product_template_attribute",
+            joinColumns = @JoinColumn(name = "template_attribute_id"),
+            inverseJoinColumns = @JoinColumn(name = "template_product_id")
+    )
+    List<TemplateProductJpaEntity> templateProducts = List.of();
     String name;
     String defaultValue;
     String options;
@@ -33,11 +34,11 @@ public class TemplateAttributeJpaEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TemplateAttributeJpaEntity that = (TemplateAttributeJpaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(templateProduct, that.templateProduct);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, templateProduct);
+        return Objects.hash(id);
     }
 }

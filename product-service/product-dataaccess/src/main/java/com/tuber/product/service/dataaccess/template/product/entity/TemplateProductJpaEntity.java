@@ -28,8 +28,8 @@ public class TemplateProductJpaEntity {
     String tags;
     Float rating;
     UUID categoryId;
-    @OneToMany(mappedBy = "templateProduct", cascade = CascadeType.ALL)
-    List<TemplateAttributeJpaEntity> templateAttributes;
+    @ManyToMany(mappedBy = "templateProducts", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    List<TemplateAttributeJpaEntity> templateAttributes = List.of();
     @Column(columnDefinition = "DATE")
     LocalDate createdAt;
     @Column(columnDefinition = "DATE")

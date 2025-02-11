@@ -248,25 +248,24 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
     }
 
     private void initializeDescription() {
-        if(getDescription() == null) {
+        if (getDescription() == null) {
             setDescription("");
         }
     }
 
     private void initializeTags() {
-        if(getTags() == null) {
+        if (getTags() == null) {
             setTags("");
         }
     }
 
     public void initializeTemplateAttributes() {
-        if(getTemplateAttributes() == null || getTemplateAttributes().isEmpty()) {
+        if (getTemplateAttributes() == null || getTemplateAttributes().isEmpty()) {
             setTemplateAttributes(List.of());
             return;
         }
-        long attributeId = 1;
-        for(TemplateAttribute attribute : getTemplateAttributes()) {
-            attribute.initialize(attributeId++, getId().getValue());
+        for (TemplateAttribute attribute : getTemplateAttributes()) {
+            attribute.initialize();
         }
     }
 

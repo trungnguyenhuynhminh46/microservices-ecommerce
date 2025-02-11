@@ -13,10 +13,4 @@ import java.util.UUID;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TemplateAttributeRepositoryImpl implements TemplateAttributeRepository {
-    TemplateAttributeJpaRepository templateAttributeJpaRepository;
-
-    @Override
-    public void deleteByTemplateProductId(UUID templateProductId) {
-        templateAttributeJpaRepository.deleteByTemplateProductId(templateProductId);
-    }
 }

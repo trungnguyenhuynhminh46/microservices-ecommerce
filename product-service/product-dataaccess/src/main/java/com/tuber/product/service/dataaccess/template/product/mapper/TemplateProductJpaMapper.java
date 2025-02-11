@@ -7,9 +7,7 @@ import com.tuber.product.service.dataaccess.template.attribute.mapper.TemplateAt
 import com.tuber.product.service.dataaccess.template.product.entity.TemplateProductJpaEntity;
 import com.tuber.product.service.domain.entity.TemplateAttribute;
 import com.tuber.product.service.domain.entity.TemplateProduct;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -21,10 +19,6 @@ public abstract class TemplateProductJpaMapper {
     TemplateAttributeJpaMapper templateAttributeJpaMapper;
     public abstract TemplateProduct templateProductJpaEntityToTemplateProductEntity(TemplateProductJpaEntity productJpaEntity);
     public abstract TemplateProductJpaEntity productEntityToProductJpaEntity(TemplateProduct product);
-    @AfterMapping
-    protected void afterMapping(@MappingTarget TemplateProductJpaEntity templateProductJpaEntity) {
-        templateProductJpaEntity.getTemplateAttributes().forEach(templateAttributeJpaEntity -> templateAttributeJpaEntity.setTemplateProduct(templateProductJpaEntity));
-    }
     protected UUID map (UniqueUUID id) {
         return id.getValue();
     }

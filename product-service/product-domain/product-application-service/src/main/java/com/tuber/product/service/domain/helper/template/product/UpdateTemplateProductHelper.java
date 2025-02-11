@@ -22,12 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class UpdateTemplateProductHelper {
     TemplateProductMapper templateProductMapper;
     CommonHelper commonHelper;
-    TemplateAttributeRepository templateAttributeRepository;
 
     @Transactional
     public ApiResponse<ProductResponseData> updateTemplateProduct(ModifyProductCommand modifyProductCommand) {
         TemplateProduct savedTemplateProduct = commonHelper.verifyTemplateProductExist(modifyProductCommand.getId());
-        templateAttributeRepository.deleteByTemplateProductId(modifyProductCommand.getId());
         TemplateProduct updatedTemplateProduct = templateProductMapper.updateTemplateProduct(modifyProductCommand, savedTemplateProduct);
         return ApiResponse.<ProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())

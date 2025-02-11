@@ -5,21 +5,20 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.id.LongId;
+import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.exception.ProductDomainException;
 
 import java.util.UUID;
 
-public class TemplateAttribute extends BaseEntity<LongId> {
+public class TemplateAttribute extends BaseEntity<UniqueUUID> {
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private UUID templateProductId;
     private String name;
     private String defaultValue;
     private String options;
 
     private TemplateAttribute(TemplateAttribute.Builder builder) {
         super.setId(builder.id);
-        setTemplateProductId(builder.templateProductId);
         setName(builder.name);
         setDefaultValue(builder.defaultValue);
         setOptions(builder.options);
@@ -29,16 +28,8 @@ public class TemplateAttribute extends BaseEntity<LongId> {
         return new TemplateAttribute.Builder();
     }
 
-    public Long getAttributeId() {
+    public UUID getAttributeId() {
         return super.getId().getValue();
-    }
-
-    public UUID getTemplateProductId() {
-        return templateProductId;
-    }
-
-    public void setTemplateProductId(UUID templateProductId) {
-        this.templateProductId = templateProductId;
     }
 
     public String getName() {
@@ -66,8 +57,7 @@ public class TemplateAttribute extends BaseEntity<LongId> {
     }
 
     public static final class Builder {
-        private LongId id;
-        private UUID templateProductId;
+        private UniqueUUID id;
         private String name;
         private String defaultValue;
         private String options;
@@ -75,21 +65,15 @@ public class TemplateAttribute extends BaseEntity<LongId> {
         private Builder() {
         }
 
-        public TemplateAttribute.Builder id(Long val) {
-            id = new LongId(val);
+        public TemplateAttribute.Builder id(UUID val) {
+            id = new UniqueUUID(val);
             return this;
         }
 
-        public TemplateAttribute.Builder id(LongId val) {
+        public TemplateAttribute.Builder id(UniqueUUID val) {
             id = val;
             return this;
         }
-
-        public TemplateAttribute.Builder templateProductId(UUID val) {
-            templateProductId = val;
-            return this;
-        }
-
         public TemplateAttribute.Builder name(String val) {
             name = val;
             return this;
@@ -116,7 +100,7 @@ public class TemplateAttribute extends BaseEntity<LongId> {
 
 
     public boolean isValidForInitialization() {
-        return isValid() && getId() == null && getTemplateProductId() == null;
+        return isValid() && getId() == null;
     }
 
     public void validateOptionsAndDefaultValue() {
@@ -171,8 +155,7 @@ public class TemplateAttribute extends BaseEntity<LongId> {
         }
         validateOptionsAndDefaultValue();
     }
-    public void initialize(Long attributeId, UUID productId) {
-        setId(new LongId(attributeId));
-        setTemplateProductId(productId);
+    public void initialize() {
+        setId(new UniqueUUID(UUID.randomUUID()));
     }
 }
