@@ -1,5 +1,6 @@
 package com.tuber.product.service.dataaccess.product.entity;
 
+import com.tuber.product.service.dataaccess.attribute.entity.ProductAttributeJpaEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

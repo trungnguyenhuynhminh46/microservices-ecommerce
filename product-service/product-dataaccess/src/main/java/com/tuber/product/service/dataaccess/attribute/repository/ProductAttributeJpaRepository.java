@@ -1,7 +1,7 @@
-package com.tuber.product.service.dataaccess.product.repository;
+package com.tuber.product.service.dataaccess.attribute.repository;
 
-import com.tuber.product.service.dataaccess.product.entity.ProductAttributeId;
-import com.tuber.product.service.dataaccess.product.entity.ProductAttributeJpaEntity;
+import com.tuber.product.service.dataaccess.attribute.entity.ProductAttributeId;
+import com.tuber.product.service.dataaccess.attribute.entity.ProductAttributeJpaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

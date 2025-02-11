@@ -1,5 +1,6 @@
-package com.tuber.product.service.dataaccess.product.entity;
+package com.tuber.product.service.dataaccess.attribute.entity;
 
+import com.tuber.product.service.dataaccess.product.entity.ProductJpaEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

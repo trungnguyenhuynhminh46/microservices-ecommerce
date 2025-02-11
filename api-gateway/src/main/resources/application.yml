@@ -30,7 +30,8 @@ spring:
           uri: http://localhost:8083
           predicates:
               - Path=${app.api-prefix}/product/products/**,
-                ${app.api-prefix}/product/categories/**
+                ${app.api-prefix}/product/categories/**,
+                ${app.api-prefix}/product/template/products/**,
           filters:
               - StripPrefix=1
 services:

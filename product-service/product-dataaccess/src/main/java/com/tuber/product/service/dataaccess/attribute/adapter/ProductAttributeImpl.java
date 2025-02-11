@@ -1,6 +1,6 @@
-package com.tuber.product.service.dataaccess.product.adapter;
+package com.tuber.product.service.dataaccess.attribute.adapter;
 
-import com.tuber.product.service.dataaccess.product.repository.ProductAttributeJpaRepository;
+import com.tuber.product.service.dataaccess.attribute.repository.ProductAttributeJpaRepository;
 import com.tuber.product.service.domain.ports.output.repository.ProductAttributeRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
