@@ -3,26 +3,28 @@ package com.tuber.product.service.domain.ports.input.service;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
 import com.tuber.product.service.domain.dto.product.*;
+import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
 public interface ProductApplicationService {
     // product category
-    ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand);
-    ApiResponse<ProductCategoryResponseData> getProductCategory(GetProductCategoryQuery getProductCategoryQuery);
+    ApiResponse<ProductCategoryResponseData> createProductCategory(@Valid CreateProductCategoryCommand createProductCategoryCommand);
+    ApiResponse<ProductCategoryResponseData> getProductCategory(@Valid GetProductCategoryQuery getProductCategoryQuery);
     ApiResponse<ProductCategoryListResponseData> getAllProductCategories();
-    ApiResponse<ProductCategoryResponseData> updateProductCategory(ModifyProductCategoryCommand modifyProductCategoryCommand);
-    ApiResponse<ProductCategoryResponseData> deleteProductCategory(DeleteProductCategoryCommand deleteProductCategoryCommand);
+    ApiResponse<ProductCategoryResponseData> updateProductCategory(@Valid ModifyProductCategoryCommand modifyProductCategoryCommand);
+    ApiResponse<ProductCategoryResponseData> deleteProductCategory(@Valid DeleteProductCategoryCommand deleteProductCategoryCommand);
     // product
-    ApiResponse<ProductResponseData> createProduct(CreateProductCommand createProductCommand);
-    ApiResponse<ProductResponseData> getSingleProduct(GetProductQuery getProductQuery);
+    ApiResponse<ProductResponseData> createProduct(@Valid CreateProductCommand createProductCommand);
+    ApiResponse<ProductResponseData> getSingleProduct(@Valid GetProductQuery getProductQuery);
     ApiResponse<ProductsListResponseData> getAllProducts();
-    ApiResponse<ProductResponseData> updateProduct(ModifyProductCommand modifyProductCommand);
-    ApiResponse<ProductResponseData> deleteProduct(DeleteProductCommand deleteProductCommand);
+    ApiResponse<ProductResponseData> updateProduct(@Valid ModifyProductCommand modifyProductCommand);
+    ApiResponse<ProductResponseData> deleteProduct(@Valid DeleteProductCommand deleteProductCommand);
     // template product
-    ApiResponse<ProductResponseData> createTemplateProduct(CreateProductCommand createProductCommand);
-    ApiResponse<ProductResponseData> getSingleTemplateProduct(GetProductQuery getProductQuery);
+    ApiResponse<ProductResponseData> createTemplateProduct(@Valid CreateProductCommand createProductCommand);
+    ApiResponse<ProductResponseData> getSingleTemplateProduct(@Valid GetProductQuery getProductQuery);
     ApiResponse<ProductsListResponseData> getAllTemplateProducts();
-    ApiResponse<ProductResponseData> updateTemplateProduct(ModifyProductCommand modifyProductCommand);
-    ApiResponse<ProductResponseData> deleteTemplateProduct(DeleteProductCommand deleteProductCommand);
+    ApiResponse<ProductResponseData> updateTemplateProduct(@Valid ModifyProductCommand modifyProductCommand);
+    ApiResponse<ProductResponseData> deleteTemplateProduct(@Valid DeleteProductCommand deleteProductCommand);
 }

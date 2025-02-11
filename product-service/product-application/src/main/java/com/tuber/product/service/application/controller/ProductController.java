@@ -6,11 +6,13 @@ import com.tuber.product.service.domain.ports.input.service.ProductApplicationSe
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @Slf4j
+@Validated
 @RestController
 @RequestMapping(value = "/${service.name}/products", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor

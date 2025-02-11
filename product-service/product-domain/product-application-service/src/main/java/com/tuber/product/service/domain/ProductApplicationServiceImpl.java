@@ -22,8 +22,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.UUID;
-
 @Service
 @Validated
 @RequiredArgsConstructor

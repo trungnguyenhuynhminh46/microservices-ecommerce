@@ -9,7 +9,7 @@ import jakarta.validation.Valid;
 
 public interface IdentityApplicationService {
     ApiResponse<CreateUserAccountResponseData> createUserAccount(@Valid CreateUserAccountCommand createUserAccountCommand);
-    ApiResponse<GetUserByIdResponseData> getUserByUserId(GetUserByIdQuery getUserByIdQuery);
+    ApiResponse<GetUserByIdResponseData> getUserByUserId(@Valid GetUserByIdQuery getUserByIdQuery);
     ApiResponse<GetUsersResponseData> getUsers();
     ApiResponse<RegisterUserAccountResponseData> register(@Valid RegisterUserAccountCommand registerUserAccountCommand);
     ApiResponse<LoginUserAccountResponseData> login(@Valid LoginUserAccountCommand loginUserAccountCommand);
@@ -17,16 +17,16 @@ public interface IdentityApplicationService {
     ApiResponse<RefreshTokenResponseData> refresh(@Valid RefreshTokenCommand refreshTokenCommand);
     ApiResponse<LogoutUserAccountResponseData> logout(@Valid LogoutUserAccountCommand logoutUserAccountCommand);
     ApiResponse<GetRolesResponseData> getRoles();
-    ApiResponse<GetRoleResponseData> getRole(GetRoleQuery getRoleQuery);
-    ApiResponse<AssignRoleToUserResponseData> assignRoleToUser(AssignRoleToUserCommand assignRoleToUserCommand);
+    ApiResponse<GetRoleResponseData> getRole(@Valid GetRoleQuery getRoleQuery);
+    ApiResponse<AssignRoleToUserResponseData> assignRoleToUser(@Valid AssignRoleToUserCommand assignRoleToUserCommand);
     ApiResponse<GetRolesResponseData> getRolesByUsername(String username);
     ApiResponse<CreateRoleResponseData> createRole(@Valid CreateRoleCommand createRoleCommand);
-    ApiResponse<DeleteRoleResponseData> deleteRole(DeleteRoleCommand deleteRoleCommand);
+    ApiResponse<DeleteRoleResponseData> deleteRole(@Valid DeleteRoleCommand deleteRoleCommand);
     ApiResponse<GetPermissionsResponseData> getPermissions();
-    ApiResponse<GetPermissionResponseData> getPermission(GetPermissionQuery getPermissionQuery);
+    ApiResponse<GetPermissionResponseData> getPermission(@Valid GetPermissionQuery getPermissionQuery);
     ApiResponse<GetPermissionsResponseData> getPermissionsByRoleName(String roleName);
     ApiResponse<GetPermissionsResponseData> getPermissionsByUsername(String username);
-    ApiResponse<AlterPermissionsResponseData> assignPermissionToRole(AlterPermissionCommand assignPermissionCommand);
-    ApiResponse<AlterPermissionsResponseData> removePermissionFromRole(AlterPermissionCommand removePermissionCommand);
-    ApiResponse<RemoveRoleFromUserResponseData> removeRoleFromUser(RemoveRoleFromUserCommand removeRoleFromUserCommand);
+    ApiResponse<AlterPermissionsResponseData> assignPermissionToRole(@Valid AlterPermissionCommand assignPermissionCommand);
+    ApiResponse<AlterPermissionsResponseData> removePermissionFromRole(@Valid AlterPermissionCommand removePermissionCommand);
+    ApiResponse<RemoveRoleFromUserResponseData> removeRoleFromUser(@Valid RemoveRoleFromUserCommand removeRoleFromUserCommand);
 }
