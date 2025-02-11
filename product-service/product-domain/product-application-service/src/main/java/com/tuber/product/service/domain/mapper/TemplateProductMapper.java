@@ -24,8 +24,10 @@ public abstract class TemplateProductMapper {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Mapping(target = "templateAttributes", source = "attributes")
     public abstract TemplateProduct createProductCommandToTemplateProduct(CreateProductCommand createProductCommand);
 
+    @Mapping(target = "attributes", source = "templateAttributes")
     public abstract ProductResponseData templateProductToProductResponseData(TemplateProduct product);
 
     public ProductsListResponseData templateProductsListToProductsListResponseData(List<TemplateProduct> products) {
