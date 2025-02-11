@@ -14,6 +14,5 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GetProductQuery {
     @NotNull(message = "Product id is mandatory")
-    @ValidUUID
     UUID id;
 }

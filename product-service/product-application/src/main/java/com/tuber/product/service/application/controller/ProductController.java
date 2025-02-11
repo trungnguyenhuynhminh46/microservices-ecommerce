@@ -1,6 +1,7 @@
 package com.tuber.product.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
+import com.tuber.application.validators.ValidUUID;
 import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,8 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ApiResponse<ProductResponseData>> getSingle(@PathVariable UUID productId) {
-        GetProductQuery getProductQuery = GetProductQuery.builder().id(productId).build();
+    public ResponseEntity<ApiResponse<ProductResponseData>> getSingle(@PathVariable @ValidUUID String productId) {
+        GetProductQuery getProductQuery = GetProductQuery.builder().id(UUID.fromString(productId)).build();
         ApiResponse<ProductResponseData> productResponse = productApplicationService.getSingleProduct(getProductQuery);
         log.info("Successfully fetched product with id {}", productId);
         return ResponseEntity.ok(productResponse);
@@ -42,16 +43,16 @@ public class ProductController {
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity<ApiResponse<ProductResponseData>> update(@PathVariable("productId") UUID productId, @RequestBody ModifyProductCommand modifyProductCommand) {
-        modifyProductCommand.setId(productId);
+    public ResponseEntity<ApiResponse<ProductResponseData>> update(@PathVariable("productId") @ValidUUID String productId, @RequestBody ModifyProductCommand modifyProductCommand) {
+        modifyProductCommand.setId(UUID.fromString(productId));
         ApiResponse<ProductResponseData> updateProductResponse = productApplicationService.updateProduct(modifyProductCommand);
         log.info("Successfully updated product with id {}", productId);
         return ResponseEntity.ok(updateProductResponse);
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity<ApiResponse<ProductResponseData>> delete(@PathVariable("productId") UUID productId) {
-        DeleteProductCommand deleteProductCommand = DeleteProductCommand.builder().id(productId).build();
+    public ResponseEntity<ApiResponse<ProductResponseData>> delete(@PathVariable("productId") @ValidUUID String productId) {
+        DeleteProductCommand deleteProductCommand = DeleteProductCommand.builder().id(UUID.fromString(productId)).build();
         ApiResponse<ProductResponseData> deleteProductResponse = productApplicationService.deleteProduct(deleteProductCommand);
         log.info("Successfully deleted product with id {}", productId);
         return ResponseEntity.ok(deleteProductResponse);
