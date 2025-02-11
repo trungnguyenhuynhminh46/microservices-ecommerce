@@ -23,4 +23,6 @@ public class ProductResponseData {
     Float rating;
     UUID categoryId;
     List<ProductAttributeDTO> attributes;
+    String createdAt;
+    String updatedAt;
 }
