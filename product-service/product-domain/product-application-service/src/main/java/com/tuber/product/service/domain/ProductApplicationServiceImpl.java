@@ -12,6 +12,7 @@ import com.tuber.product.service.domain.helper.product.DeleteProductHelper;
 import com.tuber.product.service.domain.helper.product.ReadProductHelper;
 import com.tuber.product.service.domain.helper.product.UpdateProductHelper;
 import com.tuber.product.service.domain.helper.template.product.CreateTemplateProductHelper;
+import com.tuber.product.service.domain.helper.template.product.ReadTemplateProductHelper;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     UpdateProductHelper updateProductHelper;
     DeleteProductHelper deleteProductHelper;
     CreateTemplateProductHelper createTemplateProductHelper;
+    ReadTemplateProductHelper readTemplateProductHelper;
 
     @Override
     public ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
@@ -93,12 +95,12 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
 
     @Override
     public ApiResponse<ProductResponseData> getSingleTemplateProduct(GetProductQuery getProductQuery) {
-        return null;
+        return readTemplateProductHelper.getSingleTemplateProduct(getProductQuery.getId());
     }
 
     @Override
     public ApiResponse<ProductsListResponseData> getAllTemplateProducts() {
-        return null;
+        return readTemplateProductHelper.getAllProducts();
     }
 
     @Override

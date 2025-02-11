@@ -28,7 +28,7 @@ public abstract class TemplateProductMapper {
 
     public abstract ProductResponseData templateProductToProductResponseData(TemplateProduct product);
 
-    public ProductsListResponseData productsListToProductsListResponseData(List<TemplateProduct> products) {
+    public ProductsListResponseData templateProductsListToProductsListResponseData(List<TemplateProduct> products) {
         List<ProductResponseData> productResponseDataList = products.stream()
                 .map(this::templateProductToProductResponseData)
                 .toList();
