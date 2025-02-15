@@ -19,7 +19,6 @@ public class CreateTemplateAttributeCommand {
     @NotNull
     @NotBlank(message = "Template attribute name is mandatory")
     String name;
-    String description;
     @NotNull
     @NotBlank(message = "Template attribute default value is mandatory")
     String defaultValue;

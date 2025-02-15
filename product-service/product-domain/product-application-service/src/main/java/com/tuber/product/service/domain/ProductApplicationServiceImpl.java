@@ -13,7 +13,9 @@ import com.tuber.product.service.domain.helper.product.DeleteProductHelper;
 import com.tuber.product.service.domain.helper.product.ReadProductHelper;
 import com.tuber.product.service.domain.helper.product.UpdateProductHelper;
 import com.tuber.product.service.domain.helper.template.attribute.CreateTemplateAttributeHelper;
+import com.tuber.product.service.domain.helper.template.attribute.DeleteTemplateAttributeHelper;
 import com.tuber.product.service.domain.helper.template.attribute.ReadTemplateAttributeHelper;
+import com.tuber.product.service.domain.helper.template.attribute.UpdateTemplateAttributeHelper;
 import com.tuber.product.service.domain.helper.template.product.CreateTemplateProductHelper;
 import com.tuber.product.service.domain.helper.template.product.DeleteTemplateProductHelper;
 import com.tuber.product.service.domain.helper.template.product.ReadTemplateProductHelper;
@@ -46,6 +48,8 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     DeleteTemplateProductHelper deleteTemplateProductHelper;
     CreateTemplateAttributeHelper createTemplateAttributeHelper;
     ReadTemplateAttributeHelper readTemplateAttributeHelper;
+    UpdateTemplateAttributeHelper updateTemplateAttributeHelper;
+    DeleteTemplateAttributeHelper deleteTemplateAttributeHelper;
 
     @Override
     public ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
@@ -139,11 +143,11 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
 
     @Override
     public ApiResponse<TemplateAttributeResponseData> updateTemplateAttribute(ModifyTemplateAttributeCommand modifyTemplateAttributeCommand) {
-        return null;
+        return updateTemplateAttributeHelper.updateTemplateAttribute(modifyTemplateAttributeCommand);
     }
 
     @Override
     public ApiResponse<TemplateAttributeResponseData> deleteTemplateAttribute(UUID templateAttributeId) {
-        return null;
+        return deleteTemplateAttributeHelper.deleteTemplateAttribute(templateAttributeId);
     }
 }

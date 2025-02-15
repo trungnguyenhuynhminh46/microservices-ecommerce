@@ -50,6 +50,7 @@ public abstract class ProductMapper {
     }
 
     @InheritConfiguration
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "description", conditionQualifiedByName = "isValidJsonNullable")
     @Mapping(target = "tags", conditionQualifiedByName = "isValidJsonNullable")
     @Mapping(target = "categoryId", conditionQualifiedByName = "isValidJsonNullable")
