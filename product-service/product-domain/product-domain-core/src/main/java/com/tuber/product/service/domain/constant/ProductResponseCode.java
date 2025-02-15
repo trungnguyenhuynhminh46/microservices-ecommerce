@@ -38,7 +38,8 @@ public class ProductResponseCode extends ResponseCodeBase {
             new ProductResponseCode(1014, "Product attribute is invalid");
     public static final ProductResponseCode TEMPLATE_ATTRIBUTE_SAVE_FAILED =
             new ProductResponseCode(1015, "Failed to save template attribute %s");
-
+    public static final ProductResponseCode TEMPLATE_ATTRIBUTE_NOT_FOUND =
+            new ProductResponseCode(1016, "Template attribute with id %s not found or has been deleted already");
     protected ProductResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

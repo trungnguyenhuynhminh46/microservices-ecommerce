@@ -2,10 +2,7 @@ package com.tuber.product.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.application.validators.ValidUUID;
-import com.tuber.product.service.domain.dto.template.attribute.CreateTemplateAttributeCommand;
-import com.tuber.product.service.domain.dto.template.attribute.GetTemplateAttributeQuery;
-import com.tuber.product.service.domain.dto.template.attribute.ModifyTemplateAttributeCommand;
-import com.tuber.product.service.domain.dto.template.attribute.TemplateAttributeResponseData;
+import com.tuber.product.service.domain.dto.template.attribute.*;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +38,8 @@ public class TemplateAttributeController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<TemplateAttributeResponseData>> getAll() {
-        ApiResponse<TemplateAttributeResponseData> templateAttributesResponse = productApplicationService.getAllTemplateAttributes();
+    public ResponseEntity<ApiResponse<TemplateAttributesListResponseData>> getAll() {
+        ApiResponse<TemplateAttributesListResponseData> templateAttributesResponse = productApplicationService.getAllTemplateAttributes();
         log.info("Successfully fetched all template attributes");
         return ResponseEntity.ok(templateAttributesResponse);
     }

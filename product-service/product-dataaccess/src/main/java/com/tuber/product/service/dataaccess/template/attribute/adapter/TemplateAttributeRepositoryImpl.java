@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -16,6 +17,16 @@ import java.util.UUID;
 public class TemplateAttributeRepositoryImpl implements TemplateAttributeRepository {
     @Override
     public TemplateAttribute save(TemplateAttribute attribute) {
+        return null;
+    }
+
+    @Override
+    public TemplateAttribute findById(UUID id) {
+        return null;
+    }
+
+    @Override
+    public List<TemplateAttribute> findAll() {
         return null;
     }
 }

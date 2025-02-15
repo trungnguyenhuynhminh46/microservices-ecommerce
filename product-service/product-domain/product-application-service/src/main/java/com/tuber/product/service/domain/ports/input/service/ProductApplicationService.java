@@ -3,10 +3,7 @@ package com.tuber.product.service.domain.ports.input.service;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
 import com.tuber.product.service.domain.dto.product.*;
-import com.tuber.product.service.domain.dto.template.attribute.CreateTemplateAttributeCommand;
-import com.tuber.product.service.domain.dto.template.attribute.GetTemplateAttributeQuery;
-import com.tuber.product.service.domain.dto.template.attribute.ModifyTemplateAttributeCommand;
-import com.tuber.product.service.domain.dto.template.attribute.TemplateAttributeResponseData;
+import com.tuber.product.service.domain.dto.template.attribute.*;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 
@@ -34,7 +31,7 @@ public interface ProductApplicationService {
     // template attribute
     ApiResponse<TemplateAttributeResponseData> createTemplateAttribute(@Valid CreateTemplateAttributeCommand createTemplateAttributeCommand);
     ApiResponse<TemplateAttributeResponseData> getSingleTemplateAttribute(@Valid GetTemplateAttributeQuery getTemplateAttributeQuery);
-    ApiResponse<TemplateAttributeResponseData> getAllTemplateAttributes();
+    ApiResponse<TemplateAttributesListResponseData> getAllTemplateAttributes();
     ApiResponse<TemplateAttributeResponseData> updateTemplateAttribute(@Valid ModifyTemplateAttributeCommand modifyTemplateAttributeCommand);
     ApiResponse<TemplateAttributeResponseData> deleteTemplateAttribute(UUID templateAttributeId);
 }

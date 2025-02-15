@@ -125,4 +125,13 @@ public class CommonHelper {
         }
         return null;
     }
+
+    public TemplateAttribute verifyTemplateAttributeExist(UUID templateAttributeId) {
+        TemplateAttribute templateAttribute = templateAttributeRepository.findById(templateAttributeId);
+        if (templateAttribute == null) {
+            log.error(String.format("Template attribute with id %s not found", templateAttributeId));
+            throw new ProductDomainException(ProductResponseCode.TEMPLATE_ATTRIBUTE_NOT_FOUND, HttpStatus.NOT_FOUND.value(), templateAttributeId.toString());
+        }
+        return templateAttribute;
+    }
 }

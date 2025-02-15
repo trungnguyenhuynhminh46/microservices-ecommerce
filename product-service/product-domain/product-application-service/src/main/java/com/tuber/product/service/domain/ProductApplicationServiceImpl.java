@@ -3,10 +3,7 @@ package com.tuber.product.service.domain;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
 import com.tuber.product.service.domain.dto.product.*;
-import com.tuber.product.service.domain.dto.template.attribute.CreateTemplateAttributeCommand;
-import com.tuber.product.service.domain.dto.template.attribute.GetTemplateAttributeQuery;
-import com.tuber.product.service.domain.dto.template.attribute.ModifyTemplateAttributeCommand;
-import com.tuber.product.service.domain.dto.template.attribute.TemplateAttributeResponseData;
+import com.tuber.product.service.domain.dto.template.attribute.*;
 import com.tuber.product.service.domain.helper.category.CreateCategoryHelper;
 import com.tuber.product.service.domain.helper.category.DeleteCategoryHelper;
 import com.tuber.product.service.domain.helper.category.ReadCategoryHelper;
@@ -16,6 +13,7 @@ import com.tuber.product.service.domain.helper.product.DeleteProductHelper;
 import com.tuber.product.service.domain.helper.product.ReadProductHelper;
 import com.tuber.product.service.domain.helper.product.UpdateProductHelper;
 import com.tuber.product.service.domain.helper.template.attribute.CreateTemplateAttributeHelper;
+import com.tuber.product.service.domain.helper.template.attribute.ReadTemplateAttributeHelper;
 import com.tuber.product.service.domain.helper.template.product.CreateTemplateProductHelper;
 import com.tuber.product.service.domain.helper.template.product.DeleteTemplateProductHelper;
 import com.tuber.product.service.domain.helper.template.product.ReadTemplateProductHelper;
@@ -47,6 +45,7 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     UpdateTemplateProductHelper updateTemplateProductHelper;
     DeleteTemplateProductHelper deleteTemplateProductHelper;
     CreateTemplateAttributeHelper createTemplateAttributeHelper;
+    ReadTemplateAttributeHelper readTemplateAttributeHelper;
 
     @Override
     public ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
@@ -130,12 +129,12 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
 
     @Override
     public ApiResponse<TemplateAttributeResponseData> getSingleTemplateAttribute(GetTemplateAttributeQuery getTemplateAttributeQuery) {
-        return null;
+        return readTemplateAttributeHelper.getSingleTemplateAttribute(getTemplateAttributeQuery);
     }
 
     @Override
-    public ApiResponse<TemplateAttributeResponseData> getAllTemplateAttributes() {
-        return null;
+    public ApiResponse<TemplateAttributesListResponseData> getAllTemplateAttributes() {
+        return readTemplateAttributeHelper.getAllTemplateAttributes();
     }
 
     @Override
