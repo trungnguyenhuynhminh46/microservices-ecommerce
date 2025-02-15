@@ -4,6 +4,7 @@ import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.product.service.dataaccess.template.attribute.entity.TemplateAttributeJpaEntity;
 import com.tuber.product.service.domain.entity.TemplateAttribute;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 public abstract class TemplateAttributeJpaMapper {
     public abstract TemplateAttribute templateAttributeJpaEntityToTemplateAttributeEntity(TemplateAttributeJpaEntity templateAttributeJpaEntity);
 
+    @Mapping(target = "templateProducts", ignore = true)
     public abstract TemplateAttributeJpaEntity templateAttributeEntityToTemplateAttributeJpaEntity(TemplateAttribute templateAttribute);
 
     public UUID map(UniqueUUID id) {
