@@ -9,4 +9,5 @@ public interface TemplateAttributeRepository {
     TemplateAttribute save(TemplateAttribute attribute);
     TemplateAttribute findById(UUID id);
     List<TemplateAttribute> findAll();
+    void delete(TemplateAttribute attribute);
 }

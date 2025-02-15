@@ -29,4 +29,9 @@ public class TemplateAttributeRepositoryImpl implements TemplateAttributeReposit
     public List<TemplateAttribute> findAll() {
         return null;
     }
+
+    @Override
+    public void delete(TemplateAttribute attribute) {
+
+    }
 }

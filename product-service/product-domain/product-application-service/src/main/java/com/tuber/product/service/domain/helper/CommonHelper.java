@@ -134,4 +134,10 @@ public class CommonHelper {
         }
         return templateAttribute;
     }
+
+    public TemplateAttribute deleteTemplateAttribute(UUID templateAttributeId) {
+        TemplateAttribute templateAttribute = this.verifyTemplateAttributeExist(templateAttributeId);
+        templateAttributeRepository.delete(templateAttribute);
+        return templateAttribute;
+    }
 }
