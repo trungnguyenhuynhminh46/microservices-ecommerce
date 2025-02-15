@@ -3,10 +3,12 @@ package com.tuber.product.service.domain.helper;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.entity.Product;
 import com.tuber.product.service.domain.entity.ProductCategory;
+import com.tuber.product.service.domain.entity.TemplateAttribute;
 import com.tuber.product.service.domain.entity.TemplateProduct;
 import com.tuber.product.service.domain.exception.ProductDomainException;
 import com.tuber.product.service.domain.ports.output.repository.ProductCategoryRepository;
 import com.tuber.product.service.domain.ports.output.repository.ProductRepository;
+import com.tuber.product.service.domain.ports.output.repository.TemplateAttributeRepository;
 import com.tuber.product.service.domain.ports.output.repository.TemplateProductRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class CommonHelper {
     ProductCategoryRepository productCategoryRepository;
     ProductRepository productRepository;
     TemplateProductRepository templateProductRepository;
+    TemplateAttributeRepository templateAttributeRepository;
 
     public ProductCategory verifyProductCategoryExist(String code) {
         ProductCategory productCategory = productCategoryRepository.findByCode(code);
@@ -112,5 +115,14 @@ public class CommonHelper {
         TemplateProduct templateProduct = this.verifyTemplateProductExist(templateProductId);
         templateProductRepository.delete(templateProduct);
         return templateProduct;
+    }
+
+    public TemplateAttribute saveTemplateAttribute(TemplateAttribute templateAttribute) {
+        TemplateAttribute savedTemplateAttribute = templateAttributeRepository.save(templateAttribute);
+        if (savedTemplateAttribute == null) {
+            log.error(String.format("Failed to save template attribute %s", templateAttribute.getName()));
+            throw new ProductDomainException(ProductResponseCode.TEMPLATE_ATTRIBUTE_SAVE_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value(), templateAttribute.getName());
+        }
+        return null;
     }
 }

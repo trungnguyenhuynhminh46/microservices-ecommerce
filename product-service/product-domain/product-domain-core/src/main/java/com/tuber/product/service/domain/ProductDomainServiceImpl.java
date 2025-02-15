@@ -2,9 +2,11 @@ package com.tuber.product.service.domain;
 
 import com.tuber.product.service.domain.entity.Product;
 import com.tuber.product.service.domain.entity.ProductCategory;
+import com.tuber.product.service.domain.entity.TemplateAttribute;
 import com.tuber.product.service.domain.entity.TemplateProduct;
 import com.tuber.product.service.domain.event.ProductCategoryCreatedEvent;
 import com.tuber.product.service.domain.event.ProductCreatedEvent;
+import com.tuber.product.service.domain.event.TemplateAttributeCreatedEvent;
 import com.tuber.product.service.domain.event.TemplateProductCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,5 +34,13 @@ public class ProductDomainServiceImpl implements ProductDomainService {
         templateProduct.initialize();
         log.info("Validating template product with id: {}", templateProduct.getId());
         return new TemplateProductCreatedEvent(templateProduct);
+    }
+
+    @Override
+    public TemplateAttributeCreatedEvent validateAndInitializeTemplateAttribute(TemplateAttribute templateAttribute) {
+        templateAttribute.validateForInitialization();
+        templateAttribute.initialize();
+        log.info("Validating template attribute with id: {}", templateAttribute.getId());
+        return new TemplateAttributeCreatedEvent(templateAttribute);
     }
 }

@@ -20,6 +20,9 @@ public class CreateTemplateAttributeCommand {
     @NotBlank(message = "Template attribute name is mandatory")
     String name;
     String description;
+    @NotNull
+    @NotBlank(message = "Template attribute default value is mandatory")
+    String defaultValue;
     @NotNull(message = "You must add at least one option to the attribute")
     List<ProductAttributeOption> options;
 }

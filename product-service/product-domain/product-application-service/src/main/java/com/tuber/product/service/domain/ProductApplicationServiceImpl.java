@@ -15,6 +15,7 @@ import com.tuber.product.service.domain.helper.product.CreateProductHelper;
 import com.tuber.product.service.domain.helper.product.DeleteProductHelper;
 import com.tuber.product.service.domain.helper.product.ReadProductHelper;
 import com.tuber.product.service.domain.helper.product.UpdateProductHelper;
+import com.tuber.product.service.domain.helper.template.attribute.CreateTemplateAttributeHelper;
 import com.tuber.product.service.domain.helper.template.product.CreateTemplateProductHelper;
 import com.tuber.product.service.domain.helper.template.product.DeleteTemplateProductHelper;
 import com.tuber.product.service.domain.helper.template.product.ReadTemplateProductHelper;
@@ -45,6 +46,7 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     ReadTemplateProductHelper readTemplateProductHelper;
     UpdateTemplateProductHelper updateTemplateProductHelper;
     DeleteTemplateProductHelper deleteTemplateProductHelper;
+    CreateTemplateAttributeHelper createTemplateAttributeHelper;
 
     @Override
     public ApiResponse<ProductCategoryResponseData> createProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
@@ -123,7 +125,7 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
 
     @Override
     public ApiResponse<TemplateAttributeResponseData> createTemplateAttribute(CreateTemplateAttributeCommand createTemplateAttributeCommand) {
-        return null;
+        return createTemplateAttributeHelper.createTemplateAttribute(createTemplateAttributeCommand);
     }
 
     @Override
