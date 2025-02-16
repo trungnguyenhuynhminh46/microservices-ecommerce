@@ -4,16 +4,18 @@ import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.dto.template.product.ModifyTemplateProductCommand;
 import com.tuber.product.service.domain.dto.template.product.TemplateProductResponseData;
+import com.tuber.product.service.domain.entity.TemplateAttribute;
 import com.tuber.product.service.domain.entity.TemplateProduct;
 import com.tuber.product.service.domain.helper.CommonHelper;
 import com.tuber.product.service.domain.mapper.TemplateProductMapper;
-import com.tuber.product.service.domain.ports.output.repository.TemplateAttributeRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -22,13 +24,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class UpdateTemplateProductHelper {
     TemplateProductMapper templateProductMapper;
     CommonHelper commonHelper;
-    TemplateAttributeRepository templateAttributeRepository;
 
     @Transactional
     public ApiResponse<TemplateProductResponseData> updateTemplateProduct(ModifyTemplateProductCommand modifyProductCommand) {
         TemplateProduct savedTemplateProduct = commonHelper.verifyTemplateProductExist(modifyProductCommand.getId());
-        templateAttributeRepository.deleteByTemplateProductsId(savedTemplateProduct.getId().getValue());
         TemplateProduct updatedTemplateProduct = templateProductMapper.updateTemplateProduct(modifyProductCommand, savedTemplateProduct);
+
+        if(modifyProductCommand.getAttributeIds() != null && modifyProductCommand.getAttributeIds().isPresent()) {
+            if(modifyProductCommand.getAttributeIds().get() == null) {
+                updatedTemplateProduct.setTemplateAttributes(List.of());
+            }
+            if(modifyProductCommand.getAttributeIds().get() != null) {
+                List<TemplateAttribute> templateAttributes = commonHelper.verifyTemplateAttributesByIdsExists(modifyProductCommand.getAttributeIds().get());
+                updatedTemplateProduct.setTemplateAttributes(templateAttributes);
+            }
+        }
+
         return ApiResponse.<TemplateProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Product updated successfully")

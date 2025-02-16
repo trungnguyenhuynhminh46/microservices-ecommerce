@@ -27,5 +27,5 @@ public class ModifyTemplateProductCommand {
     JsonNullable<String> description;
     JsonNullable<String> tags;
     JsonNullable<UUID> categoryId;
-    JsonNullable<List<TemplateAttributeDTO>> attributes;
+    JsonNullable<List<UUID>> attributeIds;
 }

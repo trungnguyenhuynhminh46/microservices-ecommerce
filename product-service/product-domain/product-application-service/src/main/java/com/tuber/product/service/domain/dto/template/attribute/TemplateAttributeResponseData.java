@@ -17,6 +17,5 @@ import java.util.UUID;
 public class TemplateAttributeResponseData {
     UUID id;
     String name;
-    String description;
     List<TemplateAttributeOption> options;
 }

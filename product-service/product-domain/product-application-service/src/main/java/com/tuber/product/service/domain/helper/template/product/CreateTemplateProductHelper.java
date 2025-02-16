@@ -5,6 +5,7 @@ import com.tuber.product.service.domain.ProductDomainService;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.dto.template.product.CreateTemplateProductCommand;
 import com.tuber.product.service.domain.dto.template.product.TemplateProductResponseData;
+import com.tuber.product.service.domain.entity.TemplateAttribute;
 import com.tuber.product.service.domain.entity.TemplateProduct;
 import com.tuber.product.service.domain.event.TemplateProductCreatedEvent;
 import com.tuber.product.service.domain.helper.CommonHelper;
@@ -14,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -26,8 +29,8 @@ public class CreateTemplateProductHelper {
 
     public ApiResponse<TemplateProductResponseData> persistTemplateProduct(CreateTemplateProductCommand createTemplateProductCommand) {
         TemplateProduct templateProduct = templateProductMapper.createTemplateProductCommandToTemplateProduct(createTemplateProductCommand);
-        templateProduct.setTemplateAttributes(commonHelper.verifyTemplateAttributesByIdsExists(createTemplateProductCommand.getAttributeIds()));
-        TemplateProductCreatedEvent templateProductCreatedEvent = productDomainService.validateAndInitializeTemplateProduct(templateProduct);
+        List<TemplateAttribute> templateAttributes = commonHelper.verifyTemplateAttributesByIdsExists(createTemplateProductCommand.getAttributeIds());
+        TemplateProductCreatedEvent templateProductCreatedEvent = productDomainService.validateAndInitializeTemplateProduct(templateProduct, templateAttributes);
 
         TemplateProduct initializedTemplateProduct = templateProductCreatedEvent.getTemplateProduct();
         if (initializedTemplateProduct.getCategoryId() != null) {

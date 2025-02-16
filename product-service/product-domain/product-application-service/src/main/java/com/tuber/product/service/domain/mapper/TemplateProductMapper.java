@@ -50,7 +50,6 @@ public abstract class TemplateProductMapper {
         templateProduct.setUpdatedAt(LocalDate.now());
         this.updateTemplateProductFields(data, templateProduct);
         templateProduct.validateProperties();
-        templateProduct.initializeTemplateAttributes();
         return templateProduct;
     }
 
@@ -58,17 +57,13 @@ public abstract class TemplateProductMapper {
     @Mapping(target = "description", conditionQualifiedByName = "isValidJsonNullable")
     @Mapping(target = "tags", conditionQualifiedByName = "isValidJsonNullable")
     @Mapping(target = "categoryId", conditionQualifiedByName = "isValidJsonNullable")
-    @Mapping(target = "templateAttributes", source = "attributes", conditionQualifiedByName = "isValidJsonNullable")
+    @Mapping(target = "templateAttributes", ignore = true)
     protected abstract void updateTemplateProductFields(ModifyTemplateProductCommand data, @MappingTarget TemplateProduct templateProduct);
 
-    protected List<TemplateAttribute> map(JsonNullable<List<TemplateAttributeDTO>> attributes) {
-        List<TemplateAttributeDTO> attributesList = attributes.orElse(null);
+    protected List<TemplateAttribute> map(JsonNullable<List<UUID>> attributes) {
+        List<UUID> attributesList = attributes.orElse(null);
         return attributesList == null ? List.of() : attributesList.stream()
-                .map(attribute -> TemplateAttribute.builder()
-                        .name(attribute.getName())
-                        .defaultValue(attribute.getDefaultValue())
-                        .options(map(attribute.getOptions()))
-                        .build())
+                .map(attributeId -> TemplateAttribute.builder().id(attributeId).build())
                 .toList();
     }
 

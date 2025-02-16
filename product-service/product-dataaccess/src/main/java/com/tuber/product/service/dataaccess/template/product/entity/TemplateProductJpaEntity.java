@@ -29,7 +29,12 @@ public class TemplateProductJpaEntity {
     String tags;
     Float rating;
     UUID categoryId;
-    @ManyToMany(mappedBy = "templateProducts", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "template_product_template_attribute",
+            joinColumns = @JoinColumn(name = "template_product_id"),
+            inverseJoinColumns = @JoinColumn(name = "template_attribute_id")
+    )
     List<TemplateAttributeJpaEntity> templateAttributes = new ArrayList<>();
     @Column(columnDefinition = "DATE")
     LocalDate createdAt;

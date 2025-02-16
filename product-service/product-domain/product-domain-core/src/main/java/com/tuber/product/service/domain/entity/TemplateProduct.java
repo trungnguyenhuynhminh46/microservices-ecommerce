@@ -235,12 +235,6 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
         }
     }
 
-    public void validateAttributes() {
-        if (getTemplateAttributes() != null) {
-            getTemplateAttributes().forEach(TemplateAttribute::validateProperties);
-        }
-    }
-
     private void initializeDescription() {
         if (getDescription() == null) {
             setDescription("");
@@ -253,21 +247,10 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
         }
     }
 
-    public void initializeTemplateAttributes() {
-        if (getTemplateAttributes() == null || getTemplateAttributes().isEmpty()) {
-            setTemplateAttributes(List.of());
-            return;
-        }
-        for (TemplateAttribute attribute : getTemplateAttributes()) {
-            attribute.initialize();
-        }
-    }
-
     public void validateProperties() {
         validatePrice();
         validateTags();
         validateRating();
-        validateAttributes();
     }
 
     public void validateForInitialization() {
@@ -277,13 +260,13 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
         this.validateProperties();
     }
 
-    public void initialize() {
+    public void initialize(List<TemplateAttribute> templateAttributes) {
         setId(new UniqueUUID(UUID.randomUUID()));
         setRating(0.0f);
         setCreatedAt(LocalDate.now());
         setUpdatedAt(LocalDate.now());
         initializeDescription();
         initializeTags();
-        initializeTemplateAttributes();
+        setTemplateAttributes(templateAttributes);
     }
 }

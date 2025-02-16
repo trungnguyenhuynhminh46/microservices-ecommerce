@@ -9,9 +9,11 @@ import com.tuber.product.service.domain.event.ProductCreatedEvent;
 import com.tuber.product.service.domain.event.TemplateAttributeCreatedEvent;
 import com.tuber.product.service.domain.event.TemplateProductCreatedEvent;
 
+import java.util.List;
+
 public interface ProductDomainService {
     public ProductCategoryCreatedEvent validateAndInitializeProductCategory(ProductCategory productCategory);
     public ProductCreatedEvent validateAndInitializeProduct(Product product);
-    public TemplateProductCreatedEvent validateAndInitializeTemplateProduct(TemplateProduct templateProduct);
+    public TemplateProductCreatedEvent validateAndInitializeTemplateProduct(TemplateProduct templateProduct, List<TemplateAttribute> templateAttributes);
     public TemplateAttributeCreatedEvent validateAndInitializeTemplateAttribute(TemplateAttribute templateAttribute);
 }
