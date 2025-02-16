@@ -4,8 +4,8 @@ import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
 import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.dto.template.attribute.*;
+import com.tuber.product.service.domain.dto.template.product.*;
 import jakarta.validation.Valid;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
@@ -23,11 +23,11 @@ public interface ProductApplicationService {
     ApiResponse<ProductResponseData> updateProduct(@Valid ModifyProductCommand modifyProductCommand);
     ApiResponse<ProductResponseData> deleteProduct(@Valid DeleteProductCommand deleteProductCommand);
     // template product
-    ApiResponse<ProductResponseData> createTemplateProduct(@Valid CreateProductCommand createProductCommand);
-    ApiResponse<ProductResponseData> getSingleTemplateProduct(@Valid GetProductQuery getProductQuery);
-    ApiResponse<ProductsListResponseData> getAllTemplateProducts();
-    ApiResponse<ProductResponseData> updateTemplateProduct(@Valid ModifyProductCommand modifyProductCommand);
-    ApiResponse<ProductResponseData> deleteTemplateProduct(@Valid DeleteProductCommand deleteProductCommand);
+    ApiResponse<TemplateProductResponseData> createTemplateProduct(@Valid CreateTemplateProductCommand createProductCommand);
+    ApiResponse<TemplateProductResponseData> getSingleTemplateProduct(@Valid GetTemplateProductQuery getProductQuery);
+    ApiResponse<TemplateProductsListResponseData> getAllTemplateProducts();
+    ApiResponse<TemplateProductResponseData> updateTemplateProduct(@Valid ModifyTemplateProductCommand modifyProductCommand);
+    ApiResponse<TemplateProductResponseData> deleteTemplateProduct(@Valid DeleteTemplateProductCommand deleteProductCommand);
     // template attribute
     ApiResponse<TemplateAttributeResponseData> createTemplateAttribute(@Valid CreateTemplateAttributeCommand createTemplateAttributeCommand);
     ApiResponse<TemplateAttributeResponseData> getSingleTemplateAttribute(@Valid GetTemplateAttributeQuery getTemplateAttributeQuery);

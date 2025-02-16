@@ -4,6 +4,7 @@ import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
 import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.dto.template.attribute.*;
+import com.tuber.product.service.domain.dto.template.product.*;
 import com.tuber.product.service.domain.helper.category.CreateCategoryHelper;
 import com.tuber.product.service.domain.helper.category.DeleteCategoryHelper;
 import com.tuber.product.service.domain.helper.category.ReadCategoryHelper;
@@ -102,27 +103,27 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     }
 
     @Override
-    public ApiResponse<ProductResponseData> createTemplateProduct(CreateProductCommand createProductCommand) {
+    public ApiResponse<TemplateProductResponseData> createTemplateProduct(CreateTemplateProductCommand createProductCommand) {
         return createTemplateProductHelper.persistTemplateProduct(createProductCommand);
     }
 
     @Override
-    public ApiResponse<ProductResponseData> getSingleTemplateProduct(GetProductQuery getProductQuery) {
+    public ApiResponse<TemplateProductResponseData> getSingleTemplateProduct(GetTemplateProductQuery getProductQuery) {
         return readTemplateProductHelper.getSingleTemplateProduct(getProductQuery.getId());
     }
 
     @Override
-    public ApiResponse<ProductsListResponseData> getAllTemplateProducts() {
+    public ApiResponse<TemplateProductsListResponseData> getAllTemplateProducts() {
         return readTemplateProductHelper.getAllProducts();
     }
 
     @Override
-    public ApiResponse<ProductResponseData> updateTemplateProduct(ModifyProductCommand modifyProductCommand) {
+    public ApiResponse<TemplateProductResponseData> updateTemplateProduct(ModifyTemplateProductCommand modifyProductCommand) {
         return updateTemplateProductHelper.updateTemplateProduct(modifyProductCommand);
     }
 
     @Override
-    public ApiResponse<ProductResponseData> deleteTemplateProduct(DeleteProductCommand deleteProductCommand) {
+    public ApiResponse<TemplateProductResponseData> deleteTemplateProduct(DeleteTemplateProductCommand deleteProductCommand) {
         return deleteTemplateProductHelper.deleteTemplateProduct(deleteProductCommand);
     }
 

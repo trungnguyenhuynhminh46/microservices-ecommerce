@@ -2,8 +2,8 @@ package com.tuber.product.service.domain.helper.template.product;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
-import com.tuber.product.service.domain.dto.product.ModifyProductCommand;
-import com.tuber.product.service.domain.dto.product.ProductResponseData;
+import com.tuber.product.service.domain.dto.template.product.ModifyTemplateProductCommand;
+import com.tuber.product.service.domain.dto.template.product.TemplateProductResponseData;
 import com.tuber.product.service.domain.entity.TemplateProduct;
 import com.tuber.product.service.domain.helper.CommonHelper;
 import com.tuber.product.service.domain.mapper.TemplateProductMapper;
@@ -25,15 +25,15 @@ public class UpdateTemplateProductHelper {
     TemplateAttributeRepository templateAttributeRepository;
 
     @Transactional
-    public ApiResponse<ProductResponseData> updateTemplateProduct(ModifyProductCommand modifyProductCommand) {
+    public ApiResponse<TemplateProductResponseData> updateTemplateProduct(ModifyTemplateProductCommand modifyProductCommand) {
         TemplateProduct savedTemplateProduct = commonHelper.verifyTemplateProductExist(modifyProductCommand.getId());
         templateAttributeRepository.deleteByTemplateProductsId(savedTemplateProduct.getId().getValue());
         TemplateProduct updatedTemplateProduct = templateProductMapper.updateTemplateProduct(modifyProductCommand, savedTemplateProduct);
-        return ApiResponse.<ProductResponseData>builder()
+        return ApiResponse.<TemplateProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Product updated successfully")
                 .data(
-                        templateProductMapper.templateProductToProductResponseData(
+                        templateProductMapper.templateProductToTemplateProductResponseData(
                                 commonHelper.saveTemplateProduct(updatedTemplateProduct)
                         )
                 ).build();

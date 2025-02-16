@@ -2,7 +2,7 @@ package com.tuber.product.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.application.validators.ValidUUID;
-import com.tuber.product.service.domain.dto.product.*;
+import com.tuber.product.service.domain.dto.template.product.*;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,41 +21,41 @@ public class TemplateProductController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_TEMPLATE')")
-    public ResponseEntity<ApiResponse<ProductResponseData>> createTemplateProduct(@RequestBody CreateProductCommand createProductCommand) {
-        ApiResponse<ProductResponseData> createProductResponse = productApplicationService.createTemplateProduct(createProductCommand);
-        log.info("Successfully created product with name {}", createProductCommand.getName());
+    public ResponseEntity<ApiResponse<TemplateProductResponseData>> createTemplateProduct(@RequestBody CreateTemplateProductCommand createTemplateProductCommand) {
+        ApiResponse<TemplateProductResponseData> createProductResponse = productApplicationService.createTemplateProduct(createTemplateProductCommand);
+        log.info("Successfully created product with name {}", createTemplateProductCommand.getName());
         return ResponseEntity.ok(createProductResponse);
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ApiResponse<ProductResponseData>> getSingleTemplate(@PathVariable @ValidUUID String productId) {
-        GetProductQuery getProductQuery = GetProductQuery.builder().id(UUID.fromString(productId)).build();
-        ApiResponse<ProductResponseData> productResponse = productApplicationService.getSingleTemplateProduct(getProductQuery);
+    public ResponseEntity<ApiResponse<TemplateProductResponseData>> getSingleTemplate(@PathVariable @ValidUUID String productId) {
+        GetTemplateProductQuery getTemplateProductQuery = GetTemplateProductQuery.builder().id(UUID.fromString(productId)).build();
+        ApiResponse<TemplateProductResponseData> productResponse = productApplicationService.getSingleTemplateProduct(getTemplateProductQuery);
         log.info("Successfully fetched product with id {}", productId);
         return ResponseEntity.ok(productResponse);
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<ProductsListResponseData>> getAllTemplate() {
-        ApiResponse<ProductsListResponseData> productsResponse = productApplicationService.getAllTemplateProducts();
+    public ResponseEntity<ApiResponse<TemplateProductsListResponseData>> getAllTemplate() {
+        ApiResponse<TemplateProductsListResponseData> productsResponse = productApplicationService.getAllTemplateProducts();
         log.info("Successfully fetched all products");
         return ResponseEntity.ok(productsResponse);
     }
 
     @PatchMapping("/{productId}")
     @PreAuthorize("hasAuthority('UPDATE_TEMPLATE')")
-    public ResponseEntity<ApiResponse<ProductResponseData>> updateTemplate(@PathVariable("productId") @ValidUUID String productId, @RequestBody ModifyProductCommand modifyProductCommand) {
-        modifyProductCommand.setId(UUID.fromString(productId));
-        ApiResponse<ProductResponseData> updateProductResponse = productApplicationService.updateTemplateProduct(modifyProductCommand);
+    public ResponseEntity<ApiResponse<TemplateProductResponseData>> updateTemplate(@PathVariable("productId") @ValidUUID String productId, @RequestBody ModifyTemplateProductCommand modifyTemplateProductCommand) {
+        modifyTemplateProductCommand.setId(UUID.fromString(productId));
+        ApiResponse<TemplateProductResponseData> updateProductResponse = productApplicationService.updateTemplateProduct(modifyTemplateProductCommand);
         log.info("Successfully updated product with id {}", productId);
         return ResponseEntity.ok(updateProductResponse);
     }
 
     @DeleteMapping("/{productId}")
     @PreAuthorize("hasAuthority('DELETE_TEMPLATE')")
-    public ResponseEntity<ApiResponse<ProductResponseData>> deleteTemplate(@PathVariable("productId") @ValidUUID String productId) {
-        DeleteProductCommand deleteProductCommand = DeleteProductCommand.builder().id(UUID.fromString(productId)).build();
-        ApiResponse<ProductResponseData> deleteProductResponse = productApplicationService.deleteTemplateProduct(deleteProductCommand);
+    public ResponseEntity<ApiResponse<TemplateProductResponseData>> deleteTemplate(@PathVariable("productId") @ValidUUID String productId) {
+        DeleteTemplateProductCommand deleteTemplateProductCommand = DeleteTemplateProductCommand.builder().id(UUID.fromString(productId)).build();
+        ApiResponse<TemplateProductResponseData> deleteProductResponse = productApplicationService.deleteTemplateProduct(deleteTemplateProductCommand);
         log.info("Successfully deleted product with id {}", productId);
         return ResponseEntity.ok(deleteProductResponse);
     }

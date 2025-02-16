@@ -2,8 +2,8 @@ package com.tuber.product.service.domain.helper.template.product;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
-import com.tuber.product.service.domain.dto.product.DeleteProductCommand;
-import com.tuber.product.service.domain.dto.product.ProductResponseData;
+import com.tuber.product.service.domain.dto.template.product.DeleteTemplateProductCommand;
+import com.tuber.product.service.domain.dto.template.product.TemplateProductResponseData;
 import com.tuber.product.service.domain.entity.TemplateProduct;
 import com.tuber.product.service.domain.helper.CommonHelper;
 import com.tuber.product.service.domain.mapper.TemplateProductMapper;
@@ -21,12 +21,12 @@ public class DeleteTemplateProductHelper {
     CommonHelper commonHelper;
     TemplateProductMapper templateProductMapper;
 
-    public ApiResponse<ProductResponseData> deleteTemplateProduct(DeleteProductCommand deleteProductCommand) {
+    public ApiResponse<TemplateProductResponseData> deleteTemplateProduct(DeleteTemplateProductCommand deleteProductCommand) {
         TemplateProduct deletedTemplateProduct = commonHelper.deleteTemplateProduct(deleteProductCommand.getId());
-        return ApiResponse.<ProductResponseData>builder()
+        return ApiResponse.<TemplateProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Template product deleted successfully")
-                .data(templateProductMapper.templateProductToProductResponseData(deletedTemplateProduct))
+                .data(templateProductMapper.templateProductToTemplateProductResponseData(deletedTemplateProduct))
                 .build();
     }
 }

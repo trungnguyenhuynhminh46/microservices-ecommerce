@@ -2,8 +2,8 @@ package com.tuber.product.service.domain.helper.template.product;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
-import com.tuber.product.service.domain.dto.product.ProductResponseData;
-import com.tuber.product.service.domain.dto.product.ProductsListResponseData;
+import com.tuber.product.service.domain.dto.template.product.TemplateProductResponseData;
+import com.tuber.product.service.domain.dto.template.product.TemplateProductsListResponseData;
 import com.tuber.product.service.domain.entity.TemplateProduct;
 import com.tuber.product.service.domain.helper.CommonHelper;
 import com.tuber.product.service.domain.mapper.TemplateProductMapper;
@@ -26,21 +26,21 @@ public class ReadTemplateProductHelper {
     TemplateProductRepository templateProductRepository;
     CommonHelper commonHelper;
 
-    public ApiResponse<ProductResponseData> getSingleTemplateProduct(UUID templateProductId) {
+    public ApiResponse<TemplateProductResponseData> getSingleTemplateProduct(UUID templateProductId) {
         TemplateProduct templateProduct = commonHelper.verifyTemplateProductExist(templateProductId);
-        return ApiResponse.<ProductResponseData>builder()
+        return ApiResponse.<TemplateProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Template product retrieved successfully")
-                .data(templateProductMapper.templateProductToProductResponseData(templateProduct))
+                .data(templateProductMapper.templateProductToTemplateProductResponseData(templateProduct))
                 .build();
     }
 
-    public ApiResponse<ProductsListResponseData> getAllProducts() {
+    public ApiResponse<TemplateProductsListResponseData> getAllProducts() {
         List<TemplateProduct> productsList = templateProductRepository.findAll();
-        return ApiResponse.<ProductsListResponseData>builder()
+        return ApiResponse.<TemplateProductsListResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Template products retrieved successfully")
-                .data(templateProductMapper.templateProductsListToProductsListResponseData(productsList))
+                .data(templateProductMapper.templateProductsListToTemplateProductsListResponseData(productsList))
                 .build();
     }
 }

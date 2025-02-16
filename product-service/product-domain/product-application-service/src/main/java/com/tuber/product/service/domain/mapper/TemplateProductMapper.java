@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuber.application.mapper.JsonNullableMapper;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.domain.valueobject.valueobject.Money;
-import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
 import com.tuber.product.service.domain.dto.shared.ProductAttributeOption;
+import com.tuber.product.service.domain.dto.template.product.CreateTemplateProductCommand;
+import com.tuber.product.service.domain.dto.template.product.ModifyTemplateProductCommand;
+import com.tuber.product.service.domain.dto.template.product.TemplateProductResponseData;
+import com.tuber.product.service.domain.dto.template.product.TemplateProductsListResponseData;
 import com.tuber.product.service.domain.entity.TemplateAttribute;
 import com.tuber.product.service.domain.entity.TemplateProduct;
 import org.mapstruct.*;
@@ -27,25 +30,25 @@ public abstract class TemplateProductMapper {
     ObjectMapper objectMapper;
 
     @Mapping(target = "templateAttributes", source = "attributes")
-    public abstract TemplateProduct createProductCommandToTemplateProduct(CreateProductCommand createProductCommand);
+    public abstract TemplateProduct createTemplateProductCommandToTemplateProduct(CreateTemplateProductCommand createProductCommand);
 
     @Mapping(target = "attributes", source = "templateAttributes")
-    public abstract ProductResponseData templateProductToProductResponseData(TemplateProduct product);
+    public abstract TemplateProductResponseData templateProductToTemplateProductResponseData(TemplateProduct product);
 
-    public ProductsListResponseData templateProductsListToProductsListResponseData(List<TemplateProduct> products) {
-        List<ProductResponseData> productResponseDataList = products.stream()
-                .map(this::templateProductToProductResponseData)
+    public TemplateProductsListResponseData templateProductsListToTemplateProductsListResponseData(List<TemplateProduct> products) {
+        List<TemplateProductResponseData> productResponseDataList = products.stream()
+                .map(this::templateProductToTemplateProductResponseData)
                 .toList();
         Integer total = productResponseDataList.size();
-        return ProductsListResponseData.builder()
+        return TemplateProductsListResponseData.builder()
                 .products(productResponseDataList)
                 .total(total)
                 .build();
     }
 
-    public TemplateProduct updateTemplateProduct(ModifyProductCommand data, TemplateProduct templateProduct) {
+    public TemplateProduct updateTemplateProduct(ModifyTemplateProductCommand data, TemplateProduct templateProduct) {
         templateProduct.setUpdatedAt(LocalDate.now());
-        this.updateProductFields(data, templateProduct);
+        this.updateTemplateProductFields(data, templateProduct);
         templateProduct.validateProperties();
         templateProduct.initializeTemplateAttributes();
         return templateProduct;
@@ -56,7 +59,7 @@ public abstract class TemplateProductMapper {
     @Mapping(target = "tags", conditionQualifiedByName = "isValidJsonNullable")
     @Mapping(target = "categoryId", conditionQualifiedByName = "isValidJsonNullable")
     @Mapping(target = "templateAttributes", source = "attributes", conditionQualifiedByName = "isValidJsonNullable")
-    protected abstract void updateProductFields(ModifyProductCommand data, @MappingTarget TemplateProduct templateProduct);
+    protected abstract void updateTemplateProductFields(ModifyTemplateProductCommand data, @MappingTarget TemplateProduct templateProduct);
 
     protected List<TemplateAttribute> map(JsonNullable<List<ProductAttributeDTO>> attributes) {
         List<ProductAttributeDTO> attributesList = attributes.orElse(null);
