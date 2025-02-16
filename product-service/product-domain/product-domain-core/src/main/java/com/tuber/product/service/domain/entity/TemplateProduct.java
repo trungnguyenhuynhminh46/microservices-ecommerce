@@ -235,12 +235,6 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
         }
     }
 
-    public void validateInitializeAttributes() {
-        if (getTemplateAttributes() != null) {
-            getTemplateAttributes().forEach(TemplateAttribute::validateForInitialization);
-        }
-    }
-
     public void validateAttributes() {
         if (getTemplateAttributes() != null) {
             getTemplateAttributes().forEach(TemplateAttribute::validateProperties);
@@ -281,7 +275,6 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
             throw new ProductDomainException(ProductResponseCode.TEMPLATE_PRODUCT_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
         }
         this.validateProperties();
-        validateInitializeAttributes();
     }
 
     public void initialize() {

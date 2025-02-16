@@ -26,6 +26,7 @@ public class CreateTemplateProductHelper {
 
     public ApiResponse<TemplateProductResponseData> persistTemplateProduct(CreateTemplateProductCommand createTemplateProductCommand) {
         TemplateProduct templateProduct = templateProductMapper.createTemplateProductCommandToTemplateProduct(createTemplateProductCommand);
+        templateProduct.setTemplateAttributes(commonHelper.verifyTemplateAttributesByIdsExists(createTemplateProductCommand.getAttributeIds()));
         TemplateProductCreatedEvent templateProductCreatedEvent = productDomainService.validateAndInitializeTemplateProduct(templateProduct);
 
         TemplateProduct initializedTemplateProduct = templateProductCreatedEvent.getTemplateProduct();

@@ -53,4 +53,11 @@ public class TemplateAttributeRepositoryImpl implements TemplateAttributeReposit
     public void deleteByTemplateProductsId(UUID id) {
         templateAttributeJpaRepository.deleteByTemplateProductsId(id);
     }
+
+    @Override
+    public List<TemplateAttribute> findAllById(List<UUID> ids) {
+        return templateAttributeJpaRepository.findAllById(ids).stream()
+                .map(templateAttributeJpaMapper::templateAttributeJpaEntityToTemplateAttributeEntity)
+                .toList();
+    }
 }

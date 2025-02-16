@@ -1,6 +1,6 @@
 package com.tuber.product.service.domain.dto.template.attribute;
 
-import com.tuber.product.service.domain.dto.shared.ProductAttributeOption;
+import com.tuber.product.service.domain.dto.shared.TemplateAttributeOption;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +18,5 @@ public class TemplateAttributeResponseData {
     UUID id;
     String name;
     String description;
-    List<ProductAttributeOption> options;
+    List<TemplateAttributeOption> options;
 }

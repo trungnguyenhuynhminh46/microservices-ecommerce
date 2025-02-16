@@ -11,4 +11,5 @@ public interface TemplateAttributeRepository {
     List<TemplateAttribute> findAll();
     void delete(TemplateAttribute attribute);
     void deleteByTemplateProductsId(UUID id);
+    List<TemplateAttribute> findAllById(List<UUID> ids);
 }

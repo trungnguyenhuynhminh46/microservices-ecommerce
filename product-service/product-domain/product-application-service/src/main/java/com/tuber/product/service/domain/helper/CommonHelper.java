@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -123,7 +124,7 @@ public class CommonHelper {
             log.error(String.format("Failed to save template attribute %s", templateAttribute.getName()));
             throw new ProductDomainException(ProductResponseCode.TEMPLATE_ATTRIBUTE_SAVE_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value(), templateAttribute.getName());
         }
-        return null;
+        return savedTemplateAttribute;
     }
 
     public TemplateAttribute verifyTemplateAttributeExist(UUID templateAttributeId) {
@@ -139,5 +140,14 @@ public class CommonHelper {
         TemplateAttribute templateAttribute = this.verifyTemplateAttributeExist(templateAttributeId);
         templateAttributeRepository.delete(templateAttribute);
         return templateAttribute;
+    }
+
+    public List<TemplateAttribute> verifyTemplateAttributesByIdsExists(List<UUID> templateAttributeIds) {
+        List<TemplateAttribute> templateAttributes = templateAttributeRepository.findAllById(templateAttributeIds);
+        if (templateAttributes.size() != templateAttributeIds.size()) {
+            log.error("Some template attributes are not found");
+            throw new ProductDomainException(ProductResponseCode.SOME_TEMPLATE_ATTRIBUTES_ARE_NOT_FOUND, HttpStatus.NOT_FOUND.value());
+        }
+        return templateAttributes;
     }
 }

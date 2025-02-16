@@ -29,7 +29,7 @@ public abstract class TemplateProductMapper {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Mapping(target = "templateAttributes", source = "attributes")
+    @Mapping(target = "templateAttributes", ignore = true)
     public abstract TemplateProduct createTemplateProductCommandToTemplateProduct(CreateTemplateProductCommand createProductCommand);
 
     @Mapping(target = "attributes", source = "templateAttributes")

@@ -32,6 +32,7 @@ spring:
               - Path=${app.api-prefix}/product/products/**,
                 ${app.api-prefix}/product/categories/**,
                 ${app.api-prefix}/product/template/products/**,
+                ${app.api-prefix}/product/template/attributes/**,
           filters:
               - StripPrefix=1
 services:

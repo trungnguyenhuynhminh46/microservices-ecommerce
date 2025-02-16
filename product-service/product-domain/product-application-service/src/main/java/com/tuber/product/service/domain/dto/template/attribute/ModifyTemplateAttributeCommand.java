@@ -1,6 +1,6 @@
 package com.tuber.product.service.domain.dto.template.attribute;
 
-import com.tuber.product.service.domain.dto.shared.ProductAttributeOption;
+import com.tuber.product.service.domain.dto.shared.TemplateAttributeOption;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,5 +19,5 @@ public class ModifyTemplateAttributeCommand {
     UUID id;
     String name;
     JsonNullable<String> defaultValue;
-    JsonNullable<List<ProductAttributeOption>> options;
+    JsonNullable<List<TemplateAttributeOption>> options;
 }

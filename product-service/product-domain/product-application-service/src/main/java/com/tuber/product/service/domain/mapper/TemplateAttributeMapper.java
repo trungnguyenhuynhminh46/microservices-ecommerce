@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuber.application.mapper.JsonNullableMapper;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.product.service.domain.dto.shared.ProductAttributeOption;
+import com.tuber.product.service.domain.dto.shared.TemplateAttributeOption;
 import com.tuber.product.service.domain.dto.template.attribute.CreateTemplateAttributeCommand;
 import com.tuber.product.service.domain.dto.template.attribute.ModifyTemplateAttributeCommand;
 import com.tuber.product.service.domain.dto.template.attribute.TemplateAttributeResponseData;
@@ -40,8 +40,8 @@ public abstract class TemplateAttributeMapper {
     @Mapping(target = "options", conditionQualifiedByName = "isValidJsonNullable")
     public abstract void updateTemplateAttributeFields(ModifyTemplateAttributeCommand modifyTemplateAttributeCommand, @MappingTarget TemplateAttribute templateAttribute);
 
-    public String map(JsonNullable<List<ProductAttributeOption>> options) {
-        List<ProductAttributeOption> optionsList = options.orElse(null);
+    public String map(JsonNullable<List<TemplateAttributeOption>> options) {
+        List<TemplateAttributeOption> optionsList = options.orElse(null);
         if (optionsList == null) {
             return null;
         }
@@ -63,7 +63,7 @@ public abstract class TemplateAttributeMapper {
                 .build();
     }
 
-    protected String map(List<ProductAttributeOption> options) {
+    protected String map(List<TemplateAttributeOption> options) {
         try {
             return objectMapper.writeValueAsString(options);
         } catch (JsonProcessingException e) {
@@ -71,9 +71,9 @@ public abstract class TemplateAttributeMapper {
         }
     }
 
-    protected List<ProductAttributeOption> map(String options) {
+    protected List<TemplateAttributeOption> map(String options) {
         try {
-            return objectMapper.readValue(options, objectMapper.getTypeFactory().constructCollectionType(List.class, ProductAttributeOption.class));
+            return objectMapper.readValue(options, objectMapper.getTypeFactory().constructCollectionType(List.class, TemplateAttributeOption.class));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

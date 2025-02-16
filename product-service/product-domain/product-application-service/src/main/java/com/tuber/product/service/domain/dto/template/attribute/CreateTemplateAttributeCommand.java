@@ -1,6 +1,6 @@
 package com.tuber.product.service.domain.dto.template.attribute;
 
-import com.tuber.product.service.domain.dto.shared.ProductAttributeOption;
+import com.tuber.product.service.domain.dto.shared.TemplateAttributeOption;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -23,5 +23,5 @@ public class CreateTemplateAttributeCommand {
     @NotBlank(message = "Template attribute default value is mandatory")
     String defaultValue;
     @NotNull(message = "You must add at least one option to the attribute")
-    List<ProductAttributeOption> options;
+    List<TemplateAttributeOption> options;
 }
