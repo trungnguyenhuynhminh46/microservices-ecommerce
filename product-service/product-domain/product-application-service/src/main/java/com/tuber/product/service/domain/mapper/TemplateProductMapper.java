@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuber.application.mapper.JsonNullableMapper;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.domain.valueobject.valueobject.Money;
-import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
-import com.tuber.product.service.domain.dto.shared.ProductAttributeOption;
+import com.tuber.product.service.domain.dto.shared.TemplateAttributeDTO;
+import com.tuber.product.service.domain.dto.shared.TemplateAttributeOption;
 import com.tuber.product.service.domain.dto.template.product.CreateTemplateProductCommand;
 import com.tuber.product.service.domain.dto.template.product.ModifyTemplateProductCommand;
 import com.tuber.product.service.domain.dto.template.product.TemplateProductResponseData;
@@ -61,8 +61,8 @@ public abstract class TemplateProductMapper {
     @Mapping(target = "templateAttributes", source = "attributes", conditionQualifiedByName = "isValidJsonNullable")
     protected abstract void updateTemplateProductFields(ModifyTemplateProductCommand data, @MappingTarget TemplateProduct templateProduct);
 
-    protected List<TemplateAttribute> map(JsonNullable<List<ProductAttributeDTO>> attributes) {
-        List<ProductAttributeDTO> attributesList = attributes.orElse(null);
+    protected List<TemplateAttribute> map(JsonNullable<List<TemplateAttributeDTO>> attributes) {
+        List<TemplateAttributeDTO> attributesList = attributes.orElse(null);
         return attributesList == null ? List.of() : attributesList.stream()
                 .map(attribute -> TemplateAttribute.builder()
                         .name(attribute.getName())
@@ -72,7 +72,7 @@ public abstract class TemplateProductMapper {
                 .toList();
     }
 
-    protected String map(List<ProductAttributeOption> options) {
+    protected String map(List<TemplateAttributeOption> options) {
         try {
             return objectMapper.writeValueAsString(options);
         } catch (JsonProcessingException e) {
@@ -80,9 +80,9 @@ public abstract class TemplateProductMapper {
         }
     }
 
-    protected List<ProductAttributeOption> map(String options) {
+    protected List<TemplateAttributeOption> map(String options) {
         try {
-            return objectMapper.readValue(options, objectMapper.getTypeFactory().constructCollectionType(List.class, ProductAttributeOption.class));
+            return objectMapper.readValue(options, objectMapper.getTypeFactory().constructCollectionType(List.class, TemplateAttributeOption.class));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

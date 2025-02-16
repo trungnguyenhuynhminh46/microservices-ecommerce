@@ -1,6 +1,6 @@
 package com.tuber.product.service.domain.dto.template.product;
 
-import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
+import com.tuber.product.service.domain.dto.shared.TemplateAttributeDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +23,7 @@ public class TemplateProductResponseData {
     String tags;
     Float rating;
     UUID categoryId;
-    List<ProductAttributeDTO> attributes;
+    List<TemplateAttributeDTO> attributes;
     String createdAt;
     String updatedAt;
 }

@@ -1,6 +1,6 @@
 package com.tuber.product.service.domain.dto.template.product;
 
-import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
+import com.tuber.product.service.domain.dto.shared.TemplateAttributeDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -26,5 +26,5 @@ public class CreateTemplateProductCommand {
     String description;
     String tags;
     UUID categoryId;
-    List<ProductAttributeDTO> attributes;
+    List<TemplateAttributeDTO> attributes;
 }

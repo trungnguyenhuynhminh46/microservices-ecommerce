@@ -17,6 +17,10 @@ public class TemplateAttribute extends BaseEntity<UniqueUUID> {
     private String defaultValue;
     private String options;
 
+    public TemplateAttribute(UUID attributeId) {
+        super.setId(new UniqueUUID(attributeId));
+    }
+
     private TemplateAttribute(TemplateAttribute.Builder builder) {
         super.setId(builder.id);
         setName(builder.name);

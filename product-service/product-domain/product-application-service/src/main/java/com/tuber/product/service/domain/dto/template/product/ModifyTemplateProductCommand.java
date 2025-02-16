@@ -1,6 +1,6 @@
 package com.tuber.product.service.domain.dto.template.product;
 
-import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
+import com.tuber.product.service.domain.dto.shared.TemplateAttributeDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -27,5 +27,5 @@ public class ModifyTemplateProductCommand {
     JsonNullable<String> description;
     JsonNullable<String> tags;
     JsonNullable<UUID> categoryId;
-    JsonNullable<List<ProductAttributeDTO>> attributes;
+    JsonNullable<List<TemplateAttributeDTO>> attributes;
 }
