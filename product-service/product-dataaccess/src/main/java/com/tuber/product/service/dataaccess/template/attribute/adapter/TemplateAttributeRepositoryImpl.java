@@ -48,4 +48,9 @@ public class TemplateAttributeRepositoryImpl implements TemplateAttributeReposit
                 templateAttributeJpaMapper.templateAttributeEntityToTemplateAttributeJpaEntity(attribute)
         );
     }
+
+    @Override
+    public void deleteByTemplateProductsId(UUID id) {
+        templateAttributeJpaRepository.deleteByTemplateProductsId(id);
+    }
 }
