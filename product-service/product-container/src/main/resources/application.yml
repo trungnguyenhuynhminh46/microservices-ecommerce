@@ -5,10 +5,14 @@ service:
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
-    generate-ddl: true
   datasource:
     url: jdbc:mysql://localhost:3306/product_service
     username: root
     password: 123456789
+  sql:
+    init:
+      mode: ALWAYS
+      schema-locations: classpath:/db/schema.sql
+      data-locations: classpath:/db/data.sql
