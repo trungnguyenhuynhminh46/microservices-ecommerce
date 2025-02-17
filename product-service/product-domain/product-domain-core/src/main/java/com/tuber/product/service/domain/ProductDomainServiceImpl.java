@@ -11,6 +11,7 @@ import com.tuber.product.service.domain.event.TemplateProductCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 public class ProductDomainServiceImpl implements ProductDomainService {
@@ -31,7 +32,7 @@ public class ProductDomainServiceImpl implements ProductDomainService {
     }
 
     @Override
-    public TemplateProductCreatedEvent validateAndInitializeTemplateProduct(TemplateProduct templateProduct, List<TemplateAttribute> templateAttributes) {
+    public TemplateProductCreatedEvent validateAndInitializeTemplateProduct(TemplateProduct templateProduct, Set<TemplateAttribute> templateAttributes) {
         templateProduct.validateForInitialization();
         templateProduct.initialize(templateAttributes);
         log.info("Validating template product with id: {}", templateProduct.getId());

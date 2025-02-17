@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -25,5 +25,5 @@ public class CreateTemplateProductCommand {
     String description;
     String tags;
     UUID categoryId;
-    List<UUID> attributeIds;
+    Set<UUID> attributeIds;
 }

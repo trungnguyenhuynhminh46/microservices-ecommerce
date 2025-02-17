@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Component
@@ -32,10 +33,10 @@ public class UpdateTemplateProductHelper {
 
         if(modifyProductCommand.getAttributeIds() != null && modifyProductCommand.getAttributeIds().isPresent()) {
             if(modifyProductCommand.getAttributeIds().get() == null) {
-                updatedTemplateProduct.setTemplateAttributes(List.of());
+                updatedTemplateProduct.setTemplateAttributes(Set.of());
             }
             if(modifyProductCommand.getAttributeIds().get() != null) {
-                List<TemplateAttribute> templateAttributes = commonHelper.verifyTemplateAttributesByIdsExists(modifyProductCommand.getAttributeIds().get());
+                Set<TemplateAttribute> templateAttributes = commonHelper.verifyTemplateAttributesByIdsExists(modifyProductCommand.getAttributeIds().get());
                 updatedTemplateProduct.setTemplateAttributes(templateAttributes);
             }
         }

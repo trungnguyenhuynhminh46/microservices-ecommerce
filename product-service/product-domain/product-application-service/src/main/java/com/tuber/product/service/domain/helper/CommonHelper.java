@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -142,8 +143,8 @@ public class CommonHelper {
         return templateAttribute;
     }
 
-    public List<TemplateAttribute> verifyTemplateAttributesByIdsExists(List<UUID> templateAttributeIds) {
-        List<TemplateAttribute> templateAttributes = templateAttributeRepository.findAllById(templateAttributeIds);
+    public Set<TemplateAttribute> verifyTemplateAttributesByIdsExists(Set<UUID> templateAttributeIds) {
+        Set<TemplateAttribute> templateAttributes = templateAttributeRepository.findAllById(templateAttributeIds);
         if (templateAttributes.size() != templateAttributeIds.size()) {
             log.error("Some template attributes are not found");
             throw new ProductDomainException(ProductResponseCode.SOME_TEMPLATE_ATTRIBUTES_ARE_NOT_FOUND, HttpStatus.NOT_FOUND.value());

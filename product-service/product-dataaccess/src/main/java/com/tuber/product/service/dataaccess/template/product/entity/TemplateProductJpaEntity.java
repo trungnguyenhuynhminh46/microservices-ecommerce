@@ -7,10 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -35,7 +32,7 @@ public class TemplateProductJpaEntity {
             joinColumns = @JoinColumn(name = "template_product_id"),
             inverseJoinColumns = @JoinColumn(name = "template_attribute_id")
     )
-    List<TemplateAttributeJpaEntity> templateAttributes = new ArrayList<>();
+    Set<TemplateAttributeJpaEntity> templateAttributes = new HashSet<>();
     @Column(columnDefinition = "DATE")
     LocalDate createdAt;
     @Column(columnDefinition = "DATE")

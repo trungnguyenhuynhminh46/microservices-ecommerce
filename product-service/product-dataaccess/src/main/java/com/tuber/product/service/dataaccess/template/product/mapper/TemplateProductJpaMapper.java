@@ -13,7 +13,7 @@ import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring")
@@ -27,7 +27,7 @@ public abstract class TemplateProductJpaMapper {
 
     @AfterMapping
     protected void afterMapping(@MappingTarget TemplateProductJpaEntity templateProductJpaEntity) {
-        templateProductJpaEntity.getTemplateAttributes().forEach(templateAttributeJpaEntity -> templateAttributeJpaEntity.setTemplateProducts(List.of(templateProductJpaEntity)));
+        templateProductJpaEntity.getTemplateAttributes().forEach(templateAttributeJpaEntity -> templateAttributeJpaEntity.setTemplateProducts(Set.of(templateProductJpaEntity)));
     }
 
     protected UUID map(UniqueUUID id) {

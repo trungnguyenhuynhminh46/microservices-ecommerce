@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Component
@@ -29,7 +29,7 @@ public class CreateTemplateProductHelper {
 
     public ApiResponse<TemplateProductResponseData> persistTemplateProduct(CreateTemplateProductCommand createTemplateProductCommand) {
         TemplateProduct templateProduct = templateProductMapper.createTemplateProductCommandToTemplateProduct(createTemplateProductCommand);
-        List<TemplateAttribute> templateAttributes = commonHelper.verifyTemplateAttributesByIdsExists(createTemplateProductCommand.getAttributeIds());
+        Set<TemplateAttribute> templateAttributes = commonHelper.verifyTemplateAttributesByIdsExists(createTemplateProductCommand.getAttributeIds());
         TemplateProductCreatedEvent templateProductCreatedEvent = productDomainService.validateAndInitializeTemplateProduct(templateProduct, templateAttributes);
 
         TemplateProduct initializedTemplateProduct = templateProductCreatedEvent.getTemplateProduct();

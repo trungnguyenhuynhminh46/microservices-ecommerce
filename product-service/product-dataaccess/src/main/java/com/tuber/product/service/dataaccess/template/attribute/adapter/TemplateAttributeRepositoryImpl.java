@@ -10,7 +10,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -55,9 +57,9 @@ public class TemplateAttributeRepositoryImpl implements TemplateAttributeReposit
     }
 
     @Override
-    public List<TemplateAttribute> findAllById(List<UUID> ids) {
+    public Set<TemplateAttribute> findAllById(Set<UUID> ids) {
         return templateAttributeJpaRepository.findAllById(ids).stream()
                 .map(templateAttributeJpaMapper::templateAttributeJpaEntityToTemplateAttributeEntity)
-                .toList();
+                .collect(Collectors.toSet());
     }
 }

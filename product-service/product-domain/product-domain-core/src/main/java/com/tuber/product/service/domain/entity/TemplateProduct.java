@@ -8,7 +8,8 @@ import com.tuber.product.service.domain.exception.ProductDomainException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class TemplateProduct extends BaseEntity<UniqueUUID> {
@@ -18,7 +19,7 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
     private String tags;
     private Float rating;
     private UniqueUUID categoryId;
-    private List<TemplateAttribute> templateAttributes;
+    private Set<TemplateAttribute> templateAttributes = new HashSet<>();
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
@@ -56,7 +57,7 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
         private String tags;
         private Float rating;
         private UniqueUUID categoryId;
-        private List<TemplateAttribute> templateAttributes;
+        private Set<TemplateAttribute> templateAttributes;
         private LocalDate createdAt;
         private LocalDate updatedAt;
 
@@ -113,7 +114,7 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
             return this;
         }
 
-        public TemplateProduct.Builder templateAttributes(List<TemplateAttribute> val) {
+        public TemplateProduct.Builder templateAttributes(Set<TemplateAttribute> val) {
             templateAttributes = val;
             return this;
         }
@@ -189,12 +190,12 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
         this.categoryId = new UniqueUUID(categoryId);
     }
 
-    public List<TemplateAttribute> getTemplateAttributes() {
+    public Set<TemplateAttribute> getTemplateAttributes() {
         return templateAttributes;
     }
 
-    public void setTemplateAttributes(List<TemplateAttribute> templateAttributes) {
-        this.templateAttributes = templateAttributes == null ? List.of() : templateAttributes;
+    public void setTemplateAttributes(Set<TemplateAttribute> templateAttributes) {
+        this.templateAttributes = templateAttributes == null ? Set.of() : templateAttributes;
     }
 
     public LocalDate getCreatedAt() {
@@ -260,7 +261,7 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
         this.validateProperties();
     }
 
-    public void initialize(List<TemplateAttribute> templateAttributes) {
+    public void initialize(Set<TemplateAttribute> templateAttributes) {
         setId(new UniqueUUID(UUID.randomUUID()));
         setRating(0.0f);
         setCreatedAt(LocalDate.now());

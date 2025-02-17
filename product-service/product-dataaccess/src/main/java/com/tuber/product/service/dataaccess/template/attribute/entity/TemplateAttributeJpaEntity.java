@@ -19,7 +19,7 @@ public class TemplateAttributeJpaEntity {
     @Id
     UUID id;
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "templateAttributes")
-    List<TemplateProductJpaEntity> templateProducts = new ArrayList<>();
+    Set<TemplateProductJpaEntity> templateProducts = new HashSet<>();
     String name;
     String defaultValue;
     String options;

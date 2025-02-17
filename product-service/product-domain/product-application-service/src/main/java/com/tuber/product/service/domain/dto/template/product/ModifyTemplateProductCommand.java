@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -27,5 +27,5 @@ public class ModifyTemplateProductCommand {
     JsonNullable<String> description;
     JsonNullable<String> tags;
     JsonNullable<UUID> categoryId;
-    JsonNullable<List<UUID>> attributeIds;
+    JsonNullable<Set<UUID>> attributeIds;
 }
