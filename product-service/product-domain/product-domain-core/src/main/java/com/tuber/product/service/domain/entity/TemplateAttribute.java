@@ -118,18 +118,13 @@ public class TemplateAttribute extends BaseEntity<UniqueUUID> {
             boolean defaultValueValid = false;
 
             for (JsonNode node : rootNode) {
-                if (!node.has("name") || !node.has("changeAmount")) {
-                    throw new IllegalArgumentException("Template attribute options must have 'name' and 'changeAmount' fields");
+                if (!node.has("name")) {
+                    throw new IllegalArgumentException("Template attribute options must have 'name' field");
                 }
 
                 JsonNode nameNode = node.get("name");
                 if (!nameNode.isTextual() || nameNode.asText().trim().isEmpty()) {
                     throw new IllegalArgumentException("Template attribute options must have a non-empty 'name' field");
-                }
-
-                JsonNode changeAmountNode = node.get("changeAmount");
-                if (!changeAmountNode.isNumber()) {
-                    throw new IllegalArgumentException("Template attribute options must have a numeric 'changeAmount' field");
                 }
 
                 if (nameNode.asText().equals(getDefaultValue())) {

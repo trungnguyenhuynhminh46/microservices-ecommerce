@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
-
 @Getter
 @Builder
 @AllArgsConstructor
@@ -16,6 +14,4 @@ import java.math.BigDecimal;
 public class TemplateAttributeOption {
     @NotNull
     String name;
-    @NotNull
-    BigDecimal changeAmount;
 }
