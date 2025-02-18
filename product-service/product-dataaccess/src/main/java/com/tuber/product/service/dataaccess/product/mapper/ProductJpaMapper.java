@@ -1,7 +1,7 @@
 package com.tuber.product.service.dataaccess.product.mapper;
 
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.domain.valueobject.valueobject.Money;
+import com.tuber.domain.valueobject.Money;
 import com.tuber.product.service.dataaccess.attribute.entity.ProductAttributeJpaEntity;
 import com.tuber.product.service.dataaccess.attribute.mapper.ProductAttributeJpaMapper;
 import com.tuber.product.service.dataaccess.product.entity.ProductJpaEntity;

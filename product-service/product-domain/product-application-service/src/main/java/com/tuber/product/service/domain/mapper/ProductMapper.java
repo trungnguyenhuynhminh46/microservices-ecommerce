@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuber.application.mapper.JsonNullableMapper;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.domain.valueobject.valueobject.Money;
+import com.tuber.domain.valueobject.Money;
 import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
 import com.tuber.product.service.domain.dto.shared.ProductAttributeOption;
