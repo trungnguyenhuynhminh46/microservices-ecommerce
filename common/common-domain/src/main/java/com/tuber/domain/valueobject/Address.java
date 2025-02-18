@@ -9,7 +9,23 @@ public class Address {
     private final String street;
     private final String city;
 
+    public void validate(UUID id, String postalCode, String street, String city) {
+        if(id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
+        if(postalCode == null || postalCode.isEmpty()) {
+            throw new IllegalArgumentException("Postal code cannot be null or empty");
+        }
+        if(street == null || street.isEmpty()) {
+            throw new IllegalArgumentException("Street cannot be null or empty");
+        }
+        if(city == null || city.isEmpty()) {
+            throw new IllegalArgumentException("City cannot be null or empty");
+        }
+    }
+
     public Address(UUID id, String postalCode, String street, String city) {
+        validate(id, postalCode, street, city);
         this.id = id;
         this.postalCode = postalCode;
         this.street = street;
