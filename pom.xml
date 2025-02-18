@@ -14,6 +14,7 @@
         <module>profile-service</module>
         <module>identity-service</module>
         <module>product-service</module>
+        <module>inventory-service</module>
     </modules>
 
     <parent>
@@ -124,6 +125,33 @@
             <dependency>
                 <groupId>com.tuber</groupId>
                 <artifactId>product-messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Inventory service           -->
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>inventory-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>inventory-dataaccess</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>inventory-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>inventory-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>inventory-messaging</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
