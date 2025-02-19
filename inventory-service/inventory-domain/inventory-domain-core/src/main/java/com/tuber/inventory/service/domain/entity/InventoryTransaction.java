@@ -163,6 +163,16 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
         this.createdDate = createdDate;
     }
 
+    public void validateQuantity() {
+        if (getQuantity() == null || getQuantity() < 0) {
+            throw new IllegalArgumentException("Quantity must not be smaller than 0");
+        }
+    }
+
+    public void validateProperties() {
+        validateQuantity();
+    }
+
     public boolean isValidForInitialization() {
         return getId() == null && getCreatedDate() == null && getProductId() != null && getSku() != null
                 && getDestWarehouseId() != null && getQuantity() != null
@@ -173,6 +183,7 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
         if (!isValidForInitialization()) {
             throw new InventoryDomainException(InventoryResponseCode.INVENTORY_TRANSACTION_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
         }
+        validateProperties();
     }
 
     public void initialize(UUID inventoryTransactionId) {
