@@ -16,6 +16,12 @@ public class InventoryResponseCode extends ResponseCodeBase {
     public static final InventoryResponseCode INVENTORY_IN_WRONG_STATE_FOR_INITIALIZATION =
             new InventoryResponseCode(1002, "Inventory is in wrong state for initialization");
 
+    public static final InventoryResponseCode WAREHOUSE_IN_WRONG_STATE_FOR_INITIALIZATION =
+            new InventoryResponseCode(1003, "Warehouse is in wrong state for initialization");
+
+    public static final InventoryResponseCode INVENTORY_TRANSACTION_IN_WRONG_STATE_FOR_INITIALIZATION =
+            new InventoryResponseCode(1004, "Inventory transaction is in wrong state for initialization");
+
     protected InventoryResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

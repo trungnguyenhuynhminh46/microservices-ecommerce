@@ -3,6 +3,8 @@ package com.tuber.inventory.service.domain.entity;
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.enums.InventoryTransactionType;
 import com.tuber.domain.valueobject.id.UniqueUUID;
+import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
+import com.tuber.inventory.service.domain.exception.InventoryDomainException;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -169,7 +171,12 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
 
     public void validateForInitialization() {
         if (!isValidForInitialization()) {
-            throw new IllegalArgumentException("Invalid inventory transaction initialization");
+            throw new InventoryDomainException(InventoryResponseCode.INVENTORY_TRANSACTION_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
         }
+    }
+
+    public void initialize(UUID inventoryTransactionId) {
+        setId(new UniqueUUID(inventoryTransactionId));
+        setCreatedDate(LocalDate.now());
     }
 }

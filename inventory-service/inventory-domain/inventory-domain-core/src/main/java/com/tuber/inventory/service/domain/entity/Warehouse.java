@@ -4,6 +4,8 @@ import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.Address;
 import com.tuber.domain.valueobject.Coordinate;
 import com.tuber.domain.valueobject.id.UniqueUUID;
+import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
+import com.tuber.inventory.service.domain.exception.InventoryDomainException;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -121,7 +123,7 @@ public class Warehouse extends BaseEntity<UniqueUUID> {
 
     public void validateForInitialization() {
         if (!isValidForInitialization()) {
-            throw new IllegalArgumentException("Invalid warehouse initialization");
+            throw new InventoryDomainException(InventoryResponseCode.WAREHOUSE_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
         }
     }
 
