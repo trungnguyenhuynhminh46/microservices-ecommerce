@@ -14,6 +14,7 @@ public class Warehouse extends BaseEntity<UniqueUUID> {
     private String name;
     private Address address;
     private Coordinate location;
+    private String description;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
@@ -22,6 +23,7 @@ public class Warehouse extends BaseEntity<UniqueUUID> {
         name = builder.name;
         address = builder.address;
         location = builder.location;
+        description = builder.description;
         createdAt = builder.createdAt;
         updatedAt = builder.updatedAt;
     }
@@ -35,6 +37,7 @@ public class Warehouse extends BaseEntity<UniqueUUID> {
         private String name;
         private Address address;
         private Coordinate location;
+        private String description;
         private LocalDate createdAt;
         private LocalDate updatedAt;
 
@@ -58,6 +61,11 @@ public class Warehouse extends BaseEntity<UniqueUUID> {
 
         public Builder location(Coordinate val) {
             location = val;
+            return this;
+        }
+
+        public Builder description(String val) {
+            description = val;
             return this;
         }
 
@@ -96,6 +104,14 @@ public class Warehouse extends BaseEntity<UniqueUUID> {
         return location;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setLocation(Coordinate location) {
         this.location = location;
     }
@@ -127,8 +143,15 @@ public class Warehouse extends BaseEntity<UniqueUUID> {
         }
     }
 
+    protected void initializeDescription() {
+        if (getDescription() == null) {
+            setDescription("");
+        }
+    }
+
     public void initialize() {
         setId(new UniqueUUID(UUID.randomUUID()));
+        initializeDescription();
         setCreatedAt(LocalDate.now());
         setUpdatedAt(LocalDate.now());
     }

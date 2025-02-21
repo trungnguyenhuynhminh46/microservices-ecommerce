@@ -1,8 +1,9 @@
 package com.tuber.inventory.service.application;
 
 import com.tuber.application.handler.ApiResponse;
+import com.tuber.inventory.service.domain.dto.warehouse.CreateWarehouseCommand;
+import com.tuber.inventory.service.domain.dto.warehouse.WarehouseResponseData;
 import com.tuber.inventory.service.domain.ports.input.service.InventoryApplicationService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class WarehouseController {
     private final InventoryApplicationService inventoryApplicationService;
     @PostMapping
-    public ResponseEntity<ApiResponse<Object>> createWarehouse(@RequestBody @Valid Object createWarehouseCommand) {
-        return null;
+    public ResponseEntity<ApiResponse<WarehouseResponseData>> createWarehouse(@RequestBody CreateWarehouseCommand createWarehouseCommand) {
+        ApiResponse<WarehouseResponseData> createWarehouseResponse = inventoryApplicationService.createWarehouse(createWarehouseCommand);
+        log.info("Successfully created warehouse with name {}", createWarehouseCommand.getName());
+        return ResponseEntity.ok(createWarehouseResponse);
     }
 }
