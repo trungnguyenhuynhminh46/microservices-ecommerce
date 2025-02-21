@@ -1,4 +1,4 @@
-package com.tuber.identity.service.domain;
+package com.tuber.identity.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.identity.service.domain.dto.authentication.*;

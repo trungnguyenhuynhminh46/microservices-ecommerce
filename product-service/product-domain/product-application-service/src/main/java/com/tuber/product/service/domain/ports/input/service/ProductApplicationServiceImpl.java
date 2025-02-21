@@ -1,4 +1,4 @@
-package com.tuber.product.service.domain;
+package com.tuber.product.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
