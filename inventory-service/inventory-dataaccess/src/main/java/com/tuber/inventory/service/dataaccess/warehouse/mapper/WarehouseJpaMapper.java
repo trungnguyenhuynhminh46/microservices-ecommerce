@@ -18,6 +18,15 @@ public abstract class WarehouseJpaMapper {
     @Mapping(source = "createdAt", target = "createdAt", dateFormat = "yyyy-MM-dd")
     @Mapping(source = "updatedAt", target = "updatedAt", dateFormat = "yyyy-MM-dd")
     public abstract WarehouseJpaEntity warehouseEntityToWarehouseJpaEntity(Warehouse warehouse);
+
+    @Mapping(target = "address.id", expression = "java(generateUUID())")
+    @Mapping(source = "postalCode", target = "address.postalCode")
+    @Mapping(source = "street", target = "address.street")
+    @Mapping(source = "city", target = "address.city")
+    @Mapping(source = "latitude", target = "location.latitude")
+    @Mapping(source = "longitude", target = "location.longitude")
+    @Mapping(source = "createdAt", target = "createdAt", dateFormat = "yyyy-MM-dd")
+    @Mapping(source = "updatedAt", target = "updatedAt", dateFormat = "yyyy-MM-dd")
     public abstract Warehouse warehouseJpaEntityToWarehouseEntity(WarehouseJpaEntity warehouseJpaEntity);
 
     protected UUID map(UniqueUUID id) {
@@ -26,5 +35,9 @@ public abstract class WarehouseJpaMapper {
 
     protected UniqueUUID map(UUID id) {
         return new UniqueUUID(id);
+    }
+
+    protected UUID generateUUID() {
+        return UUID.randomUUID();
     }
 }
