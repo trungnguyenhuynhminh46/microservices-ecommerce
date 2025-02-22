@@ -35,6 +35,13 @@ spring:
                 ${app.api-prefix}/product/template/attributes/**,
           filters:
               - StripPrefix=1
+        - id: inventory_service
+          uri: http://localhost:8084
+          predicates:
+              - Path=${app.api-prefix}/inventory/inventories/**,
+                  ${app.api-prefix}/inventory/warehouses/**
+          filters:
+              - StripPrefix=1
 services:
   base_url:
     identity:
@@ -43,3 +50,5 @@ services:
         url: http://localhost:8082/profile
     product:
         url: http://localhost:8083/product
+    inventory:
+        url: http://localhost:8084/inventory

@@ -55,7 +55,11 @@ public class IdentityServiceApplication implements CommandLineRunner {
             ),
             RolesDefault.STORE_ADMIN, Set.of(
                     Permissions.GET_PRODUCT_CATEGORY, Permissions.CREATE_PRODUCT_CATEGORY, Permissions.UPDATE_PRODUCT_CATEGORY, Permissions.DELETE_PRODUCT_CATEGORY,
-                    Permissions.CREATE_TEMPLATE, Permissions.UPDATE_TEMPLATE, Permissions.DELETE_TEMPLATE
+                    Permissions.CREATE_TEMPLATE, Permissions.UPDATE_TEMPLATE, Permissions.DELETE_TEMPLATE,
+                    Permissions.GET_WAREHOUSE
+            ),
+            RolesDefault.WAREHOUSE_MANAGER, Set.of(
+                    Permissions.CREATE_WAREHOUSE, Permissions.UPDATE_WAREHOUSE, Permissions.GET_WAREHOUSE
             )
     );
 
@@ -68,7 +72,7 @@ public class IdentityServiceApplication implements CommandLineRunner {
                     .lastName("Super")
                     .dob(LocalDate.of(2001, 6, 4))
                     .city("Hồ Chí Minh")
-                    .roleName(List.of(RolesDefault.ADMIN.toString(), RolesDefault.STORE_ADMIN.toString()))
+                    .roleName(List.of(RolesDefault.ADMIN.toString(), RolesDefault.STORE_ADMIN.toString(), RolesDefault.WAREHOUSE_MANAGER.toString()))
                     .build(),
             UserData.builder()
                     .username("store_admin!m8UFV4pdR")

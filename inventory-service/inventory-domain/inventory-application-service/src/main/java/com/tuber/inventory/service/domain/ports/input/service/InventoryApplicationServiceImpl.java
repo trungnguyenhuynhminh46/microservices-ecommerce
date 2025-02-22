@@ -5,7 +5,16 @@ import com.tuber.inventory.service.domain.dto.warehouse.*;
 import com.tuber.inventory.service.domain.helper.warehouse.CreateWarehouseHelper;
 import com.tuber.inventory.service.domain.helper.warehouse.ReadWarehouseHelper;
 import com.tuber.inventory.service.domain.helper.warehouse.UpdateWarehouseHelper;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+@Service
+@Validated
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class InventoryApplicationServiceImpl implements InventoryApplicationService{
     CreateWarehouseHelper createWarehouseHelper;
     ReadWarehouseHelper readWarehouseHelper;
