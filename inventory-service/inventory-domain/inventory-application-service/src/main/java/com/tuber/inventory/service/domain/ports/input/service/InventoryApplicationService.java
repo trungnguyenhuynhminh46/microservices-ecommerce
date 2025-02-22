@@ -11,5 +11,5 @@ public interface InventoryApplicationService {
 
     ApiResponse<WarehousesListResponseData> getAllWarehouses();
 
-    ApiResponse<WarehouseResponseData> updateWarehouse(UpdateWarehouseInfoCommand updateWarehouseInformationCommand);
+    ApiResponse<WarehouseResponseData> updateWarehouse(@Valid UpdateWarehouseInfoCommand updateWarehouseInformationCommand);
 }

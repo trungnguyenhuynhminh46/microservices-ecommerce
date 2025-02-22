@@ -18,8 +18,8 @@ import java.util.UUID;
 public class UpdateWarehouseInfoCommand {
     @NotNull(message = "Warehouse id is mandatory")
     UUID id;
-    JsonNullable<@NotNull @NotBlank(message = "Warehouse name is mandatory") String> name;
-    JsonNullable<@NotNull(message = "Address is mandatory") AddressDTO> address;
-    JsonNullable<@NotNull(message = "Coordinate is mandatory") CoordinateDTO> location;
+    JsonNullable<@NotNull(message = "Name must not be null") @NotBlank(message = "Warehouse name is mandatory") String> name;
+    JsonNullable<@NotNull(message = "Address must not be null") AddressDTO> address;
+    JsonNullable<@NotNull(message = "Coordinate must not be null") CoordinateDTO> location;
     JsonNullable<String> description;
 }
