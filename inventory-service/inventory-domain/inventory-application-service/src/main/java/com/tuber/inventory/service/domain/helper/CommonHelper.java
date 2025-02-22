@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -27,5 +28,14 @@ public class CommonHelper {
             throw new InventoryDomainException(InventoryResponseCode.WAREHOUSE_SAVED_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value(), warehouse.getName());
         }
         return savedWarehouse.get();
+    }
+
+    public Warehouse verifyWarehouseExist(UUID warehouseId) {
+        Optional<Warehouse> warehouse = warehouseRepository.findById(warehouseId);
+        if (warehouse.isEmpty()) {
+            log.error(String.format("Warehouse with id %s does not exist", warehouseId));
+            throw new InventoryDomainException(InventoryResponseCode.WAREHOUSE_NOT_FOUND, HttpStatus.NOT_FOUND.value(), warehouseId);
+        }
+        return warehouse.get();
     }
 }

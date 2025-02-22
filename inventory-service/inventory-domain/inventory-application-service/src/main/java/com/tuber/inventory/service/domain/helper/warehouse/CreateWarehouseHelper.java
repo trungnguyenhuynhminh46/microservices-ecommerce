@@ -1,4 +1,4 @@
-package com.tuber.inventory.service.domain.helper.inventory;
+package com.tuber.inventory.service.domain.helper.warehouse;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.inventory.service.domain.constant.InventoryResponseCode;

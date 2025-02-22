@@ -31,13 +31,11 @@ public abstract class ProductMapper {
     public abstract ProductResponseData productToProductResponseData(Product product);
 
     public ProductsListResponseData productsListToProductsListResponseData(List<Product> products) {
-        List<ProductResponseData> productResponseDataList = products.stream()
-                .map(this::productToProductResponseData)
-                .toList();
-        Integer total = productResponseDataList.size();
         return ProductsListResponseData.builder()
-                .products(productResponseDataList)
-                .total(total)
+                .products(products.stream()
+                        .map(this::productToProductResponseData)
+                        .toList())
+                .total(products.size())
                 .build();
     }
 

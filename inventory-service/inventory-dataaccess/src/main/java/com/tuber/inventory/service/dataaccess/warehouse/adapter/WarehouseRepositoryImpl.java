@@ -9,7 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @AllArgsConstructor
@@ -25,5 +27,20 @@ public class WarehouseRepositoryImpl implements WarehouseRepository {
                         warehouseJpaMapper.warehouseEntityToWarehouseJpaEntity(warehouse)
                 )
         ));
+    }
+
+    @Override
+    public Boolean existsById(UUID id) {
+        return null;
+    }
+
+    @Override
+    public Optional<Warehouse> findById(UUID id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Warehouse> findAll() {
+        return null;
     }
 }

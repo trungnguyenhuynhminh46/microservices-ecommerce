@@ -22,6 +22,8 @@ public class InventoryResponseCode extends ResponseCodeBase {
     public static final InventoryResponseCode INVENTORY_TRANSACTION_IN_WRONG_STATE_FOR_INITIALIZATION =
             new InventoryResponseCode(1004, "Inventory transaction is in wrong state for initialization");
 
+    public static final InventoryResponseCode WAREHOUSE_NOT_FOUND =
+            new InventoryResponseCode(1005, "Warehouse with id %s is not found");
     public static final InventoryResponseCode WAREHOUSE_SAVED_FAILED = new InventoryResponseCode(1005, "Failed to save warehouse %s");
 
     protected InventoryResponseCode(int code, String message) {
