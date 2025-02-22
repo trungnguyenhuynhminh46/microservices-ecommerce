@@ -7,6 +7,7 @@ import com.tuber.inventory.service.domain.ports.input.service.InventoryApplicati
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class WarehouseController {
     private final InventoryApplicationService inventoryApplicationService;
     @PostMapping
+    @PreAuthorize("hasAuthority('CREATE_WAREHOUSE')")
     public ResponseEntity<ApiResponse<WarehouseResponseData>> createWarehouse(@RequestBody CreateWarehouseCommand createWarehouseCommand) {
         ApiResponse<WarehouseResponseData> createWarehouseResponse = inventoryApplicationService.createWarehouse(createWarehouseCommand);
         log.info("Successfully created warehouse with name {}", createWarehouseCommand.getName());
@@ -27,6 +29,7 @@ public class WarehouseController {
     }
 
     @GetMapping("/{warehouseId}")
+    @PreAuthorize("hasAuthority('GET_WAREHOUSE')")
     public ResponseEntity<ApiResponse<WarehouseResponseData>> getSingle(@PathVariable @ValidUUID String warehouseId) {
         GetWarehouseQuery getWarehouseQuery = GetWarehouseQuery.builder().id(UUID.fromString(warehouseId)).build();
         ApiResponse<WarehouseResponseData> warehouseResponse = inventoryApplicationService.getSingleWarehouse(getWarehouseQuery);
@@ -35,6 +38,7 @@ public class WarehouseController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('GET_WAREHOUSE')")
     public ResponseEntity<ApiResponse<WarehousesListResponseData>> getAll() {
         ApiResponse<WarehousesListResponseData> warehousesListResponseData = inventoryApplicationService.getAllWarehouses();
         log.info("Successfully fetched all warehouses");
@@ -42,6 +46,7 @@ public class WarehouseController {
     }
 
     @PatchMapping("/{warehouseId}")
+    @PreAuthorize("hasAuthority('UPDATE_WAREHOUSE')")
     public ResponseEntity<ApiResponse<WarehouseResponseData>> updateWarehouseInfo(@PathVariable("warehouseId") @ValidUUID String warehouseId, @RequestBody UpdateWarehouseInfoCommand updateWarehouseInformationCommand) {
         updateWarehouseInformationCommand.setId(UUID.fromString(warehouseId));
         ApiResponse<WarehouseResponseData> updateWarehouseResponse = inventoryApplicationService.updateWarehouse(updateWarehouseInformationCommand);
