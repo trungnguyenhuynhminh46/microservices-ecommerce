@@ -15,7 +15,6 @@ public interface JsonNullableMapper {
         return jsonNullable == null ? null : jsonNullable.orElse(null);
     }
 
-    @Named("isValidJsonNullable")
     @Condition
     default <T> boolean isValidJsonNullable(JsonNullable<T> param) {
         return param != null && param.isPresent();

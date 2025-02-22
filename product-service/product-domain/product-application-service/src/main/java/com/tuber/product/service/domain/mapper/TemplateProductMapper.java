@@ -53,9 +53,6 @@ public abstract class TemplateProductMapper {
     }
 
     @InheritConfiguration
-    @Mapping(target = "description", conditionQualifiedByName = "isValidJsonNullable")
-    @Mapping(target = "tags", conditionQualifiedByName = "isValidJsonNullable")
-    @Mapping(target = "categoryId", conditionQualifiedByName = "isValidJsonNullable")
     @Mapping(target = "templateAttributes", ignore = true)
     protected abstract void updateTemplateProductFields(ModifyTemplateProductCommand data, @MappingTarget TemplateProduct templateProduct);
 

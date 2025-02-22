@@ -36,8 +36,6 @@ public abstract class TemplateAttributeMapper {
 
     @InheritConfiguration
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "defaultValue", conditionQualifiedByName = "isValidJsonNullable")
-    @Mapping(target = "options", conditionQualifiedByName = "isValidJsonNullable")
     public abstract void updateTemplateAttributeFields(ModifyTemplateAttributeCommand modifyTemplateAttributeCommand, @MappingTarget TemplateAttribute templateAttribute);
 
     public String map(JsonNullable<List<TemplateAttributeOption>> options) {
