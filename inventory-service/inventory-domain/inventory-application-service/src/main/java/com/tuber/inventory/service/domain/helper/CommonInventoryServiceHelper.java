@@ -18,7 +18,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CommonHelper {
+public class CommonInventoryServiceHelper {
     WarehouseRepository warehouseRepository;
 
     public Warehouse saveWarehouse(Warehouse warehouse) {

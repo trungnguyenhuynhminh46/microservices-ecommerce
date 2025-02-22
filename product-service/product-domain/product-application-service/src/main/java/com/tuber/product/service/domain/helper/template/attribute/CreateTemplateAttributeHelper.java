@@ -7,7 +7,7 @@ import com.tuber.product.service.domain.dto.template.attribute.CreateTemplateAtt
 import com.tuber.product.service.domain.dto.template.attribute.TemplateAttributeResponseData;
 import com.tuber.product.service.domain.entity.TemplateAttribute;
 import com.tuber.product.service.domain.event.TemplateAttributeCreatedEvent;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.TemplateAttributeMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreateTemplateAttributeHelper {
     TemplateAttributeMapper templateAttributeMapper;
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
     ProductDomainService productDomainService;
 
     public ApiResponse<TemplateAttributeResponseData> createTemplateAttribute(CreateTemplateAttributeCommand createTemplateAttributeCommand) {
@@ -31,7 +31,7 @@ public class CreateTemplateAttributeHelper {
         TemplateAttribute initializedTemplateAttribute = templateAttributeCreatedEvent.getTemplateAttribute();
         TemplateAttributeResponseData createTemplateAttributeResponseData =
                 templateAttributeMapper.templateAttributeToTemplateAttributeResponseData(
-                        commonHelper.saveTemplateAttribute(initializedTemplateAttribute)
+                        commonProductServiceHelper.saveTemplateAttribute(initializedTemplateAttribute)
                 );
         return ApiResponse.<TemplateAttributeResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())

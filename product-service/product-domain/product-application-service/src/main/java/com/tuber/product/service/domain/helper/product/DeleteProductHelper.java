@@ -5,7 +5,7 @@ import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.dto.product.DeleteProductCommand;
 import com.tuber.product.service.domain.dto.product.ProductResponseData;
 import com.tuber.product.service.domain.entity.Product;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.ProductMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +18,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DeleteProductHelper {
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
     ProductMapper productMapper;
 
     public ApiResponse<ProductResponseData> deleteProduct(DeleteProductCommand deleteProductCommand) {
-        Product deletedProduct = commonHelper.deleteProduct(deleteProductCommand.getId());
+        Product deletedProduct = commonProductServiceHelper.deleteProduct(deleteProductCommand.getId());
         return ApiResponse.<ProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Product deleted successfully")

@@ -5,7 +5,7 @@ import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.dto.category.ModifyProductCategoryCommand;
 import com.tuber.product.service.domain.dto.category.ProductCategoryResponseData;
 import com.tuber.product.service.domain.entity.ProductCategory;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.ProductCategoryMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +19,16 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UpdateCategoryHelper {
     ProductCategoryMapper productCategoryMapper;
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
 
     private String generateNewProductCategoryCode(String name) {
         String code = ProductCategory.generateCode(name);
-        commonHelper.verifyProductCategoryNotExist(code);
+        commonProductServiceHelper.verifyProductCategoryNotExist(code);
         return code;
     }
 
     public ApiResponse<ProductCategoryResponseData> updateProductCategory(ModifyProductCategoryCommand modifyProductCategoryCommand) {
-        ProductCategory savedProductCategory = commonHelper.verifyProductCategoryExist(modifyProductCategoryCommand.getCode());
+        ProductCategory savedProductCategory = commonProductServiceHelper.verifyProductCategoryExist(modifyProductCategoryCommand.getCode());
         String newCode = this.generateNewProductCategoryCode(modifyProductCategoryCommand.getName());
         modifyProductCategoryCommand.setCode(newCode);
         ProductCategory updatedProductCategory = productCategoryMapper.updateProductCategory(modifyProductCategoryCommand, savedProductCategory);
@@ -36,7 +36,7 @@ public class UpdateCategoryHelper {
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Product category updated successfully")
                 .data(productCategoryMapper.productCategoryToProductCategoryResponseData(
-                        commonHelper.saveProductCategory(updatedProductCategory)
+                        commonProductServiceHelper.saveProductCategory(updatedProductCategory)
                 ))
                 .build();
     }

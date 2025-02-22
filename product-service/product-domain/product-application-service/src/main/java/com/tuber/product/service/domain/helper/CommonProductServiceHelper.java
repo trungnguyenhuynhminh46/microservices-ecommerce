@@ -17,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,7 +24,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CommonHelper {
+public class CommonProductServiceHelper {
     ProductCategoryRepository productCategoryRepository;
     ProductRepository productRepository;
     TemplateProductRepository templateProductRepository;

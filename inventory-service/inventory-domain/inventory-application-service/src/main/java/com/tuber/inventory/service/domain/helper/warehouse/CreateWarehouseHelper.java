@@ -1,11 +1,13 @@
 package com.tuber.inventory.service.domain.helper.warehouse;
 
 import com.tuber.application.handler.ApiResponse;
+import com.tuber.inventory.service.domain.InventoryDomainService;
 import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
 import com.tuber.inventory.service.domain.dto.warehouse.CreateWarehouseCommand;
 import com.tuber.inventory.service.domain.dto.warehouse.WarehouseResponseData;
 import com.tuber.inventory.service.domain.entity.Warehouse;
-import com.tuber.inventory.service.domain.helper.CommonHelper;
+import com.tuber.inventory.service.domain.event.WarehouseCreatedEvent;
+import com.tuber.inventory.service.domain.helper.CommonInventoryServiceHelper;
 import com.tuber.inventory.service.domain.mapper.WarehouseMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -18,16 +20,24 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreateWarehouseHelper {
-    CommonHelper commonHelper;
+    CommonInventoryServiceHelper commonInventoryServiceHelper;
     WarehouseMapper warehouseMapper;
+    InventoryDomainService inventoryDomainService;
 
     public ApiResponse<WarehouseResponseData> createWarehouse(CreateWarehouseCommand createWarehouseCommand) {
         Warehouse warehouse = warehouseMapper.createWarehouseCommandToWarehouse(createWarehouseCommand);
-        Warehouse savedWarehouse = commonHelper.saveWarehouse(warehouse);
+        WarehouseCreatedEvent warehouseCreatedEvent = inventoryDomainService.validateAndInitializeWarehouse(warehouse);
+
+        Warehouse initiailizedWarehouse = warehouseCreatedEvent.getWarehouse();
+        WarehouseResponseData warehouseResponseData =
+                warehouseMapper.warehouseToWarehouseResponseData(
+                        commonInventoryServiceHelper.saveWarehouse(initiailizedWarehouse)
+                );
+
         return ApiResponse.<WarehouseResponseData>builder()
                 .code(InventoryResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Warehouse created successfully")
-                .data(warehouseMapper.warehouseToWarehouseResponseData(savedWarehouse))
+                .data(warehouseResponseData)
                 .build();
     }
 }

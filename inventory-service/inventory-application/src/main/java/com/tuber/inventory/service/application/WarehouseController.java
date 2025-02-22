@@ -2,10 +2,7 @@ package com.tuber.inventory.service.application;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.application.validators.ValidUUID;
-import com.tuber.inventory.service.domain.dto.warehouse.CreateWarehouseCommand;
-import com.tuber.inventory.service.domain.dto.warehouse.GetWarehouseQuery;
-import com.tuber.inventory.service.domain.dto.warehouse.WarehouseResponseData;
-import com.tuber.inventory.service.domain.dto.warehouse.WarehousesListResponseData;
+import com.tuber.inventory.service.domain.dto.warehouse.*;
 import com.tuber.inventory.service.domain.ports.input.service.InventoryApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,5 +39,13 @@ public class WarehouseController {
         ApiResponse<WarehousesListResponseData> warehousesListResponseData = inventoryApplicationService.getAllWarehouses();
         log.info("Successfully fetched all warehouses");
         return ResponseEntity.ok(warehousesListResponseData);
+    }
+
+    @PatchMapping("/{warehouseId}")
+    public ResponseEntity<ApiResponse<WarehouseResponseData>> updateWarehouseInfo(@PathVariable("warehouseId") @ValidUUID String warehouseId, @RequestBody UpdateWarehouseInfoCommand updateWarehouseInformationCommand) {
+        updateWarehouseInformationCommand.setId(UUID.fromString(warehouseId));
+        ApiResponse<WarehouseResponseData> updateWarehouseResponse = inventoryApplicationService.updateWarehouse(updateWarehouseInformationCommand);
+        log.info("Successfully updated warehouse with id {}", warehouseId);
+        return ResponseEntity.ok(updateWarehouseResponse);
     }
 }

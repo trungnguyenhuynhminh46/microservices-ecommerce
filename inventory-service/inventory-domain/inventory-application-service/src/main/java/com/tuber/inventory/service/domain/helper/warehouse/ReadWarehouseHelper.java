@@ -6,7 +6,7 @@ import com.tuber.inventory.service.domain.dto.warehouse.GetWarehouseQuery;
 import com.tuber.inventory.service.domain.dto.warehouse.WarehouseResponseData;
 import com.tuber.inventory.service.domain.dto.warehouse.WarehousesListResponseData;
 import com.tuber.inventory.service.domain.entity.Warehouse;
-import com.tuber.inventory.service.domain.helper.CommonHelper;
+import com.tuber.inventory.service.domain.helper.CommonInventoryServiceHelper;
 import com.tuber.inventory.service.domain.mapper.WarehouseMapper;
 import com.tuber.inventory.service.domain.ports.output.repository.WarehouseRepository;
 import lombok.AccessLevel;
@@ -23,11 +23,11 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ReadWarehouseHelper {
     WarehouseMapper warehouseMapper;
-    CommonHelper commonHelper;
+    CommonInventoryServiceHelper commonInventoryServiceHelper;
     WarehouseRepository warehouseRepository;
 
     public ApiResponse<WarehouseResponseData> getSingleWarehouse(GetWarehouseQuery getWarehouseQuery) {
-        Warehouse warehouse = commonHelper.verifyWarehouseExist(getWarehouseQuery.getId());
+        Warehouse warehouse = commonInventoryServiceHelper.verifyWarehouseExist(getWarehouseQuery.getId());
         return ApiResponse.<WarehouseResponseData>builder()
                 .code(InventoryResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Warehouse retrieved successfully")

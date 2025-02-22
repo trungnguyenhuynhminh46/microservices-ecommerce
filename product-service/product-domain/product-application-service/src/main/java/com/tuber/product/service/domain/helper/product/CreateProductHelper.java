@@ -7,7 +7,7 @@ import com.tuber.product.service.domain.dto.product.CreateProductCommand;
 import com.tuber.product.service.domain.dto.product.ProductResponseData;
 import com.tuber.product.service.domain.entity.Product;
 import com.tuber.product.service.domain.event.ProductCreatedEvent;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.ProductMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreateProductHelper {
     ProductMapper productMapper;
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
     ProductDomainService productDomainService;
 
     public ApiResponse<ProductResponseData> persistProduct(CreateProductCommand createProductCommand) {
@@ -30,11 +30,11 @@ public class CreateProductHelper {
 
         Product initializedProduct = productCreatedEvent.getProduct();
         if (initializedProduct.getCategoryId() != null) {
-            commonHelper.verifyProductCategoryExist(initializedProduct.getCategoryId());
+            commonProductServiceHelper.verifyProductCategoryExist(initializedProduct.getCategoryId());
         }
         ProductResponseData createProductResponseData =
                 productMapper.productToProductResponseData(
-                        commonHelper.saveProduct(initializedProduct)
+                        commonProductServiceHelper.saveProduct(initializedProduct)
                 );
         return ApiResponse.<ProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())

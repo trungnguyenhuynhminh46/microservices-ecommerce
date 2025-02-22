@@ -5,7 +5,7 @@ import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.dto.product.ModifyProductCommand;
 import com.tuber.product.service.domain.dto.product.ProductResponseData;
 import com.tuber.product.service.domain.entity.Product;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.ProductMapper;
 import com.tuber.product.service.domain.ports.output.repository.ProductAttributeRepository;
 import lombok.AccessLevel;
@@ -21,19 +21,19 @@ import org.springframework.transaction.annotation.Transactional;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UpdateProductHelper {
     ProductMapper productMapper;
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
     ProductAttributeRepository productAttributeRepository;
 
     @Transactional
     public ApiResponse<ProductResponseData> updateProduct(ModifyProductCommand modifyProductCommand) {
-        Product savedProduct = commonHelper.verifyProductExist(modifyProductCommand.getId());
+        Product savedProduct = commonProductServiceHelper.verifyProductExist(modifyProductCommand.getId());
         productAttributeRepository.deleteByProductId(modifyProductCommand.getId());
         Product updatedProduct = productMapper.updateProduct(modifyProductCommand, savedProduct);
         return ApiResponse.<ProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Product updated successfully")
                 .data(productMapper.productToProductResponseData(
-                        commonHelper.saveProduct(updatedProduct)
+                        commonProductServiceHelper.saveProduct(updatedProduct)
                 ))
                 .build();
     }

@@ -6,7 +6,7 @@ import com.tuber.product.service.domain.dto.template.product.ModifyTemplateProdu
 import com.tuber.product.service.domain.dto.template.product.TemplateProductResponseData;
 import com.tuber.product.service.domain.entity.TemplateAttribute;
 import com.tuber.product.service.domain.entity.TemplateProduct;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.TemplateProductMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -24,11 +23,11 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UpdateTemplateProductHelper {
     TemplateProductMapper templateProductMapper;
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
 
     @Transactional
     public ApiResponse<TemplateProductResponseData> updateTemplateProduct(ModifyTemplateProductCommand modifyProductCommand) {
-        TemplateProduct savedTemplateProduct = commonHelper.verifyTemplateProductExist(modifyProductCommand.getId());
+        TemplateProduct savedTemplateProduct = commonProductServiceHelper.verifyTemplateProductExist(modifyProductCommand.getId());
         TemplateProduct updatedTemplateProduct = templateProductMapper.updateTemplateProduct(modifyProductCommand, savedTemplateProduct);
 
         if(modifyProductCommand.getAttributeIds() != null && modifyProductCommand.getAttributeIds().isPresent()) {
@@ -36,7 +35,7 @@ public class UpdateTemplateProductHelper {
                 updatedTemplateProduct.setTemplateAttributes(Set.of());
             }
             if(modifyProductCommand.getAttributeIds().get() != null) {
-                Set<TemplateAttribute> templateAttributes = commonHelper.verifyTemplateAttributesByIdsExists(modifyProductCommand.getAttributeIds().get());
+                Set<TemplateAttribute> templateAttributes = commonProductServiceHelper.verifyTemplateAttributesByIdsExists(modifyProductCommand.getAttributeIds().get());
                 updatedTemplateProduct.setTemplateAttributes(templateAttributes);
             }
         }
@@ -46,7 +45,7 @@ public class UpdateTemplateProductHelper {
                 .message("Product updated successfully")
                 .data(
                         templateProductMapper.templateProductToTemplateProductResponseData(
-                                commonHelper.saveTemplateProduct(updatedTemplateProduct)
+                                commonProductServiceHelper.saveTemplateProduct(updatedTemplateProduct)
                         )
                 ).build();
     }

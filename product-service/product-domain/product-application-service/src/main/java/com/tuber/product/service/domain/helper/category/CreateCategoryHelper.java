@@ -7,7 +7,7 @@ import com.tuber.product.service.domain.dto.category.CreateProductCategoryComman
 import com.tuber.product.service.domain.dto.category.ProductCategoryResponseData;
 import com.tuber.product.service.domain.entity.ProductCategory;
 import com.tuber.product.service.domain.event.ProductCategoryCreatedEvent;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.ProductCategoryMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,17 +22,17 @@ import org.springframework.stereotype.Component;
 public class CreateCategoryHelper {
     ProductDomainService productDomainService;
     ProductCategoryMapper productCategoryMapper;
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
 
     public ApiResponse<ProductCategoryResponseData> persistProductCategory(CreateProductCategoryCommand createProductCategoryCommand) {
         ProductCategory category = productCategoryMapper.createProductCategoryCommandToProductCategory(createProductCategoryCommand);
         ProductCategoryCreatedEvent productCategoryCreatedEvent = productDomainService.validateAndInitializeProductCategory(category);
 
         ProductCategory initializedCategory = productCategoryCreatedEvent.getProductCategory();
-        commonHelper.verifyProductCategoryNotExist(initializedCategory.getCode());
+        commonProductServiceHelper.verifyProductCategoryNotExist(initializedCategory.getCode());
         ProductCategoryResponseData createProductCategoryResponseData =
                 productCategoryMapper.productCategoryToProductCategoryResponseData(
-                        commonHelper.saveProductCategory(initializedCategory)
+                        commonProductServiceHelper.saveProductCategory(initializedCategory)
                 );
         return ApiResponse.<ProductCategoryResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())

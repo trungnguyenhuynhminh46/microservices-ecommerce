@@ -5,7 +5,7 @@ import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.dto.template.attribute.ModifyTemplateAttributeCommand;
 import com.tuber.product.service.domain.dto.template.attribute.TemplateAttributeResponseData;
 import com.tuber.product.service.domain.entity.TemplateAttribute;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.TemplateAttributeMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UpdateTemplateAttributeHelper {
     TemplateAttributeMapper templateAttributeMapper;
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
 
     @Transactional
     public ApiResponse<TemplateAttributeResponseData> updateTemplateAttribute(ModifyTemplateAttributeCommand modifyTemplateAttributeCommand) {
-        TemplateAttribute savedTemplateAttribute = commonHelper.verifyTemplateAttributeExist(modifyTemplateAttributeCommand.getId());
+        TemplateAttribute savedTemplateAttribute = commonProductServiceHelper.verifyTemplateAttributeExist(modifyTemplateAttributeCommand.getId());
         TemplateAttribute updatedTemplateAttribute = templateAttributeMapper.updateTemplateAttribute(modifyTemplateAttributeCommand, savedTemplateAttribute);
 
         return ApiResponse.<TemplateAttributeResponseData>builder()
@@ -32,7 +32,7 @@ public class UpdateTemplateAttributeHelper {
                 .message(String.format("Template attribute with id %s updated successfully", modifyTemplateAttributeCommand.getId()))
                 .data(
                         templateAttributeMapper.templateAttributeToTemplateAttributeResponseData(
-                                commonHelper.saveTemplateAttribute(updatedTemplateAttribute)
+                                commonProductServiceHelper.saveTemplateAttribute(updatedTemplateAttribute)
                         )
                 ).build();
     }

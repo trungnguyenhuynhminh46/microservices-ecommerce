@@ -5,7 +5,7 @@ import com.tuber.product.service.domain.constant.ProductResponseCode;
 import com.tuber.product.service.domain.dto.product.ProductResponseData;
 import com.tuber.product.service.domain.dto.product.ProductsListResponseData;
 import com.tuber.product.service.domain.entity.Product;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.ProductMapper;
 import com.tuber.product.service.domain.ports.output.repository.ProductRepository;
 import lombok.AccessLevel;
@@ -24,10 +24,10 @@ import java.util.UUID;
 public class ReadProductHelper {
     ProductMapper productMapper;
     ProductRepository productRepository;
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
 
     public ApiResponse<ProductResponseData> getSingleProduct(UUID productId) {
-        Product product = commonHelper.verifyProductExist(productId);
+        Product product = commonProductServiceHelper.verifyProductExist(productId);
         return ApiResponse.<ProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Product retrieved successfully")

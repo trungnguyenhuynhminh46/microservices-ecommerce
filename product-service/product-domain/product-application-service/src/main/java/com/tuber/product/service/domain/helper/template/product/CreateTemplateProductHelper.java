@@ -8,7 +8,7 @@ import com.tuber.product.service.domain.dto.template.product.TemplateProductResp
 import com.tuber.product.service.domain.entity.TemplateAttribute;
 import com.tuber.product.service.domain.entity.TemplateProduct;
 import com.tuber.product.service.domain.event.TemplateProductCreatedEvent;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.TemplateProductMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,21 +24,21 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreateTemplateProductHelper {
     TemplateProductMapper templateProductMapper;
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
     ProductDomainService productDomainService;
 
     public ApiResponse<TemplateProductResponseData> persistTemplateProduct(CreateTemplateProductCommand createTemplateProductCommand) {
         TemplateProduct templateProduct = templateProductMapper.createTemplateProductCommandToTemplateProduct(createTemplateProductCommand);
-        Set<TemplateAttribute> templateAttributes = commonHelper.verifyTemplateAttributesByIdsExists(createTemplateProductCommand.getAttributeIds());
+        Set<TemplateAttribute> templateAttributes = commonProductServiceHelper.verifyTemplateAttributesByIdsExists(createTemplateProductCommand.getAttributeIds());
         TemplateProductCreatedEvent templateProductCreatedEvent = productDomainService.validateAndInitializeTemplateProduct(templateProduct, templateAttributes);
 
         TemplateProduct initializedTemplateProduct = templateProductCreatedEvent.getTemplateProduct();
         if (initializedTemplateProduct.getCategoryId() != null) {
-            commonHelper.verifyProductCategoryExist(initializedTemplateProduct.getCategoryId());
+            commonProductServiceHelper.verifyProductCategoryExist(initializedTemplateProduct.getCategoryId());
         }
         TemplateProductResponseData createTemplateProductResponseData =
                 templateProductMapper.templateProductToTemplateProductResponseData(
-                        commonHelper.saveTemplateProduct(initializedTemplateProduct)
+                        commonProductServiceHelper.saveTemplateProduct(initializedTemplateProduct)
                 );
         return ApiResponse.<TemplateProductResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())

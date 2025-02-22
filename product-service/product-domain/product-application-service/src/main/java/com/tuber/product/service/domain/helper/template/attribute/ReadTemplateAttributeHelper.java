@@ -6,7 +6,7 @@ import com.tuber.product.service.domain.dto.template.attribute.GetTemplateAttrib
 import com.tuber.product.service.domain.dto.template.attribute.TemplateAttributeResponseData;
 import com.tuber.product.service.domain.dto.template.attribute.TemplateAttributesListResponseData;
 import com.tuber.product.service.domain.entity.TemplateAttribute;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.TemplateAttributeMapper;
 import com.tuber.product.service.domain.ports.output.repository.TemplateAttributeRepository;
 import lombok.AccessLevel;
@@ -24,10 +24,10 @@ import java.util.List;
 public class ReadTemplateAttributeHelper {
     TemplateAttributeMapper templateAttributeMapper;
     TemplateAttributeRepository templateAttributeRepository;
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
 
     public ApiResponse<TemplateAttributeResponseData> getSingleTemplateAttribute(GetTemplateAttributeQuery getTemplateAttributeQuery) {
-        TemplateAttribute templateAttribute = commonHelper.verifyTemplateAttributeExist(getTemplateAttributeQuery.getId());
+        TemplateAttribute templateAttribute = commonProductServiceHelper.verifyTemplateAttributeExist(getTemplateAttributeQuery.getId());
         return ApiResponse.<TemplateAttributeResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Template attribute retrieved successfully")

@@ -6,7 +6,7 @@ import com.tuber.product.service.domain.dto.category.GetProductCategoryQuery;
 import com.tuber.product.service.domain.dto.category.ProductCategoryListResponseData;
 import com.tuber.product.service.domain.dto.category.ProductCategoryResponseData;
 import com.tuber.product.service.domain.entity.ProductCategory;
-import com.tuber.product.service.domain.helper.CommonHelper;
+import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.ProductCategoryMapper;
 import com.tuber.product.service.domain.ports.output.repository.ProductCategoryRepository;
 import lombok.AccessLevel;
@@ -24,10 +24,10 @@ import java.util.Set;
 public class ReadCategoryHelper {
     ProductCategoryMapper productCategoryMapper;
     ProductCategoryRepository productCategoryRepository;
-    CommonHelper commonHelper;
+    CommonProductServiceHelper commonProductServiceHelper;
 
     public ApiResponse<ProductCategoryResponseData> getProductCategory(GetProductCategoryQuery getProductCategoryQuery) {
-        ProductCategory category = commonHelper.verifyProductCategoryExist(getProductCategoryQuery.getCode());
+        ProductCategory category = commonProductServiceHelper.verifyProductCategoryExist(getProductCategoryQuery.getCode());
         return ApiResponse.<ProductCategoryResponseData>builder()
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Product category retrieved successfully")
