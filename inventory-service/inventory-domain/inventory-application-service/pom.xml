@@ -18,6 +18,10 @@
         </dependency>
         <dependency>
             <groupId>com.tuber</groupId>
+            <artifactId>common-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.tuber</groupId>
             <artifactId>common-application</artifactId>
         </dependency>
         <dependency>
