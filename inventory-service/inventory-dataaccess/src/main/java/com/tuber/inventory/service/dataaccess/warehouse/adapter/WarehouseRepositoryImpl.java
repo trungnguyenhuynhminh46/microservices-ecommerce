@@ -21,26 +21,28 @@ public class WarehouseRepositoryImpl implements WarehouseRepository {
     WarehouseJpaRepository warehouseJpaRepository;
 
     @Override
-    public Optional<Warehouse> save(Warehouse warehouse) {
-        return Optional.of(warehouseJpaMapper.warehouseJpaEntityToWarehouseEntity(
+    public Warehouse save(Warehouse warehouse) {
+        return warehouseJpaMapper.warehouseJpaEntityToWarehouseEntity(
                 warehouseJpaRepository.save(
                         warehouseJpaMapper.warehouseEntityToWarehouseJpaEntity(warehouse)
                 )
-        ));
+        );
     }
 
     @Override
     public Boolean existsById(UUID id) {
-        return null;
+        return warehouseJpaRepository.existsById(id);
     }
 
     @Override
     public Optional<Warehouse> findById(UUID id) {
-        return Optional.empty();
+        return warehouseJpaRepository.findById(id).map(warehouseJpaMapper::warehouseJpaEntityToWarehouseEntity);
     }
 
     @Override
     public List<Warehouse> findAll() {
-        return null;
+        return warehouseJpaRepository.findAll().stream()
+                .map(warehouseJpaMapper::warehouseJpaEntityToWarehouseEntity)
+                .toList();
     }
 }

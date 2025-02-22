@@ -22,12 +22,12 @@ public class CommonHelper {
     WarehouseRepository warehouseRepository;
 
     public Warehouse saveWarehouse(Warehouse warehouse) {
-        Optional<Warehouse> savedWarehouse = warehouseRepository.save(warehouse);
-        if (savedWarehouse.isEmpty()) {
+        Warehouse savedWarehouse = warehouseRepository.save(warehouse);
+        if (savedWarehouse == null) {
             log.error(String.format("Failed to save warehouse with name %s", warehouse.getName()));
             throw new InventoryDomainException(InventoryResponseCode.WAREHOUSE_SAVED_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value(), warehouse.getName());
         }
-        return savedWarehouse.get();
+        return savedWarehouse;
     }
 
     public Warehouse verifyWarehouseExist(UUID warehouseId) {
