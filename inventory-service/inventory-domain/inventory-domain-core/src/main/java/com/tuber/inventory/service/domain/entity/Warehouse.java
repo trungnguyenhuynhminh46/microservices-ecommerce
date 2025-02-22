@@ -44,6 +44,11 @@ public class Warehouse extends BaseEntity<UniqueUUID> {
         private Builder() {
         }
 
+        public Builder id(UUID val) {
+            id = new UniqueUUID(val);
+            return this;
+        }
+
         public Builder id(UniqueUUID val) {
             id = val;
             return this;
