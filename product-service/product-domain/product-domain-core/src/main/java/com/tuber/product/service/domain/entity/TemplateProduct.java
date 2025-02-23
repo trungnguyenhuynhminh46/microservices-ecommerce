@@ -215,12 +215,12 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
     }
 
     public boolean isValidForInitialization() {
-        return getName() != null && getPrice() != null && getId() == null && getRating() == null && getCreatedAt() == null && getUpdatedAt() == null;
+        return getId() == null && getRating() == null && getCreatedAt() == null && getUpdatedAt() == null;
     }
 
     public void validatePrice() {
-        if (getPrice() == null || getPrice().isSmallerThanOrEqualToZero()) {
-            throw new IllegalArgumentException("Product price can not be null and must be larger than zero");
+        if (getPrice() != null && getPrice().isSmallerThanZero()) {
+            throw new IllegalArgumentException("Product price must not be smaller than zero");
         }
     }
 
@@ -233,6 +233,18 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
     public void validateRating() {
         if (getRating() != null && (getRating() < 0 || getRating() > 5)) {
             throw new IllegalArgumentException("Product rating must be between 0 and 5");
+        }
+    }
+
+    private void initializeName() {
+        if (getName() == null) {
+            setName("");
+        }
+    }
+
+    private void initializePrice() {
+        if (getPrice() == null) {
+            setPrice(Money.ZERO);
         }
     }
 
@@ -266,6 +278,8 @@ public class TemplateProduct extends BaseEntity<UniqueUUID> {
         setRating(0.0f);
         setCreatedAt(LocalDate.now());
         setUpdatedAt(LocalDate.now());
+        initializeName();
+        initializePrice();
         initializeDescription();
         initializeTags();
         setTemplateAttributes(templateAttributes);
