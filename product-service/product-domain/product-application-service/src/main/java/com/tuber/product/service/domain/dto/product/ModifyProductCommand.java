@@ -19,11 +19,11 @@ import java.util.UUID;
 public class ModifyProductCommand {
     @NotNull(message = "Product id is mandatory")
     UUID id;
-    @NotNull
-    @NotBlank(message = "Product name is mandatory")
-    String name;
-    @NotNull(message = "Price is mandatory")
-    BigDecimal price;
+    JsonNullable<
+            @NotNull(message = "Product name can not be null")
+            @NotBlank(message = "Product name is mandatory")
+                    String> name;
+    JsonNullable<BigDecimal> price;
     JsonNullable<String> description;
     JsonNullable<String> tags;
     JsonNullable<UUID> categoryId;

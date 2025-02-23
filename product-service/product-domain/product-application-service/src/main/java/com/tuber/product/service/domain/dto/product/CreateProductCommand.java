@@ -18,10 +18,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreateProductCommand {
-    @NotNull
+    @NotNull(message = "Product name can not be null")
     @NotBlank(message = "Product name is mandatory")
     String name;
-    @NotNull(message = "Price is mandatory")
     BigDecimal price;
     String description;
     String tags;
