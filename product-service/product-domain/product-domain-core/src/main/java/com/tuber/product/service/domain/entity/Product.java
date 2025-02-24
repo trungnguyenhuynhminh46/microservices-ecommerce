@@ -8,7 +8,9 @@ import com.tuber.product.service.domain.exception.ProductDomainException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class Product extends AggregateRoot<UniqueUUID> {
@@ -244,6 +246,12 @@ public class Product extends AggregateRoot<UniqueUUID> {
     public void validateAttributes() {
         if (getAttributes() != null) {
             getAttributes().forEach(ProductAttribute::validateProperties);
+        }
+        Set<String> attributeNames = new HashSet<>();
+        for (ProductAttribute attribute : getAttributes()) {
+            if (!attributeNames.add(attribute.getName())) {
+                throw new IllegalArgumentException("Product attributes must have unique names");
+            }
         }
     }
 
