@@ -1,7 +1,11 @@
 package com.tuber.inventory.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
+import com.tuber.inventory.service.domain.dto.inventory.ExportGoodsCommand;
+import com.tuber.inventory.service.domain.dto.inventory.ImportGoodsCommand;
+import com.tuber.inventory.service.domain.dto.inventory.InventoriesListResponseData;
 import com.tuber.inventory.service.domain.dto.warehouse.*;
+import com.tuber.inventory.service.domain.helper.inventory.GoodsTransferHelper;
 import com.tuber.inventory.service.domain.helper.warehouse.CreateWarehouseHelper;
 import com.tuber.inventory.service.domain.helper.warehouse.ReadWarehouseHelper;
 import com.tuber.inventory.service.domain.helper.warehouse.UpdateWarehouseHelper;
@@ -19,6 +23,7 @@ public class InventoryApplicationServiceImpl implements InventoryApplicationServ
     CreateWarehouseHelper createWarehouseHelper;
     ReadWarehouseHelper readWarehouseHelper;
     UpdateWarehouseHelper updateWarehouseHelper;
+    GoodsTransferHelper goodsTransferHelper;
 
     @Override
     public ApiResponse<WarehouseResponseData> createWarehouse(CreateWarehouseCommand createWarehouseCommand) {
@@ -38,5 +43,15 @@ public class InventoryApplicationServiceImpl implements InventoryApplicationServ
     @Override
     public ApiResponse<WarehouseResponseData> updateWarehouse(UpdateWarehouseInfoCommand updateWarehouseInformationCommand) {
         return updateWarehouseHelper.updateWarehouse(updateWarehouseInformationCommand);
+    }
+
+    @Override
+    public ApiResponse<InventoriesListResponseData> importGoods(ImportGoodsCommand importGoodsCommand) {
+        return goodsTransferHelper.importGoods(importGoodsCommand);
+    }
+
+    @Override
+    public ApiResponse<InventoriesListResponseData> exportGoods(ExportGoodsCommand exportGoodsCommand) {
+        return goodsTransferHelper.exportGoods(exportGoodsCommand);
     }
 }
