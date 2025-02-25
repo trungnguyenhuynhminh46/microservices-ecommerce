@@ -1,6 +1,7 @@
 package com.tuber.inventory.service.application;
 
 import com.tuber.application.handler.ApiResponse;
+import com.tuber.application.validators.ValidUUID;
 import com.tuber.inventory.service.domain.dto.inventory.ExportGoodsCommand;
 import com.tuber.inventory.service.domain.dto.inventory.ImportGoodsCommand;
 import com.tuber.inventory.service.domain.dto.inventory.InventoriesListResponseData;
@@ -10,10 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @Slf4j
 @Validated
@@ -23,17 +23,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class InventoryController {
     private final InventoryApplicationService inventoryApplicationService;
 
-    @PostMapping
+    @PostMapping("/import/{warehouseId}")
     @PreAuthorize("hasAuthority('IMPORT_GOODS')")
-    public ResponseEntity<ApiResponse<InventoriesListResponseData>> importGoods(@RequestBody ImportGoodsCommand importGoodsCommand) {
+    public ResponseEntity<ApiResponse<InventoriesListResponseData>> importGoods(@PathVariable("warehouseId") @ValidUUID String warehouseId, @RequestBody ImportGoodsCommand importGoodsCommand) {
+        importGoodsCommand.setWarehouseId(UUID.fromString(warehouseId));
         ApiResponse<InventoriesListResponseData> importGoodsResponse = inventoryApplicationService.importGoods(importGoodsCommand);
         log.info("Successfully imported {} products", importGoodsCommand.getGoods().size());
         return ResponseEntity.ok(importGoodsResponse);
     }
 
-    @PostMapping
+    @PostMapping("/export/{warehouseId}")
     @PreAuthorize("hasAuthority('EXPORT_GOODS')")
-    public ResponseEntity<ApiResponse<InventoriesListResponseData>> exportGoods(@RequestBody ExportGoodsCommand exportGoodsCommand) {
+    public ResponseEntity<ApiResponse<InventoriesListResponseData>> exportGoods(@PathVariable("warehouseId") @ValidUUID String warehouseId, @RequestBody ExportGoodsCommand exportGoodsCommand) {
+        exportGoodsCommand.setWarehouseId(UUID.fromString(warehouseId));
         ApiResponse<InventoriesListResponseData> exportGoodsResponse = inventoryApplicationService.exportGoods(exportGoodsCommand);
         log.info("Successfully exported {} products", exportGoodsCommand.getGoods().size());
         return ResponseEntity.ok(exportGoodsResponse);

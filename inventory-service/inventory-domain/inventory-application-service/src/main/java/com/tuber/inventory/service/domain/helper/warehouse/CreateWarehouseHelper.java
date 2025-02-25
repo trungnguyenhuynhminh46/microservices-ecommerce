@@ -7,7 +7,7 @@ import com.tuber.inventory.service.domain.dto.warehouse.CreateWarehouseCommand;
 import com.tuber.inventory.service.domain.dto.warehouse.WarehouseResponseData;
 import com.tuber.inventory.service.domain.entity.Warehouse;
 import com.tuber.inventory.service.domain.event.WarehouseCreatedEvent;
-import com.tuber.inventory.service.domain.helper.CommonInventoryServiceHelper;
+import com.tuber.inventory.service.domain.helper.CommonWarehouseHelper;
 import com.tuber.inventory.service.domain.mapper.WarehouseMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreateWarehouseHelper {
-    CommonInventoryServiceHelper commonInventoryServiceHelper;
+    CommonWarehouseHelper commonWarehouseHelper;
     WarehouseMapper warehouseMapper;
     InventoryDomainService inventoryDomainService;
 
@@ -31,7 +31,7 @@ public class CreateWarehouseHelper {
         Warehouse initiailizedWarehouse = warehouseCreatedEvent.getWarehouse();
         WarehouseResponseData warehouseResponseData =
                 warehouseMapper.warehouseToWarehouseResponseData(
-                        commonInventoryServiceHelper.saveWarehouse(initiailizedWarehouse)
+                        commonWarehouseHelper.saveWarehouse(initiailizedWarehouse)
                 );
 
         return ApiResponse.<WarehouseResponseData>builder()

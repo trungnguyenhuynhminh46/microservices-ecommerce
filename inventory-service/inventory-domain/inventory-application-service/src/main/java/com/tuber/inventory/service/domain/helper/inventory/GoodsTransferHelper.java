@@ -1,6 +1,7 @@
 package com.tuber.inventory.service.domain.helper.inventory;
 
 import com.tuber.application.handler.ApiResponse;
+import com.tuber.application.helper.CommonHelper;
 import com.tuber.inventory.service.domain.dto.inventory.ExportGoodsCommand;
 import com.tuber.inventory.service.domain.dto.inventory.ImportGoodsCommand;
 import com.tuber.inventory.service.domain.dto.inventory.InventoriesListResponseData;
@@ -15,11 +16,30 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GoodsTransferHelper {
+    CommonHelper commonHelper;
     public ApiResponse<InventoriesListResponseData> importGoods(ImportGoodsCommand importGoodsCommand) {
+        // Verify product with productId exists
+        // Verify warehouse with warehouseId exists
+        // Get creator's username
+        String creator = commonHelper.extractTokenSubject();
+        // Initialize / Update inventory
+        // Initialize transaction
+        // Save inventory
+        // Save transaction
+        // Return response
         return null;
     }
 
     public ApiResponse<InventoriesListResponseData> exportGoods(ExportGoodsCommand exportGoodsCommand) {
+        // Verify product with productId exists
+        // Verify warehouse with warehouseId exists
+        // Get creator's username
+        String creator = commonHelper.extractTokenSubject();
+        // Initialize / Update inventory
+        // Initialize transaction
+        // Save inventory
+        // Save transaction
+        // Return response
         return null;
     }
 }

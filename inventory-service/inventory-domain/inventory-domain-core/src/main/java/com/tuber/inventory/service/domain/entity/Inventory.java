@@ -13,6 +13,8 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
     private String sku;
     private UUID warehouseId;
     private Integer stockQuantity;
+    private String creator;
+    private String updater;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
@@ -22,6 +24,8 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         sku = builder.sku;
         warehouseId = builder.warehouseId;
         stockQuantity = builder.stockQuantity;
+        creator = builder.creator;
+        updater = builder.updater;
         createdAt = builder.createdAt;
         updatedAt = builder.updatedAt;
     }
@@ -37,6 +41,8 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         private String sku;
         private UUID warehouseId;
         private Integer stockQuantity;
+        private String creator;
+        private String updater;
         private LocalDate createdAt;
         private LocalDate updatedAt;
 
@@ -70,6 +76,16 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
 
         public Builder stockQuantity(Integer val) {
             stockQuantity = val;
+            return this;
+        }
+
+        public Builder creator(String val) {
+            creator = val;
+            return this;
+        }
+
+        public Builder updater(String val) {
+            updater = val;
             return this;
         }
 
@@ -120,6 +136,22 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         this.stockQuantity = stockQuantity;
     }
 
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
+    }
+
     public LocalDate getCreatedAt() {
         return createdAt;
     }
@@ -139,7 +171,8 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
     public boolean isValidForInitialization() {
         return getProductId() != null && getSku() != null
                 && getWarehouseId() != null && getStockQuantity() != null
-                && getId() == null && getCreatedAt() == null && getUpdatedAt() == null;
+                && getCreator() != null && getUpdater() != null && getId() == null
+                && getCreatedAt() == null && getUpdatedAt() == null;
     }
 
     public void validateStockQuantity() {
