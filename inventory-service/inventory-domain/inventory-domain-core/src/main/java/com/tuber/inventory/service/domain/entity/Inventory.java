@@ -197,4 +197,14 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         setCreatedAt(LocalDate.now());
         setUpdatedAt(LocalDate.now());
     }
+
+    public void addStock(Integer quantity) {
+        setStockQuantity(getStockQuantity() + quantity);
+        setUpdatedAt(LocalDate.now());
+    }
+
+    public void removeStock(Integer quantity) {
+        setStockQuantity(getStockQuantity() - quantity);
+        setUpdatedAt(LocalDate.now());
+    }
 }

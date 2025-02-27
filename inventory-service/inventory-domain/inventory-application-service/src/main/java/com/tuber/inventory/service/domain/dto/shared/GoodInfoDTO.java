@@ -1,5 +1,6 @@
 package com.tuber.inventory.service.domain.dto.shared;
 
+import com.tuber.application.validators.ValidUUID;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -17,7 +18,8 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GoodInfoDTO {
     @NotNull(message = "Product id is mandatory")
-    UUID productId;
+    @ValidUUID
+    String  productId;
     @NotNull(message = "Product attributes is mandatory")
     List<AttributeDTO> attributes;
     @NotNull(message = "Product quantity is mandatory")

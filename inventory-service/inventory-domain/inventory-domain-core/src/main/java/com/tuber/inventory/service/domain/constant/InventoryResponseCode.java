@@ -26,6 +26,7 @@ public class InventoryResponseCode extends ResponseCodeBase {
             new InventoryResponseCode(1005, "Warehouse with id %s is not found");
     public static final InventoryResponseCode WAREHOUSE_SAVED_FAILED = new InventoryResponseCode(1005, "Failed to save warehouse %s");
 
+    public static final InventoryResponseCode PRODUCT_ATTRIBUTE_NOT_EXISTS = new InventoryResponseCode(1006, "Product %s does not have attribute %s");
     protected InventoryResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;
