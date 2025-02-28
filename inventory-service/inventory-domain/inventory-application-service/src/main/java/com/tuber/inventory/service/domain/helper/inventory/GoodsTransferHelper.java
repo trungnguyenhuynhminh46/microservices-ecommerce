@@ -13,11 +13,14 @@ import com.tuber.inventory.service.domain.dto.inventory.InventoriesListResponseD
 import com.tuber.inventory.service.domain.dto.shared.AttributeDTO;
 import com.tuber.inventory.service.domain.dto.shared.GoodInfoDTO;
 import com.tuber.inventory.service.domain.entity.Inventory;
+import com.tuber.inventory.service.domain.entity.InventoryTransaction;
 import com.tuber.inventory.service.domain.event.InventoryCreatedEvent;
 import com.tuber.inventory.service.domain.exception.InventoryDomainException;
 import com.tuber.inventory.service.domain.helper.CommonInventoryHelper;
+import com.tuber.inventory.service.domain.helper.CommonInventoryTransactionHelper;
 import com.tuber.inventory.service.domain.helper.CommonWarehouseHelper;
 import com.tuber.inventory.service.domain.mapper.InventoryMapper;
+import com.tuber.inventory.service.domain.mapper.TransactionMapper;
 import com.tuber.inventory.service.domain.ports.output.http.client.ProductServiceClient;
 import com.tuber.inventory.service.domain.ports.output.repository.InventoryRepository;
 import lombok.AccessLevel;
@@ -39,11 +42,13 @@ public class GoodsTransferHelper {
     CommonHelper commonHelper;
     CommonProductHelper commonProductHelper;
     CommonWarehouseHelper commonWarehouseHelper;
+    CommonInventoryTransactionHelper commonInventoryTransactionHelper;
     ProductServiceClient productServiceClient;
     InventoryDomainService inventoryDomainService;
     InventoryRepository inventoryRepository;
     CommonInventoryHelper commonInventoryHelper;
     InventoryMapper inventoryMapper;
+    TransactionMapper transactionMapper;
 
     protected ProductResponseData verifyProductExists(String productId) {
         ResponseEntity<ApiResponse<ProductResponseData>> getProductDetailResponse = productServiceClient.getProductDetail(productId);
@@ -60,57 +65,52 @@ public class GoodsTransferHelper {
         return attributes;
     }
 
-    protected Inventory createInventoryByGoodInfo(GoodInfoDTO goodInfo, String sku, UUID warehouseId, String creator) {
-        Inventory inventory = inventoryMapper.goodInfoToInventory(goodInfo, sku, warehouseId, creator);
-        InventoryCreatedEvent inventoryCreatedEvent = inventoryDomainService.validateAndInitializeInventory(inventory);
+    protected Inventory getExistedInventoryOrInitilizedEmptyInventory(GoodInfoDTO goodInfo, UUID warehouseId, String creator) {
+        ProductResponseData productDetail = verifyProductExists(goodInfo.getProductId());
+        String sku = commonProductHelper.encodeAttributesToSku(inventoryMapper.attributeDTOsListToMapStringString(validateAttributes(productDetail, goodInfo.getAttributes())));
+        Optional<Inventory> inventory = inventoryRepository.findByProductIdAndSkuAndWarehouseId(UUID.fromString(goodInfo.getProductId()), sku, warehouseId);
+        if (inventory.isEmpty()) {
+            Inventory emptyInventory = inventoryMapper.goodInfoToEmptyInventory(goodInfo, sku, warehouseId, creator);
+            InventoryCreatedEvent inventoryCreatedEvent = inventoryDomainService.validateAndInitializeInventory(emptyInventory);
+            return inventoryCreatedEvent.getInventory();
+        }
 
-        return commonInventoryHelper.saveInventory(inventoryCreatedEvent.getInventory());
+        return inventory.get();
     }
 
     protected Inventory addStockToInventory(GoodInfoDTO goodInfo, UUID warehouseId, String updater) {
-        ProductResponseData productDetail = verifyProductExists(goodInfo.getProductId());
-        String sku = commonProductHelper.encodeAttributesToSku(inventoryMapper.attributeDTOsListToMapStringString(validateAttributes(productDetail, goodInfo.getAttributes())));
-        Optional<Inventory> inventory = inventoryRepository.findByProductIdAndSkuAndWarehouseId(UUID.fromString(goodInfo.getProductId()), sku, warehouseId);
-        if (inventory.isEmpty()) {
-            return createInventoryByGoodInfo(goodInfo, sku, warehouseId, updater);
-        }
-
-        inventory.get().addStock(goodInfo.getQuantity());
-
-        return commonInventoryHelper.saveInventory(inventory.get());
+        Inventory inventory = getExistedInventoryOrInitilizedEmptyInventory(goodInfo, warehouseId, updater);
+        inventory.addStock(goodInfo.getQuantity());
+        return commonInventoryHelper.saveInventory(inventory);
     }
 
     protected Inventory removeStockFromInventory(GoodInfoDTO goodInfo, UUID warehouseId, String updater) {
-        ProductResponseData productDetail = verifyProductExists(goodInfo.getProductId());
-        String sku = commonProductHelper.encodeAttributesToSku(inventoryMapper.attributeDTOsListToMapStringString(validateAttributes(productDetail, goodInfo.getAttributes())));
-        Optional<Inventory> inventory = inventoryRepository.findByProductIdAndSkuAndWarehouseId(UUID.fromString(goodInfo.getProductId()), sku, warehouseId);
-        if (inventory.isEmpty()) {
-            // Throw error: Can not remove stock from non-existing inventory
+        Inventory inventory = getExistedInventoryOrInitilizedEmptyInventory(goodInfo, warehouseId, updater);
+        if (inventory.getStockQuantity() < goodInfo.getQuantity()) {
+            throw new InventoryDomainException(InventoryResponseCode.NOT_ENOUGH_STOCK, HttpStatus.BAD_REQUEST.value(), goodInfo.getProductId(), goodInfo.getQuantity());
         }
+        inventory.removeStock(goodInfo.getQuantity());
 
-        if (inventory.get().getStockQuantity() < goodInfo.getQuantity()) {
-            // Throw error: There is not enough stock to remove
-
-        }
-
-        inventory.get().removeStock(goodInfo.getQuantity());
-
-        return commonInventoryHelper.saveInventory(inventory.get());
+        return commonInventoryHelper.saveInventory(inventory);
     }
 
     @Transactional
     public ApiResponse<InventoriesListResponseData> importGoods(ImportGoodsCommand importGoodsCommand) {
-        commonWarehouseHelper.verifyWarehouseExist(importGoodsCommand.getWarehouseId());
-        String updaterUsername = commonHelper.extractTokenSubject();
+        UUID destinationWarehouseId = importGoodsCommand.getWarehouseId();
         List<Inventory> updatedInventories = new ArrayList<>();
 
+        commonWarehouseHelper.verifyWarehouseExist(importGoodsCommand.getWarehouseId());
+        String updaterUsername = commonHelper.extractTokenSubject();
+
         for (GoodInfoDTO goodInfo : importGoodsCommand.getGoods()) {
-            updatedInventories.add(addStockToInventory(goodInfo, importGoodsCommand.getWarehouseId(), updaterUsername));
+            Inventory inventory = addStockToInventory(goodInfo, destinationWarehouseId, updaterUsername);
+            updatedInventories.add(inventory);
+            InventoryTransaction transaction = inventoryDomainService.validateAndInitializeInventoryTransaction(
+                    transactionMapper.goodInfoToAddTransaction(goodInfo, inventory.getSku(), destinationWarehouseId, inventory.getCreator())
+            );
+            commonInventoryTransactionHelper.saveInventoryTransaction(transaction);
         }
 
-        // Initialize transaction
-        // Save transaction
-        // Return response
         return ApiResponse.<InventoriesListResponseData>builder()
                 .code(InventoryResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Goods imported successfully")
@@ -118,18 +118,23 @@ public class GoodsTransferHelper {
                 .build();
     }
 
+    @Transactional
     public ApiResponse<InventoriesListResponseData> exportGoods(ExportGoodsCommand exportGoodsCommand) {
-        commonWarehouseHelper.verifyWarehouseExist(exportGoodsCommand.getWarehouseId());
-        String updaterUsername = commonHelper.extractTokenSubject();
+        UUID destinationWarehouseId = exportGoodsCommand.getWarehouseId();
         List<Inventory> updatedInventories = new ArrayList<>();
 
+        commonWarehouseHelper.verifyWarehouseExist(exportGoodsCommand.getWarehouseId());
+        String updaterUsername = commonHelper.extractTokenSubject();
+
         for (GoodInfoDTO goodInfo : exportGoodsCommand.getGoods()) {
-            updatedInventories.add(removeStockFromInventory(goodInfo, exportGoodsCommand.getWarehouseId(), updaterUsername));
+            Inventory inventory = removeStockFromInventory(goodInfo, destinationWarehouseId, updaterUsername);
+            updatedInventories.add(inventory);
+            InventoryTransaction transaction = inventoryDomainService.validateAndInitializeInventoryTransaction(
+                    transactionMapper.goodInfoToRemoveTransaction(goodInfo, inventory.getSku(), destinationWarehouseId, inventory.getCreator())
+            );
+            commonInventoryTransactionHelper.saveInventoryTransaction(transaction);
         }
 
-        // Initialize transaction
-        // Save transaction
-        // Return response
         return ApiResponse.<InventoriesListResponseData>builder()
                 .code(InventoryResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Goods exported successfully")

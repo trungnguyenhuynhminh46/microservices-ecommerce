@@ -1,15 +1,15 @@
 package com.tuber.inventory.service.domain.helper;
 
+import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
 import com.tuber.inventory.service.domain.entity.Inventory;
+import com.tuber.inventory.service.domain.exception.InventoryDomainException;
 import com.tuber.inventory.service.domain.ports.output.repository.InventoryRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Component
@@ -22,7 +22,7 @@ public class CommonInventoryHelper {
         Inventory savedInventory = inventoryRepository.save(inventory);
         if (savedInventory == null) {
             log.error(String.format("Failed to save inventory with product id %s", inventory.getProductId()));
-            throw new RuntimeException("Failed to save inventory");
+            throw new InventoryDomainException(InventoryResponseCode.INVENTORY_SAVED_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value(), inventory.getProductId());
         }
         return savedInventory;
     }

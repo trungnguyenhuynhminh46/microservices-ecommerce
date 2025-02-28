@@ -1,6 +1,7 @@
 package com.tuber.inventory.service.domain;
 
 import com.tuber.inventory.service.domain.entity.Inventory;
+import com.tuber.inventory.service.domain.entity.InventoryTransaction;
 import com.tuber.inventory.service.domain.entity.Warehouse;
 import com.tuber.inventory.service.domain.event.InventoryCreatedEvent;
 import com.tuber.inventory.service.domain.event.WarehouseCreatedEvent;
@@ -12,7 +13,7 @@ public class InventoryDomainServiceImpl implements InventoryDomainService {
     public WarehouseCreatedEvent validateAndInitializeWarehouse(Warehouse warehouse) {
         warehouse.validateForInitialization();
         warehouse.initialize();
-        log.info("Validating warehouse with id: {}", warehouse.getId());
+        log.info("Initialize warehouse with id: {}", warehouse.getId());
         return new WarehouseCreatedEvent(warehouse);
     }
 
@@ -20,7 +21,15 @@ public class InventoryDomainServiceImpl implements InventoryDomainService {
     public InventoryCreatedEvent validateAndInitializeInventory(Inventory inventory) {
         inventory.validateForInitialization();
         inventory.initialize();
-        log.info("Validating inventory with id: {}", inventory.getId());
+        log.info("Initialize inventory with id: {}", inventory.getId());
         return new InventoryCreatedEvent(inventory);
+    }
+
+    @Override
+    public InventoryTransaction validateAndInitializeInventoryTransaction(InventoryTransaction inventoryTransaction) {
+        inventoryTransaction.validateForInitialization();
+        inventoryTransaction.initialize();
+        log.info("Initialize inventory transaction with id: {}", inventoryTransaction.getId());
+        return inventoryTransaction;
     }
 }

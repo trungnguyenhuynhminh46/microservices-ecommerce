@@ -23,6 +23,6 @@ public class GoodInfoDTO {
     @NotNull(message = "Product attributes is mandatory")
     List<AttributeDTO> attributes;
     @NotNull(message = "Product quantity is mandatory")
-    @Min(value = 1, message = "Product quantity must be greater than 0")
+    @Min(value = 1, message = "The amount of product to be transferred need to be larger than 0")
     Integer quantity;
 }

@@ -15,7 +15,7 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
     private UUID srcWarehouseId;
     private UUID destWarehouseId;
     private Integer quantity;
-    private UUID creatorId;
+    private String creator;
     private InventoryTransactionType transactionType;
     private LocalDate createdDate;
 
@@ -26,7 +26,7 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
         srcWarehouseId = builder.srcWarehouseId;
         destWarehouseId = builder.destWarehouseId;
         quantity = builder.quantity;
-        creatorId = builder.creatorId;
+        creator = builder.creator;
         transactionType = builder.transactionType;
         createdDate = builder.createdDate;
     }
@@ -42,7 +42,7 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
         private UUID srcWarehouseId;
         private UUID destWarehouseId;
         private Integer quantity;
-        private UUID creatorId;
+        private String creator;
         private InventoryTransactionType transactionType;
         private LocalDate createdDate;
 
@@ -79,8 +79,8 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
             return this;
         }
 
-        public Builder creatorId(UUID val) {
-            creatorId = val;
+        public Builder creator(String val) {
+            creator = val;
             return this;
         }
 
@@ -139,12 +139,12 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
         this.quantity = quantity;
     }
 
-    public UUID getCreatorId() {
-        return creatorId;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setCreatorId(UUID creatorId) {
-        this.creatorId = creatorId;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public InventoryTransactionType getTransactionType() {
@@ -176,7 +176,7 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
     public boolean isValidForInitialization() {
         return getId() == null && getCreatedDate() == null && getProductId() != null && getSku() != null
                 && getDestWarehouseId() != null && getQuantity() != null
-                && getCreatorId() != null && getTransactionType() != null;
+                && getCreator() != null && getTransactionType() != null;
     }
 
     public void validateForInitialization() {
@@ -186,8 +186,8 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
         validateProperties();
     }
 
-    public void initialize(UUID inventoryTransactionId) {
-        setId(new UniqueUUID(inventoryTransactionId));
+    public void initialize() {
+        setId(new UniqueUUID(UUID.randomUUID()));
         setCreatedDate(LocalDate.now());
     }
 }

@@ -16,12 +16,12 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public abstract class InventoryMapper {
-    public Inventory goodInfoToInventory(GoodInfoDTO goodInfo, String sku, UUID warehouseId, String creator) {
+    public Inventory goodInfoToEmptyInventory(GoodInfoDTO goodInfo, String sku, UUID warehouseId, String creator) {
         return Inventory.builder()
                 .productId(UUID.fromString(goodInfo.getProductId()))
                 .sku(sku)
                 .warehouseId(warehouseId)
-                .stockQuantity(goodInfo.getQuantity())
+                .stockQuantity(0)
                 .build();
     }
 
