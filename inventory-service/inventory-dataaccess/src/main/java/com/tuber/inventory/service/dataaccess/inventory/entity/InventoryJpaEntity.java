@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "warehouse")
+@Table(name = "inventory")
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class InventoryJpaEntity {

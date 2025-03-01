@@ -18,7 +18,7 @@ import java.util.UUID;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping(value = "/${service.name}/inventory", produces = "application/vnd.api.v1+json")
+@RequestMapping(value = "/${service.name}/inventories", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor
 public class InventoryController {
     private final InventoryApplicationService inventoryApplicationService;
