@@ -33,6 +33,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -102,6 +103,20 @@ public class GoodsTransferHelper {
         return commonInventoryHelper.saveInventory(inventory);
     }
 
+    protected List<GoodInfoDTO> sanitizeGoodsInfo(List<GoodInfoDTO> goodsInfo) {
+        goodsInfo.removeIf(goodInfo -> goodInfo.getQuantity() <= 0);
+        Map<String, GoodInfoDTO> goodsMap = goodsInfo.stream()
+                .collect(Collectors.toMap(
+                        goodInfo -> goodInfo.getProductId() + goodInfo.getAttributes().toString(),
+                        goodInfo -> goodInfo,
+                        (existing, replacement) -> {
+                            existing.setQuantity(existing.getQuantity() + replacement.getQuantity());
+                            return existing;
+                        }
+                ));
+        return new ArrayList<>(goodsMap.values());
+    }
+
     @Transactional
     public ApiResponse<InventoriesListResponseData> importGoods(ImportGoodsCommand importGoodsCommand) {
         UUID destinationWarehouseId = importGoodsCommand.getWarehouseId();
@@ -110,7 +125,7 @@ public class GoodsTransferHelper {
         commonWarehouseHelper.verifyWarehouseExist(importGoodsCommand.getWarehouseId());
         String updaterUsername = commonHelper.extractTokenSubject();
 
-        for (GoodInfoDTO goodInfo : importGoodsCommand.getGoods()) {
+        for (GoodInfoDTO goodInfo : sanitizeGoodsInfo(importGoodsCommand.getGoods())) {
             Inventory inventory = addStockToInventory(goodInfo, destinationWarehouseId, updaterUsername);
             updatedInventories.add(inventory);
             InventoryTransaction transaction = inventoryDomainService.validateAndInitializeInventoryTransaction(
@@ -134,7 +149,7 @@ public class GoodsTransferHelper {
         commonWarehouseHelper.verifyWarehouseExist(exportGoodsCommand.getWarehouseId());
         String updaterUsername = commonHelper.extractTokenSubject();
 
-        for (GoodInfoDTO goodInfo : exportGoodsCommand.getGoods()) {
+        for (GoodInfoDTO goodInfo : sanitizeGoodsInfo(exportGoodsCommand.getGoods())) {
             Inventory inventory = removeStockFromInventory(goodInfo, destinationWarehouseId, updaterUsername);
             updatedInventories.add(inventory);
             InventoryTransaction transaction = inventoryDomainService.validateAndInitializeInventoryTransaction(

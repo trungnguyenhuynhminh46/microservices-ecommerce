@@ -19,6 +19,6 @@ public class InventoryResponseData {
     String sku;
     UUID warehouseId;
     Integer quantity;
-    LocalDate createdAt;
-    LocalDate updatedAt;
+    String createdAt;
+    String updatedAt;
 }

@@ -23,19 +23,26 @@ INSERT INTO product (id, name, price, description, tags, rating, category_id, cr
 
 -- attribute data
 INSERT INTO p_attribute (id, product_id, name, default_value, options) VALUES
-  (1, (SELECT id FROM product WHERE name = 'Smartphone'), 'Size', 'Small', "[ { \"name\": \"Small\", \"changeAmount\": 0 }, { \"name\": \"Large\", \"changeAmount\": 200 } ]"),
-  (2, (SELECT id FROM product WHERE name = 'Laptop'), 'Size', '13-inch', "[ { \"name\": \"13-inch\", \"changeAmount\": 0 }, { \"name\": \"15-inch\", \"changeAmount\": 200 } ]"),
-  (3, (SELECT id FROM product WHERE name = 'Tablet'), 'Size', '8-inch', "[ { \"name\": \"8-inch\", \"changeAmount\": 0 }, { \"name\": \"10-inch\", \"changeAmount\": 100 } ]"),
-  (4, (SELECT id FROM product WHERE name = 'Smartwatch'), 'Color', 'Black', "[ { \"name\": \"Black\", \"changeAmount\": 0 }, { \"name\": \"Silver\", \"changeAmount\": 50 } ]"),
-  (5, (SELECT id FROM product WHERE name = 'Novel Book'), 'Format', 'Paperback', "[ { \"name\": \"Paperback\", \"changeAmount\": 0 }, { \"name\": \"Hardcover\", \"changeAmount\": 5 } ]"),
-  (6, (SELECT id FROM product WHERE name = 'Textbook'), 'Edition', '1st', "[ { \"name\": \"1st\", \"changeAmount\": 0 }, { \"name\": \"2nd\", \"changeAmount\": 10 } ]"),
-  (7, (SELECT id FROM product WHERE name = 'E-book'), 'File Type', 'PDF', "[ { \"name\": \"PDF\", \"changeAmount\": 0 }, { \"name\": \"EPUB\", \"changeAmount\": 0 } ]"),
-  (8, (SELECT id FROM product WHERE name = 'Blender'), 'Color', 'Black', "[ { \"name\": \"Black\", \"changeAmount\": 0 }, { \"name\": \"White\", \"changeAmount\": 5 } ]"),
-  (9, (SELECT id FROM product WHERE name = 'Microwave'), 'Size', '20L', "[ { \"name\": \"20L\", \"changeAmount\": 0 }, { \"name\": \"30L\", \"changeAmount\": 10 } ]"),
-  (10, (SELECT id FROM product WHERE name = 'Refrigerator'), 'Energy Rating', 'A+', "[ { \"name\": \"A+\", \"changeAmount\": 0 }, { \"name\": \"A++\", \"changeAmount\": 50 } ]"),
-  (11, (SELECT id FROM product WHERE name = 'T-shirt'), 'Size', 'M', "[ { \"name\": \"S\", \"changeAmount\": 0 }, { \"name\": \"M\", \"changeAmount\": 0 }, { \"name\": \"L\", \"changeAmount\": 0 } ]"),
-  (12, (SELECT id FROM product WHERE name = 'Jeans'), 'Fit', 'Regular', "[ { \"name\": \"Regular\", \"changeAmount\": 0 }, { \"name\": \"Slim\", \"changeAmount\": 5 } ]"),
-  (13, (SELECT id FROM product WHERE name = 'Jacket'), 'Material', 'Cotton', "[ { \"name\": \"Cotton\", \"changeAmount\": 0 }, { \"name\": \"Polyester\", \"changeAmount\": 10 } ]");
+  (1, (SELECT id FROM product WHERE name = 'Smartphone'), 'Size', 'Small',
+    '[ { "name": "Small", "changeAmount": 0 }, { "name": "Large", "changeAmount": 200 } ]'),
+  (2, (SELECT id FROM product WHERE name = 'Smartphone'), 'Color', 'Black',
+    '[ { "name": "Black", "changeAmount": 0 }, { "name": "White", "changeAmount": 50 }, { "name": "Blue", "changeAmount": 100 } ]'),
+  (3, (SELECT id FROM product WHERE name = 'Smartphone'), 'RAM', '4GB',
+    '[ { "name": "4GB", "changeAmount": 0 }, { "name": "8GB", "changeAmount": 150 }, { "name": "16GB", "changeAmount": 300 } ]'),
+  (4, (SELECT id FROM product WHERE name = 'Smartphone'), 'Version', 'Standard',
+    '[ { "name": "Standard", "changeAmount": 0 }, { "name": "Pro", "changeAmount": 400 }, { "name": "Ultra", "changeAmount": 700 } ]'),
+  (5, (SELECT id FROM product WHERE name = 'Laptop'), 'Size', '13-inch', "[ { \"name\": \"13-inch\", \"changeAmount\": 0 }, { \"name\": \"15-inch\", \"changeAmount\": 200 } ]"),
+  (6, (SELECT id FROM product WHERE name = 'Tablet'), 'Size', '8-inch', "[ { \"name\": \"8-inch\", \"changeAmount\": 0 }, { \"name\": \"10-inch\", \"changeAmount\": 100 } ]"),
+  (7, (SELECT id FROM product WHERE name = 'Smartwatch'), 'Color', 'Black', "[ { \"name\": \"Black\", \"changeAmount\": 0 }, { \"name\": \"Silver\", \"changeAmount\": 50 } ]"),
+  (8, (SELECT id FROM product WHERE name = 'Novel Book'), 'Format', 'Paperback', "[ { \"name\": \"Paperback\", \"changeAmount\": 0 }, { \"name\": \"Hardcover\", \"changeAmount\": 5 } ]"),
+  (9, (SELECT id FROM product WHERE name = 'Textbook'), 'Edition', '1st', "[ { \"name\": \"1st\", \"changeAmount\": 0 }, { \"name\": \"2nd\", \"changeAmount\": 10 } ]"),
+  (10, (SELECT id FROM product WHERE name = 'E-book'), 'File Type', 'PDF', "[ { \"name\": \"PDF\", \"changeAmount\": 0 }, { \"name\": \"EPUB\", \"changeAmount\": 0 } ]"),
+  (11, (SELECT id FROM product WHERE name = 'Blender'), 'Color', 'Black', "[ { \"name\": \"Black\", \"changeAmount\": 0 }, { \"name\": \"White\", \"changeAmount\": 5 } ]"),
+  (12, (SELECT id FROM product WHERE name = 'Microwave'), 'Size', '20L', "[ { \"name\": \"20L\", \"changeAmount\": 0 }, { \"name\": \"30L\", \"changeAmount\": 10 } ]"),
+  (13, (SELECT id FROM product WHERE name = 'Refrigerator'), 'Energy Rating', 'A+', "[ { \"name\": \"A+\", \"changeAmount\": 0 }, { \"name\": \"A++\", \"changeAmount\": 50 } ]"),
+  (14, (SELECT id FROM product WHERE name = 'T-shirt'), 'Size', 'M', "[ { \"name\": \"S\", \"changeAmount\": 0 }, { \"name\": \"M\", \"changeAmount\": 0 }, { \"name\": \"L\", \"changeAmount\": 0 } ]"),
+  (15, (SELECT id FROM product WHERE name = 'Jeans'), 'Fit', 'Regular', "[ { \"name\": \"Regular\", \"changeAmount\": 0 }, { \"name\": \"Slim\", \"changeAmount\": 5 } ]"),
+  (16, (SELECT id FROM product WHERE name = 'Jacket'), 'Material', 'Cotton', "[ { \"name\": \"Cotton\", \"changeAmount\": 0 }, { \"name\": \"Polyester\", \"changeAmount\": 10 } ]");
 
 -- template product data
 INSERT INTO template_product (id, name, price, description, tags, rating, category_id, created_at, updated_at) VALUES
