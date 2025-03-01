@@ -18,11 +18,11 @@ import java.util.Objects;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductAttributeJpaEntity {
     @Id
-    private Long id;
+    Long id;
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
-    private ProductJpaEntity product;
+    ProductJpaEntity product;
     String name;
     String defaultValue;
     String options;

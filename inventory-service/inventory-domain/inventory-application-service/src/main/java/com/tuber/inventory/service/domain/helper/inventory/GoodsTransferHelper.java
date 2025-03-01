@@ -65,7 +65,7 @@ public class GoodsTransferHelper {
         return attributes;
     }
 
-    protected Inventory getExistedInventoryOrInitilizedEmptyInventory(GoodInfoDTO goodInfo, UUID warehouseId, String creator) {
+    protected Inventory getExistedInventoryOrInitializedEmptyInventory(GoodInfoDTO goodInfo, UUID warehouseId, String creator) {
         ProductResponseData productDetail = verifyProductExists(goodInfo.getProductId());
         String sku = commonProductHelper.encodeAttributesToSku(inventoryMapper.attributeDTOsListToMapStringString(validateAttributes(productDetail, goodInfo.getAttributes())));
         Optional<Inventory> inventory = inventoryRepository.findByProductIdAndSkuAndWarehouseId(UUID.fromString(goodInfo.getProductId()), sku, warehouseId);
@@ -79,17 +79,17 @@ public class GoodsTransferHelper {
     }
 
     protected Inventory addStockToInventory(GoodInfoDTO goodInfo, UUID warehouseId, String updater) {
-        Inventory inventory = getExistedInventoryOrInitilizedEmptyInventory(goodInfo, warehouseId, updater);
-        inventory.addStock(goodInfo.getQuantity());
+        Inventory inventory = getExistedInventoryOrInitializedEmptyInventory(goodInfo, warehouseId, updater);
+        inventory.addStock(goodInfo.getQuantity(), updater);
         return commonInventoryHelper.saveInventory(inventory);
     }
 
     protected Inventory removeStockFromInventory(GoodInfoDTO goodInfo, UUID warehouseId, String updater) {
-        Inventory inventory = getExistedInventoryOrInitilizedEmptyInventory(goodInfo, warehouseId, updater);
+        Inventory inventory = getExistedInventoryOrInitializedEmptyInventory(goodInfo, warehouseId, updater);
         if (inventory.getStockQuantity() < goodInfo.getQuantity()) {
             throw new InventoryDomainException(InventoryResponseCode.NOT_ENOUGH_STOCK, HttpStatus.BAD_REQUEST.value(), goodInfo.getProductId(), goodInfo.getQuantity());
         }
-        inventory.removeStock(goodInfo.getQuantity());
+        inventory.removeStock(goodInfo.getQuantity(), updater);
 
         return commonInventoryHelper.saveInventory(inventory);
     }

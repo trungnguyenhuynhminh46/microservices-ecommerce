@@ -1,5 +1,7 @@
 package com.tuber.inventory.service.dataaccess.inventory.adapter;
 
+import com.tuber.inventory.service.dataaccess.inventory.mapper.InventoryJpaMapper;
+import com.tuber.inventory.service.dataaccess.inventory.repository.InventoryJpaRepository;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.ports.output.repository.InventoryRepository;
 import lombok.AccessLevel;
@@ -14,13 +16,21 @@ import java.util.UUID;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class InventoryRepositoryImpl implements InventoryRepository {
-    @Override
-    public Optional<Inventory> findByProductIdAndSkuAndWarehouseId(UUID productId, String sku, UUID warehouseId) {
-        return Optional.empty();
-    }
+    InventoryJpaRepository inventoryJpaRepository;
+    InventoryJpaMapper inventoryJpaMapper;
 
     @Override
     public Inventory save(Inventory inventory) {
-        return null;
+        return inventoryJpaMapper.inventoryJpaEntityToInventoryEntity(
+                inventoryJpaRepository.save(
+                        inventoryJpaMapper.inventoryEntityToInventoryJpaEntity(inventory)
+                )
+        );
+    }
+
+    @Override
+    public Optional<Inventory> findByProductIdAndSkuAndWarehouseId(UUID productId, String sku, UUID warehouseId) {
+        return inventoryJpaRepository.findByProductIdAndSkuAndWarehouseId(productId, sku, warehouseId)
+                .map(inventoryJpaMapper::inventoryJpaEntityToInventoryEntity);
     }
 }

@@ -17,6 +17,7 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
     private Integer quantity;
     private String creator;
     private InventoryTransactionType transactionType;
+    private String description;
     private LocalDate createdDate;
 
     private InventoryTransaction(Builder builder) {
@@ -28,6 +29,7 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
         quantity = builder.quantity;
         creator = builder.creator;
         transactionType = builder.transactionType;
+        description = builder.description;
         createdDate = builder.createdDate;
     }
 
@@ -44,6 +46,7 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
         private Integer quantity;
         private String creator;
         private InventoryTransactionType transactionType;
+        private String description;
         private LocalDate createdDate;
 
         private Builder() {
@@ -86,6 +89,11 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
 
         public Builder transactionType(InventoryTransactionType val) {
             transactionType = val;
+            return this;
+        }
+
+        public Builder description(String val) {
+            description = val;
             return this;
         }
 
@@ -153,6 +161,14 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
 
     public void setTransactionType(InventoryTransactionType transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDate getCreatedDate() {

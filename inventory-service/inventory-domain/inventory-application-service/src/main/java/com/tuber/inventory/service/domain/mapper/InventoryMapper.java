@@ -22,6 +22,8 @@ public abstract class InventoryMapper {
                 .sku(sku)
                 .warehouseId(warehouseId)
                 .stockQuantity(0)
+                .creator(creator)
+                .updater(creator)
                 .build();
     }
 
