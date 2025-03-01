@@ -3,6 +3,7 @@ package com.tuber.inventory.service.domain.mapper;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.inventory.service.domain.dto.inventory.InventoriesListResponseData;
 import com.tuber.inventory.service.domain.dto.inventory.InventoryResponseData;
+import com.tuber.inventory.service.domain.dto.inventory.TransferGoodsResponseData;
 import com.tuber.inventory.service.domain.dto.shared.AttributeDTO;
 import com.tuber.inventory.service.domain.dto.shared.GoodInfoDTO;
 import com.tuber.inventory.service.domain.entity.Inventory;
@@ -44,6 +45,13 @@ public abstract class InventoryMapper {
         }
 
         return responseBuilder.build();
+    }
+
+    public TransferGoodsResponseData inventoriesToTransferGoodsResponseData(Inventory sourceInventory, Inventory destinationInventory) {
+        return TransferGoodsResponseData.builder()
+                .sourceInventory(inventoryToInventoryResponseData(sourceInventory))
+                .destinationInventory(inventoryToInventoryResponseData(destinationInventory))
+                .build();
     }
 
     protected UUID map(UniqueUUID id) {

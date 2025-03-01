@@ -1,9 +1,7 @@
 package com.tuber.inventory.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.inventory.service.domain.dto.inventory.ExportGoodsCommand;
-import com.tuber.inventory.service.domain.dto.inventory.ImportGoodsCommand;
-import com.tuber.inventory.service.domain.dto.inventory.InventoriesListResponseData;
+import com.tuber.inventory.service.domain.dto.inventory.*;
 import com.tuber.inventory.service.domain.dto.warehouse.*;
 import com.tuber.inventory.service.domain.helper.inventory.GoodsTransferHelper;
 import com.tuber.inventory.service.domain.helper.warehouse.CreateWarehouseHelper;
@@ -53,5 +51,10 @@ public class InventoryApplicationServiceImpl implements InventoryApplicationServ
     @Override
     public ApiResponse<InventoriesListResponseData> exportGoods(ExportGoodsCommand exportGoodsCommand) {
         return goodsTransferHelper.exportGoods(exportGoodsCommand);
+    }
+
+    @Override
+    public ApiResponse<TransferGoodsListResponseData> transferGoods(TransferGoodsCommand transferGoodsCommand) {
+        return goodsTransferHelper.transferGoods(transferGoodsCommand);
     }
 }

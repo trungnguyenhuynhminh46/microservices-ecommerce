@@ -7,9 +7,7 @@ import com.tuber.inventory.service.domain.InventoryDomainService;
 import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
 import com.tuber.inventory.service.domain.dto.http.client.product.ProductAttributeDTO;
 import com.tuber.inventory.service.domain.dto.http.client.product.ProductResponseData;
-import com.tuber.inventory.service.domain.dto.inventory.ExportGoodsCommand;
-import com.tuber.inventory.service.domain.dto.inventory.ImportGoodsCommand;
-import com.tuber.inventory.service.domain.dto.inventory.InventoriesListResponseData;
+import com.tuber.inventory.service.domain.dto.inventory.*;
 import com.tuber.inventory.service.domain.dto.shared.AttributeDTO;
 import com.tuber.inventory.service.domain.dto.shared.GoodInfoDTO;
 import com.tuber.inventory.service.domain.entity.Inventory;
@@ -56,6 +54,7 @@ public class GoodsTransferHelper {
         return Objects.requireNonNull(getProductDetailResponse.getBody()).getData();
     }
 
+    //TODO: Consider moving to Product entity
     protected List<AttributeDTO> validateAttributes(ProductResponseData productDetail, List<AttributeDTO> attributes) {
         List<ProductAttributeDTO> productAttributes = productDetail.getAttributes();
         for (AttributeDTO attribute : attributes) {
@@ -162,7 +161,7 @@ public class GoodsTransferHelper {
             }
         }
 
-        if(updatedInventories.isEmpty()) {
+        if (updatedInventories.isEmpty()) {
             throw new InventoryDomainException(InventoryResponseCode.NO_GOODS_BE_EXPORTED, HttpStatus.BAD_REQUEST.value());
         }
 
@@ -170,6 +169,36 @@ public class GoodsTransferHelper {
                 .code(InventoryResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Goods exported successfully")
                 .data(inventoryMapper.inventoriesToInventoriesListResponseData(updatedInventories, failedToExportGoods))
+                .build();
+    }
+
+    @Transactional
+    public ApiResponse<TransferGoodsListResponseData> transferGoods(TransferGoodsCommand transferGoodsCommand) {
+        UUID sourceWarehouseId = UUID.fromString(transferGoodsCommand.getSourceWarehouseId());
+        UUID destinationWarehouseId = UUID.fromString(transferGoodsCommand.getDestinationWarehouseId());
+        List<TransferGoodsResponseData> updatedInventories = new ArrayList<>();
+        List<GoodInfoDTO> failedRequests = new ArrayList<>();
+        commonWarehouseHelper.verifyWarehouseExist(sourceWarehouseId);
+        commonWarehouseHelper.verifyWarehouseExist(destinationWarehouseId);
+
+        for (GoodInfoDTO goodInfoDTO: sanitizeGoodsInfo(transferGoodsCommand.getGoods())) {
+            Inventory sourceInventory = removeStockFromInventory(goodInfoDTO, sourceWarehouseId, commonHelper.extractTokenSubject(), failedRequests);
+            if (sourceInventory != null) {
+                Inventory destinationInventory = addStockToInventory(goodInfoDTO, destinationWarehouseId, commonHelper.extractTokenSubject());
+                updatedInventories.add(inventoryMapper.inventoriesToTransferGoodsResponseData(sourceInventory, destinationInventory));
+                InventoryTransaction transferTransaction = transactionMapper.goodInfoToTransferTransaction(goodInfoDTO, sourceInventory.getSku(), sourceWarehouseId, destinationWarehouseId, sourceInventory.getCreator());
+                commonInventoryTransactionHelper.saveInventoryTransaction(transferTransaction);
+            }
+        }
+
+        if (updatedInventories.isEmpty()) {
+            throw new InventoryDomainException(InventoryResponseCode.NO_GOODS_BE_TRANSFERRED, HttpStatus.BAD_REQUEST.value());
+        }
+
+        return ApiResponse.<TransferGoodsListResponseData>builder()
+                .code(InventoryResponseCode.SUCCESS_RESPONSE.getCode())
+                .message("Goods transferred successfully")
+                .data(transactionMapper.generateTransferGoodsListResponseData(updatedInventories, failedRequests))
                 .build();
     }
 }
