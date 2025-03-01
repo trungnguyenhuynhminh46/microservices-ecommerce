@@ -34,6 +34,8 @@ public class InventoryResponseCode extends ResponseCodeBase {
 
     public static final InventoryResponseCode NOT_ENOUGH_STOCK = new InventoryResponseCode(1009, "Not enough stock to export for product %s");
 
+    public static final InventoryResponseCode NO_GOODS_BE_EXPORTED = new InventoryResponseCode(1010, "No goods have been exported");
+
     protected InventoryResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

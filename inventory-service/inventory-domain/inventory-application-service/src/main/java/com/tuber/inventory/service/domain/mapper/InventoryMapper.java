@@ -34,11 +34,16 @@ public abstract class InventoryMapper {
     @Mapping(target = "quantity", source = "stockQuantity")
     public abstract InventoryResponseData inventoryToInventoryResponseData(Inventory inventory);
 
-    public InventoriesListResponseData inventoriesToInventoriesListResponseData(List<Inventory> inventories) {
-        return InventoriesListResponseData.builder()
+    public InventoriesListResponseData inventoriesToInventoriesListResponseData(List<Inventory> inventories, List<GoodInfoDTO> failedRequests) {
+        InventoriesListResponseData.InventoriesListResponseDataBuilder responseBuilder = InventoriesListResponseData.builder()
                 .inventories(inventories.stream().map(this::inventoryToInventoryResponseData).collect(Collectors.toList()))
-                .total(inventories.size())
-                .build();
+                .total(inventories.size());
+
+        if(failedRequests != null && !failedRequests.isEmpty()) {
+            responseBuilder.failedRequests(failedRequests);
+        }
+
+        return responseBuilder.build();
     }
 
     protected UUID map(UniqueUUID id) {

@@ -93,10 +93,11 @@ public class GoodsTransferHelper {
         return commonInventoryHelper.saveInventory(inventory);
     }
 
-    protected Inventory removeStockFromInventory(GoodInfoDTO goodInfo, UUID warehouseId, String updater) {
+    protected Inventory removeStockFromInventory(GoodInfoDTO goodInfo, UUID warehouseId, String updater, List<GoodInfoDTO> failedToExportGoods) {
         Inventory inventory = getExistedInventoryOrInitializedEmptyInventory(goodInfo, warehouseId, updater);
         if (inventory.getStockQuantity() < goodInfo.getQuantity()) {
-            throw new InventoryDomainException(InventoryResponseCode.NOT_ENOUGH_STOCK, HttpStatus.BAD_REQUEST.value(), goodInfo.getProductId(), goodInfo.getQuantity());
+            failedToExportGoods.add(new GoodInfoDTO(goodInfo.getProductId(), goodInfo.getAttributes(), goodInfo.getQuantity() - inventory.getStockQuantity()));
+            return null;
         }
         inventory.removeStock(goodInfo.getQuantity(), updater);
 
@@ -137,7 +138,7 @@ public class GoodsTransferHelper {
         return ApiResponse.<InventoriesListResponseData>builder()
                 .code(InventoryResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Goods imported successfully")
-                .data(inventoryMapper.inventoriesToInventoriesListResponseData(updatedInventories))
+                .data(inventoryMapper.inventoriesToInventoriesListResponseData(updatedInventories, null))
                 .build();
     }
 
@@ -145,23 +146,30 @@ public class GoodsTransferHelper {
     public ApiResponse<InventoriesListResponseData> exportGoods(ExportGoodsCommand exportGoodsCommand) {
         UUID destinationWarehouseId = exportGoodsCommand.getWarehouseId();
         List<Inventory> updatedInventories = new ArrayList<>();
+        List<GoodInfoDTO> failedToExportGoods = new ArrayList<>();
 
         commonWarehouseHelper.verifyWarehouseExist(exportGoodsCommand.getWarehouseId());
         String updaterUsername = commonHelper.extractTokenSubject();
 
         for (GoodInfoDTO goodInfo : sanitizeGoodsInfo(exportGoodsCommand.getGoods())) {
-            Inventory inventory = removeStockFromInventory(goodInfo, destinationWarehouseId, updaterUsername);
-            updatedInventories.add(inventory);
-            InventoryTransaction transaction = inventoryDomainService.validateAndInitializeInventoryTransaction(
-                    transactionMapper.goodInfoToRemoveTransaction(goodInfo, inventory.getSku(), destinationWarehouseId, inventory.getCreator())
-            );
-            commonInventoryTransactionHelper.saveInventoryTransaction(transaction);
+            Inventory inventory = removeStockFromInventory(goodInfo, destinationWarehouseId, updaterUsername, failedToExportGoods);
+            if (inventory != null) {
+                updatedInventories.add(inventory);
+                InventoryTransaction transaction = inventoryDomainService.validateAndInitializeInventoryTransaction(
+                        transactionMapper.goodInfoToRemoveTransaction(goodInfo, inventory.getSku(), destinationWarehouseId, inventory.getCreator())
+                );
+                commonInventoryTransactionHelper.saveInventoryTransaction(transaction);
+            }
+        }
+
+        if(updatedInventories.isEmpty()) {
+            throw new InventoryDomainException(InventoryResponseCode.NO_GOODS_BE_EXPORTED, HttpStatus.BAD_REQUEST.value());
         }
 
         return ApiResponse.<InventoriesListResponseData>builder()
                 .code(InventoryResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Goods exported successfully")
-                .data(inventoryMapper.inventoriesToInventoriesListResponseData(updatedInventories))
+                .data(inventoryMapper.inventoriesToInventoriesListResponseData(updatedInventories, failedToExportGoods))
                 .build();
     }
 }
