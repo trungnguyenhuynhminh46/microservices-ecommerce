@@ -59,7 +59,8 @@ public class IdentityServiceApplication implements CommandLineRunner {
                     Permissions.GET_WAREHOUSE
             ),
             RolesDefault.WAREHOUSE_MANAGER, Set.of(
-                    Permissions.CREATE_WAREHOUSE, Permissions.UPDATE_WAREHOUSE, Permissions.GET_WAREHOUSE
+                    Permissions.CREATE_WAREHOUSE, Permissions.UPDATE_WAREHOUSE, Permissions.GET_WAREHOUSE,
+                    Permissions.IMPORT_GOODS, Permissions.EXPORT_GOODS
             )
     );
 

@@ -25,7 +25,7 @@ public class InventoryJpaEntity {
     @Column(name = "warehouse_id", nullable = false)
     UUID warehouseId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "warehouse_id", nullable = false)
+    @JoinColumn(name = "warehouse_id", insertable = false, updatable = false)
     WarehouseJpaEntity warehouse;
     Integer stockQuantity;
     String creator;
