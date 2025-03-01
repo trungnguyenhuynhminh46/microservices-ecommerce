@@ -62,6 +62,14 @@ public class GoodsTransferHelper {
                 throw new InventoryDomainException(InventoryResponseCode.PRODUCT_ATTRIBUTE_NOT_EXISTS, HttpStatus.BAD_REQUEST.value(), productDetail.getName(), attribute.getName());
             }
         }
+
+        for (ProductAttributeDTO productAttribute : productAttributes) {
+            if (attributes.stream().noneMatch(attribute -> attribute.getName().equals(productAttribute.getName()))) {
+                attributes.add(new AttributeDTO(productAttribute.getName(), productAttribute.getDefaultValue()));
+            }
+        }
+
+        attributes.sort(Comparator.comparing(AttributeDTO::getName));
         return attributes;
     }
 
