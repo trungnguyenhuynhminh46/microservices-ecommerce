@@ -22,7 +22,7 @@ public class InventoryController {
     private final InventoryApplicationService inventoryApplicationService;
 
     @PostMapping("/import/{warehouseId}")
-    @PreAuthorize("hasAuthority('TRANSFER_GOODS)")
+    @PreAuthorize("hasAuthority('TRANSFER_GOODS')")
     public ResponseEntity<ApiResponse<InventoriesListResponseData>> importGoods(@PathVariable("warehouseId") @ValidUUID String warehouseId, @RequestBody ImportGoodsCommand importGoodsCommand) {
         importGoodsCommand.setWarehouseId(UUID.fromString(warehouseId));
         ApiResponse<InventoriesListResponseData> importGoodsResponse = inventoryApplicationService.importGoods(importGoodsCommand);
@@ -31,7 +31,7 @@ public class InventoryController {
     }
 
     @PostMapping("/export/{warehouseId}")
-    @PreAuthorize("hasAuthority('TRANSFER_GOODS)")
+    @PreAuthorize("hasAuthority('TRANSFER_GOODS')")
     public ResponseEntity<ApiResponse<InventoriesListResponseData>> exportGoods(@PathVariable("warehouseId") @ValidUUID String warehouseId, @RequestBody ExportGoodsCommand exportGoodsCommand) {
         exportGoodsCommand.setWarehouseId(UUID.fromString(warehouseId));
         ApiResponse<InventoriesListResponseData> exportGoodsResponse = inventoryApplicationService.exportGoods(exportGoodsCommand);
@@ -40,7 +40,7 @@ public class InventoryController {
     }
 
     @PostMapping("/transfer")
-    @PreAuthorize("hasAuthority('TRANSFER_GOODS)")
+    @PreAuthorize("hasAuthority('TRANSFER_GOODS')")
     public ResponseEntity<ApiResponse<TransferGoodsListResponseData>> transferGoods(@RequestBody TransferGoodsCommand transferGoodsCommand) {
         ApiResponse<TransferGoodsListResponseData> transferGoodsResponse = inventoryApplicationService.transferGoods(transferGoodsCommand);
         log.info("Successfully transferred goods from {} to {}", transferGoodsCommand.getSourceWarehouseId(), transferGoodsCommand.getDestinationWarehouseId());

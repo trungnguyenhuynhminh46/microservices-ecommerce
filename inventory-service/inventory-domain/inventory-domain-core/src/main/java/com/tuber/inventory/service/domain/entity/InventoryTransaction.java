@@ -57,6 +57,11 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
             return this;
         }
 
+        public Builder id(UUID val) {
+            id = new UniqueUUID(val);
+            return this;
+        }
+
         public Builder productId(UUID val) {
             productId = val;
             return this;

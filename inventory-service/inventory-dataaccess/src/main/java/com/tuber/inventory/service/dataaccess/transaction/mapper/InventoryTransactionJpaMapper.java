@@ -15,8 +15,4 @@ public abstract class InventoryTransactionJpaMapper {
     protected UUID map(UniqueUUID id) {
         return id.getValue();
     }
-
-    protected UniqueUUID map(UUID id) {
-        return new UniqueUUID(id);
-    }
 }
