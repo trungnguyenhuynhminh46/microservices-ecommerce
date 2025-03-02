@@ -39,7 +39,8 @@ spring:
           uri: http://localhost:8084
           predicates:
               - Path=${app.api-prefix}/inventory/inventories/**,
-                  ${app.api-prefix}/inventory/warehouses/**
+                ${app.api-prefix}/inventory/warehouses/**,
+                ${app.api-prefix}/inventory/transactions/**
           filters:
               - StripPrefix=1
 services:

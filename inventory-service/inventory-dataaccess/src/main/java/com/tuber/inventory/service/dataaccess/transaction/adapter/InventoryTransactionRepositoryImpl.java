@@ -9,19 +9,26 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class InventoryTransactionRepositoryImpl implements InventoryTransactionRepository {
     InventoryTransactionJpaRepository inventoryTransactionJpaRepository;
-    InventoryTransactionJpaMapper inventoryTransactionMapper;
+    InventoryTransactionJpaMapper inventoryTransactionJpaMapper;
 
     @Override
     public InventoryTransaction save(InventoryTransaction inventoryTransaction) {
-        return inventoryTransactionMapper.inventoryTransactionJpaEntityToInventoryTransactionEntity(
+        return inventoryTransactionJpaMapper.inventoryTransactionJpaEntityToInventoryTransactionEntity(
                 inventoryTransactionJpaRepository.save(
-                        inventoryTransactionMapper.inventoryTransactionEntityToInventoryTransactionJpaEntity(inventoryTransaction)
+                        inventoryTransactionJpaMapper.inventoryTransactionEntityToInventoryTransactionJpaEntity(inventoryTransaction)
                 )
         );
+    }
+
+    @Override
+    public List<InventoryTransaction> findAll() {
+        return inventoryTransactionJpaRepository.findAll().stream().map(inventoryTransactionJpaMapper::inventoryTransactionJpaEntityToInventoryTransactionEntity).toList();
     }
 }

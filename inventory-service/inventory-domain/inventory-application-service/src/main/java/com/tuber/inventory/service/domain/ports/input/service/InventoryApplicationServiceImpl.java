@@ -2,8 +2,10 @@ package com.tuber.inventory.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.inventory.service.domain.dto.inventory.*;
+import com.tuber.inventory.service.domain.dto.transaction.TransactionsListResponseData;
 import com.tuber.inventory.service.domain.dto.warehouse.*;
 import com.tuber.inventory.service.domain.helper.inventory.GoodsTransferHelper;
+import com.tuber.inventory.service.domain.helper.transaction.TransactionsHelper;
 import com.tuber.inventory.service.domain.helper.warehouse.CreateWarehouseHelper;
 import com.tuber.inventory.service.domain.helper.warehouse.ReadWarehouseHelper;
 import com.tuber.inventory.service.domain.helper.warehouse.UpdateWarehouseHelper;
@@ -22,6 +24,7 @@ public class InventoryApplicationServiceImpl implements InventoryApplicationServ
     ReadWarehouseHelper readWarehouseHelper;
     UpdateWarehouseHelper updateWarehouseHelper;
     GoodsTransferHelper goodsTransferHelper;
+    TransactionsHelper transactionsHelper;
 
     @Override
     public ApiResponse<WarehouseResponseData> createWarehouse(CreateWarehouseCommand createWarehouseCommand) {
@@ -56,5 +59,10 @@ public class InventoryApplicationServiceImpl implements InventoryApplicationServ
     @Override
     public ApiResponse<TransferGoodsListResponseData> transferGoods(TransferGoodsCommand transferGoodsCommand) {
         return goodsTransferHelper.transferGoods(transferGoodsCommand);
+    }
+
+    @Override
+    public ApiResponse<TransactionsListResponseData> getAllTransactions() {
+        return transactionsHelper.getAllTransactions();
     }
 }

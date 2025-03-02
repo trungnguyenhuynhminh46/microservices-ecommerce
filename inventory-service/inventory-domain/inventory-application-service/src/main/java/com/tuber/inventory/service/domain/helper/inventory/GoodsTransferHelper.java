@@ -127,11 +127,13 @@ public class GoodsTransferHelper {
 
         for (GoodInfoDTO goodInfo : sanitizeGoodsInfo(importGoodsCommand.getGoods())) {
             Inventory inventory = addStockToInventory(goodInfo, destinationWarehouseId, updaterUsername);
-            updatedInventories.add(inventory);
-            InventoryTransaction transaction = inventoryDomainService.validateAndInitializeInventoryTransaction(
-                    transactionMapper.goodInfoToAddTransaction(goodInfo, inventory.getSku(), destinationWarehouseId, inventory.getCreator())
-            );
-            commonInventoryTransactionHelper.saveInventoryTransaction(transaction);
+            if (inventory != null) {
+                updatedInventories.add(inventory);
+                InventoryTransaction transaction = inventoryDomainService.validateAndInitializeInventoryTransaction(
+                        transactionMapper.goodInfoToAddTransaction(goodInfo, inventory.getSku(), destinationWarehouseId, inventory.getCreator(), importGoodsCommand.getDescription())
+                );
+                commonInventoryTransactionHelper.saveInventoryTransaction(transaction);
+            }
         }
 
         return ApiResponse.<InventoriesListResponseData>builder()
@@ -155,7 +157,7 @@ public class GoodsTransferHelper {
             if (inventory != null) {
                 updatedInventories.add(inventory);
                 InventoryTransaction transaction = inventoryDomainService.validateAndInitializeInventoryTransaction(
-                        transactionMapper.goodInfoToRemoveTransaction(goodInfo, inventory.getSku(), destinationWarehouseId, inventory.getCreator())
+                        transactionMapper.goodInfoToRemoveTransaction(goodInfo, inventory.getSku(), destinationWarehouseId, inventory.getCreator(), exportGoodsCommand.getDescription())
                 );
                 commonInventoryTransactionHelper.saveInventoryTransaction(transaction);
             }
@@ -187,7 +189,7 @@ public class GoodsTransferHelper {
                 Inventory destinationInventory = addStockToInventory(goodInfoDTO, destinationWarehouseId, commonHelper.extractTokenSubject());
                 updatedInventories.add(inventoryMapper.inventoriesToTransferGoodsResponseData(sourceInventory, destinationInventory));
                 InventoryTransaction transferTransaction = inventoryDomainService.validateAndInitializeInventoryTransaction(
-                        transactionMapper.goodInfoToTransferTransaction(goodInfoDTO, sourceInventory.getSku(), sourceWarehouseId, destinationWarehouseId, sourceInventory.getCreator())
+                        transactionMapper.goodInfoToTransferTransaction(goodInfoDTO, sourceInventory.getSku(), sourceWarehouseId, destinationWarehouseId, sourceInventory.getCreator(), transferGoodsCommand.getDescription())
                 );
                 commonInventoryTransactionHelper.saveInventoryTransaction(transferTransaction);
             }
