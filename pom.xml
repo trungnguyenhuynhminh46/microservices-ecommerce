@@ -15,6 +15,7 @@
         <module>identity-service</module>
         <module>product-service</module>
         <module>inventory-service</module>
+        <module>order-service</module>
     </modules>
 
     <parent>
@@ -152,6 +153,33 @@
             <dependency>
                 <groupId>com.tuber</groupId>
                 <artifactId>inventory-messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Order service           -->
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>order-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>order-dataaccess</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>order-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>order-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>order-messaging</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
