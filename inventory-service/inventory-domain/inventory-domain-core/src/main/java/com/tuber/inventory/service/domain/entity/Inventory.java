@@ -4,13 +4,16 @@ import com.tuber.domain.entity.AggregateRoot;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
 import com.tuber.inventory.service.domain.exception.InventoryDomainException;
+import com.tuber.inventory.service.domain.valueobject.ProductAssignedAttribute;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class Inventory extends AggregateRoot<UniqueUUID> {
-    private UUID productId;
+    private Product product;
     private String sku;
+    private List<ProductAssignedAttribute> assignedAttributes;
     private UUID warehouseId;
     private Integer stockQuantity;
     private String creator;
@@ -20,7 +23,7 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
 
     private Inventory(Builder builder) {
         super.setId(builder.id);
-        productId = builder.productId;
+        product = builder.product;
         sku = builder.sku;
         warehouseId = builder.warehouseId;
         stockQuantity = builder.stockQuantity;
@@ -37,7 +40,7 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
 
     public static final class Builder {
         private UniqueUUID id;
-        private UUID productId;
+        private Product product;
         private String sku;
         private UUID warehouseId;
         private Integer stockQuantity;
@@ -59,8 +62,8 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
             return this;
         }
 
-        public Builder productId(UUID val) {
-            productId = val;
+        public Builder product(Product val) {
+            product = val;
             return this;
         }
 
@@ -104,12 +107,12 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         }
     }
 
-    public UUID getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(UUID productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public String getSku() {
@@ -168,8 +171,16 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         this.updatedAt = updatedAt;
     }
 
+    public void validateAssignedAttributes() {
+        //TODO: Implement validation
+    }
+
+    public void validateSku() {
+        //TODO: Implement validation
+    }
+
     public boolean isValidForInitialization() {
-        return getProductId() != null && getSku() != null
+        return getProduct() != null && getSku() != null
                 && getWarehouseId() != null && getStockQuantity() != null
                 && getCreator() != null && getUpdater() != null && getId() == null
                 && getCreatedAt() == null && getUpdatedAt() == null;

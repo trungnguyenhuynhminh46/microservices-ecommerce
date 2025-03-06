@@ -7,6 +7,7 @@ import com.tuber.inventory.service.domain.dto.inventory.TransferGoodsResponseDat
 import com.tuber.inventory.service.domain.dto.shared.AttributeDTO;
 import com.tuber.inventory.service.domain.dto.shared.GoodInfoDTO;
 import com.tuber.inventory.service.domain.entity.Inventory;
+import com.tuber.inventory.service.domain.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -17,9 +18,9 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public abstract class InventoryMapper {
-    public Inventory goodInfoToEmptyInventory(GoodInfoDTO goodInfo, String sku, UUID warehouseId, String creator) {
+    public Inventory goodInfoToEmptyInventory(GoodInfoDTO goodInfo, Product product, String sku, UUID warehouseId, String creator) {
         return Inventory.builder()
-                .productId(UUID.fromString(goodInfo.getProductId()))
+                .product(product)
                 .sku(sku)
                 .warehouseId(warehouseId)
                 .stockQuantity(0)

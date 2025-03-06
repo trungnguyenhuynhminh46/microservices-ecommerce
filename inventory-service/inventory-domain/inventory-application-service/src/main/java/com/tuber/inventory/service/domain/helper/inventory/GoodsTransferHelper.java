@@ -12,12 +12,14 @@ import com.tuber.inventory.service.domain.dto.shared.AttributeDTO;
 import com.tuber.inventory.service.domain.dto.shared.GoodInfoDTO;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.InventoryTransaction;
+import com.tuber.inventory.service.domain.entity.Product;
 import com.tuber.inventory.service.domain.event.InventoryCreatedEvent;
 import com.tuber.inventory.service.domain.exception.InventoryDomainException;
 import com.tuber.inventory.service.domain.helper.CommonInventoryHelper;
 import com.tuber.inventory.service.domain.helper.CommonInventoryTransactionHelper;
 import com.tuber.inventory.service.domain.helper.CommonWarehouseHelper;
 import com.tuber.inventory.service.domain.mapper.InventoryMapper;
+import com.tuber.inventory.service.domain.mapper.ProductMapper;
 import com.tuber.inventory.service.domain.mapper.TransactionMapper;
 import com.tuber.inventory.service.domain.ports.output.http.client.ProductServiceClient;
 import com.tuber.inventory.service.domain.ports.output.repository.InventoryRepository;
@@ -48,10 +50,11 @@ public class GoodsTransferHelper {
     CommonInventoryHelper commonInventoryHelper;
     InventoryMapper inventoryMapper;
     TransactionMapper transactionMapper;
+    ProductMapper productMapper;
 
-    protected ProductResponseData verifyProductExists(String productId) {
+    protected Product verifyProductExists(String productId) {
         ResponseEntity<ApiResponse<ProductResponseData>> getProductDetailResponse = productServiceClient.getProductDetail(productId);
-        return Objects.requireNonNull(getProductDetailResponse.getBody()).getData();
+        return productMapper.productResponseDataToProductEntity(Objects.requireNonNull(getProductDetailResponse.getBody()).getData());
     }
 
     //TODO: Consider moving to Product entity
@@ -74,11 +77,13 @@ public class GoodsTransferHelper {
     }
 
     protected Inventory getExistedInventoryOrInitializedEmptyInventory(GoodInfoDTO goodInfo, UUID warehouseId, String creator) {
-        ProductResponseData productDetail = verifyProductExists(goodInfo.getProductId());
-        String sku = commonProductHelper.encodeAttributesToSku(inventoryMapper.attributeDTOsListToMapStringString(validateAttributes(productDetail, goodInfo.getAttributes())));
+        Product productDetail = verifyProductExists(goodInfo.getProductId());
+//        String sku = commonProductHelper.encodeAttributesToSku(inventoryMapper.attributeDTOsListToMapStringString(validateAttributes(productDetail, goodInfo.getAttributes())));
+        String sku = null;
         Optional<Inventory> inventory = inventoryRepository.findByProductIdAndSkuAndWarehouseId(UUID.fromString(goodInfo.getProductId()), sku, warehouseId);
         if (inventory.isEmpty()) {
-            Inventory emptyInventory = inventoryMapper.goodInfoToEmptyInventory(goodInfo, sku, warehouseId, creator);
+//            Inventory emptyInventory = inventoryMapper.goodInfoToEmptyInventory(goodInfo, sku, warehouseId, creator);
+            Inventory emptyInventory = null;
             InventoryCreatedEvent inventoryCreatedEvent = inventoryDomainService.validateAndInitializeInventory(emptyInventory);
             return inventoryCreatedEvent.getInventory();
         }

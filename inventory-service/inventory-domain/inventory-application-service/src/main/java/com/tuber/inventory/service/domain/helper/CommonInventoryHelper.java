@@ -21,8 +21,8 @@ public class CommonInventoryHelper {
     public Inventory saveInventory(Inventory inventory) {
         Inventory savedInventory = inventoryRepository.save(inventory);
         if (savedInventory == null) {
-            log.error(String.format("Failed to save inventory with product id %s", inventory.getProductId()));
-            throw new InventoryDomainException(InventoryResponseCode.INVENTORY_SAVED_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value(), inventory.getProductId());
+            log.error(String.format("Failed to save inventory with product id %s", inventory.getProduct().getProductId()));
+            throw new InventoryDomainException(InventoryResponseCode.INVENTORY_SAVED_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value(), inventory.getProduct().getProductId());
         }
         return savedInventory;
     }
