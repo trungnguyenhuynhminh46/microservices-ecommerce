@@ -1,6 +1,4 @@
-package com.tuber.inventory.service.domain.constant;
-
-import com.tuber.domain.constant.ResponseCodeBase;
+package com.tuber.domain.constant;
 
 public class InventoryResponseCode extends ResponseCodeBase {
     protected final String serviceName = "inventory";

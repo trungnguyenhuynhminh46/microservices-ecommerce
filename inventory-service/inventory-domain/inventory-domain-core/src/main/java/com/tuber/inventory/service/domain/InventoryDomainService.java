@@ -2,7 +2,7 @@ package com.tuber.inventory.service.domain;
 
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.InventoryTransaction;
-import com.tuber.inventory.service.domain.entity.Warehouse;
+import com.tuber.domain.entity.Warehouse;
 import com.tuber.inventory.service.domain.event.InventoryCreatedEvent;
 import com.tuber.inventory.service.domain.event.WarehouseCreatedEvent;
 

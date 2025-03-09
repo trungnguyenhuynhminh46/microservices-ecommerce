@@ -1,7 +1,7 @@
 package com.tuber.inventory.service.domain.helper.transaction;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
+import com.tuber.domain.constant.InventoryResponseCode;
 import com.tuber.inventory.service.domain.dto.transaction.TransactionsListResponseData;
 import com.tuber.inventory.service.domain.entity.InventoryTransaction;
 import com.tuber.inventory.service.domain.mapper.TransactionMapper;

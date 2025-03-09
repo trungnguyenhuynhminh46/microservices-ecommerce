@@ -1,10 +1,10 @@
 package com.tuber.inventory.service.domain.helper.warehouse;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
+import com.tuber.domain.constant.InventoryResponseCode;
 import com.tuber.inventory.service.domain.dto.warehouse.UpdateWarehouseInfoCommand;
 import com.tuber.inventory.service.domain.dto.warehouse.WarehouseResponseData;
-import com.tuber.inventory.service.domain.entity.Warehouse;
+import com.tuber.domain.entity.Warehouse;
 import com.tuber.inventory.service.domain.helper.CommonWarehouseHelper;
 import com.tuber.inventory.service.domain.mapper.WarehouseMapper;
 import lombok.AccessLevel;

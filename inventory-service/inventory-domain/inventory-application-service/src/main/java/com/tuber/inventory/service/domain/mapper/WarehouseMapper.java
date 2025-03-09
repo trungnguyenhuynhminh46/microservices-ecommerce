@@ -10,7 +10,7 @@ import com.tuber.inventory.service.domain.dto.warehouse.CreateWarehouseCommand;
 import com.tuber.inventory.service.domain.dto.warehouse.UpdateWarehouseInfoCommand;
 import com.tuber.inventory.service.domain.dto.warehouse.WarehouseResponseData;
 import com.tuber.inventory.service.domain.dto.warehouse.WarehousesListResponseData;
-import com.tuber.inventory.service.domain.entity.Warehouse;
+import com.tuber.domain.entity.Warehouse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

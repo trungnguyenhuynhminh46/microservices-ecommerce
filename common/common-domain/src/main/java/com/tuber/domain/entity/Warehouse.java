@@ -1,11 +1,10 @@
-package com.tuber.inventory.service.domain.entity;
+package com.tuber.domain.entity;
 
-import com.tuber.domain.entity.BaseEntity;
+import com.tuber.domain.constant.InventoryResponseCode;
+import com.tuber.domain.exception.InventoryDomainException;
 import com.tuber.domain.valueobject.Address;
 import com.tuber.domain.valueobject.Coordinate;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
-import com.tuber.inventory.service.domain.exception.InventoryDomainException;
 
 import java.time.LocalDate;
 import java.util.UUID;

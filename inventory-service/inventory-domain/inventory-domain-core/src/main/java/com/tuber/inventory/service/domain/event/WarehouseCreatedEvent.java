@@ -1,7 +1,7 @@
 package com.tuber.inventory.service.domain.event;
 
 import com.tuber.domain.event.DomainEvent;
-import com.tuber.inventory.service.domain.entity.Warehouse;
+import com.tuber.domain.entity.Warehouse;
 
 public class WarehouseCreatedEvent implements DomainEvent<Warehouse> {
     private final Warehouse warehouse;

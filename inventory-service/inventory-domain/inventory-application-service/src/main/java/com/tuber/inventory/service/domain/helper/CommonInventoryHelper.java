@@ -1,8 +1,8 @@
 package com.tuber.inventory.service.domain.helper;
 
-import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
+import com.tuber.domain.constant.InventoryResponseCode;
 import com.tuber.inventory.service.domain.entity.Inventory;
-import com.tuber.inventory.service.domain.exception.InventoryDomainException;
+import com.tuber.domain.exception.InventoryDomainException;
 import com.tuber.inventory.service.domain.ports.output.repository.InventoryRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

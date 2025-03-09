@@ -1,6 +1,6 @@
 package com.tuber.inventory.service.domain.ports.output.repository;
 
-import com.tuber.inventory.service.domain.entity.Warehouse;
+import com.tuber.domain.entity.Warehouse;
 
 import java.util.List;
 import java.util.Optional;

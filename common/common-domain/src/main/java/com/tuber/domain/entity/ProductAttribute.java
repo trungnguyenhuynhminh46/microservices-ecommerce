@@ -1,7 +1,6 @@
-package com.tuber.inventory.service.domain.entity;
+package com.tuber.domain.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.id.LongId;
 
 import java.util.UUID;

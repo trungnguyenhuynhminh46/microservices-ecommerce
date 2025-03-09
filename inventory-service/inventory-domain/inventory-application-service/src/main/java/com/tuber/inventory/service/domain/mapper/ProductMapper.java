@@ -8,7 +8,7 @@ import com.tuber.inventory.service.domain.dto.http.client.product.ProductAttribu
 import com.tuber.inventory.service.domain.dto.http.client.product.ProductAttributeOption;
 import com.tuber.inventory.service.domain.dto.http.client.product.ProductResponseData;
 import com.tuber.inventory.service.domain.entity.Product;
-import com.tuber.inventory.service.domain.entity.ProductAttribute;
+import com.tuber.domain.entity.ProductAttribute;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 

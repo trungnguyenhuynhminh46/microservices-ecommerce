@@ -3,7 +3,7 @@ package com.tuber.order.service.domain.entity;
 import com.tuber.domain.entity.AggregateRoot;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.order.service.domain.valueobject.OrderStatus;
+import com.tuber.order.service.domain.valueobject.enums.OrderStatus;
 
 import java.time.LocalDate;
 import java.util.List;

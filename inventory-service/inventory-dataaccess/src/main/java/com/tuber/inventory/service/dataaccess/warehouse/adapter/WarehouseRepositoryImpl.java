@@ -2,7 +2,7 @@ package com.tuber.inventory.service.dataaccess.warehouse.adapter;
 
 import com.tuber.inventory.service.dataaccess.warehouse.mapper.WarehouseJpaMapper;
 import com.tuber.inventory.service.dataaccess.warehouse.repository.WarehouseJpaRepository;
-import com.tuber.inventory.service.domain.entity.Warehouse;
+import com.tuber.domain.entity.Warehouse;
 import com.tuber.inventory.service.domain.ports.output.repository.WarehouseRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

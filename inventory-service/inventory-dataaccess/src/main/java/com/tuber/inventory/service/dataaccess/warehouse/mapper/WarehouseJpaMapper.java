@@ -2,7 +2,7 @@ package com.tuber.inventory.service.dataaccess.warehouse.mapper;
 
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.inventory.service.dataaccess.warehouse.entity.WarehouseJpaEntity;
-import com.tuber.inventory.service.domain.entity.Warehouse;
+import com.tuber.domain.entity.Warehouse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

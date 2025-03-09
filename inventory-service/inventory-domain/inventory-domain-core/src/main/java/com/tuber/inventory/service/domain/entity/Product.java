@@ -1,6 +1,7 @@
 package com.tuber.inventory.service.domain.entity;
 
 import com.tuber.domain.entity.AggregateRoot;
+import com.tuber.domain.entity.ProductAttribute;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.inventory.service.domain.valueobject.ProductAssignedAttribute;
