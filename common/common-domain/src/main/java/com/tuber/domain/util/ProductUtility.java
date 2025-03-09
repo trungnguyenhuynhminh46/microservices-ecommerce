@@ -1,21 +1,11 @@
-package com.tuber.application.helper;
-
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+package com.tuber.domain.util;
 
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Slf4j
-@Component
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CommonProductHelper {
+public class ProductUtility {
     public String encodeAttributesToSku(Map<String, String> attributes) {
         // Example of sortedAttributesString: "color=red&size=large"
         String sortedAttributesString = attributes.entrySet().stream()

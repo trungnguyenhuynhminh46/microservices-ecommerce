@@ -2,13 +2,10 @@ package com.tuber.inventory.service.domain.helper.inventory;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.application.helper.CommonHelper;
-import com.tuber.application.helper.CommonProductHelper;
 import com.tuber.inventory.service.domain.InventoryDomainService;
 import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
-import com.tuber.inventory.service.domain.dto.http.client.product.ProductAttributeDTO;
 import com.tuber.inventory.service.domain.dto.http.client.product.ProductResponseData;
 import com.tuber.inventory.service.domain.dto.inventory.*;
-import com.tuber.inventory.service.domain.dto.shared.AttributeDTO;
 import com.tuber.inventory.service.domain.dto.shared.GoodInfoDTO;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.InventoryTransaction;
@@ -41,7 +38,6 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GoodsTransferHelper {
     CommonHelper commonHelper;
-    CommonProductHelper commonProductHelper;
     CommonWarehouseHelper commonWarehouseHelper;
     CommonInventoryTransactionHelper commonInventoryTransactionHelper;
     ProductServiceClient productServiceClient;
@@ -57,33 +53,11 @@ public class GoodsTransferHelper {
         return productMapper.productResponseDataToProductEntity(Objects.requireNonNull(getProductDetailResponse.getBody()).getData());
     }
 
-    //TODO: Consider moving to Product entity
-    protected List<AttributeDTO> validateAttributes(ProductResponseData productDetail, List<AttributeDTO> attributes) {
-        List<ProductAttributeDTO> productAttributes = productDetail.getAttributes();
-        for (AttributeDTO attribute : attributes) {
-            if (productAttributes.stream().noneMatch(productAttribute -> productAttribute.getName().equals(attribute.getName()))) {
-                throw new InventoryDomainException(InventoryResponseCode.PRODUCT_ATTRIBUTE_NOT_EXISTS, HttpStatus.BAD_REQUEST.value(), productDetail.getName(), attribute.getName());
-            }
-        }
-
-        for (ProductAttributeDTO productAttribute : productAttributes) {
-            if (attributes.stream().noneMatch(attribute -> attribute.getName().equals(productAttribute.getName()))) {
-                attributes.add(new AttributeDTO(productAttribute.getName(), productAttribute.getDefaultValue()));
-            }
-        }
-
-        attributes.sort(Comparator.comparing(AttributeDTO::getName));
-        return attributes;
-    }
-
     protected Inventory getExistedInventoryOrInitializedEmptyInventory(GoodInfoDTO goodInfo, UUID warehouseId, String creator) {
         Product productDetail = verifyProductExists(goodInfo.getProductId());
-//        String sku = commonProductHelper.encodeAttributesToSku(inventoryMapper.attributeDTOsListToMapStringString(validateAttributes(productDetail, goodInfo.getAttributes())));
-        String sku = null;
-        Optional<Inventory> inventory = inventoryRepository.findByProductIdAndSkuAndWarehouseId(UUID.fromString(goodInfo.getProductId()), sku, warehouseId);
+        Inventory emptyInventory = inventoryMapper.goodInfoToEmptyInventory(goodInfo, productDetail, inventoryMapper.attributeDTOsToProductAssignedAttributes(goodInfo.getAttributes()), warehouseId, creator);
+        Optional<Inventory> inventory = inventoryRepository.findByProductIdAndSkuAndWarehouseId(UUID.fromString(goodInfo.getProductId()), emptyInventory.getSku(), warehouseId);
         if (inventory.isEmpty()) {
-//            Inventory emptyInventory = inventoryMapper.goodInfoToEmptyInventory(goodInfo, sku, warehouseId, creator);
-            Inventory emptyInventory = null;
             InventoryCreatedEvent inventoryCreatedEvent = inventoryDomainService.validateAndInitializeInventory(emptyInventory);
             return inventoryCreatedEvent.getInventory();
         }
@@ -188,7 +162,7 @@ public class GoodsTransferHelper {
         commonWarehouseHelper.verifyWarehouseExist(sourceWarehouseId);
         commonWarehouseHelper.verifyWarehouseExist(destinationWarehouseId);
 
-        for (GoodInfoDTO goodInfoDTO: sanitizeGoodsInfo(transferGoodsCommand.getGoods())) {
+        for (GoodInfoDTO goodInfoDTO : sanitizeGoodsInfo(transferGoodsCommand.getGoods())) {
             Inventory sourceInventory = removeStockFromInventory(goodInfoDTO, sourceWarehouseId, commonHelper.extractTokenSubject(), failedRequests);
             if (sourceInventory != null) {
                 Inventory destinationInventory = addStockToInventory(goodInfoDTO, destinationWarehouseId, commonHelper.extractTokenSubject());

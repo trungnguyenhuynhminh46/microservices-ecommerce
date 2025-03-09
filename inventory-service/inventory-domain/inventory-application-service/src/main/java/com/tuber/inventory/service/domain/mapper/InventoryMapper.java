@@ -8,6 +8,7 @@ import com.tuber.inventory.service.domain.dto.shared.AttributeDTO;
 import com.tuber.inventory.service.domain.dto.shared.GoodInfoDTO;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.Product;
+import com.tuber.inventory.service.domain.valueobject.ProductAssignedAttribute;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,20 +19,22 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public abstract class InventoryMapper {
-    public Inventory goodInfoToEmptyInventory(GoodInfoDTO goodInfo, Product product, String sku, UUID warehouseId, String creator) {
-        return Inventory.builder()
+    public Inventory goodInfoToEmptyInventory(GoodInfoDTO goodInfo, Product product, List<ProductAssignedAttribute> assignedAttributes, UUID warehouseId, String creator) {
+        Inventory inventory = Inventory.builder()
                 .product(product)
-                .sku(sku)
                 .warehouseId(warehouseId)
                 .stockQuantity(0)
                 .creator(creator)
                 .updater(creator)
                 .build();
+
+        inventory.setAssignedAttributes(assignedAttributes);
+        return inventory;
     }
 
-    public Map<String, String> attributeDTOsListToMapStringString(List<AttributeDTO> attributeDTOs) {
-        return attributeDTOs.stream().collect(Collectors.toMap(AttributeDTO::getName, AttributeDTO::getValue));
-    }
+    public abstract ProductAssignedAttribute attributeDTOToProductAssignedAttribute(AttributeDTO attributeDTO);
+
+    public abstract List<ProductAssignedAttribute> attributeDTOsToProductAssignedAttributes(List<AttributeDTO> attributeDTOs);
 
     @Mapping(target = "quantity", source = "stockQuantity")
     public abstract InventoryResponseData inventoryToInventoryResponseData(Inventory inventory);

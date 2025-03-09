@@ -1,16 +1,21 @@
 package com.tuber.inventory.service.domain.entity;
 
 import com.tuber.domain.entity.AggregateRoot;
+import com.tuber.domain.util.ProductUtility;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.inventory.service.domain.constant.InventoryResponseCode;
 import com.tuber.inventory.service.domain.exception.InventoryDomainException;
 import com.tuber.inventory.service.domain.valueobject.ProductAssignedAttribute;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Inventory extends AggregateRoot<UniqueUUID> {
+    private ProductUtility productUtility = new ProductUtility();
     private Product product;
     private String sku;
     private List<ProductAssignedAttribute> assignedAttributes;
@@ -115,14 +120,6 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         this.product = product;
     }
 
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
     public UUID getWarehouseId() {
         return warehouseId;
     }
@@ -171,12 +168,47 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         this.updatedAt = updatedAt;
     }
 
-    public void validateAssignedAttributes() {
-        //TODO: Implement validation
+    public void setAssignedAttributes(List<ProductAssignedAttribute> assignedAttributes) {
+        List<ProductAttribute> attributes = getProduct().getAttributes();
+        for (ProductAssignedAttribute assignedAttribute : assignedAttributes) {
+            if (attributes.stream().noneMatch(attribute -> attribute.getName().equals(assignedAttribute.getName()))) {
+                throw new IllegalArgumentException(String.format("Product %s does not have attribute %s", getProduct().getId(), assignedAttribute.getName()));
+            }
+        }
+
+        for (ProductAttribute attribute: attributes) {
+            if (assignedAttributes.stream().noneMatch(assignedAttribute -> assignedAttribute.getName().equals(attribute.getName()))) {
+                assignedAttributes.add(new ProductAssignedAttribute(attribute.getName(), attribute.getDefaultValue()));
+            }
+        }
+
+        assignedAttributes.sort(Comparator.comparing(ProductAssignedAttribute::getName));
+        this.assignedAttributes = assignedAttributes;
+        this.sku = productUtility.encodeAttributesToSku(assignedAttributes.stream().collect(Collectors.toMap(ProductAssignedAttribute::getName, ProductAssignedAttribute::getValue)));
     }
 
-    public void validateSku() {
-        //TODO: Implement validation
+    public List<ProductAssignedAttribute> getAssignedAttributes() {
+        return assignedAttributes;
+    }
+
+    public void setSku(String sku) {
+        Map<String, String> mapAssignedAttributes = productUtility.decodeSkuToAttributes(sku);
+        List<ProductAttribute> attributes = getProduct().getAttributes();
+
+        mapAssignedAttributes.forEach((name, value) -> {
+            if (attributes.stream().noneMatch(attribute -> attribute.getName().equals(name))) {
+                throw new IllegalArgumentException(String.format("Product %s does not have attribute %s", getProduct().getId(), name));
+            }
+        });
+
+        this.assignedAttributes = mapAssignedAttributes.entrySet().stream()
+                .map(entry -> new ProductAssignedAttribute(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+        this.sku = sku;
+    }
+
+    public String getSku() {
+        return sku;
     }
 
     public boolean isValidForInitialization() {
