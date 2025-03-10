@@ -1,4 +1,4 @@
-package com.tuber.order.service.domain.ports.dto.order;
+package com.tuber.order.service.domain.dto.order;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

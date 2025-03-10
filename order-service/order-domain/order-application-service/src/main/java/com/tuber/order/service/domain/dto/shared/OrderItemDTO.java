@@ -1,4 +1,4 @@
-package com.tuber.order.service.domain.ports.dto.shared;
+package com.tuber.order.service.domain.dto.shared;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

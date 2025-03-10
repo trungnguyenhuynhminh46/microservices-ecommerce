@@ -1,8 +1,8 @@
 package com.tuber.order.service.application;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.order.service.domain.ports.dto.order.CreateOrderCommand;
-import com.tuber.order.service.domain.ports.dto.order.OrderResponseData;
+import com.tuber.order.service.domain.dto.order.CreateOrderCommand;
+import com.tuber.order.service.domain.dto.order.OrderResponseData;
 import com.tuber.order.service.domain.ports.input.service.OrderApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

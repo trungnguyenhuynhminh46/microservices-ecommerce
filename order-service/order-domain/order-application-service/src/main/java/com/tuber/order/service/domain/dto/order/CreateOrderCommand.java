@@ -1,6 +1,6 @@
-package com.tuber.order.service.domain.ports.dto.order;
+package com.tuber.order.service.domain.dto.order;
 
-import com.tuber.order.service.domain.ports.dto.shared.OrderItemDTO;
+import com.tuber.order.service.domain.dto.shared.OrderItemDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
