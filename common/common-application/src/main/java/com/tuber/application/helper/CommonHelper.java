@@ -1,7 +1,7 @@
 package com.tuber.application.helper;
 
 import com.nimbusds.jwt.SignedJWT;
-import com.tuber.domain.constant.ResponseCode;
+import com.tuber.domain.constant.response.code.ResponseCode;
 import com.tuber.domain.exception.DomainException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

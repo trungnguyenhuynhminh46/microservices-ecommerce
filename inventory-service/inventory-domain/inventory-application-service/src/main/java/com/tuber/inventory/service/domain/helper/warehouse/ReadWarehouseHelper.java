@@ -1,7 +1,7 @@
 package com.tuber.inventory.service.domain.helper.warehouse;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.domain.constant.InventoryResponseCode;
+import com.tuber.domain.constant.response.code.InventoryResponseCode;
 import com.tuber.inventory.service.domain.dto.warehouse.GetWarehouseQuery;
 import com.tuber.inventory.service.domain.dto.warehouse.WarehouseResponseData;
 import com.tuber.inventory.service.domain.dto.warehouse.WarehousesListResponseData;

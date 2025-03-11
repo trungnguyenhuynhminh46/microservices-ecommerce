@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Refund extends BaseEntity<UniqueUUID> {
-    Order order;
+    OrderEntity order;
     Money refundAmount;
     String reason;
     RefundStatus status;
@@ -30,11 +30,11 @@ public class Refund extends BaseEntity<UniqueUUID> {
         return new Builder();
     }
 
-    public Order getOrder() {
+    public OrderEntity getOrder() {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(OrderEntity order) {
         this.order = order;
     }
 
@@ -81,7 +81,7 @@ public class Refund extends BaseEntity<UniqueUUID> {
 
     public static final class Builder {
         private UniqueUUID id;
-        private Order order;
+        private OrderEntity order;
         private Money refundAmount;
         private String reason;
         private RefundStatus status;
@@ -101,7 +101,7 @@ public class Refund extends BaseEntity<UniqueUUID> {
             return this;
         }
 
-        public Builder order(Order val) {
+        public Builder order(OrderEntity val) {
             order = val;
             return this;
         }

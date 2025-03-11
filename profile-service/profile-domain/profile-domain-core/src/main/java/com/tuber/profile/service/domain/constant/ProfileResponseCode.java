@@ -1,6 +1,6 @@
 package com.tuber.profile.service.domain.constant;
 
-import com.tuber.domain.constant.ResponseCodeBase;
+import com.tuber.domain.constant.response.code.ResponseCodeBase;
 
 public class ProfileResponseCode extends ResponseCodeBase {
     protected final int defaultResponseCode = 1000;
@@ -18,14 +18,6 @@ public class ProfileResponseCode extends ResponseCodeBase {
 
     public String getServiceName() {
         return this.serviceName;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     protected String formatErrorCode(int code) {

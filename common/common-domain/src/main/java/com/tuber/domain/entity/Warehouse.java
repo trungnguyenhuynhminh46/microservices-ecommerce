@@ -1,6 +1,6 @@
 package com.tuber.domain.entity;
 
-import com.tuber.domain.constant.InventoryResponseCode;
+import com.tuber.domain.constant.response.code.InventoryResponseCode;
 import com.tuber.domain.exception.InventoryDomainException;
 import com.tuber.domain.valueobject.Address;
 import com.tuber.domain.valueobject.Coordinate;

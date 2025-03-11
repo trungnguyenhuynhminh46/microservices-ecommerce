@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class Order extends AggregateRoot<UniqueUUID> {
+public class OrderEntity extends AggregateRoot<UniqueUUID> {
     private String trackingId;
     private String buyer;
     private List<OrderItem> orderItems;
@@ -19,7 +19,7 @@ public class Order extends AggregateRoot<UniqueUUID> {
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
-    private Order(Builder builder) {
+    private OrderEntity(Builder builder) {
         super.setId(builder.id);
         setTrackingId(builder.trackingId);
         setBuyer(builder.buyer);
@@ -164,8 +164,8 @@ public class Order extends AggregateRoot<UniqueUUID> {
             return this;
         }
 
-        public Order build() {
-            return new Order(this);
+        public OrderEntity build() {
+            return new OrderEntity(this);
         }
     }
 }

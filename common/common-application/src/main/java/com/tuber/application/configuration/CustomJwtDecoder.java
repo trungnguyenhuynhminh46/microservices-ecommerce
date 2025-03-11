@@ -1,7 +1,7 @@
 package com.tuber.application.configuration;
 
 import com.nimbusds.jwt.SignedJWT;
-import com.tuber.domain.constant.ResponseCode;
+import com.tuber.domain.constant.response.code.ResponseCode;
 import com.tuber.domain.exception.DomainException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;

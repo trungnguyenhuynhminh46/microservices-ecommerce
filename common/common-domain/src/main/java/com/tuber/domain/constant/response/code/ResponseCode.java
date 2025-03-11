@@ -1,4 +1,4 @@
-package com.tuber.domain.constant;
+package com.tuber.domain.constant.response.code;
 
 public class ResponseCode extends ResponseCodeBase {
     protected final String serviceName = "common";

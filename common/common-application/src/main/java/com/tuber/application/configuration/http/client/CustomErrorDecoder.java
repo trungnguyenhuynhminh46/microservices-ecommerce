@@ -2,7 +2,7 @@ package com.tuber.application.configuration.http.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuber.domain.constant.ResponseCode;
+import com.tuber.domain.constant.response.code.ResponseCode;
 import com.tuber.domain.exception.DomainException;
 import feign.FeignException;
 import feign.Response;
@@ -10,7 +10,6 @@ import feign.codec.ErrorDecoder;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.io.InputStream;

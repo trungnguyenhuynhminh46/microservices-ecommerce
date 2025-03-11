@@ -1,6 +1,6 @@
 package com.tuber.inventory.service.domain.helper;
 
-import com.tuber.domain.constant.InventoryResponseCode;
+import com.tuber.domain.constant.response.code.InventoryResponseCode;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.domain.exception.InventoryDomainException;
 import com.tuber.inventory.service.domain.ports.output.repository.InventoryRepository;

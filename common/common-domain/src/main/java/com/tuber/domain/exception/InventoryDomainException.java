@@ -1,7 +1,6 @@
 package com.tuber.domain.exception;
 
-import com.tuber.domain.exception.DomainException;
-import com.tuber.domain.constant.InventoryResponseCode;
+import com.tuber.domain.constant.response.code.InventoryResponseCode;
 
 public class InventoryDomainException extends DomainException {
     protected final String serviceName = "inventory";

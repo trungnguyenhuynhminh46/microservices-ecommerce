@@ -1,6 +1,6 @@
 package com.tuber.product.service.domain.constant;
 
-import com.tuber.domain.constant.ResponseCodeBase;
+import com.tuber.domain.constant.response.code.ResponseCodeBase;
 
 public class ProductResponseCode extends ResponseCodeBase {
     protected final String serviceName = "product";
@@ -49,14 +49,6 @@ public class ProductResponseCode extends ResponseCodeBase {
 
     public String getServiceName() {
         return this.serviceName;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     protected String formatErrorCode(int code) {

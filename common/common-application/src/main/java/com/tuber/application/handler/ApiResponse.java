@@ -3,10 +3,7 @@ package com.tuber.application.handler;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import com.tuber.domain.constant.ResponseCode;
-
-import java.util.List;
-import java.util.Map;
+import com.tuber.domain.constant.response.code.ResponseCode;
 
 @Getter
 @Builder

@@ -1,6 +1,6 @@
 package com.tuber.identity.service.domain.constant;
 
-import com.tuber.domain.constant.ResponseCodeBase;
+import com.tuber.domain.constant.response.code.ResponseCodeBase;
 
 public class IdentityResponseCode extends ResponseCodeBase {
     protected final String serviceName = "identity";
@@ -66,14 +66,6 @@ public class IdentityResponseCode extends ResponseCodeBase {
 
     public String getServiceName() {
         return this.serviceName;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     protected String formatErrorCode(int code) {

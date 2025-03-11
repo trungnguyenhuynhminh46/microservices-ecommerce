@@ -2,7 +2,7 @@ package com.tuber.application.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.domain.constant.ResponseCode;
+import com.tuber.domain.constant.response.code.ResponseCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

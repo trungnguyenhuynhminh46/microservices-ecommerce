@@ -4,7 +4,7 @@ import com.tuber.domain.entity.AggregateRoot;
 import com.tuber.domain.entity.ProductAttribute;
 import com.tuber.domain.util.ProductUtility;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.domain.constant.InventoryResponseCode;
+import com.tuber.domain.constant.response.code.InventoryResponseCode;
 import com.tuber.domain.exception.InventoryDomainException;
 import com.tuber.inventory.service.domain.valueobject.ProductAssignedAttribute;
 

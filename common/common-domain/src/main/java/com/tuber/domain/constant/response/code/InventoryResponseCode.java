@@ -1,4 +1,4 @@
-package com.tuber.domain.constant;
+package com.tuber.domain.constant.response.code;
 
 public class InventoryResponseCode extends ResponseCodeBase {
     protected final String serviceName = "inventory";
@@ -42,14 +42,6 @@ public class InventoryResponseCode extends ResponseCodeBase {
 
     public String getServiceName() {
         return this.serviceName;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     protected String formatErrorCode(int code) {

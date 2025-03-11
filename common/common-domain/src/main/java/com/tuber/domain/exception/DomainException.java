@@ -1,6 +1,6 @@
 package com.tuber.domain.exception;
 
-import com.tuber.domain.constant.ResponseCodeBase;
+import com.tuber.domain.constant.response.code.ResponseCodeBase;
 
 public class DomainException extends RuntimeException {
     private final int OK = 200;

@@ -1,4 +1,4 @@
-package com.tuber.domain.constant;
+package com.tuber.domain.constant.response.code;
 
 public abstract class ResponseCodeBase {
     protected String code;
@@ -6,9 +6,13 @@ public abstract class ResponseCodeBase {
 
     public abstract String getServiceName();
 
-    public abstract String getCode();
+    public String getCode() {
+        return code;
+    }
 
-    public abstract String getMessage();
+    public String getMessage() {
+        return message;
+    }
 
     protected abstract String formatErrorCode(int code);
 }
