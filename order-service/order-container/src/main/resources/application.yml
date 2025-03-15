@@ -1,0 +1,19 @@
+server:
+  port: 8085
+service:
+  name: order
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/order_service
+    username: root
+    password: 123456789
+  redis:
+    host: localhost
+    port: 6379
+    time-to-live: 21600s
+product-service:
+  url: http://localhost:8083/product

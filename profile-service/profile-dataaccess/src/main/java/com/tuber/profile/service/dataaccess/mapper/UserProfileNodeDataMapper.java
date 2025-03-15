@@ -1,7 +1,7 @@
-package com.tuber.profile.service.dataaccess.profile.mapper;
+package com.tuber.profile.service.dataaccess.mapper;
 
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.profile.service.dataaccess.profile.entity.UserProfileNode;
+import com.tuber.profile.service.dataaccess.entity.UserProfileNode;
 import com.tuber.profile.service.domain.entity.UserProfile;
 import org.mapstruct.Mapper;
 

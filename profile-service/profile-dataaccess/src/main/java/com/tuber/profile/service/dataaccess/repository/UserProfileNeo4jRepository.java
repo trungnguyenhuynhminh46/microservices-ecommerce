@@ -1,6 +1,6 @@
-package com.tuber.profile.service.dataaccess.profile.repository;
+package com.tuber.profile.service.dataaccess.repository;
 
-import com.tuber.profile.service.dataaccess.profile.entity.UserProfileNode;
+import com.tuber.profile.service.dataaccess.entity.UserProfileNode;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 

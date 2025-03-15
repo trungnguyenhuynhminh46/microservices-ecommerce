@@ -1,7 +1,7 @@
-package com.tuber.profile.service.dataaccess.profile.adapter;
+package com.tuber.profile.service.dataaccess.adapter;
 
-import com.tuber.profile.service.dataaccess.profile.mapper.UserProfileNodeDataMapper;
-import com.tuber.profile.service.dataaccess.profile.repository.UserProfileNeo4jRepository;
+import com.tuber.profile.service.dataaccess.mapper.UserProfileNodeDataMapper;
+import com.tuber.profile.service.dataaccess.repository.UserProfileNeo4jRepository;
 import com.tuber.profile.service.domain.entity.UserProfile;
 import com.tuber.profile.service.domain.ports.output.repository.UserProfileRepository;
 import lombok.AccessLevel;

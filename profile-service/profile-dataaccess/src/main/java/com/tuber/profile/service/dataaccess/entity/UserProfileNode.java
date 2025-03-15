@@ -1,4 +1,4 @@
-package com.tuber.profile.service.dataaccess.profile.entity;
+package com.tuber.profile.service.dataaccess.entity;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
