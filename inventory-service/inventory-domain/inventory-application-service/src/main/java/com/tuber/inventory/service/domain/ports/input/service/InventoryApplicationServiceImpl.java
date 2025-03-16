@@ -2,6 +2,7 @@ package com.tuber.inventory.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.inventory.service.domain.dto.inventory.*;
+import com.tuber.inventory.service.domain.dto.inventory.internal.InternalInventoryDetailsResponseData;
 import com.tuber.inventory.service.domain.dto.transaction.TransactionsListResponseData;
 import com.tuber.inventory.service.domain.dto.warehouse.*;
 import com.tuber.inventory.service.domain.helper.inventory.GoodsTransferHelper;
@@ -64,5 +65,10 @@ public class InventoryApplicationServiceImpl implements InventoryApplicationServ
     @Override
     public ApiResponse<TransactionsListResponseData> getAllTransactions() {
         return transactionsHelper.getAllTransactions();
+    }
+
+    @Override
+    public ApiResponse<InternalInventoryDetailsResponseData> getInventoryDetails() {
+        return null;
     }
 }

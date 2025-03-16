@@ -1,4 +1,4 @@
-package com.tuber.inventory.service.application;
+package com.tuber.inventory.service.application.controller;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.application.validators.ValidUUID;

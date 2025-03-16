@@ -4,7 +4,7 @@ import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.inventory.service.domain.dto.inventory.InventoriesListResponseData;
 import com.tuber.inventory.service.domain.dto.inventory.InventoryResponseData;
 import com.tuber.inventory.service.domain.dto.inventory.TransferGoodsResponseData;
-import com.tuber.inventory.service.domain.dto.shared.AttributeDTO;
+import com.tuber.inventory.service.domain.dto.shared.AssignedAttributeDTO;
 import com.tuber.inventory.service.domain.dto.shared.GoodInfoDTO;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.Product;
@@ -13,7 +13,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -32,9 +31,9 @@ public abstract class InventoryMapper {
         return inventory;
     }
 
-    public abstract ProductAssignedAttribute attributeDTOToProductAssignedAttribute(AttributeDTO attributeDTO);
+    public abstract ProductAssignedAttribute attributeDTOToProductAssignedAttribute(AssignedAttributeDTO assignedAttributeDTO);
 
-    public abstract List<ProductAssignedAttribute> attributeDTOsToProductAssignedAttributes(List<AttributeDTO> attributeDTOs);
+    public abstract List<ProductAssignedAttribute> attributeDTOsToProductAssignedAttributes(List<AssignedAttributeDTO> assignedAttributeDTOS);
 
     @Mapping(target = "quantity", source = "stockQuantity")
     public abstract InventoryResponseData inventoryToInventoryResponseData(Inventory inventory);

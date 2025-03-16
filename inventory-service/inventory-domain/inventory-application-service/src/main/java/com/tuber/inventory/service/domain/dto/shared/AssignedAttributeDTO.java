@@ -1,5 +1,6 @@
 package com.tuber.inventory.service.domain.dto.shared;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +11,9 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AttributeDTO {
+public class AssignedAttributeDTO {
+    @NotNull(message = "Product attribute name is mandatory")
     String name;
-    String defaultValue;
-    String options;
+    @NotNull(message = "Product attribute value is mandatory")
+    String value;
 }
