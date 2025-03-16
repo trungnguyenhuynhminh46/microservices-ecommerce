@@ -2,6 +2,7 @@ package com.tuber.inventory.service.dataaccess.inventory.adapter;
 
 import com.tuber.inventory.service.dataaccess.inventory.mapper.InventoryJpaMapper;
 import com.tuber.inventory.service.dataaccess.inventory.repository.InventoryJpaRepository;
+import com.tuber.inventory.service.domain.dto.shared.ProductIdWithSkuDTO;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.ports.output.repository.InventoryRepository;
 import lombok.AccessLevel;
@@ -10,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Component
@@ -32,5 +34,10 @@ public class InventoryRepositoryImpl implements InventoryRepository {
     public Optional<Inventory> findByProductIdAndSkuAndWarehouseId(UUID productId, String sku, UUID warehouseId) {
         return inventoryJpaRepository.findByProductIdAndSkuAndWarehouseId(productId, sku, warehouseId)
                 .map(inventoryJpaMapper::inventoryJpaEntityToInventoryEntity);
+    }
+
+    @Override
+    public boolean existsByProductIdsAndSkus(Set<ProductIdWithSkuDTO> productIdWithSkus) {
+        return inventoryJpaRepository.existsByProductIdsAndSkus(productIdWithSkus);
     }
 }
