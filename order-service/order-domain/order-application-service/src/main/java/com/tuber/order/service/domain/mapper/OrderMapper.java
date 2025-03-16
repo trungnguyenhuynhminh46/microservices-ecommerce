@@ -1,5 +1,6 @@
 package com.tuber.order.service.domain.mapper;
 
+import com.nimbusds.jose.util.Pair;
 import com.tuber.order.service.domain.dto.order.CreateOrderCommand;
 import com.tuber.order.service.domain.dto.order.OrderResponseData;
 import com.tuber.order.service.domain.dto.shared.OrderItemDTO;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public abstract class OrderMapper {
-    public Set<UUID> orderIdDTOsToProductIdsSet(List<OrderItemDTO> orderItems) {
+    public Set<Pair<UUID, String>> orderIdDTOsToProductIdsSet(List<OrderItemDTO> orderItems) {
         //TODO: Implement this method
         return null;
     }
