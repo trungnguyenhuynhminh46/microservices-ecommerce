@@ -11,4 +11,5 @@ public interface InventoryRepository {
     Optional<Inventory> findByProductIdAndSkuAndWarehouseId(UUID productId, String sku, UUID warehouseId);
     boolean existsByProductIdsAndSkus(Set<ProductIdWithSkuDTO> productIdWithSkus);
     Inventory save(Inventory inventory);
+    Set<Inventory> findAllByProductIdsAndSkusSet(Set<ProductIdWithSkuDTO> productIdWithSkus);
 }

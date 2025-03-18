@@ -27,6 +27,10 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
+    public UUID getProductId() {
+        return product.getId().getValue();
+    }
+
     private Inventory(Builder builder) {
         super.setId(builder.id);
         product = builder.product;

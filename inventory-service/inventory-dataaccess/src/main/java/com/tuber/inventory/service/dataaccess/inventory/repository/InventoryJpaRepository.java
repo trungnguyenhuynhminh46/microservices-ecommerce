@@ -15,11 +15,19 @@ import java.util.UUID;
 public interface InventoryJpaRepository extends JpaRepository<InventoryJpaEntity, UUID> {
     Optional<InventoryJpaEntity> findByProductIdAndSkuAndWarehouseId(UUID productId, String sku, UUID warehouseId);
 
-    //TODO: Confirm this can be ran correctly
+    //TODO: Confirm this can be ran correctly. If not, generate product and sku tuples
     @Query("""
             SELECT COUNT(1) > 0
             FROM InventoryJpaEntity i
             WHERE (i.productId, i.sku) IN :productIdWithSkus
             """)
     boolean existsByProductIdsAndSkus(@Param("productIdWithSkus") Set<ProductIdWithSkuDTO> productIdWithSkus);
+
+
+    //TODO: Confirm this can be ran correctly. If not, generate product and sku tuples
+    @Query("""
+            SELECT i FROM InventoryJpaEntity i
+            WHERE (i.productId, i.sku) IN :productIdWithSkus
+            """)
+    Set<InventoryJpaEntity> findAllByProductIdsAndSkusSet(@Param("productIdWithSkus") Set<ProductIdWithSkuDTO> productIdWithSkus);
 }

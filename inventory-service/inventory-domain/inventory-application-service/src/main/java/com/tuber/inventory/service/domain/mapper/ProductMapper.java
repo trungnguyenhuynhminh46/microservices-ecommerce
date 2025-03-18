@@ -8,6 +8,7 @@ import com.tuber.inventory.service.domain.dto.http.client.product.GetProductDeta
 import com.tuber.inventory.service.domain.dto.http.client.product.ProductAttributeDTO;
 import com.tuber.inventory.service.domain.dto.http.client.product.ProductAttributeOption;
 import com.tuber.inventory.service.domain.dto.http.client.product.ProductResponseData;
+import com.tuber.inventory.service.domain.dto.shared.ProductDTO;
 import com.tuber.inventory.service.domain.dto.shared.ProductIdWithSkuDTO;
 import com.tuber.inventory.service.domain.entity.Product;
 import com.tuber.domain.entity.ProductAttribute;
@@ -58,8 +59,14 @@ public abstract class ProductMapper {
                 .build();
     }
 
+    public abstract ProductDTO productToProductDTO(Product product);
+
     protected UniqueUUID map(UUID id) {
         return new UniqueUUID(id);
+    }
+
+    protected UUID map(UniqueUUID id) {
+        return id.getValue();
     }
 
     protected Money map(BigDecimal value) {
@@ -72,5 +79,9 @@ public abstract class ProductMapper {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    protected BigDecimal map(Money money) {
+        return money.getAmount();
     }
 }

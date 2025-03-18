@@ -7,7 +7,9 @@ import com.tuber.inventory.service.domain.dto.http.client.product.ProductsListRe
 import com.tuber.inventory.service.domain.dto.inventory.internal.GetInventoryDetailsQuery;
 import com.tuber.inventory.service.domain.dto.inventory.internal.InternalInventoryDetailsResponseData;
 import com.tuber.inventory.service.domain.dto.shared.ProductIdWithSkuDTO;
+import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.Product;
+import com.tuber.inventory.service.domain.mapper.InventoryMapper;
 import com.tuber.inventory.service.domain.mapper.ProductMapper;
 import com.tuber.inventory.service.domain.ports.output.http.client.ProductServiceClient;
 import com.tuber.inventory.service.domain.ports.output.repository.InventoryRepository;
@@ -18,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.Objects;
@@ -31,9 +34,10 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GetInventoryDetailsHelper {
     ProductCachingRepository productCachingRepository;
-    ProductMapper productMapper;
     ProductServiceClient productServiceClient;
     InventoryRepository inventoryRepository;
+    ProductMapper productMapper;
+    InventoryMapper inventoryMapper;
 
     protected Set<UUID> getNonCachedProductIds(Map<UUID, Product> productsMap) {
         return productsMap.entrySet().stream()
@@ -66,9 +70,25 @@ public class GetInventoryDetailsHelper {
         }
     }
 
+    protected void updateProductDetailsIntoInventoryDetails(Set<Inventory> inventories, Set<Product> products) {
+        inventories.forEach(inventory -> {
+            Product product = products.stream()
+                    .filter(p -> p.getId().getValue().equals(inventory.getProductId()))
+                    .findFirst()
+                    .orElseThrow(() -> new InventoryDomainException(InventoryResponseCode.NO_INVENTORY_FOR_SOME_PRODUCTS, HttpStatus.BAD_REQUEST.value()));
+            inventory.setProduct(product);
+        });
+    }
+
+    @Transactional
     public ApiResponse<InternalInventoryDetailsResponseData> getInventoryDetails(GetInventoryDetailsQuery getInventoryDetailsQuery) {
         verifyThereAreInventoriesForProducts(getInventoryDetailsQuery.getProductIds());
         GetProductsRecord productsRecord = getProductsDetails(productMapper.productIdWithSkuDtoSetToProductIdSet(getInventoryDetailsQuery.getProductIds()));
-        return null;
+        Set<Inventory> inventories = inventoryRepository.findAllByProductIdsAndSkusSet(getInventoryDetailsQuery.getProductIds());
+        updateProductDetailsIntoInventoryDetails(inventories, productsRecord.products());
+        return ApiResponse.<InternalInventoryDetailsResponseData>builder()
+                .message("Successfully fetched inventory details")
+                .data(inventoryMapper.inventoriesToInternalInventoryDetailsResponseData(inventories, productsRecord.hasUnavailableProducts()))
+                .build();
     }
 }

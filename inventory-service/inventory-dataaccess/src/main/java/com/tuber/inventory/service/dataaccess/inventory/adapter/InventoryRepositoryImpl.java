@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -28,6 +29,14 @@ public class InventoryRepositoryImpl implements InventoryRepository {
                         inventoryJpaMapper.inventoryEntityToInventoryJpaEntity(inventory)
                 )
         );
+    }
+
+    @Override
+    public Set<Inventory> findAllByProductIdsAndSkusSet(Set<ProductIdWithSkuDTO> productIdWithSkus) {
+        return inventoryJpaRepository.findAllByProductIdsAndSkusSet(productIdWithSkus)
+                .stream()
+                .map(inventoryJpaMapper::inventoryJpaEntityToInventoryEntity)
+                .collect(Collectors.toSet());
     }
 
     @Override
