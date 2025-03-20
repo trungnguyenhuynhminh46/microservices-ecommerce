@@ -9,10 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Slf4j
 @EnableFeignClients(basePackages = "com.tuber.inventory.service.domain.ports.output.http.client")
 @EnableJpaRepositories(basePackages = {"com.tuber.inventory.service.dataaccess", "com.tuber.dataaccess"})
+@EnableRedisRepositories(basePackages = {"com.tuber.inventory.service.dataaccess.caching", "com.tuber.dataaccess.caching"})
 @EntityScan(basePackages = {"com.tuber.inventory.service.dataaccess", "com.tuber.dataaccess"})
 @SpringBootApplication(scanBasePackages = "com.tuber")
 @AllArgsConstructor

@@ -48,7 +48,7 @@ public class GetInventoryDetailsHelper {
 
     protected GetProductsRecord getProductsDetails(Set<UUID> productIds) {
         log.info("Getting products details for product ids: {}", productIds);
-        Map<UUID, Product> cachedProducts = productCachingRepository.getProductsByIds(productIds);
+        Map<UUID, Product> cachedProducts = productCachingRepository.getProductsMapById(productIds);
         Set<UUID> nonCachedProductIds = getNonCachedProductIds(cachedProducts);
         ProductsListResponseData productsListResponseData = Objects.requireNonNull(productServiceClient.getProductsDetailsByIds(productMapper.productIdsSetToGetProductDetailsQuery(nonCachedProductIds)).getBody()).getData();
         Set<Product> nonCachedProducts = productsListResponseData.getProducts().stream()

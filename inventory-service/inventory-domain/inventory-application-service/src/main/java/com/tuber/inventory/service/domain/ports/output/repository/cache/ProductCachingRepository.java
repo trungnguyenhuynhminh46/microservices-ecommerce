@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface ProductCachingRepository {
-    Map<UUID, Product> getProductsByIds(Set<UUID> productIds);
+    Map<UUID, Product> getProductsMapById(Set<UUID> productIds);
     Set<Product> saveAll(Set<Product> products);
     Product save(Product product);
     void deleteById(UUID id);
