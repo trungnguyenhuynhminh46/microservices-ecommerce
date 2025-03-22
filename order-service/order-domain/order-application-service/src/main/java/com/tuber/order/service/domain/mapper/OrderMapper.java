@@ -18,10 +18,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -36,22 +33,26 @@ public abstract class OrderMapper {
         ).collect(Collectors.toSet());
     }
 
-    protected Set<OrderItem> generateOrderItems(Set<InternalInventoryDetailResponseData> productDetails, List<OrderItemDTO> orderItemDTOList) {
-        Set<OrderItemDTO> sanitizedOrderItemsDTO = new HashSet<>(orderItemDTOList.stream()
-                .collect(Collectors.toMap(orderItem -> orderItem.getProductId() + orderItem.getSku(), Function.identity(), (orderItem1, orderItem2) -> {
-                    orderItem1.setQuantity((orderItem1.getQuantity() + orderItem2.getQuantity()));
-                    return orderItem1;
-                })).values());
+    protected Set<OrderItem> generateOrderItems(Set<InternalInventoryDetailResponseData> productDetails,
+                                                List<OrderItemDTO> orderItemDTOList) {
+        Map<String, OrderItemDTO> sanitizedOrderItemsDTOMap = orderItemDTOList.stream()
+                .collect(Collectors.toMap(
+                        item -> item.getProductId() + "|" + item.getSku(),
+                        Function.identity(),
+                        (item1, item2) -> {
+                            item1.setQuantity(item1.getQuantity() + item2.getQuantity());
+                            return item1;
+                        }));
 
-        return productDetails.stream().map(inventory -> {
-            OrderItem orderItem = inventoryResponseDataToOrderItem(inventory);
-            orderItem.setQuantity(sanitizedOrderItemsDTO.stream()
-                    .filter(orderItemDTO -> orderItemDTO.getProductId().equals(inventory.getProduct().getId()) && orderItemDTO.getSku().equals(inventory.getSku()))
-                    .findFirst()
-                    .map(OrderItemDTO::getQuantity)
-                    .orElse(0));
-            return orderItem;
-        }).collect(Collectors.toSet());
+        return productDetails.stream()
+                .map(inventory -> {
+                    OrderItem orderItem = inventoryResponseDataToOrderItem(inventory);
+                    String key = inventory.getProduct().getId() + "|" + inventory.getSku();
+                    OrderItemDTO matchedDTO = sanitizedOrderItemsDTOMap.get(key);
+                    orderItem.setQuantity(matchedDTO != null ? matchedDTO.getQuantity() : 0);
+                    return orderItem;
+                })
+                .collect(Collectors.toSet());
     }
 
     public OrderEntity createOrderCommandToOrderEntity(CreateOrderCommand createOrderCommand, Set<InternalInventoryDetailResponseData> productDetails, String buyer) {
@@ -76,9 +77,11 @@ public abstract class OrderMapper {
     protected UUID map(UniqueUUID id) {
         return id.getValue();
     }
+
     protected Long mapId(OrderItemId id) {
         return id.getValue();
     }
+
     protected UniqueUUID mapId(UUID id) {
         return new UniqueUUID(id);
     }
@@ -90,6 +93,7 @@ public abstract class OrderMapper {
     protected Money mapMoney(BigDecimal amount) {
         return new Money(amount);
     }
+
     protected BigDecimal mapMoney(Money money) {
         return money.getAmount();
     }
