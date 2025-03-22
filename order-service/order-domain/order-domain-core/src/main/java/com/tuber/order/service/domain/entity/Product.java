@@ -2,27 +2,22 @@ package com.tuber.order.service.domain.entity;
 
 import com.tuber.domain.entity.AggregateRoot;
 import com.tuber.domain.entity.ProductAttribute;
-import com.tuber.domain.entity.Warehouse;
 import com.tuber.domain.valueobject.Money;
-import com.tuber.order.service.domain.valueobject.ProductId;
+import com.tuber.domain.valueobject.id.UniqueUUID;
 
 import java.util.List;
 import java.util.UUID;
 
-public class Product extends AggregateRoot<ProductId> {
-    List<ProductAttribute> attributes;
+public class Product extends AggregateRoot<UniqueUUID> {
     String name;
-    Money basePrice;
-    Money finalPrice;
-    Warehouse warehouse;
+    Money price;
+    List<ProductAttribute> attributes;
 
     private Product(Builder builder) {
         super.setId(builder.id);
         attributes = builder.attributes;
         name = builder.name;
-        basePrice = builder.basePrice;
-        finalPrice = builder.finalPrice;
-        warehouse = builder.warehouse;
+        price = builder.basePrice;
     }
 
     public static Builder builder() {
@@ -30,23 +25,22 @@ public class Product extends AggregateRoot<ProductId> {
     }
 
     public static final class Builder {
-        private ProductId id;
+        private UniqueUUID id;
         private List<ProductAttribute> attributes;
         private String name;
         private Money basePrice;
         private Money finalPrice;
-        private Warehouse warehouse;
 
         private Builder() {
         }
 
-        public Builder id(ProductId val) {
+        public Builder id(UniqueUUID val) {
             id = val;
             return this;
         }
 
-        public Builder id(UUID productId, String sku) {
-            id = new ProductId(productId, sku);
+        public Builder id(UUID productId) {
+            id = new UniqueUUID(productId);
             return this;
         }
 
@@ -67,11 +61,6 @@ public class Product extends AggregateRoot<ProductId> {
 
         public Builder finalPrice(Money val) {
             finalPrice = val;
-            return this;
-        }
-
-        public Builder warehouse(Warehouse val) {
-            warehouse = val;
             return this;
         }
 
@@ -96,27 +85,11 @@ public class Product extends AggregateRoot<ProductId> {
         this.name = name;
     }
 
-    public Money getBasePrice() {
-        return basePrice;
+    public Money getPrice() {
+        return price;
     }
 
-    public void setBasePrice(Money basePrice) {
-        this.basePrice = basePrice;
-    }
-
-    public Money getFinalPrice() {
-        return finalPrice;
-    }
-
-    public void setFinalPrice(Money finalPrice) {
-        this.finalPrice = finalPrice;
-    }
-
-    public Warehouse getWarehouse() {
-        return warehouse;
-    }
-
-    public void setWarehouse(Warehouse warehouse) {
-        this.warehouse = warehouse;
+    public void setPrice(Money price) {
+        this.price = price;
     }
 }

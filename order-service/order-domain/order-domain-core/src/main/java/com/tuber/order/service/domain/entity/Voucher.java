@@ -21,6 +21,10 @@ public class Voucher extends BaseEntity<UniqueUUID> {
     private Boolean active;
     private LocalDate createdAt;
 
+    public Voucher(UUID id) {
+        setId(new UniqueUUID(id));
+    }
+
     private Voucher(Builder builder) {
         setId(builder.id);
         setCode(builder.code);

@@ -1,6 +1,7 @@
 package com.tuber.order.service.domain.entity;
 
 import com.tuber.domain.entity.BaseEntity;
+import com.tuber.domain.entity.Warehouse;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.order.service.domain.valueobject.OrderItemId;
 
@@ -9,6 +10,8 @@ import java.util.UUID;
 public class OrderItem extends BaseEntity<OrderItemId> {
     UUID orderId;
     Product product;
+    String sku;
+    Warehouse warehouse;
     Integer quantity;
     Money subTotal;
 
@@ -16,6 +19,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         super.setId(builder.id);
         orderId = builder.orderId;
         product = builder.product;
+        sku = builder.sku;
         quantity = builder.quantity;
         subTotal = builder.subTotal;
     }
@@ -40,6 +44,22 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         this.product = product;
     }
 
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -60,6 +80,8 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         private OrderItemId id;
         private UUID orderId;
         private Product product;
+        private String sku;
+        private Warehouse warehouse;
         private Integer quantity;
         private Money subTotal;
 
@@ -83,6 +105,16 @@ public class OrderItem extends BaseEntity<OrderItemId> {
 
         public Builder product(Product val) {
             product = val;
+            return this;
+        }
+
+        public Builder sku(String val) {
+            sku = val;
+            return this;
+        }
+
+        public Builder warehouse(Warehouse val) {
+            warehouse = val;
             return this;
         }
 

@@ -6,14 +6,14 @@ import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.order.service.domain.valueobject.enums.OrderStatus;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class OrderEntity extends AggregateRoot<UniqueUUID> {
     private String trackingId;
     private String buyer;
-    private List<OrderItem> orderItems;
-    private List<Voucher> vouchers;
+    private Set<OrderItem> orderItems;
+    private Set<Voucher> vouchers;
     private Money finalPrice;
     private OrderStatus orderStatus;
     private LocalDate createdAt;
@@ -51,19 +51,19 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
         this.buyer = buyer;
     }
 
-    public List<OrderItem> getOrderItems() {
+    public Set<OrderItem> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
+    public void setOrderItems(Set<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 
-    public List<Voucher> getVouchers() {
+    public Set<Voucher> getVouchers() {
         return vouchers;
     }
 
-    public void setVouchers(List<Voucher> vouchers) {
+    public void setVouchers(Set<Voucher> vouchers) {
         this.vouchers = vouchers;
     }
 
@@ -104,8 +104,8 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
         private UniqueUUID id;
         private String trackingId;
         private String buyer;
-        private List<OrderItem> orderItems;
-        private List<Voucher> vouchers;
+        private Set<OrderItem> orderItems;
+        private Set<Voucher> vouchers;
         private Money finalPrice;
         private OrderStatus orderStatus;
         private LocalDate createdAt;
@@ -134,12 +134,12 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
             return this;
         }
 
-        public Builder orderItems(List<OrderItem> val) {
+        public Builder orderItems(Set<OrderItem> val) {
             orderItems = val;
             return this;
         }
 
-        public Builder vouchers(List<Voucher> val) {
+        public Builder vouchers(Set<Voucher> val) {
             vouchers = val;
             return this;
         }

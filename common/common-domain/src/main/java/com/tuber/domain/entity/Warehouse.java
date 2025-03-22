@@ -27,6 +27,10 @@ public class Warehouse extends BaseEntity<UniqueUUID> {
         updatedAt = builder.updatedAt;
     }
 
+    public Warehouse(UUID id) {
+        super.setId(new UniqueUUID(id));
+    }
+
     public static Builder builder() {
         return new Builder();
     }

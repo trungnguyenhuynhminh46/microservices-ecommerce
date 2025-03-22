@@ -1,12 +1,13 @@
 package com.tuber.order.service.domain.helper.order;
 
 import com.tuber.application.handler.ApiResponse;
+import com.tuber.application.helper.CommonHelper;
 import com.tuber.domain.constant.response.code.OrderResponseCode;
 import com.tuber.order.service.domain.OrderDomainService;
+import com.tuber.order.service.domain.dto.http.client.inventory.InternalInventoryDetailResponseData;
 import com.tuber.order.service.domain.dto.order.CreateOrderCommand;
 import com.tuber.order.service.domain.dto.order.OrderResponseData;
 import com.tuber.order.service.domain.entity.OrderEntity;
-import com.tuber.order.service.domain.entity.Product;
 import com.tuber.order.service.domain.event.OrderCreatedEvent;
 import com.tuber.order.service.domain.helper.CommonOrderHelper;
 import com.tuber.order.service.domain.mapper.OrderMapper;
@@ -23,13 +24,18 @@ import java.util.Set;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreateOrderHelper {
+    CommonHelper commonHelper;
     CommonOrderHelper commonOrderHelper;
     OrderMapper orderMapper;
     OrderDomainService orderDomainService;
 
     public ApiResponse<OrderResponseData> createOrder(CreateOrderCommand createOrderCommand) {
-        Set<Product> products = commonOrderHelper.getProductsAndRefreshCachedProducts(orderMapper.orderIdDTOsToProductIdsSet(createOrderCommand.getOrderItems()));
-        OrderEntity order = orderMapper.createOrderCommandToOrderEntity(createOrderCommand, products);
+        Set<InternalInventoryDetailResponseData> inventoryDetails = commonOrderHelper.getSetOfInventoryDetails(
+                orderMapper.orderIdDTOsToSetOfProductIdWithSkuDTO(
+                        createOrderCommand.getOrderItems()
+                )
+        );
+        OrderEntity order = orderMapper.createOrderCommandToOrderEntity(createOrderCommand, inventoryDetails, commonHelper.extractTokenSubject());
         OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitializeOrder(order);
         OrderEntity savedOrder = commonOrderHelper.saveOrder(orderCreatedEvent.getOrder());
         return ApiResponse.<OrderResponseData>builder()

@@ -1,34 +1,47 @@
 package com.tuber.order.service.domain.helper;
 
-import com.nimbusds.jose.util.Pair;
+import com.tuber.domain.exception.OrderDomainException;
+import com.tuber.order.service.domain.dto.http.client.inventory.GetInventoryDetailsQuery;
+import com.tuber.order.service.domain.dto.http.client.inventory.InternalInventoryDetailResponseData;
+import com.tuber.order.service.domain.dto.http.client.inventory.InternalInventoryDetailsResponseData;
+import com.tuber.order.service.domain.dto.shared.ProductIdWithSkuDTO;
 import com.tuber.order.service.domain.entity.OrderEntity;
-import com.tuber.order.service.domain.entity.Product;
+import com.tuber.order.service.domain.ports.output.http.client.InventoryServiceClient;
+import com.tuber.domain.constant.response.code.OrderResponseCode;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommonOrderHelper {
-    private Set<Pair<UUID, String>> getNotCachedProductIds(Map<Pair<UUID, String>, Product> cachedProducts) {
-        return cachedProducts.entrySet().stream()
-                .filter(entry -> entry.getValue() == null)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toSet());
+    InventoryServiceClient inventoryServiceClient;
+
+    protected void verifyAllProductsAreAvailable(InternalInventoryDetailsResponseData internalInventoryDetailsResponseData) {
+        boolean allProductsAreInStock = internalInventoryDetailsResponseData.getInventoryDetails().stream().allMatch(inventoryDetail -> inventoryDetail.getStockQuantity() > 0);
+        if (allProductsAreInStock && internalInventoryDetailsResponseData.isHasUnavailableProducts()) {
+            log.error("Some products are unavailable");
+            throw new OrderDomainException(OrderResponseCode.PRODUCT_UNAVAILABLE, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
     }
 
-    public Set<Product> getProductsAndRefreshCachedProducts(Set<Pair<UUID, String>> productIds) {
-        //TODO: Implement this method
-        return null;
+    public Set<InternalInventoryDetailResponseData> getSetOfInventoryDetails(Set<ProductIdWithSkuDTO> productIds) {
+        InternalInventoryDetailsResponseData internalInventoryDetailsResponseData = Objects.requireNonNull(inventoryServiceClient.getInventoryDetails(
+                GetInventoryDetailsQuery.builder()
+                        .productIds(productIds)
+                        .build()
+        ).getBody()).getData();
+        verifyAllProductsAreAvailable(internalInventoryDetailsResponseData);
+        return internalInventoryDetailsResponseData.getInventoryDetails();
     }
 
     public OrderEntity saveOrder(OrderEntity order) {

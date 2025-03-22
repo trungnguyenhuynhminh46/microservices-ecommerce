@@ -40,7 +40,7 @@ public class ProfileCommonHelper {
     UserProfileRepository userProfileRepository;
 
     public List<String> getProvincesList() {
-        // TODO: Get provinces list from api or database instead
+        //TODO: Get provinces list from api or database instead
         return DUMMY_PROVINCES_LIST;
     }
 
