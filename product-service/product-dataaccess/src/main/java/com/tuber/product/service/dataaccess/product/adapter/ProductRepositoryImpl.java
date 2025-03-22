@@ -10,7 +10,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -52,5 +54,12 @@ public class ProductRepositoryImpl implements ProductRepository {
         productJpaRepository.delete(
                 productJpaMapper.productEntityToProductJpaEntity(product)
         );
+    }
+
+    @Override
+    public Set<Product> findAllById(Set<UUID> productIds) {
+        return productJpaRepository.findAllById(productIds).stream()
+                .map(productJpaMapper::productJpaEntityToProductEntity)
+                .collect(Collectors.toSet());
     }
 }

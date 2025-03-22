@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Mapper(uses = JsonNullableMapper.class,
@@ -50,6 +51,15 @@ public abstract class ProductMapper {
     @InheritConfiguration
     @Mapping(target = "id", ignore = true)
     protected abstract void updateProductFields(ModifyProductCommand data, @MappingTarget Product product);
+
+    public ProductsListResponseData setOfProductsToProductsListResponseData(Set<Product> products) {
+        return ProductsListResponseData.builder()
+                .products(products.stream()
+                        .map(this::productToProductResponseData)
+                        .toList())
+                .total(products.size())
+                .build();
+    }
 
     protected List<ProductAttribute> map(JsonNullable<List<ProductAttributeDTO>> attributes) {
         List<ProductAttributeDTO> attributesList = attributes.orElse(null);

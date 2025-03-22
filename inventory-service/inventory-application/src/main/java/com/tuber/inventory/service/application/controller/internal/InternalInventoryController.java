@@ -1,4 +1,4 @@
-package com.tuber.inventory.service.application.internal;
+package com.tuber.inventory.service.application.controller.internal;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.inventory.service.domain.dto.inventory.internal.GetInventoryDetailsQuery;

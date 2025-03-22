@@ -2,6 +2,7 @@ package com.tuber.product.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
+import com.tuber.product.service.domain.dto.internal.product.GetProductDetailsQuery;
 import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.dto.template.attribute.*;
 import com.tuber.product.service.domain.dto.template.product.*;
@@ -21,7 +22,6 @@ import com.tuber.product.service.domain.helper.template.product.CreateTemplatePr
 import com.tuber.product.service.domain.helper.template.product.DeleteTemplateProductHelper;
 import com.tuber.product.service.domain.helper.template.product.ReadTemplateProductHelper;
 import com.tuber.product.service.domain.helper.template.product.UpdateTemplateProductHelper;
-import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -150,5 +150,10 @@ public class ProductApplicationServiceImpl implements ProductApplicationService 
     @Override
     public ApiResponse<TemplateAttributeResponseData> deleteTemplateAttribute(UUID templateAttributeId) {
         return deleteTemplateAttributeHelper.deleteTemplateAttribute(templateAttributeId);
+    }
+
+    @Override
+    public ApiResponse<ProductsListResponseData> getProductDetails(GetProductDetailsQuery getProductDetailsQuery) {
+        return readProductHelper.getProductDetails(getProductDetailsQuery);
     }
 }

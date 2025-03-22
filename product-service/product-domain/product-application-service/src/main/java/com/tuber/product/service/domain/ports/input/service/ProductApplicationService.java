@@ -2,6 +2,7 @@ package com.tuber.product.service.domain.ports.input.service;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
+import com.tuber.product.service.domain.dto.internal.product.GetProductDetailsQuery;
 import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.dto.template.attribute.*;
 import com.tuber.product.service.domain.dto.template.product.*;
@@ -34,4 +35,6 @@ public interface ProductApplicationService {
     ApiResponse<TemplateAttributesListResponseData> getAllTemplateAttributes();
     ApiResponse<TemplateAttributeResponseData> updateTemplateAttribute(@Valid ModifyTemplateAttributeCommand modifyTemplateAttributeCommand);
     ApiResponse<TemplateAttributeResponseData> deleteTemplateAttribute(UUID templateAttributeId);
+    // internal
+    ApiResponse<ProductsListResponseData> getProductDetails(GetProductDetailsQuery getProductDetailsQuery);
 }

@@ -47,10 +47,15 @@ public class GetInventoryDetailsHelper {
     }
 
     protected GetProductsRecord getProductsDetails(Set<UUID> productIds) {
-        log.info("Getting products details for product ids: {}", productIds);
+        log.info("Getting products details from cache");
         Map<UUID, Product> cachedProducts = productCachingRepository.getProductsMapById(productIds);
+        log.info("Getting non-cached products details through feign client");
         Set<UUID> nonCachedProductIds = getNonCachedProductIds(cachedProducts);
-        ProductsListResponseData productsListResponseData = Objects.requireNonNull(productServiceClient.getProductsDetailsByIds(productMapper.productIdsSetToGetProductDetailsQuery(nonCachedProductIds)).getBody()).getData();
+        ProductsListResponseData productsListResponseData =
+                Objects.requireNonNull(
+                        productServiceClient.getProductsDetailsByIds(
+                                productMapper.productIdsSetToGetProductDetailsQuery(nonCachedProductIds)
+                        ).getBody()).getData();
         Set<Product> nonCachedProducts = productsListResponseData.getProducts().stream()
                 .map(productMapper::productResponseDataToProductEntity)
                 .collect(Collectors.toSet());
@@ -82,9 +87,10 @@ public class GetInventoryDetailsHelper {
 
     @Transactional
     public ApiResponse<InternalInventoryDetailsResponseData> getInventoryDetails(GetInventoryDetailsQuery getInventoryDetailsQuery) {
+        Set<ProductIdWithSkuDTO> productIdWithSku = getInventoryDetailsQuery.getProductIds();
         verifyThereAreInventoriesForProducts(getInventoryDetailsQuery.getProductIds());
-        GetProductsRecord productsRecord = getProductsDetails(productMapper.productIdWithSkuDtoSetToProductIdSet(getInventoryDetailsQuery.getProductIds()));
-        Set<Inventory> inventories = inventoryRepository.findAllByProductIdsAndSkusSet(getInventoryDetailsQuery.getProductIds());
+        GetProductsRecord productsRecord = getProductsDetails(productMapper.productIdWithSkuDtoSetToProductIdSet(productIdWithSku));
+        Set<Inventory> inventories = inventoryRepository.findAllByProductIdsAndSkusSet(productIdWithSku);
         updateProductDetailsIntoInventoryDetails(inventories, productsRecord.products());
         return ApiResponse.<InternalInventoryDetailsResponseData>builder()
                 .message("Successfully fetched inventory details")

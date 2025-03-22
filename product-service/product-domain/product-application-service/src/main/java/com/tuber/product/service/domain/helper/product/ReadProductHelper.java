@@ -2,6 +2,7 @@ package com.tuber.product.service.domain.helper.product;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.constant.ProductResponseCode;
+import com.tuber.product.service.domain.dto.internal.product.GetProductDetailsQuery;
 import com.tuber.product.service.domain.dto.product.ProductResponseData;
 import com.tuber.product.service.domain.dto.product.ProductsListResponseData;
 import com.tuber.product.service.domain.entity.Product;
@@ -41,6 +42,16 @@ public class ReadProductHelper {
                 .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
                 .message("Products retrieved successfully")
                 .data(productMapper.productsListToProductsListResponseData(productsList))
+                .build();
+    }
+
+    public ApiResponse<ProductsListResponseData> getProductDetails(GetProductDetailsQuery getProductDetailsQuery) {
+        return ApiResponse.<ProductsListResponseData>builder()
+                .code(ProductResponseCode.SUCCESS_RESPONSE.getCode())
+                .message("Products details retrieved successfully")
+                .data(productMapper.setOfProductsToProductsListResponseData(
+                        productRepository.findAllById(getProductDetailsQuery.getProductIds())
+                ))
                 .build();
     }
 }

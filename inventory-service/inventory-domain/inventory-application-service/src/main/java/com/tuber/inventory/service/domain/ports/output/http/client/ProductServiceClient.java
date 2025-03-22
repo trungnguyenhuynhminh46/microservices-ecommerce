@@ -17,6 +17,6 @@ public interface ProductServiceClient {
     @GetMapping(value = "/products/{productId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<ApiResponse<ProductResponseData>> getProductDetail(@PathVariable String productId);
 
-    @PostMapping(value = "/products/internal/details", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/products/internal/products/details", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<ApiResponse<ProductsListResponseData>> getProductsDetailsByIds(GetProductDetailsQuery getProductDetailsQuery);
 }
