@@ -4,13 +4,18 @@ import com.tuber.domain.constant.response.code.OrderResponseCode;
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.entity.Warehouse;
 import com.tuber.domain.exception.OrderDomainException;
+import com.tuber.domain.util.ProductUtility;
 import com.tuber.domain.valueobject.Money;
+import com.tuber.domain.valueobject.ProductAttributeOption;
 import com.tuber.order.service.domain.valueobject.OrderItemId;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class OrderItem extends BaseEntity<OrderItemId> {
+    private ProductUtility productUtility = new ProductUtility();
     UUID orderId;
     Product product;
     String sku;
@@ -137,8 +142,18 @@ public class OrderItem extends BaseEntity<OrderItemId> {
     }
 
     public Money getPriceAfterAddingOptions() {
-        //TODO: Implement this method
-        return new Money(BigDecimal.ZERO);
+        Money price = product.getPrice();
+        Map<String, String> assignedOptionsNameMap = productUtility.decodeSkuToAttributes(sku);
+        product.getAttributes().forEach(attribute -> {
+            List<ProductAttributeOption> options = productUtility.optionsStringToListOfAttributeOptions(attribute.getOptions());
+            ProductAttributeOption assignedOption = options.stream()
+                    .filter(option -> option.getName().equals(assignedOptionsNameMap.get(attribute.getName())))
+                    .findFirst()
+                    .orElseThrow(() -> new OrderDomainException(OrderResponseCode.PRODUCT_IN_ORDER_ITEM_IS_OUTDATED, 404));
+            price.add(new Money(assignedOption.getChangeAmount()));
+        });
+
+        return price.multiply(Double.valueOf(quantity));
     }
 
     public boolean isValidForInitialization() {
