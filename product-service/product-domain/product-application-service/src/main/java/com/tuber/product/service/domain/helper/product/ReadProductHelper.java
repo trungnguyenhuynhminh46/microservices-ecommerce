@@ -1,10 +1,10 @@
 package com.tuber.product.service.domain.helper.product;
 
+import com.tuber.application.dto.product.GetProductDetailsQuery;
+import com.tuber.application.dto.product.ProductResponseData;
+import com.tuber.application.dto.product.ProductsListResponseData;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.domain.constant.response.code.ProductResponseCode;
-import com.tuber.product.service.domain.dto.internal.product.GetProductDetailsQuery;
-import com.tuber.product.service.domain.dto.product.ProductResponseData;
-import com.tuber.product.service.domain.dto.product.ProductsListResponseData;
 import com.tuber.product.service.domain.entity.Product;
 import com.tuber.product.service.domain.helper.CommonProductServiceHelper;
 import com.tuber.product.service.domain.mapper.ProductMapper;

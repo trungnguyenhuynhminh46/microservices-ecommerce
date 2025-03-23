@@ -3,7 +3,7 @@ package com.tuber.inventory.service.domain.helper.inventory;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.domain.constant.response.code.InventoryResponseCode;
 import com.tuber.domain.exception.InventoryDomainException;
-import com.tuber.inventory.service.domain.dto.http.client.product.ProductsListResponseData;
+import com.tuber.application.dto.product.ProductsListResponseData;
 import com.tuber.inventory.service.domain.dto.inventory.internal.GetInventoryDetailsQuery;
 import com.tuber.inventory.service.domain.dto.inventory.internal.InternalInventoryDetailsResponseData;
 import com.tuber.inventory.service.domain.dto.shared.ProductIdWithSkuDTO;

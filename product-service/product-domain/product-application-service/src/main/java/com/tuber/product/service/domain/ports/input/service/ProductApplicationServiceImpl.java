@@ -1,8 +1,10 @@
 package com.tuber.product.service.domain.ports.input.service;
 
+import com.tuber.application.dto.product.GetProductDetailsQuery;
+import com.tuber.application.dto.product.ProductResponseData;
+import com.tuber.application.dto.product.ProductsListResponseData;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.dto.category.*;
-import com.tuber.product.service.domain.dto.internal.product.GetProductDetailsQuery;
 import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.dto.template.attribute.*;
 import com.tuber.product.service.domain.dto.template.product.*;

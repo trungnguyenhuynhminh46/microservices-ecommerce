@@ -1,6 +1,6 @@
-package com.tuber.product.service.domain.dto.product;
+package com.tuber.application.dto.product;
 
-import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
+import com.tuber.application.dto.product.ProductAttributeDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

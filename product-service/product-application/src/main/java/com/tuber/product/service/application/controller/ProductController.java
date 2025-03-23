@@ -1,5 +1,7 @@
 package com.tuber.product.service.application.controller;
 
+import com.tuber.application.dto.product.ProductResponseData;
+import com.tuber.application.dto.product.ProductsListResponseData;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.application.validators.ValidUUID;
 import com.tuber.product.service.domain.dto.product.*;

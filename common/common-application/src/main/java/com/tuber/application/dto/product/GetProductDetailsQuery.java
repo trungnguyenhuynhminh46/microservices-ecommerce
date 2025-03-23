@@ -1,4 +1,5 @@
-package com.tuber.product.service.domain.dto.internal.product;
+package com.tuber.application.dto.product;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

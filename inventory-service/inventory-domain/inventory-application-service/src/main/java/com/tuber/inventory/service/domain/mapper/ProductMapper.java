@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.inventory.service.domain.dto.http.client.product.GetProductDetailsQuery;
-import com.tuber.inventory.service.domain.dto.http.client.product.ProductAttributeDTO;
-import com.tuber.inventory.service.domain.dto.http.client.product.ProductAttributeOption;
-import com.tuber.inventory.service.domain.dto.http.client.product.ProductResponseData;
+import com.tuber.application.dto.product.GetProductDetailsQuery;
+import com.tuber.application.dto.product.ProductAttributeDTO;
+import com.tuber.application.dto.product.ProductAttributeOptionDTO;
+import com.tuber.application.dto.product.ProductResponseData;
 import com.tuber.inventory.service.domain.dto.shared.ProductDTO;
 import com.tuber.inventory.service.domain.dto.shared.ProductIdWithSkuDTO;
 import com.tuber.inventory.service.domain.entity.Product;
@@ -73,7 +73,7 @@ public abstract class ProductMapper {
         return new Money(value);
     }
 
-    protected String map(List<ProductAttributeOption> options) {
+    protected String map(List<ProductAttributeOptionDTO> options) {
         try {
             return objectMapper.writeValueAsString(options);
         } catch (JsonProcessingException e) {

@@ -2,12 +2,14 @@ package com.tuber.product.service.domain.mapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tuber.application.dto.product.ProductAttributeDTO;
+import com.tuber.application.dto.product.ProductAttributeOptionDTO;
+import com.tuber.application.dto.product.ProductResponseData;
+import com.tuber.application.dto.product.ProductsListResponseData;
 import com.tuber.application.mapper.JsonNullableMapper;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.product.service.domain.dto.product.*;
-import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
-import com.tuber.product.service.domain.dto.shared.ProductAttributeOptionDTO;
 import com.tuber.product.service.domain.entity.Product;
 import com.tuber.domain.entity.ProductAttribute;
 import org.mapstruct.*;

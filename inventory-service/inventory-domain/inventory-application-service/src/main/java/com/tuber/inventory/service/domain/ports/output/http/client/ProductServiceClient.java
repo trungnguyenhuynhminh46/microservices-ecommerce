@@ -2,9 +2,9 @@ package com.tuber.inventory.service.domain.ports.output.http.client;
 
 import com.tuber.application.configuration.http.client.AuthenticationRequestConfiguration;
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.inventory.service.domain.dto.http.client.product.GetProductDetailsQuery;
-import com.tuber.inventory.service.domain.dto.http.client.product.ProductResponseData;
-import com.tuber.inventory.service.domain.dto.http.client.product.ProductsListResponseData;
+import com.tuber.application.dto.product.GetProductDetailsQuery;
+import com.tuber.application.dto.product.ProductResponseData;
+import com.tuber.application.dto.product.ProductsListResponseData;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

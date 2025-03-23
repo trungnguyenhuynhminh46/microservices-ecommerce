@@ -1,10 +1,10 @@
 package com.tuber.product.service.domain.helper.product;
 
+import com.tuber.application.dto.product.ProductResponseData;
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.ProductDomainService;
 import com.tuber.domain.constant.response.code.ProductResponseCode;
 import com.tuber.product.service.domain.dto.product.CreateProductCommand;
-import com.tuber.product.service.domain.dto.product.ProductResponseData;
 import com.tuber.product.service.domain.entity.Product;
 import com.tuber.product.service.domain.event.ProductCreatedEvent;
 import com.tuber.product.service.domain.helper.CommonProductServiceHelper;

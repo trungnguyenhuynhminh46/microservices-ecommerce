@@ -1,8 +1,8 @@
 package com.tuber.product.service.application.controller.internal;
 
+import com.tuber.application.dto.product.GetProductDetailsQuery;
+import com.tuber.application.dto.product.ProductsListResponseData;
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.product.service.domain.dto.internal.product.GetProductDetailsQuery;
-import com.tuber.product.service.domain.dto.product.ProductsListResponseData;
 import com.tuber.product.service.domain.ports.input.service.ProductApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

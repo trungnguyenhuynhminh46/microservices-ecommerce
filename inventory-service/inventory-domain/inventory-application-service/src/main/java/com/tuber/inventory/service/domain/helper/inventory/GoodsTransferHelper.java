@@ -4,7 +4,7 @@ import com.tuber.application.handler.ApiResponse;
 import com.tuber.application.helper.CommonHelper;
 import com.tuber.inventory.service.domain.InventoryDomainService;
 import com.tuber.domain.constant.response.code.InventoryResponseCode;
-import com.tuber.inventory.service.domain.dto.http.client.product.ProductResponseData;
+import com.tuber.application.dto.product.ProductResponseData;
 import com.tuber.inventory.service.domain.dto.inventory.*;
 import com.tuber.inventory.service.domain.dto.shared.GoodInfoDTO;
 import com.tuber.inventory.service.domain.entity.Inventory;

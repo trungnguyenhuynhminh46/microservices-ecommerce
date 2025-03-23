@@ -1,4 +1,4 @@
-package com.tuber.product.service.domain.dto.shared;
+package com.tuber.application.dto.product;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
