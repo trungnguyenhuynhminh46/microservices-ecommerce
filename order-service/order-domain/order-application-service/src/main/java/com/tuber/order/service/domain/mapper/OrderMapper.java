@@ -55,11 +55,11 @@ public abstract class OrderMapper {
                 .collect(Collectors.toSet());
     }
 
-    public OrderEntity createOrderCommandToOrderEntity(CreateOrderCommand createOrderCommand, Set<InternalInventoryDetailResponseData> productDetails, String buyer) {
+    public OrderEntity createOrderCommandToOrderEntity(CreateOrderCommand createOrderCommand, Set<Voucher> usedVouchers, Set<InternalInventoryDetailResponseData> productDetails, String buyer) {
         return OrderEntity.builder()
                 .buyer(buyer)
                 .orderItems(generateOrderItems(productDetails, createOrderCommand.getOrderItems()))
-                .vouchers(createOrderCommand.getVoucherIds().stream().map(Voucher::new).collect(Collectors.toSet()))
+                .vouchers(usedVouchers)
                 .orderStatus(OrderStatus.PROCESSING)
                 .build();
     }

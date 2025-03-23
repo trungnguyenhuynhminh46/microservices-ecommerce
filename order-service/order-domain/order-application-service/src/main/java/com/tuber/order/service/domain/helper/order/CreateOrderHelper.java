@@ -8,6 +8,7 @@ import com.tuber.order.service.domain.dto.http.client.inventory.InternalInventor
 import com.tuber.order.service.domain.dto.order.CreateOrderCommand;
 import com.tuber.order.service.domain.dto.order.OrderResponseData;
 import com.tuber.order.service.domain.entity.OrderEntity;
+import com.tuber.order.service.domain.entity.Voucher;
 import com.tuber.order.service.domain.event.OrderCreatedEvent;
 import com.tuber.order.service.domain.helper.CommonOrderHelper;
 import com.tuber.order.service.domain.mapper.OrderMapper;
@@ -35,7 +36,8 @@ public class CreateOrderHelper {
                         createOrderCommand.getOrderItems()
                 )
         );
-        OrderEntity order = orderMapper.createOrderCommandToOrderEntity(createOrderCommand, inventoryDetails, commonHelper.extractTokenSubject());
+        Set<Voucher> usedVouchers = commonOrderHelper.useVouchers(createOrderCommand.getVoucherIds());
+        OrderEntity order = orderMapper.createOrderCommandToOrderEntity(createOrderCommand, usedVouchers, inventoryDetails, commonHelper.extractTokenSubject());
         OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitializeOrder(order);
         OrderEntity savedOrder = commonOrderHelper.saveOrder(orderCreatedEvent.getOrder());
         return ApiResponse.<OrderResponseData>builder()

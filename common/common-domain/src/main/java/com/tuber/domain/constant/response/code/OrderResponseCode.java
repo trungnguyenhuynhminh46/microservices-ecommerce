@@ -3,8 +3,10 @@ package com.tuber.domain.constant.response.code;
 public class OrderResponseCode extends ResponseCodeBase {
     protected final String serviceName = "order";
     public static final OrderResponseCode SUCCESS_RESPONSE = new OrderResponseCode(1000, "Order is created successfully");
-
     public static final OrderResponseCode PRODUCT_UNAVAILABLE = new OrderResponseCode(1001, "Some products are unavailable or have been out of stock");
+    public static final OrderResponseCode ORDER_SAVE_FAILED = new OrderResponseCode(1002, "Failed to save order");
+    public static final OrderResponseCode INVALID_VOUCHER = new OrderResponseCode(1003, "One or more vouchers are invalid or inactive");
+
     protected OrderResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

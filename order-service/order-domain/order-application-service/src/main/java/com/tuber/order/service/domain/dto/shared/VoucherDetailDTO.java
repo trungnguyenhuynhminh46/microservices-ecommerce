@@ -23,5 +23,4 @@ public class VoucherDetailDTO {
     BigDecimal minimumOrderAmount;
     BigDecimal maximumDiscountAmount;
     String expiryDate;
-    Boolean active;
 }
