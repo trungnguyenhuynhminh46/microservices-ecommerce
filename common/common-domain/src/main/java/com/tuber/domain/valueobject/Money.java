@@ -71,4 +71,12 @@ public class Money {
     public boolean isGreaterThan(Money money) {
         return amount != null && amount.compareTo(money.amount) > 0;
     }
+
+    public boolean isGreaterThanOrEqual(Money money) {
+        return amount != null && amount.compareTo(money.amount) >= 0;
+    }
+
+    public boolean isSmallerThanOrEqual(Money money) {
+        return amount != null && amount.compareTo(money.amount) <= 0;
+    }
 }

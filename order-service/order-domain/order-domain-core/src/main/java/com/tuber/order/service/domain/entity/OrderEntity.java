@@ -5,6 +5,7 @@ import com.tuber.domain.entity.AggregateRoot;
 import com.tuber.domain.exception.OrderDomainException;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
+import com.tuber.order.service.domain.valueobject.DiscountType;
 import com.tuber.order.service.domain.valueobject.enums.OrderStatus;
 
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class OrderEntity extends AggregateRoot<UniqueUUID> {
     private String trackingId;
@@ -188,8 +190,12 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
     }
 
     protected Money calculateFinalPrice() {
-        //TODO: Implement this method
-        return new Money(BigDecimal.valueOf(0.0));
+        Money totalPrice = orderItems.stream().reduce(
+                Money.ZERO,
+                (subtotal, orderItem) -> subtotal.add(orderItem.getSubTotal()),
+                Money::add
+        );
+        return useVouchers(totalPrice);
     }
 
     public boolean isValidForInitialization() {
@@ -207,7 +213,7 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
 
     private void initializeOrderItems() {
         long itemId = 1;
-        for (OrderItem orderItem: getOrderItems()) {
+        for (OrderItem orderItem : getOrderItems()) {
             orderItem.selfValidate().selfInitialize(itemId++, getId().getValue());
         }
     }
@@ -236,5 +242,59 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
         setUpdatedAt(LocalDate.now());
 
         return this;
+    }
+
+    private boolean isVoucherInvalid(Voucher voucher, Money finalPrice) {
+        boolean achievedMinimumOrderAmount = voucher.getMinimumOrderAmount() == null || finalPrice.isGreaterThanOrEqual(voucher.getMinimumOrderAmount());
+        return !voucher.getActive()
+                || voucher.getExpiryDate().isBefore(LocalDate.now())
+                || voucher.getRemain() <= 0
+                || !achievedMinimumOrderAmount;
+    }
+
+    public Money useVouchers(Money price) {
+        if (vouchers == null || vouchers.isEmpty()) {
+            return price;
+        }
+
+        Money discountedPrice = price;
+        for (Voucher voucher : vouchers) {
+            if (isVoucherInvalid(voucher, discountedPrice)) {
+                continue;
+            }
+
+            discountedPrice = applyDiscount(voucher, discountedPrice);
+            updateVoucherUsage(voucher);
+
+            if (discountedPrice.isSmallerThanOrEqualToZero()) {
+                return Money.ZERO;
+            }
+        }
+
+        return discountedPrice;
+    }
+
+    private Money applyDiscount(Voucher voucher, Money price) {
+        if (voucher.getDiscountType() == DiscountType.FIXED_AMOUNT && voucher.getDiscountAmount() != null) {
+            return price.subtract(voucher.getDiscountAmount());
+        }
+
+        if (voucher.getDiscountType() == DiscountType.PERCENTAGE && voucher.getDiscountPercentage() != null) {
+            Money discountAmount = calculatePercentageDiscount(price, voucher.getDiscountPercentage());
+            Money maxDiscount = voucher.getMaximumDiscountAmount();
+            return price.subtract(discountAmount.isGreaterThan(maxDiscount) ? maxDiscount : discountAmount);
+        }
+
+        return price;
+    }
+
+    private Money calculatePercentageDiscount(Money price, BigDecimal discountPercentage) {
+        return new Money(price.getAmount().multiply(discountPercentage));
+    }
+
+    private void updateVoucherUsage(Voucher voucher) {
+        int newRemain = voucher.getRemain() - 1;
+        voucher.setRemain(newRemain);
+        voucher.setActive(newRemain > 0);
     }
 }
