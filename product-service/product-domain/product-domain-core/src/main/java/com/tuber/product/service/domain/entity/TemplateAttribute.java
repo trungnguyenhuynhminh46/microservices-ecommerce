@@ -4,10 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuber.domain.entity.BaseEntity;
-import com.tuber.domain.valueobject.id.LongId;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.product.service.domain.constant.ProductResponseCode;
-import com.tuber.product.service.domain.exception.ProductDomainException;
+import com.tuber.domain.constant.response.code.ProductResponseCode;
+import com.tuber.domain.exception.ProductDomainException;
 
 import java.util.UUID;
 

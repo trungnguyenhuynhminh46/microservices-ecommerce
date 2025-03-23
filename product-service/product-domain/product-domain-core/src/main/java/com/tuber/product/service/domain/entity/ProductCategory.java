@@ -2,14 +2,12 @@ package com.tuber.product.service.domain.entity;
 
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.product.service.domain.constant.ProductResponseCode;
-import com.tuber.product.service.domain.exception.ProductDomainException;
+import com.tuber.domain.constant.response.code.ProductResponseCode;
+import com.tuber.domain.exception.ProductDomainException;
 import com.tuber.product.service.domain.helper.SlugGenerator;
 
-import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.Base64;
-import java.util.Locale;
 import java.util.UUID;
 
 public class ProductCategory extends BaseEntity<UniqueUUID> {

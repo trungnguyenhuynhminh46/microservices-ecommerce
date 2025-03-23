@@ -1,11 +1,11 @@
 package com.tuber.product.service.domain.helper;
 
-import com.tuber.product.service.domain.constant.ProductResponseCode;
+import com.tuber.domain.constant.response.code.ProductResponseCode;
 import com.tuber.product.service.domain.entity.Product;
 import com.tuber.product.service.domain.entity.ProductCategory;
 import com.tuber.product.service.domain.entity.TemplateAttribute;
 import com.tuber.product.service.domain.entity.TemplateProduct;
-import com.tuber.product.service.domain.exception.ProductDomainException;
+import com.tuber.domain.exception.ProductDomainException;
 import com.tuber.product.service.domain.ports.output.repository.ProductCategoryRepository;
 import com.tuber.product.service.domain.ports.output.repository.ProductRepository;
 import com.tuber.product.service.domain.ports.output.repository.TemplateAttributeRepository;

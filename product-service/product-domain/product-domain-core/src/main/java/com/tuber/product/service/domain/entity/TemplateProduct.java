@@ -3,8 +3,8 @@ package com.tuber.product.service.domain.entity;
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.domain.valueobject.Money;
-import com.tuber.product.service.domain.constant.ProductResponseCode;
-import com.tuber.product.service.domain.exception.ProductDomainException;
+import com.tuber.domain.constant.response.code.ProductResponseCode;
+import com.tuber.domain.exception.ProductDomainException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

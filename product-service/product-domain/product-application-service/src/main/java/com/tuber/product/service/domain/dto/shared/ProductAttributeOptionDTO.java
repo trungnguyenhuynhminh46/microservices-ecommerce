@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ProductAttributeOption {
+public class ProductAttributeOptionDTO {
     @NotNull
     String name;
     @NotNull

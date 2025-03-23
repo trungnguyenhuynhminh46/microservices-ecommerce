@@ -1,7 +1,7 @@
 package com.tuber.product.service.domain.helper.product;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.product.service.domain.constant.ProductResponseCode;
+import com.tuber.domain.constant.response.code.ProductResponseCode;
 import com.tuber.product.service.domain.dto.product.DeleteProductCommand;
 import com.tuber.product.service.domain.dto.product.ProductResponseData;
 import com.tuber.product.service.domain.entity.Product;

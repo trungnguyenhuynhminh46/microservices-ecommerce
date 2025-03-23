@@ -1,6 +1,4 @@
-package com.tuber.product.service.domain.constant;
-
-import com.tuber.domain.constant.response.code.ResponseCodeBase;
+package com.tuber.domain.constant.response.code;
 
 public class ProductResponseCode extends ResponseCodeBase {
     protected final String serviceName = "product";

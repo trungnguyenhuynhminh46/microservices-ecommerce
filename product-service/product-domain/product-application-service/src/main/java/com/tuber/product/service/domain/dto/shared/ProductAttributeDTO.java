@@ -18,5 +18,5 @@ public class ProductAttributeDTO {
     String name;
     String defaultValue;
     @NotNull
-    List<ProductAttributeOption> options;
+    List<ProductAttributeOptionDTO> options;
 }

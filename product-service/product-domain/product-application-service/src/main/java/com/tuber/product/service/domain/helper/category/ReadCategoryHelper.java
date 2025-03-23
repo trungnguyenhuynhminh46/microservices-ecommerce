@@ -1,7 +1,7 @@
 package com.tuber.product.service.domain.helper.category;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.product.service.domain.constant.ProductResponseCode;
+import com.tuber.domain.constant.response.code.ProductResponseCode;
 import com.tuber.product.service.domain.dto.category.GetProductCategoryQuery;
 import com.tuber.product.service.domain.dto.category.ProductCategoryListResponseData;
 import com.tuber.product.service.domain.dto.category.ProductCategoryResponseData;

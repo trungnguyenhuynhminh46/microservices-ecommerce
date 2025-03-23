@@ -1,7 +1,7 @@
 package com.tuber.product.service.domain.helper.template.attribute;
 
 import com.tuber.application.handler.ApiResponse;
-import com.tuber.product.service.domain.constant.ProductResponseCode;
+import com.tuber.domain.constant.response.code.ProductResponseCode;
 import com.tuber.product.service.domain.dto.template.attribute.GetTemplateAttributeQuery;
 import com.tuber.product.service.domain.dto.template.attribute.TemplateAttributeResponseData;
 import com.tuber.product.service.domain.dto.template.attribute.TemplateAttributesListResponseData;

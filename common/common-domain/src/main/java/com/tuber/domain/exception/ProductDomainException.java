@@ -1,4 +1,4 @@
-package com.tuber.product.service.domain.exception;
+package com.tuber.domain.exception;
 
 import com.tuber.domain.constant.response.code.ResponseCodeBase;
 import com.tuber.domain.exception.DomainException;

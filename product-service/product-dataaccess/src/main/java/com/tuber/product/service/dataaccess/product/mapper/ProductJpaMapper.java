@@ -6,7 +6,7 @@ import com.tuber.product.service.dataaccess.attribute.entity.ProductAttributeJpa
 import com.tuber.product.service.dataaccess.attribute.mapper.ProductAttributeJpaMapper;
 import com.tuber.product.service.dataaccess.product.entity.ProductJpaEntity;
 import com.tuber.product.service.domain.entity.Product;
-import com.tuber.product.service.domain.entity.ProductAttribute;
+import com.tuber.domain.entity.ProductAttribute;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

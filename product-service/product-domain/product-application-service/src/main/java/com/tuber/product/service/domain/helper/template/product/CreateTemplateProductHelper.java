@@ -2,7 +2,7 @@ package com.tuber.product.service.domain.helper.template.product;
 
 import com.tuber.application.handler.ApiResponse;
 import com.tuber.product.service.domain.ProductDomainService;
-import com.tuber.product.service.domain.constant.ProductResponseCode;
+import com.tuber.domain.constant.response.code.ProductResponseCode;
 import com.tuber.product.service.domain.dto.template.product.CreateTemplateProductCommand;
 import com.tuber.product.service.domain.dto.template.product.TemplateProductResponseData;
 import com.tuber.product.service.domain.entity.TemplateAttribute;

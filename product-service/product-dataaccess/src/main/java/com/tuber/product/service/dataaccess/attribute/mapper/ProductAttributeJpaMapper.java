@@ -3,7 +3,7 @@ package com.tuber.product.service.dataaccess.attribute.mapper;
 import com.tuber.domain.valueobject.id.LongId;
 import com.tuber.product.service.dataaccess.attribute.entity.ProductAttributeJpaEntity;
 import com.tuber.product.service.dataaccess.product.entity.ProductJpaEntity;
-import com.tuber.product.service.domain.entity.ProductAttribute;
+import com.tuber.domain.entity.ProductAttribute;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -8,6 +8,7 @@ public class OrderResponseCode extends ResponseCodeBase {
     public static final OrderResponseCode INVALID_VOUCHER = new OrderResponseCode(1003, "One or more vouchers are invalid or inactive");
     public static final OrderResponseCode ORDER_IN_WRONG_STATE_FOR_INITIALIZATION = new OrderResponseCode(1004, "Order is in wrong state for initialization");
     public static final OrderResponseCode ORDER_ITEM_IN_WRONG_STATE_FOR_INITIALIZATION = new OrderResponseCode(1005, "Order item is in wrong state for initialization");
+    public static final OrderResponseCode PRODUCT_IN_ORDER_ITEM_IS_OUTDATED = new OrderResponseCode(1006, "Product in order item is outdated");
     protected OrderResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

@@ -29,7 +29,6 @@ public class Product extends AggregateRoot<UniqueUUID> {
         private List<ProductAttribute> attributes;
         private String name;
         private Money basePrice;
-        private Money finalPrice;
 
         private Builder() {
         }
@@ -56,11 +55,6 @@ public class Product extends AggregateRoot<UniqueUUID> {
 
         public Builder basePrice(Money val) {
             basePrice = val;
-            return this;
-        }
-
-        public Builder finalPrice(Money val) {
-            finalPrice = val;
             return this;
         }
 

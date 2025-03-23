@@ -7,9 +7,9 @@ import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.product.service.domain.dto.product.*;
 import com.tuber.product.service.domain.dto.shared.ProductAttributeDTO;
-import com.tuber.product.service.domain.dto.shared.ProductAttributeOption;
+import com.tuber.product.service.domain.dto.shared.ProductAttributeOptionDTO;
 import com.tuber.product.service.domain.entity.Product;
-import com.tuber.product.service.domain.entity.ProductAttribute;
+import com.tuber.domain.entity.ProductAttribute;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public abstract class ProductMapper {
                 .toList();
     }
 
-    protected String map(List<ProductAttributeOption> options) {
+    protected String map(List<ProductAttributeOptionDTO> options) {
         try {
             return objectMapper.writeValueAsString(options);
         } catch (JsonProcessingException e) {
@@ -80,9 +80,9 @@ public abstract class ProductMapper {
         }
     }
 
-    protected List<ProductAttributeOption> map(String options) {
+    protected List<ProductAttributeOptionDTO> map(String options) {
         try {
-            return objectMapper.readValue(options, objectMapper.getTypeFactory().constructCollectionType(List.class, ProductAttributeOption.class));
+            return objectMapper.readValue(options, objectMapper.getTypeFactory().constructCollectionType(List.class, ProductAttributeOptionDTO.class));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
