@@ -1,10 +1,13 @@
 package com.tuber.order.service.domain.entity;
 
+import com.tuber.domain.constant.response.code.OrderResponseCode;
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.entity.Warehouse;
+import com.tuber.domain.exception.OrderDomainException;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.order.service.domain.valueobject.OrderItemId;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class OrderItem extends BaseEntity<OrderItemId> {
@@ -131,5 +134,40 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         public OrderItem build() {
             return new OrderItem(this);
         }
+    }
+
+    public Money getPriceAfterAddingOptions() {
+        //TODO: Implement this method
+        return new Money(BigDecimal.ZERO);
+    }
+
+    public boolean isValidForInitialization() {
+        return getId() == null && getOrderId() == null
+                && getProduct() != null && getSku() != null
+                && getWarehouse() != null && getQuantity() != null
+                && getSubTotal() == null;
+
+    }
+
+    public void validateQuantity() {
+        if (getQuantity() != null && getQuantity() < 0) {
+            throw new IllegalArgumentException("Order item quantity can not be negative");
+        }
+    }
+
+    public OrderItem selfValidate() {
+        if (!isValidForInitialization()) {
+            throw new OrderDomainException(OrderResponseCode.ORDER_ITEM_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
+        }
+        validateQuantity();
+        return this;
+    }
+
+    public OrderItem selfInitialize(long itemId, UUID orderId) {
+        setId(new OrderItemId(itemId));
+        setOrderId(orderId);
+        setSubTotal(getPriceAfterAddingOptions().multiply(Double.valueOf(getQuantity())));
+
+        return this;
     }
 }

@@ -1,19 +1,26 @@
 package com.tuber.order.service.domain.entity;
 
+import com.tuber.domain.constant.response.code.OrderResponseCode;
 import com.tuber.domain.entity.AggregateRoot;
+import com.tuber.domain.exception.OrderDomainException;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.order.service.domain.valueobject.enums.OrderStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
 public class OrderEntity extends AggregateRoot<UniqueUUID> {
     private String trackingId;
     private String buyer;
-    private Set<OrderItem> orderItems;
-    private Set<Voucher> vouchers;
+    private Set<OrderItem> orderItems = new HashSet<>();
+    private Set<Voucher> vouchers = new HashSet<>();
     private Money finalPrice;
     private OrderStatus orderStatus;
     private LocalDate createdAt;
@@ -167,5 +174,67 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
         public OrderEntity build() {
             return new OrderEntity(this);
         }
+    }
+
+    protected String generateTrackingId(String username) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
+        String timestamp = now.format(formatter);
+
+        Random random = new Random();
+        int randomNum = 1000 + random.nextInt(9000);
+
+        return String.format("%s_%s_%d", timestamp, username, randomNum);
+    }
+
+    protected Money calculateFinalPrice() {
+        //TODO: Implement this method
+        return new Money(BigDecimal.valueOf(0.0));
+    }
+
+    public boolean isValidForInitialization() {
+        return getId() == null && getTrackingId() == null
+                && getBuyer() != null && getOrderItems() != null
+                && getFinalPrice() == null && getOrderStatus() == OrderStatus.PROCESSING
+                && getCreatedAt() == null && getUpdatedAt() == null;
+    }
+
+    public void validateOrderItems() {
+        if (getOrderItems() != null && getOrderItems().isEmpty()) {
+            throw new IllegalArgumentException("Order must have at least one order item");
+        }
+    }
+
+    private void initializeOrderItems() {
+        long itemId = 1;
+        for (OrderItem orderItem: getOrderItems()) {
+            orderItem.selfValidate().selfInitialize(itemId++, getId().getValue());
+        }
+    }
+
+    private void initializeVouchers() {
+        if (getVouchers() == null) {
+            setVouchers(new HashSet<>());
+        }
+    }
+
+    public OrderEntity selfValidate() {
+        if (!isValidForInitialization()) {
+            throw new OrderDomainException(OrderResponseCode.ORDER_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
+        }
+        validateOrderItems();
+        return this;
+    }
+
+    public OrderEntity selfInitialize() {
+        setId(new UniqueUUID(UUID.randomUUID()));
+        setTrackingId(generateTrackingId(getBuyer()));
+        initializeOrderItems();
+        initializeVouchers();
+        setFinalPrice(calculateFinalPrice());
+        setCreatedAt(LocalDate.now());
+        setUpdatedAt(LocalDate.now());
+
+        return this;
     }
 }

@@ -6,7 +6,6 @@ import com.tuber.order.service.domain.event.OrderCreatedEvent;
 public class OrderDomainServiceImpl implements OrderDomainService{
     @Override
     public OrderCreatedEvent validateAndInitializeOrder(OrderEntity order) {
-        //TODO: Implement this method
-        return null;
+        return new OrderCreatedEvent(order.selfValidate().selfInitialize());
     }
 }

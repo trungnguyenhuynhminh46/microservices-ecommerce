@@ -39,6 +39,9 @@ public class CreateOrderHelper {
         Set<Voucher> usedVouchers = commonOrderHelper.useVouchers(createOrderCommand.getVoucherIds());
         OrderEntity order = orderMapper.createOrderCommandToOrderEntity(createOrderCommand, usedVouchers, inventoryDetails, commonHelper.extractTokenSubject());
         OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitializeOrder(order);
+
+        //TODO: Send orderCreatedEvent to the event bus
+
         OrderEntity savedOrder = commonOrderHelper.saveOrder(orderCreatedEvent.getOrder());
         return ApiResponse.<OrderResponseData>builder()
                 .code(OrderResponseCode.SUCCESS_RESPONSE.getCode())
