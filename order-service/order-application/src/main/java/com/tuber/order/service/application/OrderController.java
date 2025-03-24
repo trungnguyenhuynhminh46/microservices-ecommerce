@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping(value = "/{$service.name}/orders", produces = "application/vnd.api.v1+json")
+@RequestMapping(value = "/${service.name}/orders", produces = "application/vnd.api.v1+json")
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderApplicationService orderApplicationService;

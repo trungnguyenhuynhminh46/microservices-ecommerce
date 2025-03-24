@@ -17,3 +17,5 @@ spring:
     time-to-live: 21600
 product-service:
   url: http://localhost:8083/product
+inventory-service:
+  url: http://localhost:8084/inventory
