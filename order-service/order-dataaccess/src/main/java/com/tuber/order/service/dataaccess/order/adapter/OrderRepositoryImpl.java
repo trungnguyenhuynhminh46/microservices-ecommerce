@@ -1,5 +1,7 @@
 package com.tuber.order.service.dataaccess.order.adapter;
 
+import com.tuber.order.service.dataaccess.order.mapper.OrderDataAccessMapper;
+import com.tuber.order.service.dataaccess.order.repository.OrderJpaRepository;
 import com.tuber.order.service.domain.entity.OrderEntity;
 import com.tuber.order.service.domain.ports.output.repository.OrderRepository;
 import lombok.AccessLevel;
@@ -11,8 +13,14 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderRepositoryImpl implements OrderRepository {
+    OrderJpaRepository orderJpaRepository;
+    OrderDataAccessMapper orderDataAccessMapper;
+
     @Override
     public OrderEntity save(OrderEntity order) {
-        return null;
+        return orderDataAccessMapper.productJpaEntityToProductEntity(
+                orderJpaRepository.save(orderDataAccessMapper.productEntityToProductJpaEntity(order)
+                )
+        );
     }
 }
