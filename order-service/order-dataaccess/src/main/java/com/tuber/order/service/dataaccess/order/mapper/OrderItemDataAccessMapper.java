@@ -24,9 +24,6 @@ public abstract class OrderItemDataAccessMapper {
     @Mapping(target = "product", source = "productId")
     @Mapping(target = "warehouse", source = "warehouseId")
     public abstract OrderItem orderItemJpaEntityToOrderItemEntity(OrderItemJpaEntity orderItemJpaEntity);
-    protected OrderItemId mapId(Long id) {
-        return new OrderItemId(id);
-    }
 
     protected Long mapId(OrderItemId id) {
         return id.getValue();

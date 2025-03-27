@@ -16,10 +16,6 @@ public abstract class VoucherDataAccessMapper {
     @Mapping(target = "ordersUsedVouchers", ignore = true)
     public abstract VoucherJpaEntity voucherEntityToVoucherJpaEntity(Voucher voucher);
 
-    protected UniqueUUID map(UUID id) {
-        return new UniqueUUID(id);
-    }
-
     protected BigDecimal mapMoney(Money money) {
         return money.getAmount();
     }
