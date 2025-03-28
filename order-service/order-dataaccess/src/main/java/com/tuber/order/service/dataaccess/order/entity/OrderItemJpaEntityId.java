@@ -1,6 +1,7 @@
 package com.tuber.order.service.dataaccess.order.entity;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -10,9 +11,10 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderItemJpaEntityId implements Serializable {
-    private Long id;
-    private OrderJpaEntity order;
+    Long id;
+    OrderJpaEntity order;
 
     @Override
     public boolean equals(Object o) {

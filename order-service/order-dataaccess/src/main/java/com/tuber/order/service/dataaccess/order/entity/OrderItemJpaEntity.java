@@ -22,7 +22,7 @@ public class OrderItemJpaEntity {
     Long id;
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ORDER_ID")
+    @JoinColumn(name = "order_id")
     OrderJpaEntity order;
     UUID productId;
     String sku;

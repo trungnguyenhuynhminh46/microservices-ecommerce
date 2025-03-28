@@ -1,5 +1,9 @@
 server:
   port: 8085
+#logging:
+#  level:
+#    org.hibernate: DEBUG
+#    org.springframework.orm.jpa: DEBUG
 service:
   name: order
 spring:

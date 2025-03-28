@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "order")
+@Table(name = "t_order")
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderJpaEntity {
@@ -26,11 +27,12 @@ public class OrderJpaEntity {
     String trackingId;
     String buyer;
 
-    @OneToMany(mappedBy = "order")
-    Set<OrderItemJpaEntity> orderItems;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    Set<OrderItemJpaEntity> orderItems = new HashSet<>();
     @ManyToMany(mappedBy = "ordersUsedVouchers", fetch = FetchType.LAZY)
-    Set<VoucherJpaEntity> vouchers;
+    Set<VoucherJpaEntity> vouchers = new HashSet<>();
     BigDecimal finalPrice;
+    @Enumerated(EnumType.STRING)
     OrderStatus orderStatus;
     @Column(columnDefinition = "DATE")
     LocalDate createdAt;

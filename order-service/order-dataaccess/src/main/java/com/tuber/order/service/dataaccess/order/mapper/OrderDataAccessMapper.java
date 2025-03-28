@@ -9,6 +9,7 @@ import com.tuber.order.service.dataaccess.voucher.mapper.VoucherDataAccessMapper
 import com.tuber.order.service.domain.entity.OrderEntity;
 import com.tuber.order.service.domain.entity.OrderItem;
 import com.tuber.order.service.domain.entity.Voucher;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +25,10 @@ public abstract class OrderDataAccessMapper {
 
     public abstract OrderEntity productJpaEntityToProductEntity(OrderJpaEntity orderJpaEntity);
     public abstract OrderJpaEntity productEntityToProductJpaEntity(OrderEntity order);
-
+    @AfterMapping
+    protected void afterMapping(OrderJpaEntity orderJpaEntity) {
+        orderJpaEntity.getOrderItems().forEach(orderItemJpaEntity -> orderItemJpaEntity.setOrder(orderJpaEntity));
+    }
     protected UniqueUUID map(UUID id) {
         return new UniqueUUID(id);
     }

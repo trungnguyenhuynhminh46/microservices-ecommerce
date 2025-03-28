@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -24,8 +25,13 @@ public class VoucherJpaEntity {
     @Id
     UUID id;
     String code;
-    @ManyToMany(mappedBy = "vouchers", fetch = FetchType.LAZY)
-    Set<OrderJpaEntity> ordersUsedVouchers;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "order_voucher",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "voucher_id")
+    )
+    Set<OrderJpaEntity> ordersUsedVouchers = new HashSet<>();
     DiscountType discountType;
     BigDecimal discountAmount;
     BigDecimal discountPercentage;
