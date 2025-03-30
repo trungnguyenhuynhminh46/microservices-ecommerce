@@ -9,14 +9,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>inventory-service</artifactId>
+    <artifactId>payment-service</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>inventory-application</module>
-        <module>inventory-container</module>
-        <module>inventory-dataaccess</module>
-        <module>inventory-domain</module>
-        <module>inventory-messaging</module>
+        <module>payment-container</module>
+        <module>payment-dataaccess</module>
+        <module>payment-domain</module>
+        <module>payment-messaging</module>
     </modules>
 
 </project>

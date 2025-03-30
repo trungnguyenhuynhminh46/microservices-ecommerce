@@ -5,29 +5,28 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.tuber</groupId>
-        <artifactId>inventory-service</artifactId>
+        <artifactId>payment-domain</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>inventory-dataaccess</artifactId>
+    <artifactId>payment-application-service</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.tuber</groupId>
-            <artifactId>inventory-application-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <artifactId>payment-domain-core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.tuber</groupId>
-            <artifactId>common-dataaccess</artifactId>
+            <artifactId>common-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.tuber</groupId>
+            <artifactId>common-application</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
         </dependency>
     </dependencies>
 

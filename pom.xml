@@ -16,6 +16,7 @@
         <module>product-service</module>
         <module>inventory-service</module>
         <module>order-service</module>
+        <module>payment-service</module>
     </modules>
 
     <parent>
@@ -180,6 +181,28 @@
             <dependency>
                 <groupId>com.tuber</groupId>
                 <artifactId>order-messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Payment service           -->
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>payment-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>payment-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>payment-dataaccess</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tuber</groupId>
+                <artifactId>payment-messaging</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
