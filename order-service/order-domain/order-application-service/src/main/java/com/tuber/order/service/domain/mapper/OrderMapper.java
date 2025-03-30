@@ -12,8 +12,11 @@ import com.tuber.order.service.domain.dto.shared.ProductIdWithSkuDTO;
 import com.tuber.order.service.domain.entity.OrderEntity;
 import com.tuber.order.service.domain.entity.OrderItem;
 import com.tuber.order.service.domain.entity.Voucher;
+import com.tuber.order.service.domain.event.OrderCreatedEvent;
+import com.tuber.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
 import com.tuber.order.service.domain.valueobject.OrderItemId;
 import com.tuber.order.service.domain.valueobject.enums.OrderStatus;
+import com.tuber.saga.SagaStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -73,6 +76,19 @@ public abstract class OrderMapper {
     @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "warehouseId", source = "warehouse.id")
     protected abstract OrderItemDetailDTO orderItemToOrderItemDetailDTO(OrderItem orderItem);
+
+    //TODO: Implement this method
+    public abstract OrderPaymentEventPayload orderCreatedEventToOrderPaymentEventPayload(OrderCreatedEvent orderCreatedEvent);
+
+    public SagaStatus orderStatusToSagaStatus(OrderStatus orderStatus) {
+        return switch (orderStatus) {
+            case PAID -> SagaStatus.PROCESSING;
+            case APPROVED -> SagaStatus.SUCCEEDED;
+            case CANCELLING -> SagaStatus.COMPENSATING;
+            case CANCELLED -> SagaStatus.COMPENSATED;
+            default -> SagaStatus.STARTED;
+        };
+    }
 
     protected UUID map(UniqueUUID id) {
         return id.getValue();

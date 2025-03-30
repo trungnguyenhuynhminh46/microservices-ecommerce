@@ -7,12 +7,16 @@ import com.tuber.order.service.domain.dto.order.OrderResponseData;
 import com.tuber.order.service.domain.event.OrderCreatedEvent;
 import com.tuber.order.service.domain.helper.order.CreateOrderHelper;
 import com.tuber.order.service.domain.mapper.OrderMapper;
+import com.tuber.order.service.domain.outbox.scheduler.payment.PaymentOutboxHelper;
+import com.tuber.outbox.OutboxStatus;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -21,14 +25,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateOrderHandler {
     CreateOrderHelper createOrderHelper;
     OrderMapper orderMapper;
+    PaymentOutboxHelper paymentOutboxHelper;
 
     @Transactional
     public ApiResponse<OrderResponseData> createOrder(CreateOrderCommand createOrderCommand) {
-        // Persist order
         OrderCreatedEvent orderCreatedEvent = createOrderHelper.persistOrder(createOrderCommand);
         log.info("Order is created with id: {}", orderCreatedEvent.getOrder().getId().getValue());
 
-        // Save event to outbox tables
+        paymentOutboxHelper.savePaymentOutboxMessage(
+                orderMapper.orderCreatedEventToOrderPaymentEventPayload(orderCreatedEvent),
+                orderCreatedEvent.getOrder().getOrderStatus(),
+                orderMapper.orderStatusToSagaStatus(orderCreatedEvent.getOrder().getOrderStatus()),
+                OutboxStatus.STARTED,
+                UUID.randomUUID()
+        );
 
         return ApiResponse.<OrderResponseData>builder()
                 .code(OrderResponseCode.SUCCESS_RESPONSE.getCode())

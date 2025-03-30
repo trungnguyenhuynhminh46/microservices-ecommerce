@@ -45,6 +45,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.tuber</groupId>
+            <artifactId>outbox</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.tuber</groupId>
+            <artifactId>saga</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
