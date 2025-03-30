@@ -1,0 +1,39 @@
+package com.tuber.order.service.domain.handler.order;
+
+import com.tuber.application.handler.ApiResponse;
+import com.tuber.domain.constant.response.code.OrderResponseCode;
+import com.tuber.order.service.domain.dto.order.CreateOrderCommand;
+import com.tuber.order.service.domain.dto.order.OrderResponseData;
+import com.tuber.order.service.domain.event.OrderCreatedEvent;
+import com.tuber.order.service.domain.helper.order.CreateOrderHelper;
+import com.tuber.order.service.domain.mapper.OrderMapper;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class CreateOrderHandler {
+    CreateOrderHelper createOrderHelper;
+    OrderMapper orderMapper;
+
+    @Transactional
+    public ApiResponse<OrderResponseData> createOrder(CreateOrderCommand createOrderCommand) {
+        // Persist order
+        OrderCreatedEvent orderCreatedEvent = createOrderHelper.persistOrder(createOrderCommand);
+        log.info("Order is created with id: {}", orderCreatedEvent.getOrder().getId().getValue());
+
+        // Save event to outbox tables
+
+        return ApiResponse.<OrderResponseData>builder()
+                .code(OrderResponseCode.SUCCESS_RESPONSE.getCode())
+                .message("Order created successfully")
+                .data(orderMapper.orderEntityToOrderResponseData(orderCreatedEvent.getOrder()))
+                .build();
+    }
+}
