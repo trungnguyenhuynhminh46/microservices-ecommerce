@@ -95,7 +95,7 @@ public class JwtTokenHelper {
 
     public String generateJwtAccessToken(UserAccount userAccount) {
         String token = generateJwtToken(
-                userAccount.getUsername(),
+                userAccount.getUserId(),
                 "tuber.com",
                 List.of(
                         "email:" + userAccount.getEmail(),
@@ -110,7 +110,7 @@ public class JwtTokenHelper {
 
     public String generateJwtRefreshToken(UserAccount userAccount) {
         String token = generateJwtToken(
-                userAccount.getUsername(),
+                userAccount.getUserId(),
                 "tuber.com",
                 List.of(),
                 REFRESHABLE_DURATION
@@ -126,11 +126,11 @@ public class JwtTokenHelper {
             boolean isValid = signedJWT.verify(macVerifier);
             Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
             boolean isExpired = expirationTime.before(new Date());
-            String username = signedJWT.getJWTClaimsSet().getSubject();
+            String userId = signedJWT.getJWTClaimsSet().getSubject();
 
             boolean tokenIsValid = isValid && !isExpired;
             if (tokenIsValid) {
-                commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
+                commonIdentityServiceHelper.verifyUserAccountWithIdExist(UUID.fromString(userId));
             }
 
             return tokenIsValid;
@@ -139,10 +139,10 @@ public class JwtTokenHelper {
         }
     }
 
-    public String extractSubjectFromToken(String token) {
+    public UUID extractUserIdFromToken(String token) {
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
-            return signedJWT.getJWTClaimsSet().getSubject();
+            return UUID.fromString(signedJWT.getJWTClaimsSet().getSubject());
         } catch (ParseException e) {
             throw new IdentityDomainException(IdentityResponseCode.INVALID_FORMAT_JWT_TOKEN, HttpStatus.BAD_REQUEST.value());
         }
@@ -159,8 +159,7 @@ public class JwtTokenHelper {
 
     @Transactional
     public String rotateRefreshToken(String refreshToken) {
-        String username = extractSubjectFromToken(refreshToken);
-        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
+        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithIdExist(extractUserIdFromToken(refreshToken));
         RevokedRefreshToken revokedRefreshToken = RevokedRefreshToken.builder()
                 .id(new RefreshTokenId(refreshToken))
                 .userId(userAccount.getId().getValue())
@@ -172,17 +171,16 @@ public class JwtTokenHelper {
     }
 
     public void verifyAccessTokenAndRefreshTokenHaveSameCreator(String accessToken, String refreshToken) {
-        String accessTokenUsername = extractSubjectFromToken(accessToken);
-        String refreshTokenUsername = extractSubjectFromToken(refreshToken);
-        if (!accessTokenUsername.equals(refreshTokenUsername)) {
+        UUID accessTokenUserId = extractUserIdFromToken(accessToken);
+        UUID refreshTokenUserId = extractUserIdFromToken(refreshToken);
+        if (!accessTokenUserId.equals(refreshTokenUserId)) {
             throw new IdentityDomainException(IdentityResponseCode.REFRESH_TOKEN_OF_ANOTHER_USER, HttpStatus.BAD_REQUEST.value());
         }
     }
 
     @Transactional
     public void logout(String refreshToken) {
-        String username = extractSubjectFromToken(refreshToken);
-        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
+        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithIdExist(extractUserIdFromToken(refreshToken));
         RevokedRefreshToken revokedRefreshToken = RevokedRefreshToken.builder()
                 .id(new RefreshTokenId(refreshToken))
                 .userId(userAccount.getId().getValue())
