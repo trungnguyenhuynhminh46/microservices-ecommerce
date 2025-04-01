@@ -26,13 +26,13 @@ public abstract class InventoryMapper {
     @Autowired
     ProductMapper productMapper;
 
-    public Inventory goodInfoToEmptyInventory(GoodInfoDTO goodInfo, Product product, List<ProductAssignedAttribute> assignedAttributes, UUID warehouseId, String creator) {
+    public Inventory goodInfoToEmptyInventory(GoodInfoDTO goodInfo, Product product, List<ProductAssignedAttribute> assignedAttributes, UUID warehouseId, UUID creatorId) {
         Inventory inventory = Inventory.builder()
                 .product(product)
                 .warehouseId(warehouseId)
                 .stockQuantity(0)
-                .creator(creator)
-                .updater(creator)
+                .creatorId(creatorId)
+                .updaterId(creatorId)
                 .build();
 
         inventory.setAssignedAttributes(assignedAttributes);
@@ -82,4 +82,3 @@ public abstract class InventoryMapper {
         return productMapper.productToProductDTO(product);
     }
 }
-

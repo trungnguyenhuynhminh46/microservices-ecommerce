@@ -28,8 +28,8 @@ public class InventoryJpaEntity {
     @JoinColumn(name = "warehouse_id", insertable = false, updatable = false)
     WarehouseJpaEntity warehouse;
     Integer stockQuantity;
-    String creator;
-    String updater;
+    UUID creatorId;
+    UUID updaterId;
     @Column(columnDefinition = "DATE")
     LocalDate createdAt;
     @Column(columnDefinition = "DATE")

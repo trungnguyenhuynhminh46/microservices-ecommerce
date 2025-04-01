@@ -9,13 +9,14 @@ import com.tuber.domain.exception.InventoryDomainException;
 import java.time.LocalDate;
 import java.util.UUID;
 
+//TODO: Fix mapper relate
 public class InventoryTransaction extends BaseEntity<UniqueUUID> {
     private UUID productId;
     private String sku;
     private UUID srcWarehouseId;
     private UUID destWarehouseId;
     private Integer quantity;
-    private String creator;
+    private UUID creatorId;
     private InventoryTransactionType transactionType;
     private String description;
     private LocalDate createdDate;
@@ -27,7 +28,7 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
         srcWarehouseId = builder.srcWarehouseId;
         destWarehouseId = builder.destWarehouseId;
         quantity = builder.quantity;
-        creator = builder.creator;
+        creatorId = builder.creatorId;
         transactionType = builder.transactionType;
         description = builder.description;
         createdDate = builder.createdDate;
@@ -44,7 +45,7 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
         private UUID srcWarehouseId;
         private UUID destWarehouseId;
         private Integer quantity;
-        private String creator;
+        private UUID creatorId;
         private InventoryTransactionType transactionType;
         private String description;
         private LocalDate createdDate;
@@ -87,8 +88,8 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
             return this;
         }
 
-        public Builder creator(String val) {
-            creator = val;
+        public Builder creatorId(UUID val) {
+            creatorId = val;
             return this;
         }
 
@@ -152,12 +153,12 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
         this.quantity = quantity;
     }
 
-    public String getCreator() {
-        return creator;
+    public UUID getCreatorId() {
+        return creatorId;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setCreatorId(UUID creatorId) {
+        this.creatorId = creatorId;
     }
 
     public InventoryTransactionType getTransactionType() {
@@ -197,7 +198,7 @@ public class InventoryTransaction extends BaseEntity<UniqueUUID> {
     public boolean isValidForInitialization() {
         return getId() == null && getCreatedDate() == null && getProductId() != null && getSku() != null
                 && getDestWarehouseId() != null && getQuantity() != null
-                && getCreator() != null && getTransactionType() != null;
+                && getCreatorId() != null && getTransactionType() != null;
     }
 
     public void validateForInitialization() {
