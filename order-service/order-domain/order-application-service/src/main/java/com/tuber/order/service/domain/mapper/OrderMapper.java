@@ -78,7 +78,11 @@ public abstract class OrderMapper {
     protected abstract OrderItemDetailDTO orderItemToOrderItemDetailDTO(OrderItem orderItem);
 
     //TODO: Implement this method
-    public abstract OrderPaymentEventPayload orderCreatedEventToOrderPaymentEventPayload(OrderCreatedEvent orderCreatedEvent);
+    public OrderPaymentEventPayload orderCreatedEventToOrderPaymentEventPayload(OrderCreatedEvent orderCreatedEvent) {
+        return OrderPaymentEventPayload.builder()
+                .orderId(orderCreatedEvent.getOrder().getId().getValue())
+                .build();
+    }
 
     public SagaStatus orderStatusToSagaStatus(OrderStatus orderStatus) {
         return switch (orderStatus) {

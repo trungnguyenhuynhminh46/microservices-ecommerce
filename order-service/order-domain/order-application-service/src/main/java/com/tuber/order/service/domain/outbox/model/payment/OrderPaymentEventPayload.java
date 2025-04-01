@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Getter
 @Builder
@@ -14,9 +15,9 @@ import java.time.ZonedDateTime;
 public class OrderPaymentEventPayload {
 
     @JsonProperty
-    private String orderId;
+    private UUID orderId;
     @JsonProperty
-    private String customerId;
+    private UUID customerId;
     @JsonProperty
     private BigDecimal price;
     @JsonProperty
