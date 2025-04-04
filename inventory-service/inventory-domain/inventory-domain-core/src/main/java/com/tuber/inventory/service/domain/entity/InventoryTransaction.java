@@ -9,7 +9,6 @@ import com.tuber.domain.exception.InventoryDomainException;
 import java.time.LocalDate;
 import java.util.UUID;
 
-//TODO: Fix mapper relate
 public class InventoryTransaction extends BaseEntity<UniqueUUID> {
     private UUID productId;
     private String sku;

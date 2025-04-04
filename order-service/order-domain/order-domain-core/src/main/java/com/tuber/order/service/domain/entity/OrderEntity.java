@@ -16,11 +16,10 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class OrderEntity extends AggregateRoot<UniqueUUID> {
     private String trackingId;
-    private String buyer;
+    private UUID creatorId;
     private Set<OrderItem> orderItems = new HashSet<>();
     private Set<Voucher> vouchers = new HashSet<>();
     private Money finalPrice;
@@ -31,7 +30,7 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
     private OrderEntity(Builder builder) {
         super.setId(builder.id);
         setTrackingId(builder.trackingId);
-        setBuyer(builder.buyer);
+        setCreatorId(builder.creatorId);
         setOrderItems(builder.orderItems);
         setVouchers(builder.vouchers);
         setFinalPrice(builder.finalPrice);
@@ -52,12 +51,12 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
         this.trackingId = trackingId;
     }
 
-    public String getBuyer() {
-        return buyer;
+    public UUID getCreatorId() {
+        return creatorId;
     }
 
-    public void setBuyer(String buyer) {
-        this.buyer = buyer;
+    public void setCreatorId(UUID creatorId) {
+        this.creatorId = creatorId;
     }
 
     public Set<OrderItem> getOrderItems() {
@@ -112,7 +111,7 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
     public static final class Builder {
         private UniqueUUID id;
         private String trackingId;
-        private String buyer;
+        private UUID creatorId;
         private Set<OrderItem> orderItems;
         private Set<Voucher> vouchers;
         private Money finalPrice;
@@ -138,8 +137,8 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
             return this;
         }
 
-        public Builder buyer(String val) {
-            buyer = val;
+        public Builder creatorId(UUID val) {
+            creatorId = val;
             return this;
         }
 
@@ -200,7 +199,7 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
 
     public boolean isValidForInitialization() {
         return getId() == null && getTrackingId() == null
-                && getBuyer() != null && getOrderItems() != null
+                && getCreatorId() != null && getOrderItems() != null
                 && getFinalPrice() == null && getOrderStatus() == OrderStatus.PROCESSING
                 && getCreatedAt() == null && getUpdatedAt() == null;
     }
@@ -234,7 +233,7 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
 
     public OrderEntity selfInitialize() {
         setId(new UniqueUUID(UUID.randomUUID()));
-        setTrackingId(generateTrackingId(getBuyer()));
+        setTrackingId(generateTrackingId(getCreatorId().toString()));
         initializeOrderItems();
         initializeVouchers();
         setFinalPrice(calculateFinalPrice());

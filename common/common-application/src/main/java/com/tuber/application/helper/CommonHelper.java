@@ -45,15 +45,4 @@ public class CommonHelper {
             throw new DomainException(ResponseCode.INVALID_TOKEN, HttpStatus.UNAUTHORIZED.value());
         }
     }
-
-    //TODO: Remove this function
-    public String extractTokenSubject() {
-        String token = getAuthorizationToken();
-        try {
-            SignedJWT signedJWT = SignedJWT.parse(token);
-            return signedJWT.getJWTClaimsSet().getSubject();
-        } catch (ParseException e) {
-            throw new DomainException(ResponseCode.INVALID_TOKEN, HttpStatus.UNAUTHORIZED.value());
-        }
-    }
 }
