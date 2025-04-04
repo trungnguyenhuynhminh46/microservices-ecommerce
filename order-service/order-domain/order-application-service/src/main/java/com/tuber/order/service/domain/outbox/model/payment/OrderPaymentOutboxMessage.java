@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -17,9 +17,9 @@ import java.util.UUID;
 public class OrderPaymentOutboxMessage {
     private UUID id;
     private UUID sagaId;
-    private ZonedDateTime createdAt;
+    private LocalDate createdAt;
     @Setter
-    private ZonedDateTime processedAt;
+    private LocalDate processedAt;
     private String type;
     private String payload;
     @Setter

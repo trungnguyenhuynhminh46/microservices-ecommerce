@@ -22,8 +22,8 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
     private List<ProductAssignedAttribute> assignedAttributes;
     private UUID warehouseId;
     private Integer stockQuantity;
-    private String creator;
-    private String updater;
+    private UUID creatorId;
+    private UUID updaterId;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
@@ -37,8 +37,8 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         sku = builder.sku;
         warehouseId = builder.warehouseId;
         stockQuantity = builder.stockQuantity;
-        creator = builder.creator;
-        updater = builder.updater;
+        creatorId = builder.creatorId;
+        updaterId = builder.updaterId;
         createdAt = builder.createdAt;
         updatedAt = builder.updatedAt;
     }
@@ -54,8 +54,8 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         private String sku;
         private UUID warehouseId;
         private Integer stockQuantity;
-        private String creator;
-        private String updater;
+        private UUID creatorId;
+        private UUID updaterId;
         private LocalDate createdAt;
         private LocalDate updatedAt;
 
@@ -92,13 +92,13 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
             return this;
         }
 
-        public Builder creator(String val) {
-            creator = val;
+        public Builder creatorId(UUID val) {
+            creatorId = val;
             return this;
         }
 
-        public Builder updater(String val) {
-            updater = val;
+        public Builder updaterId(UUID val) {
+            updaterId = val;
             return this;
         }
 
@@ -141,20 +141,28 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         this.stockQuantity = stockQuantity;
     }
 
-    public String getCreator() {
-        return creator;
+    public ProductUtility getProductUtility() {
+        return productUtility;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setProductUtility(ProductUtility productUtility) {
+        this.productUtility = productUtility;
     }
 
-    public String getUpdater() {
-        return updater;
+    public UUID getCreatorId() {
+        return creatorId;
     }
 
-    public void setUpdater(String updater) {
-        this.updater = updater;
+    public void setCreatorId(UUID creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public UUID getUpdaterId() {
+        return updaterId;
+    }
+
+    public void setUpdaterId(UUID updaterId) {
+        this.updaterId = updaterId;
     }
 
     public LocalDate getCreatedAt() {
@@ -219,7 +227,7 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
     public boolean isValidForInitialization() {
         return getProduct() != null && getSku() != null
                 && getWarehouseId() != null && getStockQuantity() != null
-                && getCreator() != null && getUpdater() != null && getId() == null
+                && getCreatorId() != null && getUpdaterId() != null && getId() == null
                 && getCreatedAt() == null && getUpdatedAt() == null;
     }
 
@@ -246,15 +254,15 @@ public class Inventory extends AggregateRoot<UniqueUUID> {
         setUpdatedAt(LocalDate.now());
     }
 
-    public void addStock(Integer quantity, String updater) {
+    public void addStock(Integer quantity, UUID updaterId) {
         setStockQuantity(getStockQuantity() + quantity);
-        setUpdater(updater);
+        setUpdaterId(updaterId);
         setUpdatedAt(LocalDate.now());
     }
 
-    public void removeStock(Integer quantity, String updater) {
+    public void removeStock(Integer quantity, UUID updaterId) {
         setStockQuantity(getStockQuantity() - quantity);
-        setUpdater(updater);
+        setUpdaterId(updaterId);
         setUpdatedAt(LocalDate.now());
     }
 }

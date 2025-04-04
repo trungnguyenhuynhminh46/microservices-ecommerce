@@ -13,6 +13,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.text.ParseException;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -35,11 +36,11 @@ public class CommonHelper {
         return authHeader.replace("Bearer ", "");
     }
 
-    public String extractTokenSubject() {
+    public UUID extractUserIdFromToken() {
         String token = getAuthorizationToken();
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
-            return signedJWT.getJWTClaimsSet().getSubject();
+            return UUID.fromString(signedJWT.getJWTClaimsSet().getSubject());
         } catch (ParseException e) {
             throw new DomainException(ResponseCode.INVALID_TOKEN, HttpStatus.UNAUTHORIZED.value());
         }

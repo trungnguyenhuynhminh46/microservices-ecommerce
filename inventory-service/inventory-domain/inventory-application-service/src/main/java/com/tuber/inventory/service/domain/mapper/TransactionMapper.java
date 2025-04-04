@@ -15,38 +15,38 @@ import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public abstract class TransactionMapper {
-    public InventoryTransaction goodInfoToAddTransaction(GoodInfoDTO goodInfoDTO, String sku, UUID destWarehouseId, String creator, String description) {
+    public InventoryTransaction goodInfoToAddTransaction(GoodInfoDTO goodInfoDTO, String sku, UUID destWarehouseId, UUID creatorId, String description) {
         return InventoryTransaction.builder()
                 .productId(UUID.fromString(goodInfoDTO.getProductId()))
                 .sku(sku)
                 .destWarehouseId(destWarehouseId)
                 .quantity(goodInfoDTO.getQuantity())
-                .creator(creator)
+                .creatorId(creatorId)
                 .description(description)
                 .transactionType(InventoryTransactionType.ADD)
                 .build();
     }
 
-    public InventoryTransaction goodInfoToRemoveTransaction(GoodInfoDTO goodInfoDTO, String sku, UUID destWarehouseId, String creator, String description) {
+    public InventoryTransaction goodInfoToRemoveTransaction(GoodInfoDTO goodInfoDTO, String sku, UUID destWarehouseId, UUID creatorId, String description) {
         return InventoryTransaction.builder()
                 .productId(UUID.fromString(goodInfoDTO.getProductId()))
                 .sku(sku)
                 .destWarehouseId(destWarehouseId)
                 .quantity(goodInfoDTO.getQuantity())
-                .creator(creator)
+                .creatorId(creatorId)
                 .description(description)
                 .transactionType(InventoryTransactionType.REMOVE)
                 .build();
     }
 
-    public InventoryTransaction goodInfoToTransferTransaction(GoodInfoDTO goodInfoDTO, String sku, UUID srcWarehouseId, UUID destWarehouseId, String creator, String description) {
+    public InventoryTransaction goodInfoToTransferTransaction(GoodInfoDTO goodInfoDTO, String sku, UUID srcWarehouseId, UUID destWarehouseId, UUID creatorId, String description) {
         return InventoryTransaction.builder()
                 .productId(UUID.fromString(goodInfoDTO.getProductId()))
                 .sku(sku)
                 .srcWarehouseId(srcWarehouseId)
                 .destWarehouseId(destWarehouseId)
                 .quantity(goodInfoDTO.getQuantity())
-                .creator(creator)
+                .creatorId(creatorId)
                 .description(description)
                 .transactionType(InventoryTransactionType.TRANSFER)
                 .build();

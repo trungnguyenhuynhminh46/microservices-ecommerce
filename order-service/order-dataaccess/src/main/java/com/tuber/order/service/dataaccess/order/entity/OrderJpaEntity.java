@@ -25,7 +25,7 @@ public class OrderJpaEntity {
     @Id
     UUID id;
     String trackingId;
-    String buyer;
+    UUID creatorId;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     Set<OrderItemJpaEntity> orderItems = new HashSet<>();

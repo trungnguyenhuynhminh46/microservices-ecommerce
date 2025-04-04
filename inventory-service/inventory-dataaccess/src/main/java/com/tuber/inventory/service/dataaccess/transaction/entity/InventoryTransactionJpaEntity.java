@@ -36,7 +36,7 @@ public class InventoryTransactionJpaEntity {
     WarehouseJpaEntity destWarehouse;
 
     Integer quantity;
-    String creator;
+    UUID creatorId;
     @Enumerated(EnumType.STRING)
     InventoryTransactionType transactionType;
     String description;

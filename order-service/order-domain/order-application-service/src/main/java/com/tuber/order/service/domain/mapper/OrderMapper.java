@@ -15,6 +15,7 @@ import com.tuber.order.service.domain.entity.Voucher;
 import com.tuber.order.service.domain.event.OrderCreatedEvent;
 import com.tuber.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
 import com.tuber.order.service.domain.valueobject.OrderItemId;
+import com.tuber.order.service.domain.valueobject.PaymentOrderStatus;
 import com.tuber.order.service.domain.valueobject.enums.OrderStatus;
 import com.tuber.saga.SagaStatus;
 import org.mapstruct.Mapper;
@@ -58,9 +59,9 @@ public abstract class OrderMapper {
                 .collect(Collectors.toSet());
     }
 
-    public OrderEntity createOrderCommandToOrderEntity(CreateOrderCommand createOrderCommand, Set<Voucher> usedVouchers, Set<InternalInventoryDetailResponseData> productDetails, String buyer) {
+    public OrderEntity createOrderCommandToOrderEntity(CreateOrderCommand createOrderCommand, Set<Voucher> usedVouchers, Set<InternalInventoryDetailResponseData> productDetails, UUID creatorId) {
         return OrderEntity.builder()
-                .buyer(buyer)
+                .creatorId(creatorId)
                 .orderItems(generateOrderItems(productDetails, createOrderCommand.getOrderItems()))
                 .vouchers(usedVouchers)
                 .orderStatus(OrderStatus.PROCESSING)
@@ -77,10 +78,13 @@ public abstract class OrderMapper {
     @Mapping(target = "warehouseId", source = "warehouse.id")
     protected abstract OrderItemDetailDTO orderItemToOrderItemDetailDTO(OrderItem orderItem);
 
-    //TODO: Implement this method
     public OrderPaymentEventPayload orderCreatedEventToOrderPaymentEventPayload(OrderCreatedEvent orderCreatedEvent) {
         return OrderPaymentEventPayload.builder()
                 .orderId(orderCreatedEvent.getOrder().getId().getValue())
+                .customerId(orderCreatedEvent.getOrder().getCreatorId())
+                .price(orderCreatedEvent.getOrder().getFinalPrice().getAmount())
+                .createdAt(orderCreatedEvent.getOrder().getCreatedAt())
+                .paymentOrderStatus(PaymentOrderStatus.PENDING.name())
                 .build();
     }
 
@@ -102,16 +106,8 @@ public abstract class OrderMapper {
         return id.getValue();
     }
 
-    protected UniqueUUID mapId(UUID id) {
-        return new UniqueUUID(id);
-    }
-
     protected Warehouse mapWarehouse(UUID warehouseId) {
         return new Warehouse(warehouseId);
-    }
-
-    protected Money mapMoney(BigDecimal amount) {
-        return new Money(amount);
     }
 
     protected BigDecimal mapMoney(Money money) {

@@ -20,7 +20,7 @@ import java.util.UUID;
 public class OrderResponseData {
     UUID id;
     String trackingId;
-    String buyer;
+    UUID creatorId;
     Set<OrderItemDetailDTO> orderItems;
     Set<VoucherDetailDTO> voucher;
     BigDecimal finalPrice;

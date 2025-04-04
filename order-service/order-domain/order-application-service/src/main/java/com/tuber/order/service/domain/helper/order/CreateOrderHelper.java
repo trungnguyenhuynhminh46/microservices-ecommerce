@@ -34,7 +34,7 @@ public class CreateOrderHelper {
                 )
         );
         Set<Voucher> vouchers = commonOrderHelper.checkIfVouchersAreValid(createOrderCommand.getVoucherIds());
-        OrderEntity order = orderMapper.createOrderCommandToOrderEntity(createOrderCommand, vouchers, inventoryDetails, commonHelper.extractTokenSubject());
+        OrderEntity order = orderMapper.createOrderCommandToOrderEntity(createOrderCommand, vouchers, inventoryDetails, commonHelper.extractUserIdFromToken());
         OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitializeOrder(order);
 
         commonOrderHelper.saveOrder(orderCreatedEvent.getOrder());

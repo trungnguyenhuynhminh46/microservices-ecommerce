@@ -21,8 +21,7 @@ public class RefreshTokenHelper {
     CommonIdentityServiceHelper commonIdentityServiceHelper;
 
     private String generateNewAccessToken(String refreshToken) {
-        String username = jwtTokenHelper.extractSubjectFromToken(refreshToken);
-        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithUsernameExist(username);
+        UserAccount userAccount = commonIdentityServiceHelper.verifyUserAccountWithIdExist(jwtTokenHelper.extractUserIdFromToken(refreshToken));
 
         return jwtTokenHelper.generateJwtAccessToken(userAccount);
     }

@@ -18,7 +18,7 @@ public class TransactionResponseData {
     UUID srcWarehouseId;
     UUID destWarehouseId;
     Integer quantity;
-    String creator;
+    UUID creatorId;
     String transactionType;
     String description;
     String createdDate;

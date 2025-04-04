@@ -5,7 +5,7 @@ USE order_service;
 CREATE TABLE t_order (
   id BINARY(16) NOT NULL,
    tracking_id VARCHAR(255) NULL,
-   buyer VARCHAR(255) NULL,
+   creator_id BINARY(16) NULL,
    final_price DECIMAL NULL,
    order_status VARCHAR(255) NULL,
    created_at date NULL,
