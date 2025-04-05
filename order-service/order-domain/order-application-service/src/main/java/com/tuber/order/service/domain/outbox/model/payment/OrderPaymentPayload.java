@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @Builder
 @AllArgsConstructor
-public class OrderPaymentEventPayload {
+public class OrderPaymentPayload {
 
     @JsonProperty
     private UUID orderId;

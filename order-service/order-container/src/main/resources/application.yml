@@ -6,6 +6,17 @@ server:
 #    org.springframework.orm.jpa: DEBUG
 service:
   name: order
+  messages:
+    payment-service:
+      topic-name:
+        request: payment-request
+        response: payment-response
+    inventory-service:
+      topic-name:
+        request: inventory-request
+        response: inventory-response
+    fixed-delay-string: 5000
+    init-delay-string: 10000
 spring:
   jpa:
     hibernate:
