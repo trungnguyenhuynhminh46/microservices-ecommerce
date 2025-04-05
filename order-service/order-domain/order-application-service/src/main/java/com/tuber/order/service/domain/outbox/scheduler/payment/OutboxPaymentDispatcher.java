@@ -46,7 +46,7 @@ public class OutboxPaymentDispatcher implements OutboxSchedulerDispatcher {
         );
         if (optionalPaymentOutboxMessages.isPresent() && !optionalPaymentOutboxMessages.get().isEmpty()) {
             List<OrderPaymentOutboxMessage> paymentOutboxMessages = optionalPaymentOutboxMessages.get();
-            log.info("Sending {} OrderPaymentOutboxMessage to messages bus, ids: {}",
+            log.info("Sending {} OrderPaymentOutboxMessage to messages bus. The ids: {}",
                     paymentOutboxMessages.size(),
                     paymentOutboxMessages.stream()
                             .map(outboxMessage -> outboxMessage.getId().toString())

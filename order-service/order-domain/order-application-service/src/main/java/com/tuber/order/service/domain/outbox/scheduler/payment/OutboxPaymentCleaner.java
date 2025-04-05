@@ -1,6 +1,11 @@
 package com.tuber.order.service.domain.outbox.scheduler.payment;
 
+import com.tuber.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
+import com.tuber.order.service.domain.ports.output.repository.OutboxPaymentRepository;
 import com.tuber.outbox.OutboxSchedulerCleaner;
+import com.tuber.outbox.OutboxStatus;
+import com.tuber.saga.SagaStatus;
+import com.tuber.saga.order.SagaName;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -8,15 +13,44 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OutboxPaymentCleaner implements OutboxSchedulerCleaner {
-    PaymentOutboxHelper paymentOutboxHelper;
+    OutboxPaymentRepository outboxPaymentRepository;
+
     @Override
     @Scheduled(cron = "@midnight")
     public void cleanOutboxMessage() {
+        Optional<List<OrderPaymentOutboxMessage>> optionalOrderPaymentOutboxMessage =
+                outboxPaymentRepository.findByTypeAndOutboxStatusAndSagaStatuses(
+                        SagaName.ORDER_PROCESSING_SAGA.name(),
+                        OutboxStatus.COMPLETED,
+                        SagaStatus.SUCCEEDED,
+                        SagaStatus.FAILED,
+                        SagaStatus.COMPENSATED
+                );
 
+        if(optionalOrderPaymentOutboxMessage.isPresent() && !optionalOrderPaymentOutboxMessage.get().isEmpty()) {
+            List<OrderPaymentOutboxMessage> orderPaymentOutboxMessages = optionalOrderPaymentOutboxMessage.get();
+            log.info("Received {} OrderPaymentOutboxMessage for clean-up. The ids: {}",
+                    orderPaymentOutboxMessages.size(),
+                    orderPaymentOutboxMessages.stream()
+                            .map(outboxMessage -> outboxMessage.getId().toString())
+                            .collect(Collectors.joining(",")));
+            outboxPaymentRepository.deleteByTypeAndOutboxStatusAndSagaStatuses(
+                    SagaName.ORDER_PROCESSING_SAGA.name(),
+                    OutboxStatus.COMPLETED,
+                    SagaStatus.SUCCEEDED,
+                    SagaStatus.FAILED,
+                    SagaStatus.COMPENSATED
+            );
+            log.info("{} OrderPaymentOutboxMessage deleted!", orderPaymentOutboxMessages.size());
+        }
     }
 }
