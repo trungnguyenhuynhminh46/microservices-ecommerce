@@ -20,6 +20,6 @@ public class OutboxPaymentDispatcher implements OutboxSchedulerDispatcher {
     @Scheduled(fixedDelayString = "${service.messages.fixed-delay-string}",
             initialDelayString = "${service.messages.init-delay-string}")
     public void dispatchOutboxMessage() {
-        
+
     }
 }
