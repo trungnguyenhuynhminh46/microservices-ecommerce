@@ -5,7 +5,6 @@ import com.tuber.outbox.OutboxStatus;
 
 import java.util.function.BiConsumer;
 
-//TODO: Implement this interface
 public interface PaymentMessageRequestPublisher {
     void publish(OrderPaymentOutboxMessage orderPaymentOutboxMessage,
                  BiConsumer<OrderPaymentOutboxMessage, OutboxStatus> outboxCallback);
