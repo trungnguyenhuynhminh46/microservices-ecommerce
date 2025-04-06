@@ -1,11 +1,7 @@
 server:
   port: 8086
-#logging:
-#  level:
-#    org.hibernate: DEBUG
-#    org.springframework.orm.jpa: DEBUG
 service:
-  name: order
+  name: payment
 config-data:
   payment-request-topic-name: payment-request
   payment-response-topic-name: payment-response
@@ -17,23 +13,14 @@ spring:
       ddl-auto: update
     show-sql: true
   datasource:
-    url: jdbc:mysql://localhost:3306/order_service
+    url: jdbc:mysql://localhost:3306/payment_service
     username: root
     password: 123456789
   sql:
     init:
       mode: ALWAYS
       schema-locations: classpath:/db/schema.sql
-#      data-locations: classpath:/db/data.sql
-  redis:
-    host: localhost
-    port: 6379
-    time-to-live: 21600
-product-service:
-  url: http://localhost:8083/product
-inventory-service:
-  url: http://localhost:8084/inventory
-
+  #      data-locations: classpath:/db/data.sql
 kafka-config:
   bootstrap-servers: localhost:19092, localhost:29092, localhost:39092
   schema-registry-url-key: schema.registry.url

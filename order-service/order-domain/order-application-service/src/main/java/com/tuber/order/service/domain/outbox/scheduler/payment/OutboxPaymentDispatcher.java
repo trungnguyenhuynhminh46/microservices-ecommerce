@@ -1,6 +1,6 @@
 package com.tuber.order.service.domain.outbox.scheduler.payment;
 
-import com.tuber.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
+import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
 import com.tuber.order.service.domain.ports.output.message.publisher.payment.PaymentMessageRequestPublisher;
 import com.tuber.order.service.domain.ports.output.repository.OutboxPaymentRepository;
 import com.tuber.outbox.OutboxSchedulerDispatcher;
@@ -27,9 +27,9 @@ public class OutboxPaymentDispatcher implements OutboxSchedulerDispatcher {
     OutboxPaymentRepository outboxPaymentRepository;
     PaymentMessageRequestPublisher paymentMessageRequestPublisher;
 
-    private void updateOutboxStatus(OrderPaymentOutboxMessage orderPaymentOutboxMessage, OutboxStatus outboxStatus) {
-        orderPaymentOutboxMessage.setOutboxStatus(outboxStatus);
-        outboxPaymentRepository.save(orderPaymentOutboxMessage);
+    private void updateOutboxStatus(PaymentOutboxMessage paymentOutboxMessage, OutboxStatus outboxStatus) {
+        paymentOutboxMessage.setOutboxStatus(outboxStatus);
+        outboxPaymentRepository.save(paymentOutboxMessage);
         log.info("Updated OrderPaymentOutboxMessage with new outbox status: {}", outboxStatus.name());
     }
 
@@ -38,14 +38,14 @@ public class OutboxPaymentDispatcher implements OutboxSchedulerDispatcher {
     @Scheduled(fixedDelayString = "${config-data.fixed-delay-string}",
             initialDelayString = "${config-data.init-delay-string}")
     public void dispatchOutboxMessage() {
-        Optional<List<OrderPaymentOutboxMessage>> optionalPaymentOutboxMessages = outboxPaymentRepository.findByTypeAndOutboxStatusAndSagaStatuses(
+        Optional<List<PaymentOutboxMessage>> optionalPaymentOutboxMessages = outboxPaymentRepository.findByTypeAndOutboxStatusAndSagaStatuses(
                 SagaName.ORDER_PROCESSING_SAGA.name(),
                 OutboxStatus.STARTED,
                 SagaStatus.STARTED,
                 SagaStatus.COMPENSATING
         );
         if (optionalPaymentOutboxMessages.isPresent() && !optionalPaymentOutboxMessages.get().isEmpty()) {
-            List<OrderPaymentOutboxMessage> paymentOutboxMessages = optionalPaymentOutboxMessages.get();
+            List<PaymentOutboxMessage> paymentOutboxMessages = optionalPaymentOutboxMessages.get();
             log.info("Sending {} OrderPaymentOutboxMessage to messages bus. The ids: {}",
                     paymentOutboxMessages.size(),
                     paymentOutboxMessages.stream()

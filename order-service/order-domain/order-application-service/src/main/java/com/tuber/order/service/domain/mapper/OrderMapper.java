@@ -13,7 +13,7 @@ import com.tuber.order.service.domain.entity.OrderEntity;
 import com.tuber.order.service.domain.entity.OrderItem;
 import com.tuber.order.service.domain.entity.Voucher;
 import com.tuber.order.service.domain.event.OrderCreatedEvent;
-import com.tuber.order.service.domain.outbox.model.payment.OrderPaymentPayload;
+import com.tuber.order.service.domain.outbox.model.payment.PaymentPayload;
 import com.tuber.order.service.domain.valueobject.OrderItemId;
 import com.tuber.order.service.domain.valueobject.PaymentOrderStatus;
 import com.tuber.order.service.domain.valueobject.enums.OrderStatus;
@@ -78,8 +78,8 @@ public abstract class OrderMapper {
     @Mapping(target = "warehouseId", source = "warehouse.id")
     protected abstract OrderItemDetailDTO orderItemToOrderItemDetailDTO(OrderItem orderItem);
 
-    public OrderPaymentPayload orderCreatedEventToOrderPaymentEventPayload(OrderCreatedEvent orderCreatedEvent) {
-        return OrderPaymentPayload.builder()
+    public PaymentPayload orderCreatedEventToOrderPaymentEventPayload(OrderCreatedEvent orderCreatedEvent) {
+        return PaymentPayload.builder()
                 .orderId(orderCreatedEvent.getOrder().getId().getValue())
                 .customerId(orderCreatedEvent.getOrder().getCreatorId())
                 .price(orderCreatedEvent.getOrder().getFinalPrice().getAmount())

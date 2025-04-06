@@ -1,6 +1,6 @@
 package com.tuber.order.service.domain.ports.output.repository;
 
-import com.tuber.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
+import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
 import com.tuber.outbox.OutboxStatus;
 import com.tuber.saga.SagaStatus;
 
@@ -9,15 +9,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface OutboxPaymentRepository {
-    OrderPaymentOutboxMessage save(OrderPaymentOutboxMessage orderPaymentOutboxMessage);
+    PaymentOutboxMessage save(PaymentOutboxMessage paymentOutboxMessage);
 
-    Optional<List<OrderPaymentOutboxMessage>> findByTypeAndOutboxStatusAndSagaStatuses(
+    Optional<List<PaymentOutboxMessage>> findByTypeAndOutboxStatusAndSagaStatuses(
             String type,
             OutboxStatus outboxStatus,
             SagaStatus... sagaStatus
     );
 
-    Optional<OrderPaymentOutboxMessage> findBySagaIdAndTypeAndSagaStatuses(
+    Optional<PaymentOutboxMessage> findBySagaIdAndTypeAndSagaStatuses(
             UUID sagaId,
             String type,
             SagaStatus... sagaStatuses

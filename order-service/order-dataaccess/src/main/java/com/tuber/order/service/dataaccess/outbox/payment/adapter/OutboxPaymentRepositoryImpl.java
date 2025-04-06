@@ -1,6 +1,6 @@
 package com.tuber.order.service.dataaccess.outbox.payment.adapter;
 
-import com.tuber.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
+import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
 import com.tuber.order.service.domain.ports.output.repository.OutboxPaymentRepository;
 import com.tuber.outbox.OutboxStatus;
 import com.tuber.saga.SagaStatus;
@@ -19,17 +19,17 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OutboxPaymentRepositoryImpl implements OutboxPaymentRepository {
     @Override
-    public OrderPaymentOutboxMessage save(OrderPaymentOutboxMessage orderPaymentOutboxMessage) {
+    public PaymentOutboxMessage save(PaymentOutboxMessage paymentOutboxMessage) {
         return null;
     }
 
     @Override
-    public Optional<List<OrderPaymentOutboxMessage>> findByTypeAndOutboxStatusAndSagaStatuses(String type, OutboxStatus outboxStatus, SagaStatus... sagaStatus) {
+    public Optional<List<PaymentOutboxMessage>> findByTypeAndOutboxStatusAndSagaStatuses(String type, OutboxStatus outboxStatus, SagaStatus... sagaStatus) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<OrderPaymentOutboxMessage> findBySagaIdAndTypeAndSagaStatuses(UUID sagaId, String type, SagaStatus... sagaStatuses) {
+    public Optional<PaymentOutboxMessage> findBySagaIdAndTypeAndSagaStatuses(UUID sagaId, String type, SagaStatus... sagaStatuses) {
         return Optional.empty();
     }
 

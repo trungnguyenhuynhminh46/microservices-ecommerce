@@ -5,8 +5,8 @@ import com.tuber.kafka.order.avro.model.OrderPaymentRequestAvroModel;
 import com.tuber.kafka.producer.KafkaProducer;
 import com.tuber.kafka.producer.KafkaProducerHelper;
 import com.tuber.order.service.domain.config.OrderServiceConfigurationData;
-import com.tuber.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
-import com.tuber.order.service.domain.outbox.model.payment.OrderPaymentPayload;
+import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
+import com.tuber.order.service.domain.outbox.model.payment.PaymentPayload;
 import com.tuber.order.service.domain.ports.output.message.publisher.payment.PaymentMessageRequestPublisher;
 import com.tuber.order.service.messaging.mapper.OrderPaymentMessageMapper;
 import com.tuber.outbox.OutboxStatus;
@@ -31,19 +31,19 @@ public class PaymentMessageRequestPublisherImpl implements PaymentMessageRequest
     OrderServiceConfigurationData orderServiceConfigurationData;
 
     @Override
-    public void publish(OrderPaymentOutboxMessage orderPaymentOutboxMessage, BiConsumer<OrderPaymentOutboxMessage, OutboxStatus> onSuccessOutbox) {
-        OrderPaymentPayload orderPaymentPayload = commonHelper.mapJsonStringIntoClass(
-                orderPaymentOutboxMessage.getPayload(),
-                OrderPaymentPayload.class
+    public void publish(PaymentOutboxMessage paymentOutboxMessage, BiConsumer<PaymentOutboxMessage, OutboxStatus> onSuccessOutbox) {
+        PaymentPayload paymentPayload = commonHelper.mapJsonStringIntoClass(
+                paymentOutboxMessage.getPayload(),
+                PaymentPayload.class
         );
-        UUID sagaId = orderPaymentOutboxMessage.getSagaId();
+        UUID sagaId = paymentOutboxMessage.getSagaId();
         log.info("Received OrderPaymentOutboxMessage has order with id: {} and saga id: {}",
-                orderPaymentPayload.getOrderId(),
+                paymentPayload.getOrderId(),
                 sagaId
         );
         try {
             OrderPaymentRequestAvroModel orderPaymentRequestAvroModel =
-                    orderPaymentMessageMapper.orderPaymentPayloadToOrderPaymentRequestAvroModel(orderPaymentPayload);
+                    orderPaymentMessageMapper.orderPaymentPayloadToOrderPaymentRequestAvroModel(paymentPayload);
             kafkaProducer.send(
                     orderServiceConfigurationData.getPaymentRequestTopicName(),
                     sagaId.toString(),
@@ -51,14 +51,14 @@ public class PaymentMessageRequestPublisherImpl implements PaymentMessageRequest
                     kafkaProducerHelper.getOnSuccessKafka(
                             orderServiceConfigurationData.getPaymentRequestTopicName(),
                             orderPaymentRequestAvroModel,
-                            orderPaymentOutboxMessage,
+                            paymentOutboxMessage,
                             onSuccessOutbox
                     )
             );
         } catch (Exception e) {
             log.error("Something wrong happened while sending OrderPaymentOutboxMessage" +
                             " to message bus with order id: {} and saga id: {}, error: {}",
-                    orderPaymentPayload.getOrderId(),
+                    paymentPayload.getOrderId(),
                     sagaId,
                     e.getMessage()
             );

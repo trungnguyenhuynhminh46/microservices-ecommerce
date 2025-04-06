@@ -1,6 +1,6 @@
 package com.tuber.order.service.domain.outbox.scheduler.payment;
 
-import com.tuber.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
+import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
 import com.tuber.order.service.domain.ports.output.repository.OutboxPaymentRepository;
 import com.tuber.outbox.OutboxSchedulerCleaner;
 import com.tuber.outbox.OutboxStatus;
@@ -27,7 +27,7 @@ public class OutboxPaymentCleaner implements OutboxSchedulerCleaner {
     @Override
     @Scheduled(cron = "@midnight")
     public void cleanOutboxMessage() {
-        Optional<List<OrderPaymentOutboxMessage>> optionalOrderPaymentOutboxMessage =
+        Optional<List<PaymentOutboxMessage>> optionalOrderPaymentOutboxMessage =
                 outboxPaymentRepository.findByTypeAndOutboxStatusAndSagaStatuses(
                         SagaName.ORDER_PROCESSING_SAGA.name(),
                         OutboxStatus.COMPLETED,
@@ -37,10 +37,10 @@ public class OutboxPaymentCleaner implements OutboxSchedulerCleaner {
                 );
 
         if(optionalOrderPaymentOutboxMessage.isPresent() && !optionalOrderPaymentOutboxMessage.get().isEmpty()) {
-            List<OrderPaymentOutboxMessage> orderPaymentOutboxMessages = optionalOrderPaymentOutboxMessage.get();
+            List<PaymentOutboxMessage> paymentOutboxMessages = optionalOrderPaymentOutboxMessage.get();
             log.info("Received {} OrderPaymentOutboxMessage for clean-up. The ids: {}",
-                    orderPaymentOutboxMessages.size(),
-                    orderPaymentOutboxMessages.stream()
+                    paymentOutboxMessages.size(),
+                    paymentOutboxMessages.stream()
                             .map(outboxMessage -> outboxMessage.getId().toString())
                             .collect(Collectors.joining(",")));
             outboxPaymentRepository.deleteByTypeAndOutboxStatusAndSagaStatuses(
@@ -50,7 +50,7 @@ public class OutboxPaymentCleaner implements OutboxSchedulerCleaner {
                     SagaStatus.FAILED,
                     SagaStatus.COMPENSATED
             );
-            log.info("{} OrderPaymentOutboxMessage deleted!", orderPaymentOutboxMessages.size());
+            log.info("{} OrderPaymentOutboxMessage deleted!", paymentOutboxMessages.size());
         }
     }
 }

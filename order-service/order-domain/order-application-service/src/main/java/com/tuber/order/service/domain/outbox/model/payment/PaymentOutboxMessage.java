@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Builder
 @AllArgsConstructor
-public class OrderPaymentOutboxMessage {
+public class PaymentOutboxMessage {
     private UUID id;
     private UUID sagaId;
     private LocalDate createdAt;
