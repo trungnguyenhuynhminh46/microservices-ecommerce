@@ -35,8 +35,8 @@ public class OutboxPaymentDispatcher implements OutboxSchedulerDispatcher {
 
     @Override
     @Transactional
-    @Scheduled(fixedDelayString = "${service.messages.fixed-delay-string}",
-            initialDelayString = "${service.messages.init-delay-string}")
+    @Scheduled(fixedDelayString = "${config-data.fixed-delay-string}",
+            initialDelayString = "${config-data.init-delay-string}")
     public void dispatchOutboxMessage() {
         Optional<List<OrderPaymentOutboxMessage>> optionalPaymentOutboxMessages = outboxPaymentRepository.findByTypeAndOutboxStatusAndSagaStatuses(
                 SagaName.ORDER_PROCESSING_SAGA.name(),

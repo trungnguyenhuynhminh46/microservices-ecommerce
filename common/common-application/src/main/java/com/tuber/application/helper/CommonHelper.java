@@ -1,5 +1,7 @@
 package com.tuber.application.helper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.SignedJWT;
 import com.tuber.domain.constant.response.code.ResponseCode;
 import com.tuber.domain.exception.DomainException;
@@ -20,6 +22,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommonHelper {
+    ObjectMapper objectMapper;
+
     public String getHeaderValue(String headerName) {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (requestAttributes == null) {
@@ -43,6 +47,15 @@ public class CommonHelper {
             return UUID.fromString(signedJWT.getJWTClaimsSet().getSubject());
         } catch (ParseException e) {
             throw new DomainException(ResponseCode.INVALID_TOKEN, HttpStatus.UNAUTHORIZED.value());
+        }
+    }
+
+    public <T> T mapJsonStringIntoClass(String jsonString, Class<T> type) {
+        try {
+            return objectMapper.readValue(jsonString, type);
+        } catch (JsonProcessingException e) {
+            log.error("Could not read {} object!", type.getName(), e);
+            throw new DomainException(new ResponseCode("Could not read " + type.getName() + " object!"), HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
     }
 }

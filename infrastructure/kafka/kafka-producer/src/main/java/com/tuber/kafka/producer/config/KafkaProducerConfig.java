@@ -1,4 +1,4 @@
-package com.tuber.kafka.producer;
+package com.tuber.kafka.producer.config;
 
 
 import com.tuber.kafka.config.data.KafkaConfigData;

@@ -35,6 +35,11 @@ public class ResponseCode extends ResponseCodeBase {
         this.message = message;
     }
 
+    public ResponseCode(String message) {
+        this.code = formatErrorCode(9999);
+        this.message = message;
+    }
+
     public String getServiceName() {
         return this.serviceName;
     }
