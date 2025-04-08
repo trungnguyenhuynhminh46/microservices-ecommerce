@@ -26,7 +26,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class PaymentOutboxHelper {
+public class OutboxPaymentHelper {
     OutboxPaymentRepository outboxPaymentRepository;
     ObjectMapper objectMapper;
 

@@ -96,4 +96,32 @@ public class Payment extends AggregateRoot<UniqueUUID> {
             return new Payment(this);
         }
     }
+
+    public UUID getOrderId() {
+        return orderId;
+    }
+
+    public UUID getCustomerId() {
+        return customerId;
+    }
+
+    public Money getTotalPrice() {
+        return totalPrice;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

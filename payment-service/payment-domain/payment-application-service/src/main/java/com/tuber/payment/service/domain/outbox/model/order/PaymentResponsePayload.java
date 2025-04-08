@@ -1,4 +1,4 @@
-package com.tuber.order.service.domain.outbox.model.payment;
+package com.tuber.payment.service.domain.outbox.model.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
@@ -9,21 +9,26 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PaymentPayload {
+public class PaymentResponsePayload {
     @JsonProperty
-    UUID orderId;
+    UUID paymentId;
     @JsonProperty
     UUID customerId;
+    @JsonProperty
+    UUID orderId;
     @JsonProperty
     BigDecimal price;
     @JsonProperty
     LocalDate createdAt;
     @JsonProperty
-    String paymentOrderStatus;
+    String paymentStatus;
+    @JsonProperty
+    List<String> failureMessages;
 }

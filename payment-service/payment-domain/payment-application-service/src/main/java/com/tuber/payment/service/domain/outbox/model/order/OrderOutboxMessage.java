@@ -1,7 +1,7 @@
-package com.tuber.order.service.domain.outbox.model.payment;
+package com.tuber.payment.service.domain.outbox.model.order;
 
-import com.tuber.order.service.domain.valueobject.enums.OrderStatus;
 import com.tuber.outbox.OutboxStatus;
+import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
 import com.tuber.saga.SagaStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PaymentOutboxMessage {
+public class OrderOutboxMessage {
     UUID id;
     UUID sagaId;
     LocalDate createdAt;
@@ -24,7 +24,7 @@ public class PaymentOutboxMessage {
     @Setter
     SagaStatus sagaStatus;
     @Setter
-    OrderStatus orderStatus;
+    PaymentStatus paymentStatus;
     @Setter
     OutboxStatus outboxStatus;
     int version;

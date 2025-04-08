@@ -1,5 +1,6 @@
 package com.tuber.payment.service.domain.helper;
 
+import com.tuber.outbox.OutboxStatus;
 import com.tuber.payment.service.domain.PaymentDomainService;
 import com.tuber.payment.service.domain.dto.message.broker.PaymentRequest;
 import com.tuber.payment.service.domain.entity.CreditEntry;
@@ -7,6 +8,7 @@ import com.tuber.payment.service.domain.entity.CreditHistory;
 import com.tuber.payment.service.domain.entity.Payment;
 import com.tuber.payment.service.domain.event.PaymentEvent;
 import com.tuber.payment.service.domain.mapper.PaymentMapper;
+import com.tuber.payment.service.domain.outbox.scheduler.order.OutboxOrderHelper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,6 +29,7 @@ public class PaymentRequestHelper {
     PaymentMapper paymentMapper;
     PaymentCommonHelper paymentCommonHelper;
     PaymentDomainService paymentDomainService;
+    OutboxOrderHelper outboxOrderHelper;
 
     //TODO: Implement this method
     protected boolean paymentIsCompleted(PaymentRequest paymentRequest) {
@@ -61,7 +64,13 @@ public class PaymentRequestHelper {
         PaymentEvent paymentEvent = paymentDomainService.validateAndInitializePayment(
                 payment, creditEntry, creditHistories, failureMessages);
         persistCreditInformation(payment, creditEntry, creditHistories, failureMessages);
-        //TODO: Save outbox message
+        outboxOrderHelper.saveOrderOutboxMessage(
+                paymentMapper.paymentEventToPaymentResponseEventPayload(paymentEvent),
+                paymentEvent.getPayment().getPaymentStatus(),
+                OutboxStatus.STARTED,
+                paymentRequest.getSagaId()
+        );
+
     }
 
     @Transactional
@@ -79,6 +88,11 @@ public class PaymentRequestHelper {
         PaymentEvent paymentEvent = paymentDomainService.validateAndCancelPayment(
                 payment, creditEntry, creditHistories, failureMessages);
         persistCreditInformation(payment, creditEntry, creditHistories, failureMessages);
-        //TODO: Save outbox message
+        outboxOrderHelper.saveOrderOutboxMessage(
+                paymentMapper.paymentEventToPaymentResponseEventPayload(paymentEvent),
+                paymentEvent.getPayment().getPaymentStatus(),
+                OutboxStatus.STARTED,
+                paymentRequest.getSagaId()
+        );
     }
 }
