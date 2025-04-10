@@ -88,7 +88,6 @@ public class PaymentRequestHelper {
                 OutboxStatus.STARTED,
                 UUID.fromString(paymentRequest.getSagaId())
         );
-
     }
 
     @Transactional
