@@ -8,7 +8,13 @@ import com.tuber.payment.service.domain.entity.CreditHistory;
 import com.tuber.payment.service.domain.entity.Payment;
 import com.tuber.payment.service.domain.event.PaymentEvent;
 import com.tuber.payment.service.domain.mapper.PaymentMapper;
+import com.tuber.payment.service.domain.outbox.model.order.OutboxOrderMessage;
 import com.tuber.payment.service.domain.outbox.scheduler.order.OutboxOrderHelper;
+import com.tuber.payment.service.domain.ports.outbox.message.publisher.PaymentResponseMessagePublisher;
+import com.tuber.payment.service.domain.ports.outbox.repository.CreditEntryRepository;
+import com.tuber.payment.service.domain.ports.outbox.repository.CreditHistoryRepository;
+import com.tuber.payment.service.domain.ports.outbox.repository.PaymentRepository;
+import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,9 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-//TODO: Implement this class
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -30,28 +36,40 @@ public class PaymentRequestHelper {
     PaymentCommonHelper paymentCommonHelper;
     PaymentDomainService paymentDomainService;
     OutboxOrderHelper outboxOrderHelper;
+    PaymentResponseMessagePublisher paymentResponseMessagePublisher;
+    PaymentRepository paymentRepository;
+    CreditEntryRepository creditEntryRepository;
+    CreditHistoryRepository creditHistoryRepository;
 
-    //TODO: Implement this method
-    protected boolean paymentIsCompleted(PaymentRequest paymentRequest) {
+    protected boolean republishOutboxMessageForPaymentWithStatus(PaymentRequest paymentRequest,
+                                                                 PaymentStatus paymentStatus) {
+        Optional<OutboxOrderMessage> outboxOrderMessage = outboxOrderHelper.getCompletedOrderOutboxMessageByPaymentStatus(
+                UUID.fromString(paymentRequest.getSagaId()),
+                paymentStatus
+        );
+        if (outboxOrderMessage.isPresent()) {
+            log.info("The outbox message with saga id: {} exists!",
+                    paymentRequest.getSagaId());
+            paymentResponseMessagePublisher.publish(outboxOrderMessage.get(), outboxOrderHelper::updateOutboxOrderMessageStatus);
+            return true;
+        }
         return false;
     }
 
-    //TODO: Implement this method
-    protected boolean paymentIsCancelled(PaymentRequest paymentRequest) {
-        return false;
-    }
-
-    //TODO: Implement this method
     protected void persistCreditInformation(Payment payment,
                                             CreditEntry creditEntry,
                                             List<CreditHistory> creditHistories,
                                             List<String> failureMessages) {
-        return;
+        paymentRepository.save(payment);
+        if (failureMessages.isEmpty()) {
+            creditEntryRepository.save(creditEntry);
+            creditHistoryRepository.save(creditHistories.getLast());
+        }
     }
 
     @Transactional
     public void persistPayment(PaymentRequest paymentRequest) {
-        if (paymentIsCompleted(paymentRequest)) {
+        if (republishOutboxMessageForPaymentWithStatus(paymentRequest, PaymentStatus.COMPLETED)) {
             log.info("The outbox message with saga id: {} is already saved to database!",
                     paymentRequest.getSagaId());
             return;
@@ -68,14 +86,14 @@ public class PaymentRequestHelper {
                 paymentMapper.paymentEventToPaymentResponseEventPayload(paymentEvent),
                 paymentEvent.getPayment().getPaymentStatus(),
                 OutboxStatus.STARTED,
-                paymentRequest.getSagaId()
+                UUID.fromString(paymentRequest.getSagaId())
         );
 
     }
 
     @Transactional
     public void persistCancelledPayment(PaymentRequest paymentRequest) {
-        if (paymentIsCancelled(paymentRequest)) {
+        if (republishOutboxMessageForPaymentWithStatus(paymentRequest, PaymentStatus.CANCELLED)) {
             log.info("The outbox message with saga id: {} is already saved to database!",
                     paymentRequest.getSagaId());
             return;
@@ -92,7 +110,7 @@ public class PaymentRequestHelper {
                 paymentMapper.paymentEventToPaymentResponseEventPayload(paymentEvent),
                 paymentEvent.getPayment().getPaymentStatus(),
                 OutboxStatus.STARTED,
-                paymentRequest.getSagaId()
+                UUID.fromString(paymentRequest.getSagaId())
         );
     }
 }

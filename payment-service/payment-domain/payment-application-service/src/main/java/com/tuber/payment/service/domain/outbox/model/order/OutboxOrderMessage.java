@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderOutboxMessage {
+public class OutboxOrderMessage {
     UUID id;
     UUID sagaId;
     LocalDate createdAt;
