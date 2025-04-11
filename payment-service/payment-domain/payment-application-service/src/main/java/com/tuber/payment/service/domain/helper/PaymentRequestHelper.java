@@ -98,7 +98,7 @@ public class PaymentRequestHelper {
             return;
         }
         log.info("Received payment rollback event for order id: {}", paymentRequest.getOrderId());
-        Payment payment = paymentCommonHelper.verifyPaymentOfOrderExists(UUID.fromString(paymentRequest.getOrderId()));
+        Payment payment = paymentCommonHelper.verifyPaymentOfOrderExists(paymentRequest.getOrderId());
         CreditEntry creditEntry = paymentCommonHelper.verifyCreditEntryOfCustomerExists(paymentRequest.getCustomerId());
         List<CreditHistory> creditHistories = paymentCommonHelper.verifyCreditHistoryOfCustomerExists(paymentRequest.getCustomerId());
         List<String> failureMessages = new ArrayList<>();

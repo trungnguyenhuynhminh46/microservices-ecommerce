@@ -2,7 +2,6 @@ package com.tuber.payment.service.domain.mapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuber.application.helper.CommonHelper;
 import com.tuber.domain.constant.response.code.OrderResponseCode;
 import com.tuber.domain.exception.OrderDomainException;
 import com.tuber.outbox.OutboxStatus;
@@ -18,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import static com.tuber.saga.order.SagaName.ORDER_PROCESSING_SAGA;

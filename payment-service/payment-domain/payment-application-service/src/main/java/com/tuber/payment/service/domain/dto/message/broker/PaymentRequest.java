@@ -7,7 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Builder
@@ -15,11 +16,10 @@ import java.time.Instant;
 public class PaymentRequest {
     private String id;
     private String sagaId;
-    private String orderId;
-    private String customerId;
+    private UUID orderId;
+    private UUID customerId;
     private BigDecimal price;
-    private Instant createdAt;
+    private LocalDate createdAt;
     @Setter
     private PaymentOrderStatus paymentOrderStatus;
-
 }

@@ -12,6 +12,10 @@ public class PaymentResponseCode extends ResponseCodeBase {
             new PaymentResponseCode(1003, "Credit entry of customer with id %s not found");
     public static final PaymentResponseCode CREDIT_HISTORY_NOT_FOUND =
             new PaymentResponseCode(1004, "Credit history of customer with id %s not found");
+    public static final PaymentResponseCode NOT_ENOUGH_CREDIT =
+            new PaymentResponseCode(1005, "Customer with id %s doesn't have enough credit to make this payment");
+    public static final PaymentResponseCode TOTAL_CREDIT_AMOUNT_NOT_MATCH_HISTORY =
+            new PaymentResponseCode(1006, "Credit history total is not equal to current credit for customer with id %s");
 
     protected PaymentResponseCode(int code, String message) {
         this.code = formatErrorCode(code);

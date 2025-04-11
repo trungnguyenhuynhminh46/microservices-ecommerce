@@ -4,6 +4,7 @@ import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 
+import java.util.List;
 import java.util.UUID;
 
 public class CreditEntry extends BaseEntity<UniqueUUID> {
@@ -24,6 +25,22 @@ public class CreditEntry extends BaseEntity<UniqueUUID> {
 
     public Money getTotalCreditAmount() {
         return totalCreditAmount;
+    }
+
+    public void confirmHaveEnoughCredit(Payment payment, List<String> failureMessages) {
+        if (payment.getTotalPrice().isGreaterThan(this.getTotalCreditAmount())) {
+            failureMessages.add(String.format("Customer with id %s does not have enough credit to pay for the order with id %s",
+                    this.getCustomerId(), payment.getOrderId()));
+        }
+    }
+
+    public void subtractPaymentInCreditEntry(Payment payment, List<String> failureMessages) {
+        this.confirmHaveEnoughCredit(payment, failureMessages);
+        this.subtractCreditAmount(payment.getTotalPrice());
+    }
+
+    public void addPaymentInCreditEntry(Payment payment) {
+        this.addCreditAmount(payment.getTotalPrice());
     }
 
     private CreditEntry(Builder builder) {

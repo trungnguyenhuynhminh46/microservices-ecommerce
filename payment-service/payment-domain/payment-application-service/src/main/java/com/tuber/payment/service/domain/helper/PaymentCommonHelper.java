@@ -28,7 +28,7 @@ public class PaymentCommonHelper {
     CreditHistoryRepository creditHistoryRepository;
     PaymentRepository paymentRepository;
 
-    public CreditEntry verifyCreditEntryOfCustomerExists(String customerId) {
+    public CreditEntry verifyCreditEntryOfCustomerExists(UUID customerId) {
         Optional<CreditEntry> creditEntryResponse = creditEntryRepository.findByCustomerId(customerId);
         if (creditEntryResponse.isEmpty()) {
             throw new PaymentDomainException(PaymentResponseCode.CREDIT_ENTRY_NOT_FOUND, HttpStatus.NOT_FOUND.value(), customerId);
@@ -36,7 +36,7 @@ public class PaymentCommonHelper {
         return creditEntryResponse.get();
     }
 
-    public List<CreditHistory> verifyCreditHistoryOfCustomerExists(String customerId) {
+    public List<CreditHistory> verifyCreditHistoryOfCustomerExists(UUID customerId) {
         Optional<List<CreditHistory>> creditHistoryResponse = creditHistoryRepository.findAllByCustomerId(customerId);
         if (creditHistoryResponse.isEmpty()) {
             throw new PaymentDomainException(PaymentResponseCode.CREDIT_HISTORY_NOT_FOUND, HttpStatus.NOT_FOUND.value(), customerId);

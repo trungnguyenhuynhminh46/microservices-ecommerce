@@ -5,8 +5,7 @@ import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,17 +14,19 @@ public class Payment extends AggregateRoot<UniqueUUID> {
     private final UUID customerId;
     private final Money totalPrice;
     private PaymentStatus paymentStatus;
-    private ZonedDateTime createdAt;
+    private LocalDate createdAt;
 
-    public void initializePayment() {
+    public Payment selfInitialize() {
         setId(new UniqueUUID(UUID.randomUUID()));
-        createdAt = ZonedDateTime.now(ZoneId.of("UTC"));
+        createdAt = LocalDate.now();
+        return this;
     }
 
-    public void validatePayment(List<String> failureMessages) {
+    public Payment selfValidate(List<String> failureMessages) {
         if (totalPrice == null || !totalPrice.isGreaterThanZero()) {
             failureMessages.add("Total price must be greater than zero!");
         }
+        return this;
     }
 
     public void updateStatus(PaymentStatus paymentStatus) {
@@ -52,7 +53,7 @@ public class Payment extends AggregateRoot<UniqueUUID> {
         private UUID customerId;
         private Money totalPrice;
         private PaymentStatus paymentStatus;
-        private ZonedDateTime createdAt;
+        private LocalDate createdAt;
 
         private Builder() {
         }
@@ -87,7 +88,7 @@ public class Payment extends AggregateRoot<UniqueUUID> {
             return this;
         }
 
-        public Builder createdAt(ZonedDateTime val) {
+        public Builder createdAt(LocalDate val) {
             createdAt = val;
             return this;
         }
@@ -117,11 +118,11 @@ public class Payment extends AggregateRoot<UniqueUUID> {
         this.paymentStatus = paymentStatus;
     }
 
-    public ZonedDateTime getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(ZonedDateTime createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 }
