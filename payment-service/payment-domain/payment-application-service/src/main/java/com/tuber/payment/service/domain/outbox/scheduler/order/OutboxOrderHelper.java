@@ -6,7 +6,7 @@ import com.tuber.payment.service.domain.exception.PaymentDomainException;
 import com.tuber.payment.service.domain.mapper.PaymentMapper;
 import com.tuber.payment.service.domain.outbox.model.order.OutboxOrderMessage;
 import com.tuber.payment.service.domain.outbox.model.order.PaymentResponsePayload;
-import com.tuber.payment.service.domain.ports.outbox.repository.OutboxOrderRepository;
+import com.tuber.payment.service.domain.ports.output.repository.OutboxOrderRepository;
 import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

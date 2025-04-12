@@ -1,4 +1,4 @@
-package com.tuber.payment.service.domain.ports.outbox.repository;
+package com.tuber.payment.service.domain.ports.output.repository;
 
 import com.tuber.outbox.OutboxStatus;
 import com.tuber.payment.service.domain.outbox.model.order.OutboxOrderMessage;

@@ -1,4 +1,4 @@
-package com.tuber.payment.service.domain.ports.outbox.repository;
+package com.tuber.payment.service.domain.ports.output.repository;
 
 import com.tuber.payment.service.domain.entity.CreditHistory;
 
