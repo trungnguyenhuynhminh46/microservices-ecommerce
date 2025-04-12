@@ -4,6 +4,7 @@ import com.tuber.payment.service.domain.constant.PaymentResponseCode;
 import com.tuber.payment.service.domain.entity.CreditEntry;
 import com.tuber.payment.service.domain.entity.CreditHistory;
 import com.tuber.payment.service.domain.entity.Payment;
+import com.tuber.payment.service.domain.exception.NotFoundPaymentException;
 import com.tuber.payment.service.domain.exception.PaymentDomainException;
 import com.tuber.payment.service.domain.ports.output.repository.CreditEntryRepository;
 import com.tuber.payment.service.domain.ports.output.repository.CreditHistoryRepository;
@@ -47,7 +48,7 @@ public class PaymentCommonHelper {
     public Payment verifyPaymentOfOrderExists(UUID orderId) {
         Optional<Payment> paymentResponse = paymentRepository.findByOrderId(orderId);
         if (paymentResponse.isEmpty()) {
-            throw new PaymentDomainException(PaymentResponseCode.PAYMENT_NOT_FOUND, HttpStatus.NOT_FOUND.value(), orderId);
+            throw new NotFoundPaymentException(PaymentResponseCode.PAYMENT_NOT_FOUND, HttpStatus.NOT_FOUND.value(), orderId);
         }
         return paymentResponse.get();
     }

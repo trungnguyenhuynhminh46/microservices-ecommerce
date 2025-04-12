@@ -9,4 +9,8 @@ public class PaymentDomainException extends DomainException {
     public PaymentDomainException(ResponseCodeBase responseCode, int statusCode, Object... args) {
         super(responseCode, statusCode, args);
     }
+
+    public PaymentDomainException(ResponseCodeBase responseCode, int statusCode, Throwable cause, Object... args) {
+        super(responseCode, statusCode, cause, args);
+    }
 }
