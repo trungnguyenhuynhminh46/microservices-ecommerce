@@ -43,7 +43,7 @@ public class PaymentMessageRequestPublisherImpl implements PaymentMessageRequest
         );
         try {
             PaymentRequestAvroModel PaymentRequestAvroModel =
-                    orderPaymentMessageMapper.orderPaymentPayloadToPaymentRequestAvroModel(paymentPayload);
+                    orderPaymentMessageMapper.orderPaymentPayloadToPaymentRequestAvroModel(paymentPayload, sagaId);
             kafkaProducer.send(
                     orderServiceConfigurationData.getPaymentRequestTopicName(),
                     sagaId.toString(),
