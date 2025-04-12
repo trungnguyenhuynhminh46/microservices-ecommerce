@@ -1,7 +1,7 @@
 package com.tuber.order.service.messaging.publisher.kafka;
 
 import com.tuber.application.helper.CommonHelper;
-import com.tuber.kafka.order.avro.model.OrderPaymentRequestAvroModel;
+import com.tuber.kafka.order.avro.model.PaymentRequestAvroModel;
 import com.tuber.kafka.producer.KafkaProducer;
 import com.tuber.kafka.producer.KafkaProducerHelper;
 import com.tuber.order.service.domain.config.OrderServiceConfigurationData;
@@ -27,7 +27,7 @@ public class PaymentMessageRequestPublisherImpl implements PaymentMessageRequest
     CommonHelper commonHelper;
     KafkaProducerHelper kafkaProducerHelper;
     OrderPaymentMessageMapper orderPaymentMessageMapper;
-    KafkaProducer<String, OrderPaymentRequestAvroModel> kafkaProducer;
+    KafkaProducer<String, PaymentRequestAvroModel> kafkaProducer;
     OrderServiceConfigurationData orderServiceConfigurationData;
 
     @Override
@@ -42,15 +42,15 @@ public class PaymentMessageRequestPublisherImpl implements PaymentMessageRequest
                 sagaId
         );
         try {
-            OrderPaymentRequestAvroModel orderPaymentRequestAvroModel =
-                    orderPaymentMessageMapper.orderPaymentPayloadToOrderPaymentRequestAvroModel(paymentPayload);
+            PaymentRequestAvroModel PaymentRequestAvroModel =
+                    orderPaymentMessageMapper.orderPaymentPayloadToPaymentRequestAvroModel(paymentPayload);
             kafkaProducer.send(
                     orderServiceConfigurationData.getPaymentRequestTopicName(),
                     sagaId.toString(),
-                    orderPaymentRequestAvroModel,
+                    PaymentRequestAvroModel,
                     kafkaProducerHelper.getOnSuccessKafka(
                             orderServiceConfigurationData.getPaymentRequestTopicName(),
-                            orderPaymentRequestAvroModel,
+                            PaymentRequestAvroModel,
                             paymentOutboxMessage,
                             onSuccessOutbox
                     )

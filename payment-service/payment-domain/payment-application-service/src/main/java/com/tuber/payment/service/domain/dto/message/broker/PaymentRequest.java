@@ -14,8 +14,8 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 public class PaymentRequest {
-    private String id;
-    private String sagaId;
+    private UUID id;
+    private UUID sagaId;
     private UUID orderId;
     private UUID customerId;
     private BigDecimal price;

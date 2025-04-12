@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuber.domain.constant.response.code.OrderResponseCode;
 import com.tuber.domain.exception.OrderDomainException;
+import com.tuber.domain.valueobject.Money;
+import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.outbox.OutboxStatus;
 import com.tuber.payment.service.domain.dto.message.broker.PaymentRequest;
 import com.tuber.payment.service.domain.entity.Payment;
@@ -13,9 +15,11 @@ import com.tuber.payment.service.domain.outbox.model.order.PaymentResponsePayloa
 import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -27,10 +31,17 @@ public abstract class PaymentMapper {
     @Autowired
     ObjectMapper objectMapper;
 
-    //TODO: Implement this method
+    @Mapping(target = "totalPrice", source = "price")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "paymentStatus", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     public abstract Payment paymentRequestToPayment(PaymentRequest paymentRequest);
 
-    //TODO: Implement this method
+    @Mapping(target = "paymentId", source = "payment.id")
+    @Mapping(target = "orderId", source = "payment.orderId")
+    @Mapping(target = "customerId", source = "payment.customerId")
+    @Mapping(target = "price", source = "payment.totalPrice")
+    @Mapping(target = "paymentStatus", source = "payment.paymentStatus")
     public abstract PaymentResponsePayload paymentEventToPaymentResponseEventPayload(PaymentEvent paymentEvent);
 
     public OutboxOrderMessage paymentResponsePayloadToOutboxOrderMessage(PaymentResponsePayload paymentResponsePayload, PaymentStatus paymentStatus, OutboxStatus outboxStatus, UUID sagaId) {
@@ -56,5 +67,17 @@ public abstract class PaymentMapper {
                     paymentPayload.getOrderId()));
             throw new OrderDomainException(responseCode, HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
+    }
+
+    protected UUID map(UniqueUUID id) {
+        return id.getValue();
+    }
+
+    protected BigDecimal map(Money money) {
+        return money.getAmount();
+    }
+
+    protected Money map(BigDecimal amount) {
+        return new Money(amount);
     }
 }

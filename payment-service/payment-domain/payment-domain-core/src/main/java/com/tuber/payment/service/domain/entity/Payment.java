@@ -13,11 +13,12 @@ public class Payment extends AggregateRoot<UniqueUUID> {
     private final UUID orderId;
     private final UUID customerId;
     private final Money totalPrice;
-    private PaymentStatus paymentStatus;
     private LocalDate createdAt;
+    private PaymentStatus paymentStatus;
 
     public Payment selfInitialize() {
         setId(new UniqueUUID(UUID.randomUUID()));
+        paymentStatus = PaymentStatus.PENDING;
         createdAt = LocalDate.now();
         return this;
     }

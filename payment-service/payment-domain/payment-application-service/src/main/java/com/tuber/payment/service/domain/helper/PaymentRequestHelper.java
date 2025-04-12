@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Component
@@ -44,7 +43,7 @@ public class PaymentRequestHelper {
     protected boolean republishOutboxMessageForPaymentWithStatus(PaymentRequest paymentRequest,
                                                                  PaymentStatus paymentStatus) {
         Optional<OutboxOrderMessage> outboxOrderMessage = outboxOrderHelper.getCompletedOrderOutboxMessageByPaymentStatus(
-                UUID.fromString(paymentRequest.getSagaId()),
+                paymentRequest.getSagaId(),
                 paymentStatus
         );
         if (outboxOrderMessage.isPresent()) {
@@ -86,7 +85,7 @@ public class PaymentRequestHelper {
                 paymentMapper.paymentEventToPaymentResponseEventPayload(paymentEvent),
                 paymentEvent.getPayment().getPaymentStatus(),
                 OutboxStatus.STARTED,
-                UUID.fromString(paymentRequest.getSagaId())
+                paymentRequest.getSagaId()
         );
     }
 
@@ -109,7 +108,7 @@ public class PaymentRequestHelper {
                 paymentMapper.paymentEventToPaymentResponseEventPayload(paymentEvent),
                 paymentEvent.getPayment().getPaymentStatus(),
                 OutboxStatus.STARTED,
-                UUID.fromString(paymentRequest.getSagaId())
+                paymentRequest.getSagaId()
         );
     }
 }

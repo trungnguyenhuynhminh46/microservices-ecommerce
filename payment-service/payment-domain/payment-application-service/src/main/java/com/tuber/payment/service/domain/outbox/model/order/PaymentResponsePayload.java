@@ -20,9 +20,9 @@ public class PaymentResponsePayload {
     @JsonProperty
     UUID paymentId;
     @JsonProperty
-    UUID customerId;
-    @JsonProperty
     UUID orderId;
+    @JsonProperty
+    UUID customerId;
     @JsonProperty
     BigDecimal price;
     @JsonProperty
