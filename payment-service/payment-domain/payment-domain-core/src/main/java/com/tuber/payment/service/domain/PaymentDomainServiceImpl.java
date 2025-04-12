@@ -5,13 +5,20 @@ import com.tuber.payment.service.domain.constant.PaymentResponseCode;
 import com.tuber.payment.service.domain.entity.CreditEntry;
 import com.tuber.payment.service.domain.entity.CreditHistory;
 import com.tuber.payment.service.domain.entity.Payment;
+import com.tuber.payment.service.domain.event.PaymentCancelledEvent;
+import com.tuber.payment.service.domain.event.PaymentCompletedEvent;
 import com.tuber.payment.service.domain.event.PaymentEvent;
+import com.tuber.payment.service.domain.event.PaymentFailedEvent;
 import com.tuber.payment.service.domain.exception.PaymentDomainException;
+import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
 import com.tuber.payment.service.domain.valueobject.enums.TransactionType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 public class PaymentDomainServiceImpl implements PaymentDomainService {
     // credit entry = credit entry - payment
     // debit = debit + payment
@@ -26,7 +33,15 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
         creditEntry.subtractPaymentInCreditEntry(payment, failureMessages);
         creditHistories.add(createCreditHistory(payment, TransactionType.DEBIT));
         validateCreditHistory(creditEntry, creditHistories, failureMessages);
-        return null;
+        if (failureMessages.isEmpty()) {
+            log.info("Payment is successfully initiated for order id: {}", payment.getOrderId());
+            payment.setPaymentStatus(PaymentStatus.COMPLETED);
+            return new PaymentCompletedEvent(payment, LocalDate.now(), failureMessages);
+        } else {
+            log.info("Payment initiation is failed for order id: {}", payment.getOrderId());
+            payment.setPaymentStatus(PaymentStatus.FAILED);
+            return new PaymentFailedEvent(payment, LocalDate.now(), failureMessages);
+        }
     }
 
     // credit entry = credit entry + payment
@@ -42,7 +57,15 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
         creditEntry.addPaymentInCreditEntry(payment);
         creditHistories.add(createCreditHistory(payment, TransactionType.CREDIT));
         validateCreditHistory(creditEntry, creditHistories, failureMessages);
-        return null;
+        if (failureMessages.isEmpty()) {
+            log.info("Payment is successfully cancelled for order id: {}", payment.getOrderId());
+            payment.setPaymentStatus(PaymentStatus.CANCELLED);
+            return new PaymentCancelledEvent(payment, LocalDate.now(), failureMessages);
+        } else {
+            log.info("Payment cancellation is failed for order id: {}", payment.getOrderId());
+            payment.setPaymentStatus(PaymentStatus.FAILED);
+            return new PaymentFailedEvent(payment, LocalDate.now(), failureMessages);
+        }
     }
 
     protected CreditHistory createCreditHistory(Payment payment, TransactionType transactionType) {
