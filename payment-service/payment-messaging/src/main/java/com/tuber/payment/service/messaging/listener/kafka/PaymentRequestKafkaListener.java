@@ -1,7 +1,6 @@
 package com.tuber.payment.service.messaging.listener.kafka;
 
 import com.tuber.domain.constant.response.code.ResponseCode;
-import com.tuber.kafka.order.avro.model.PaymentOrderStatus;
 import com.tuber.kafka.order.avro.model.PaymentRequestAvroModel;
 import com.tuber.ordering.system.kafka.consumer.KafkaConsumer;
 import com.tuber.payment.service.domain.exception.NotFoundPaymentException;
@@ -30,53 +29,82 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class PaymentRequestKafkaListener implements KafkaConsumer<PaymentRequestAvroModel> {
     private static final String MYSQL_UNIQUE_CONSTRAINT_VIOLATION = "23000";
+
     PaymentRequestMessageListener paymentRequestMessageListener;
     PaymentMessageMapper paymentMessageMapper;
 
-    @Override
     @KafkaListener(id = "${kafka-consumer-config.payment-consumer-group-id}",
             topics = "${config-data.payment-request-topic-name}")
     public void receive(@Payload List<PaymentRequestAvroModel> messages,
                         @Header(KafkaHeaders.RECEIVED_KEY) List<String> keys,
                         @Header(KafkaHeaders.RECEIVED_PARTITION) List<Integer> partitions,
                         @Header(KafkaHeaders.OFFSET) List<Long> offsets) {
-        log.info("{} messages with keys {}, partitions {} and offsets {} were found.",
-                messages.size(),
-                keys.toString(),
-                partitions.toString(),
-                offsets.toString()
-        );
+        logReceivedMessages(messages, keys, partitions, offsets);
+        processMessages(messages);
+    }
 
-        messages.forEach(messageModel -> {
-            try {
-                if (messageModel.getPaymentOrderStatus() == PaymentOrderStatus.PENDING) {
-                    log.info("Payment for order with order id: {} is being processed", messageModel.getOrderId());
-                    paymentRequestMessageListener.acceptPayment(
-                            paymentMessageMapper.paymentRequestAvroModelToPaymentRequest(messageModel)
-                    );
-                }
-                if (messageModel.getPaymentOrderStatus() == PaymentOrderStatus.CANCELLED) {
-                    log.info("Payment for order with order id: {} is being cancelled", messageModel.getOrderId());
-                    paymentRequestMessageListener.cancelPayment(
-                            paymentMessageMapper.paymentRequestAvroModelToPaymentRequest(messageModel)
-                    );
-                }
-            } catch (DataAccessException exception) {
-                // Handle unique constraint violation
-                SQLException sqlException = (SQLException) exception.getRootCause();
-                if (sqlException != null && sqlException.getSQLState() != null &&
-                        MYSQL_UNIQUE_CONSTRAINT_VIOLATION.equals(sqlException.getSQLState())) {
-                    log.error("Unique constraint violation (SQLState: {}) for order id: {}",
-                            sqlException.getSQLState(), messageModel.getOrderId());
-                } else {
-                    String errorMessage = String.format("DataAccessException is thrown in kafka listener: %s", exception.getMessage());
-                    throw new PaymentDomainException(new ResponseCode(errorMessage), HttpStatus.INTERNAL_SERVER_ERROR.value(), exception);
-                }
-            } catch (NotFoundPaymentException exception) {
-                // Handle payment not found exception
-                log.error("No payment was found for order id: {}. Error: {}",
-                        messageModel.getOrderId(), exception.getMessage());
+    private void logReceivedMessages(List<PaymentRequestAvroModel> messages,
+                                     List<String> keys,
+                                     List<Integer> partitions,
+                                     List<Long> offsets) {
+        log.info("Received {} messages with keys: {}, partitions: {}, offsets: {}",
+                messages.size(), keys, partitions, offsets);
+    }
+
+    private void processMessages(List<PaymentRequestAvroModel> messages) {
+        messages.forEach(this::processSingleMessage);
+    }
+
+    private void processSingleMessage(PaymentRequestAvroModel message) {
+        try {
+            handlePaymentRequest(message);
+        } catch (Exception exception) {
+            handleProcessingException(message, exception);
+        }
+    }
+
+    private void handlePaymentRequest(PaymentRequestAvroModel message) {
+        var paymentRequest = paymentMessageMapper.paymentRequestAvroModelToPaymentRequest(message);
+
+        switch (message.getPaymentOrderStatus()) {
+            case PENDING -> {
+                log.info("Processing payment for order: {}", message.getOrderId());
+                paymentRequestMessageListener.acceptPayment(paymentRequest);
             }
-        });
+            case CANCELLED -> {
+                log.info("Cancelling payment for order: {}", message.getOrderId());
+                paymentRequestMessageListener.cancelPayment(paymentRequest);
+            }
+            default -> log.warn("Unsupported payment status: {} for order: {}",
+                    message.getPaymentOrderStatus(), message.getOrderId());
+        }
+    }
+
+    private void handleProcessingException(PaymentRequestAvroModel message, Exception exception) {
+        if (exception instanceof NotFoundPaymentException) {
+            log.error("Payment not found for order: {}. Error: {}",
+                    message.getOrderId(), exception.getMessage());
+            return;
+        }
+
+        if (isUniqueConstraintViolation(exception)) {
+            log.error("Unique constraint violation for order: {}", message.getOrderId());
+            return;
+        }
+
+        throw new PaymentDomainException(
+                new ResponseCode("Failed to process payment request: " + exception.getMessage()),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                exception
+        );
+    }
+
+    private boolean isUniqueConstraintViolation(Exception exception) {
+        if (!(exception instanceof DataAccessException dataAccessException)) {
+            return false;
+        }
+
+        SQLException sqlException = (SQLException) dataAccessException.getRootCause();
+        return sqlException != null && MYSQL_UNIQUE_CONSTRAINT_VIOLATION.equals(sqlException.getSQLState());
     }
 }
