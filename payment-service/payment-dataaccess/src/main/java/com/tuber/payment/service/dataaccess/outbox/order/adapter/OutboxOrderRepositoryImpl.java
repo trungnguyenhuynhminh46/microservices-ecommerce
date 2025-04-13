@@ -33,7 +33,7 @@ public class OutboxOrderRepositoryImpl implements OutboxOrderRepository {
 
     @Override
     public Optional<List<OutboxOrderMessage>> findByTypeAndOutboxStatus(String type, OutboxStatus status) {
-        return outboxOrderJpaRepository.findAllByTypeAndOutboxStatus(type, status.toString())
+        return outboxOrderJpaRepository.findAllByTypeAndOutboxStatus(type, status)
                 .map(jpaList -> jpaList.stream().map(
                         outBoxOrderMessageDataAccessMapper::outboxOrderMessageJpaEntityToOutboxOrderMessage
                 ).toList());
@@ -44,8 +44,8 @@ public class OutboxOrderRepositoryImpl implements OutboxOrderRepository {
         return outboxOrderJpaRepository.findByTypeAndSagaIdAndPaymentStatusAndOutboxStatus(
                 type,
                 sagaId,
-                paymentStatus.toString(),
-                outboxStatus.toString()
+                paymentStatus,
+                outboxStatus
         ).map(outBoxOrderMessageDataAccessMapper::outboxOrderMessageJpaEntityToOutboxOrderMessage);
     }
 
