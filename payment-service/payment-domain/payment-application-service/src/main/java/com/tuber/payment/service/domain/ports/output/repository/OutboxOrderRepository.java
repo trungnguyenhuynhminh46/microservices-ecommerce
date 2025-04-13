@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-//TODO Implement this class
 public interface OutboxOrderRepository {
     OutboxOrderMessage save(OutboxOrderMessage outboxOrderMessage);
 
