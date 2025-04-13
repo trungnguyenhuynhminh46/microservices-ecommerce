@@ -1,5 +1,8 @@
 package com.tuber.payment.service.dataaccess.history.adapter;
 
+import com.tuber.payment.service.dataaccess.history.entity.CreditHistoryJpaEntity;
+import com.tuber.payment.service.dataaccess.history.mapper.CreditHistoryDataAccessMapper;
+import com.tuber.payment.service.dataaccess.history.repository.CreditHistoryJpaRepository;
 import com.tuber.payment.service.domain.entity.CreditHistory;
 import com.tuber.payment.service.domain.ports.output.repository.CreditHistoryRepository;
 import lombok.AccessLevel;
@@ -11,18 +14,27 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-//TODO Implement this class
 @Component
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreditHistoryRepositoryImpl implements CreditHistoryRepository {
+    CreditHistoryJpaRepository creditHistoryJpaRepository;
+    CreditHistoryDataAccessMapper creditHistoryDataAccessMapper;
+
     @Override
     public CreditHistory save(CreditHistory creditHistory) {
-        return null;
+        return creditHistoryDataAccessMapper.creditHistoryJpaEntityToCreditHistory(
+                creditHistoryJpaRepository.save(
+                        creditHistoryDataAccessMapper.creditHistoryToCreditHistoryJpaEntity(creditHistory)
+                )
+        );
     }
 
     @Override
     public Optional<List<CreditHistory>> findAllByCustomerId(UUID customerId) {
-        return Optional.empty();
+        return creditHistoryJpaRepository.findAllByCustomerId(customerId)
+                .map(jpaList -> jpaList.stream()
+                        .map(creditHistoryDataAccessMapper::creditHistoryJpaEntityToCreditHistory)
+                        .toList());
     }
 }
