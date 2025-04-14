@@ -1,7 +1,7 @@
 package com.tuber.payment.service.dataaccess.outbox.order.entity;
 
 import com.tuber.outbox.OutboxStatus;
-import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
+import com.tuber.domain.valueobject.enums.PaymentStatus;
 import com.tuber.saga.SagaStatus;
 import jakarta.persistence.*;
 import lombok.*;

@@ -11,6 +11,7 @@ public class OrderResponseCode extends ResponseCodeBase {
     public static final OrderResponseCode ORDER_ITEM_IN_WRONG_STATE_FOR_INITIALIZATION = new OrderResponseCode(1005, "Order item is in wrong state for initialization");
     public static final OrderResponseCode PRODUCT_IN_ORDER_ITEM_IS_OUTDATED = new OrderResponseCode(1006, "Product in order item is outdated");
     public static final OrderResponseCode FAILED_TO_SAVE_PAYMENT_OUTBOX = new OrderResponseCode(1007, "Could not save OrderPaymentOutboxMessage with outbox id: %s");
+    public static final OrderResponseCode ORDER_NOT_FOUND = new OrderResponseCode(1008, "Could not find order with order id: %s");
 
     protected OrderResponseCode(int code, String message) {
         this.code = formatErrorCode(code);

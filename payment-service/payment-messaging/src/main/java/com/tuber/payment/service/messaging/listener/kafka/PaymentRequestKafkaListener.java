@@ -3,6 +3,7 @@ package com.tuber.payment.service.messaging.listener.kafka;
 import com.tuber.domain.constant.response.code.ResponseCode;
 import com.tuber.kafka.order.avro.model.PaymentRequestAvroModel;
 import com.tuber.ordering.system.kafka.consumer.KafkaConsumer;
+import com.tuber.payment.service.domain.dto.message.broker.PaymentRequest;
 import com.tuber.payment.service.domain.exception.NotFoundPaymentException;
 import com.tuber.payment.service.domain.exception.PaymentDomainException;
 import com.tuber.payment.service.domain.ports.input.message.listener.PaymentRequestMessageListener;
@@ -33,6 +34,7 @@ public class PaymentRequestKafkaListener implements KafkaConsumer<PaymentRequest
     PaymentRequestMessageListener paymentRequestMessageListener;
     PaymentMessageMapper paymentMessageMapper;
 
+    @Override
     @KafkaListener(id = "${kafka-consumer-config.payment-consumer-group-id}",
             topics = "${config-data.payment-request-topic-name}")
     public void receive(@Payload List<PaymentRequestAvroModel> messages,
@@ -64,7 +66,7 @@ public class PaymentRequestKafkaListener implements KafkaConsumer<PaymentRequest
     }
 
     private void handlePaymentRequest(PaymentRequestAvroModel message) {
-        var paymentRequest = paymentMessageMapper.paymentRequestAvroModelToPaymentRequest(message);
+        PaymentRequest paymentRequest = paymentMessageMapper.paymentRequestAvroModelToPaymentRequest(message);
 
         switch (message.getPaymentOrderStatus()) {
             case PENDING -> {

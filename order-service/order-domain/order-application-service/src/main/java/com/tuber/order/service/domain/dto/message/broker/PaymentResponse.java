@@ -1,24 +1,26 @@
-package com.tuber.payment.service.domain.dto.message.broker;
+package com.tuber.order.service.domain.dto.message.broker;
 
-import com.tuber.payment.service.domain.valueobject.enums.PaymentOrderStatus;
+import com.tuber.domain.valueobject.enums.PaymentStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PaymentRequest {
+public class PaymentResponse {
     UUID id;
     UUID sagaId;
+    UUID paymentId;
     UUID orderId;
     UUID customerId;
     BigDecimal price;
     LocalDate createdAt;
-    @Setter
-    PaymentOrderStatus paymentOrderStatus;
+    PaymentStatus paymentStatus;
+    List<String> failureMessages;
 }

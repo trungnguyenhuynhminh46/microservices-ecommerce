@@ -14,7 +14,7 @@ import com.tuber.payment.service.domain.ports.output.message.publisher.PaymentRe
 import com.tuber.payment.service.domain.ports.output.repository.CreditEntryRepository;
 import com.tuber.payment.service.domain.ports.output.repository.CreditHistoryRepository;
 import com.tuber.payment.service.domain.ports.output.repository.PaymentRepository;
-import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
+import com.tuber.domain.valueobject.enums.PaymentStatus;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -3,7 +3,7 @@ package com.tuber.payment.service.domain.entity;
 import com.tuber.domain.entity.AggregateRoot;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
+import com.tuber.domain.valueobject.enums.PaymentStatus;
 
 import java.time.LocalDate;
 import java.util.List;

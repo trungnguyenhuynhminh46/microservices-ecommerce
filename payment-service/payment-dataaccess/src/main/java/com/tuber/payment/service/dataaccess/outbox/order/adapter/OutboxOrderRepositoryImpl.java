@@ -5,7 +5,7 @@ import com.tuber.payment.service.dataaccess.outbox.order.mapper.OutBoxOrderMessa
 import com.tuber.payment.service.dataaccess.outbox.order.repository.OutboxOrderJpaRepository;
 import com.tuber.payment.service.domain.outbox.model.order.OutboxOrderMessage;
 import com.tuber.payment.service.domain.ports.output.repository.OutboxOrderRepository;
-import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
+import com.tuber.domain.valueobject.enums.PaymentStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;

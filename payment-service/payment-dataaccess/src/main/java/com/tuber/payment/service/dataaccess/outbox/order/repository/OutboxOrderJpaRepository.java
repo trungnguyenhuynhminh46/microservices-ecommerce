@@ -2,7 +2,7 @@ package com.tuber.payment.service.dataaccess.outbox.order.repository;
 
 import com.tuber.outbox.OutboxStatus;
 import com.tuber.payment.service.dataaccess.outbox.order.entity.OutboxOrderMessageJpaEntity;
-import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
+import com.tuber.domain.valueobject.enums.PaymentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

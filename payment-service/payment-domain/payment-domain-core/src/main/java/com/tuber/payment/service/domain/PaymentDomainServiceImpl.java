@@ -10,7 +10,7 @@ import com.tuber.payment.service.domain.event.PaymentCompletedEvent;
 import com.tuber.payment.service.domain.event.PaymentEvent;
 import com.tuber.payment.service.domain.event.PaymentFailedEvent;
 import com.tuber.payment.service.domain.exception.PaymentDomainException;
-import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
+import com.tuber.domain.valueobject.enums.PaymentStatus;
 import com.tuber.payment.service.domain.valueobject.enums.TransactionType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

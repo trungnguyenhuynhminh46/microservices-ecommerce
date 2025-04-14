@@ -2,7 +2,7 @@ package com.tuber.payment.service.domain.ports.output.repository;
 
 import com.tuber.outbox.OutboxStatus;
 import com.tuber.payment.service.domain.outbox.model.order.OutboxOrderMessage;
-import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
+import com.tuber.domain.valueobject.enums.PaymentStatus;
 
 import java.util.List;
 import java.util.Optional;

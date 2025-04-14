@@ -12,7 +12,7 @@ import com.tuber.payment.service.domain.entity.Payment;
 import com.tuber.payment.service.domain.event.PaymentEvent;
 import com.tuber.payment.service.domain.outbox.model.order.OutboxOrderMessage;
 import com.tuber.payment.service.domain.outbox.model.order.PaymentResponsePayload;
-import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
+import com.tuber.domain.valueobject.enums.PaymentStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

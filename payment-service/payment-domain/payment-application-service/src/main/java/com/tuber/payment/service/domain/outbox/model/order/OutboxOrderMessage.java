@@ -1,7 +1,7 @@
 package com.tuber.payment.service.domain.outbox.model.order;
 
 import com.tuber.outbox.OutboxStatus;
-import com.tuber.payment.service.domain.valueobject.enums.PaymentStatus;
+import com.tuber.domain.valueobject.enums.PaymentStatus;
 import com.tuber.saga.SagaStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
