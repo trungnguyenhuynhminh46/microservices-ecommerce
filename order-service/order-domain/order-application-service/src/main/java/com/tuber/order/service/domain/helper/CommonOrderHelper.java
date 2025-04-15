@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -83,5 +84,14 @@ public class CommonOrderHelper {
         }).collect(Collectors.toSet());
 
         return voucherRepository.saveAll(updatedVouchers);
+    }
+
+    public OrderEntity verifyOrderExists(UUID orderId) {
+        Optional<OrderEntity> response = orderRepository.findById(orderId);
+        if (response.isEmpty()) {
+            log.error("Order with id: {} could not be found!", orderId);
+            throw new OrderDomainException(OrderResponseCode.ORDER_NOT_FOUND, HttpStatus.NOT_FOUND.value());
+        }
+        return response.get();
     }
 }

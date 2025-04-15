@@ -1,6 +1,6 @@
 package com.tuber.order.service.domain.dto.shared;
 
-import com.tuber.order.service.domain.valueobject.DiscountType;
+import com.tuber.order.service.domain.valueobject.enums.DiscountType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -5,8 +5,8 @@ import com.tuber.domain.entity.AggregateRoot;
 import com.tuber.domain.exception.OrderDomainException;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.order.service.domain.valueobject.DiscountType;
-import com.tuber.order.service.domain.valueobject.enums.OrderStatus;
+import com.tuber.order.service.domain.valueobject.enums.DiscountType;
+import com.tuber.domain.valueobject.enums.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

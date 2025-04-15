@@ -12,7 +12,7 @@ public class OrderResponseCode extends ResponseCodeBase {
     public static final OrderResponseCode PRODUCT_IN_ORDER_ITEM_IS_OUTDATED = new OrderResponseCode(1006, "Product in order item is outdated");
     public static final OrderResponseCode FAILED_TO_SAVE_PAYMENT_OUTBOX = new OrderResponseCode(1007, "Could not save OrderPaymentOutboxMessage with outbox id: %s");
     public static final OrderResponseCode ORDER_NOT_FOUND = new OrderResponseCode(1008, "Could not find order with order id: %s");
-
+    public static final OrderResponseCode PAYMENT_OUTBOX_MESSAGE_OF_SAGA_NOT_FOUND = new OrderResponseCode(1009, "Payment outbox message with saga id: %s and saga status: %s could not be found!");
     protected OrderResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

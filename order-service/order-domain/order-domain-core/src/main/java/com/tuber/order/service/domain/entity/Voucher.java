@@ -3,7 +3,7 @@ package com.tuber.order.service.domain.entity;
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.order.service.domain.valueobject.DiscountType;
+import com.tuber.order.service.domain.valueobject.enums.DiscountType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

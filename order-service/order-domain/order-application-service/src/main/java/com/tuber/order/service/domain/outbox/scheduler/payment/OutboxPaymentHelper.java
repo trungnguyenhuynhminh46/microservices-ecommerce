@@ -7,7 +7,7 @@ import com.tuber.domain.exception.OrderDomainException;
 import com.tuber.order.service.domain.outbox.model.payment.PaymentPayload;
 import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
 import com.tuber.order.service.domain.ports.output.repository.OutboxPaymentRepository;
-import com.tuber.order.service.domain.valueobject.enums.OrderStatus;
+import com.tuber.domain.valueobject.enums.OrderStatus;
 import com.tuber.outbox.OutboxStatus;
 import com.tuber.saga.SagaStatus;
 import com.tuber.saga.order.SagaName;

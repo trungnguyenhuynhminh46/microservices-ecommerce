@@ -28,5 +28,9 @@
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.tuber</groupId>
+            <artifactId>saga</artifactId>
+        </dependency>
     </dependencies>
 </project>

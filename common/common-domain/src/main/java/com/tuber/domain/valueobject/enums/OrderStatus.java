@@ -1,4 +1,4 @@
-package com.tuber.order.service.domain.valueobject.enums;
+package com.tuber.domain.valueobject.enums;
 
 public enum OrderStatus {
     PROCESSING, APPROVED,

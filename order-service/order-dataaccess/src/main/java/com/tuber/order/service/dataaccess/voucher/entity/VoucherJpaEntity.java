@@ -1,7 +1,7 @@
 package com.tuber.order.service.dataaccess.voucher.entity;
 
 import com.tuber.order.service.dataaccess.order.entity.OrderJpaEntity;
-import com.tuber.order.service.domain.valueobject.DiscountType;
+import com.tuber.order.service.domain.valueobject.enums.DiscountType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

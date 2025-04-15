@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Component
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -22,5 +25,11 @@ public class OrderRepositoryImpl implements OrderRepository {
                 orderJpaRepository.save(orderDataAccessMapper.productEntityToProductJpaEntity(order)
                 )
         );
+    }
+
+    @Override
+    public Optional<OrderEntity> findById(UUID id) {
+        return orderJpaRepository.findById(id)
+                .map(orderDataAccessMapper::productJpaEntityToProductEntity);
     }
 }
