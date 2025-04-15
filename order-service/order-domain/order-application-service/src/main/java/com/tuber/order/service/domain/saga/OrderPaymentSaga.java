@@ -6,7 +6,7 @@ import com.tuber.domain.valueobject.enums.PaymentStatus;
 import com.tuber.order.service.domain.OrderDomainService;
 import com.tuber.order.service.domain.dto.message.broker.PaymentResponse;
 import com.tuber.order.service.domain.entity.OrderEntity;
-import com.tuber.order.service.domain.event.OrderPaymentCancelEvent;
+import com.tuber.order.service.domain.event.OrderCancelEvent;
 import com.tuber.order.service.domain.event.OrderPaymentCompleteEvent;
 import com.tuber.order.service.domain.helper.CommonOrderHelper;
 import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -42,9 +43,9 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         return event;
     }
 
-    protected OrderPaymentCancelEvent cancelPaymentForOrder(OrderEntity order) {
-        log.info("Cancelling payment for order with order id: {}", order.getId());
-        OrderPaymentCancelEvent event = orderDomainService.cancelOrderPayment(order);
+    protected OrderCancelEvent cancelOrder(OrderEntity order, List<String> failureMessages) {
+        log.info("Cancelling order with order id: {}", order.getId());
+        OrderCancelEvent event = orderDomainService.cancelOrder(order, failureMessages);
         orderRepository.save(order);
         return event;
     }
@@ -99,11 +100,15 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         }
         PaymentOutboxMessage paymentOutboxMessage = response.get();
 
-        OrderPaymentCancelEvent orderPaymentCancelEvent = cancelPaymentForOrder(commonOrderHelper.verifyOrderExists(data.getOrderId()));
+        OrderCancelEvent orderCancelEvent =
+                cancelOrder(
+                        commonOrderHelper.verifyOrderExists(data.getOrderId()),
+                        data.getFailureMessages()
+                );
 
         updatePaymentOutboxMessage(
                 paymentOutboxMessage,
-                orderPaymentCancelEvent.getOrder().getOrderStatus()
+                orderCancelEvent.getOrder().getOrderStatus()
         );
 
         if (data.getPaymentStatus() == PaymentStatus.CANCELLED) {

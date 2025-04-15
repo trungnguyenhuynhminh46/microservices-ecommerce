@@ -1,25 +1,44 @@
 package com.tuber.order.service.domain;
 
 import com.tuber.order.service.domain.entity.OrderEntity;
-import com.tuber.order.service.domain.event.OrderCreatedEvent;
-import com.tuber.order.service.domain.event.OrderPaymentCancelEvent;
-import com.tuber.order.service.domain.event.OrderPaymentCompleteEvent;
+import com.tuber.order.service.domain.event.*;
+import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+import java.util.List;
+
+@Slf4j
 public class OrderDomainServiceImpl implements OrderDomainService{
     @Override
     public OrderCreatedEvent validateAndInitializeOrder(OrderEntity order) {
-        return new OrderCreatedEvent(order.selfValidate().selfInitialize());
+        return new OrderCreatedEvent(order.selfValidate().selfInitialize(), LocalDate.now());
     }
 
-    //TODO: Implement this method
     @Override
     public OrderPaymentCompleteEvent completeOrderPayment(OrderEntity order) {
-        return null;
+        order.pay();
+        log.info("Order with id: {} is paid", order.getId().getValue());
+        return new OrderPaymentCompleteEvent(order, LocalDate.now());
     }
 
-    //TODO: Implement this method
     @Override
-    public OrderPaymentCancelEvent cancelOrderPayment(OrderEntity order) {
-        return null;
+    public OrderCancelEvent cancelOrder(OrderEntity order, List<String> failureMessages) {
+        order.cancel(failureMessages);
+        log.info("Order with id: {} is cancelled", order.getId().getValue());
+        return new OrderCancelEvent(order, LocalDate.now());
+    }
+
+    @Override
+    public OrderBeginCancellingEvent beginCancellingOrder(OrderEntity order, List<String> failureMessages) {
+        order.initCancelling(failureMessages);
+        log.info("Start to revert order payment for order with order id: {}", order.getId().getValue());
+        return new OrderBeginCancellingEvent(order, LocalDate.now());
+    }
+
+    @Override
+    public OrderConfirmValidForFulfillment confirmValidForFulfillment(OrderEntity order) {
+        order.confirmReadyForFulfillment();
+        log.info("Order with id: {} is ready for fulfillment", order.getId().getValue());
+        return new OrderConfirmValidForFulfillment(order, LocalDate.now());
     }
 }

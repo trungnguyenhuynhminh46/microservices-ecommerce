@@ -12,10 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class OrderEntity extends AggregateRoot<UniqueUUID> {
     private String trackingId;
@@ -24,6 +21,7 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
     private Set<Voucher> vouchers = new HashSet<>();
     private Money finalPrice;
     private OrderStatus orderStatus;
+    private List<String> failureMessages = new ArrayList<>();
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
@@ -177,6 +175,42 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
         }
     }
 
+    public void pay() {
+        if (orderStatus != OrderStatus.PENDING) {
+            throw new OrderDomainException(OrderResponseCode.ORDER_IN_WRONG_STATE_FOR_PAYMENT, 500, getId().getValue());
+        }
+        orderStatus = OrderStatus.PAID;
+    }
+
+    public void confirmReadyForFulfillment() {
+        if (orderStatus != OrderStatus.PAID) {
+            throw new OrderDomainException(OrderResponseCode.ORDER_IN_WRONG_STATE_TO_BE_READY_FOR_FULFILLMENT, 500, getId().getValue());
+        }
+        orderStatus = OrderStatus.READY_FOR_FULFILLMENT;
+    }
+
+    public void initCancelling(List<String> failureMessages) {
+        if (orderStatus != OrderStatus.PAID) {
+            throw new OrderDomainException(OrderResponseCode.ORDER_IN_WRONG_STATE_FOR_INIT_CANCELLING, 500, getId().getValue());
+        }
+        orderStatus = OrderStatus.CANCELLING;
+        addFailureMessages(failureMessages);
+    }
+
+    public void cancel(List<String> failureMessages) {
+        if (orderStatus != OrderStatus.CANCELLING && orderStatus != OrderStatus.PENDING) {
+            throw new OrderDomainException(OrderResponseCode.ORDER_IN_WRONG_STATE_FOR_CANCELING_PAYMENT, 500, getId().getValue());
+        }
+        orderStatus = OrderStatus.CANCELLED;
+        addFailureMessages(failureMessages);
+    }
+
+    protected void addFailureMessages(List<String> failureMessages) {
+        if (failureMessages != null) {
+            this.failureMessages.addAll(failureMessages.stream().filter(message -> !message.isEmpty()).toList());
+        }
+    }
+
     protected String generateTrackingId(String username) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
@@ -200,7 +234,7 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
     public boolean isValidForInitialization() {
         return getId() == null && getTrackingId() == null
                 && getCreatorId() != null && getOrderItems() != null
-                && getFinalPrice() == null && getOrderStatus() == OrderStatus.PROCESSING
+                && getFinalPrice() == null && getOrderStatus() == OrderStatus.PENDING
                 && getCreatedAt() == null && getUpdatedAt() == null;
     }
 

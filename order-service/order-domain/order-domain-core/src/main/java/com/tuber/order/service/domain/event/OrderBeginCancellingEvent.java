@@ -4,9 +4,9 @@ import com.tuber.order.service.domain.entity.OrderEntity;
 
 import java.time.LocalDate;
 
-public class OrderCreatedEvent extends OrderEvent {
+public class OrderBeginCancellingEvent extends OrderEvent {
 
-    public OrderCreatedEvent(OrderEntity order, LocalDate createdAt) {
+    public OrderBeginCancellingEvent(OrderEntity order, LocalDate createdAt) {
         super(order, createdAt);
     }
 }

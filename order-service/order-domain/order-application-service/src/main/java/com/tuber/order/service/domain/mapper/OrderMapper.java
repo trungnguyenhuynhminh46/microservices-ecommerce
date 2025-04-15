@@ -64,7 +64,7 @@ public abstract class OrderMapper {
                 .creatorId(creatorId)
                 .orderItems(generateOrderItems(productDetails, createOrderCommand.getOrderItems()))
                 .vouchers(usedVouchers)
-                .orderStatus(OrderStatus.PROCESSING)
+                .orderStatus(OrderStatus.PENDING)
                 .build();
     }
 
@@ -91,7 +91,7 @@ public abstract class OrderMapper {
     public SagaStatus orderStatusToSagaStatus(OrderStatus orderStatus) {
         return switch (orderStatus) {
             case PAID -> SagaStatus.PROCESSING;
-            case APPROVED -> SagaStatus.SUCCEEDED;
+            case READY_FOR_FULFILLMENT -> SagaStatus.SUCCEEDED;
             case CANCELLING -> SagaStatus.COMPENSATING;
             case CANCELLED -> SagaStatus.COMPENSATED;
             default -> SagaStatus.STARTED;

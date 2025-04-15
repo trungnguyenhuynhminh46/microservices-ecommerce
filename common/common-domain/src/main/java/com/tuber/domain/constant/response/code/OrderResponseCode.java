@@ -13,6 +13,10 @@ public class OrderResponseCode extends ResponseCodeBase {
     public static final OrderResponseCode FAILED_TO_SAVE_PAYMENT_OUTBOX = new OrderResponseCode(1007, "Could not save OrderPaymentOutboxMessage with outbox id: %s");
     public static final OrderResponseCode ORDER_NOT_FOUND = new OrderResponseCode(1008, "Could not find order with order id: %s");
     public static final OrderResponseCode PAYMENT_OUTBOX_MESSAGE_OF_SAGA_NOT_FOUND = new OrderResponseCode(1009, "Payment outbox message with saga id: %s and saga status: %s could not be found!");
+    public static final OrderResponseCode ORDER_IN_WRONG_STATE_FOR_PAYMENT = new OrderResponseCode(1010, "Order with id: %s is not in proper state for payment");
+    public static final OrderResponseCode ORDER_IN_WRONG_STATE_FOR_INIT_CANCELLING = new OrderResponseCode(1011, "Order with id: %s is not in proper state for init canceling");
+    public static final OrderResponseCode ORDER_IN_WRONG_STATE_FOR_CANCELING_PAYMENT = new OrderResponseCode(1012, "Order with id: %s is not in proper state for canceling payment");
+    public static final OrderResponseCode ORDER_IN_WRONG_STATE_TO_BE_READY_FOR_FULFILLMENT = new OrderResponseCode(1013, "Order with id: %s is not in proper state to be ready for fulfillment");
     protected OrderResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;
