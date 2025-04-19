@@ -3,7 +3,7 @@ package com.tuber.order.service.dataaccess.outbox.payment.adapter;
 import com.tuber.order.service.dataaccess.outbox.payment.mapper.PaymentOutboxDataAccessMapper;
 import com.tuber.order.service.dataaccess.outbox.payment.repository.PaymentOutboxJpaRepository;
 import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
-import com.tuber.order.service.domain.ports.output.repository.OutboxPaymentRepository;
+import com.tuber.order.service.domain.ports.output.repository.outbox.OutboxPaymentRepository;
 import com.tuber.outbox.OutboxStatus;
 import com.tuber.saga.SagaStatus;
 import lombok.AccessLevel;

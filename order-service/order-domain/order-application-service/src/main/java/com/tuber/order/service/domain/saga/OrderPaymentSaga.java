@@ -10,8 +10,10 @@ import com.tuber.order.service.domain.event.OrderCancelEvent;
 import com.tuber.order.service.domain.event.OrderPaymentCompleteEvent;
 import com.tuber.order.service.domain.helper.CommonOrderHelper;
 import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
+import com.tuber.order.service.domain.outbox.scheduler.inventory.InventoryConfirmationOutboxHelper;
 import com.tuber.order.service.domain.ports.output.repository.OrderRepository;
-import com.tuber.order.service.domain.ports.output.repository.OutboxPaymentRepository;
+import com.tuber.order.service.domain.ports.output.repository.outbox.OutboxPaymentRepository;
+import com.tuber.outbox.OutboxStatus;
 import com.tuber.saga.SagaStatus;
 import com.tuber.saga.SagaStep;
 import com.tuber.saga.order.SagaName;
@@ -35,6 +37,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
     CommonOrderHelper commonOrderHelper;
     OrderRepository orderRepository;
     StatusMapper statusMapper;
+    InventoryConfirmationOutboxHelper inventoryConfirmationOutboxHelper;
 
     protected OrderPaymentCompleteEvent completePaymentForOrder(OrderEntity order) {
         log.info("Completing payment for order with order id: {}", order.getId());
@@ -79,7 +82,13 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
                 orderPaymentCompleteEvent.getOrder().getOrderStatus()
         );
 
-        // Save inventory approval outbox message
+        inventoryConfirmationOutboxHelper.saveInventoryConfirmationOutboxMessage(
+                null,
+                data.getSagaId(),
+                statusMapper.orderStatusToSagaStatus(orderPaymentCompleteEvent.getOrder().getOrderStatus()),
+                OutboxStatus.STARTED,
+                orderPaymentCompleteEvent.getOrder().getOrderStatus()
+        );
 
         log.info("Order with order id: {} is paid", data.getOrderId());
     }
@@ -112,7 +121,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         );
 
         if (data.getPaymentStatus() == PaymentStatus.CANCELLED) {
-            // Save inventory approval outbox message in case payment failed
+            // Save inventory confirmation outbox message in case payment failed
         }
 
         log.info("Payment of order with id: {} is cancelled", data.getOrderId());

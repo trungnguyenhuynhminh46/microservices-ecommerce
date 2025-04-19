@@ -2,7 +2,7 @@ package com.tuber.order.service.domain.outbox.scheduler.payment;
 
 import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
 import com.tuber.order.service.domain.ports.output.message.publisher.payment.PaymentMessageRequestPublisher;
-import com.tuber.order.service.domain.ports.output.repository.OutboxPaymentRepository;
+import com.tuber.order.service.domain.ports.output.repository.outbox.OutboxPaymentRepository;
 import com.tuber.outbox.AbstractOutboxDispatcher;
 import com.tuber.outbox.OutboxStatus;
 import com.tuber.saga.SagaStatus;

@@ -58,4 +58,13 @@ public class CommonHelper {
             throw new DomainException(new ResponseCode("Could not read " + type.getName() + " object!"), HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
     }
+
+    public <T> String mapObjectIntoString(T object, DomainException throwable) throws DomainException {
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            log.error(throwable.getMessage());
+            throw throwable;
+        }
+    }
 }
