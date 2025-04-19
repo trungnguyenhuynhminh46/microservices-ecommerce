@@ -1,7 +1,6 @@
 package com.tuber.order.service.domain.saga;
 
 import com.tuber.application.mapper.StatusMapper;
-import com.tuber.domain.valueobject.enums.OrderStatus;
 import com.tuber.domain.valueobject.enums.PaymentStatus;
 import com.tuber.order.service.domain.OrderDomainService;
 import com.tuber.order.service.domain.dto.message.broker.PaymentResponse;
@@ -9,8 +8,10 @@ import com.tuber.order.service.domain.entity.OrderEntity;
 import com.tuber.order.service.domain.event.OrderCancelEvent;
 import com.tuber.order.service.domain.event.OrderPaymentCompleteEvent;
 import com.tuber.order.service.domain.helper.CommonOrderHelper;
+import com.tuber.order.service.domain.mapper.OutboxMessageMapper;
 import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
 import com.tuber.order.service.domain.outbox.scheduler.inventory.InventoryConfirmationOutboxHelper;
+import com.tuber.order.service.domain.outbox.scheduler.payment.OutboxPaymentHelper;
 import com.tuber.order.service.domain.ports.output.repository.OrderRepository;
 import com.tuber.order.service.domain.ports.output.repository.outbox.OutboxPaymentRepository;
 import com.tuber.outbox.OutboxStatus;
@@ -22,8 +23,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,9 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
     CommonOrderHelper commonOrderHelper;
     OrderRepository orderRepository;
     StatusMapper statusMapper;
+    OutboxMessageMapper outboxMessageMapper;
     InventoryConfirmationOutboxHelper inventoryConfirmationOutboxHelper;
+    OutboxPaymentHelper outboxPaymentHelper;
 
     protected OrderPaymentCompleteEvent completePaymentForOrder(OrderEntity order) {
         log.info("Completing payment for order with order id: {}", order.getId());
@@ -53,18 +56,8 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         return event;
     }
 
-    protected void updatePaymentOutboxMessage(
-            PaymentOutboxMessage message,
-            OrderStatus orderStatus
-    ) {
-        message.setProcessedAt(LocalDate.now());
-        message.setOrderStatus(orderStatus);
-        message.setSagaStatus(statusMapper.orderStatusToSagaStatus(orderStatus));
-        outboxPaymentRepository.save(message);
-    }
-
-    //TODO: Implement this method
     @Override
+    @Transactional
     public void process(PaymentResponse data) {
         Optional<PaymentOutboxMessage> response = outboxPaymentRepository
                 .findBySagaIdAndTypeAndSagaStatuses(data.getSagaId(), SagaName.ORDER_PROCESSING_SAGA.name(), SagaStatus.STARTED);
@@ -77,13 +70,13 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
 
         OrderPaymentCompleteEvent orderPaymentCompleteEvent = completePaymentForOrder(commonOrderHelper.verifyOrderExists(data.getOrderId()));
 
-        updatePaymentOutboxMessage(
+        outboxPaymentHelper.updatePaymentOutboxMessage(
                 paymentOutboxMessage,
                 orderPaymentCompleteEvent.getOrder().getOrderStatus()
         );
 
         inventoryConfirmationOutboxHelper.saveInventoryConfirmationOutboxMessage(
-                null,
+                outboxMessageMapper.orderPaymentCompleteEventToInventoryConfirmationEventPayload(orderPaymentCompleteEvent),
                 data.getSagaId(),
                 statusMapper.orderStatusToSagaStatus(orderPaymentCompleteEvent.getOrder().getOrderStatus()),
                 OutboxStatus.STARTED,
@@ -93,8 +86,9 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         log.info("Order with order id: {} is paid", data.getOrderId());
     }
 
-    //TODO: Implement this method
+
     @Override
+    @Transactional
     public void rollback(PaymentResponse data) {
         Optional<PaymentOutboxMessage> response =
                 outboxPaymentRepository.findBySagaIdAndTypeAndSagaStatuses(
@@ -115,13 +109,17 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
                         data.getFailureMessages()
                 );
 
-        updatePaymentOutboxMessage(
+        outboxPaymentHelper.updatePaymentOutboxMessage(
                 paymentOutboxMessage,
                 orderCancelEvent.getOrder().getOrderStatus()
         );
 
         if (data.getPaymentStatus() == PaymentStatus.CANCELLED) {
-            // Save inventory confirmation outbox message in case payment failed
+            inventoryConfirmationOutboxHelper.updateInventoryConfirmationOutboxMessage(
+                    inventoryConfirmationOutboxHelper.verifyInventoryConfirmationOutboxMessageExists(data.getSagaId(), SagaStatus.COMPENSATING),
+                    orderCancelEvent.getOrder().getOrderStatus(),
+                    statusMapper.orderStatusToSagaStatus(orderCancelEvent.getOrder().getOrderStatus())
+            );
         }
 
         log.info("Payment of order with id: {} is cancelled", data.getOrderId());

@@ -18,7 +18,7 @@ public class OrderResponseCode extends ResponseCodeBase {
     public static final OrderResponseCode ORDER_IN_WRONG_STATE_FOR_CANCELING_PAYMENT = new OrderResponseCode(1012, "Order with id: %s is not in proper state for canceling payment");
     public static final OrderResponseCode ORDER_IN_WRONG_STATE_TO_BE_READY_FOR_FULFILLMENT = new OrderResponseCode(1013, "Order with id: %s is not in proper state to be ready for fulfillment");
     public static final OrderResponseCode FAILED_TO_SAVE_INVENTORY_OUTBOX = new OrderResponseCode(1014, "Could not save InventoryOutboxMessage: orderId: %s, inventoryId: %s");
-
+    public static final ResponseCodeBase INVENTORY_CONFIRMATION_OUTBOX_MESSAGE_NOT_FOUND = new OrderResponseCode(1015, "Inventory confirmation outbox message with saga id: %s could not be found!");
     protected OrderResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

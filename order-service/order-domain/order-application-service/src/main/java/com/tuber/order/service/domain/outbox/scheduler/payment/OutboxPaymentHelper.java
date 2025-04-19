@@ -1,6 +1,7 @@
 package com.tuber.order.service.domain.outbox.scheduler.payment;
 
 import com.tuber.application.helper.CommonHelper;
+import com.tuber.application.mapper.StatusMapper;
 import com.tuber.domain.constant.response.code.OrderResponseCode;
 import com.tuber.domain.exception.DomainException;
 import com.tuber.domain.exception.OrderDomainException;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -28,6 +30,7 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class OutboxPaymentHelper {
     OutboxPaymentRepository outboxPaymentRepository;
+    StatusMapper statusMapper;
     CommonHelper commonHelper;
 
     private PaymentOutboxMessage createOutboxMessage(PaymentPayload paymentPayload,
@@ -65,5 +68,15 @@ public class OutboxPaymentHelper {
             throw new OrderDomainException(OrderResponseCode.FAILED_TO_SAVE_PAYMENT_OUTBOX, HttpStatus.INTERNAL_SERVER_ERROR.value(), paymentEventPayload.getOrderId());
         }
         log.info("Could not save out box payment message with outbox id: {}", paymentOutboxMessage.getId());
+    }
+
+    public void updatePaymentOutboxMessage(
+            PaymentOutboxMessage message,
+            OrderStatus orderStatus
+    ) {
+        message.setProcessedAt(LocalDate.now());
+        message.setOrderStatus(orderStatus);
+        message.setSagaStatus(statusMapper.orderStatusToSagaStatus(orderStatus));
+        outboxPaymentRepository.save(message);
     }
 }

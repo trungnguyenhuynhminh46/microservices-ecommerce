@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -88,5 +90,37 @@ public class InventoryConfirmationOutboxHelper {
                     inventoryConfirmationEventPayload.getInventoryId()
             );
         }
+    }
+
+    public InventoryConfirmationOutboxMessage verifyInventoryConfirmationOutboxMessageExists(
+            UUID sagaId,
+            SagaStatus... sagaStatus
+    ) {
+        Optional<InventoryConfirmationOutboxMessage> response =
+                inventoryConfirmationOutboxRepository.findBySagaIdAndTypeAndSagaStatusIn(
+                        sagaId,
+                        SagaName.ORDER_PROCESSING_SAGA.name(),
+                        sagaStatus
+                );
+        if (response.isEmpty()) {
+            log.error("Inventory confirmation outbox message with saga id: {} could not be found!", sagaId);
+            throw new OrderDomainException(
+                    OrderResponseCode.INVENTORY_CONFIRMATION_OUTBOX_MESSAGE_NOT_FOUND,
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    sagaId
+            );
+        }
+        return response.get();
+    }
+
+    public void updateInventoryConfirmationOutboxMessage(
+            InventoryConfirmationOutboxMessage message,
+            OrderStatus orderStatus,
+            SagaStatus sagaStatus
+    ) {
+        message.setProcessedAt(LocalDate.now());
+        message.setOrderStatus(orderStatus);
+        message.setSagaStatus(sagaStatus);
+        inventoryConfirmationOutboxRepository.save(message);
     }
 }
