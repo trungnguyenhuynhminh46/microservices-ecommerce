@@ -5,6 +5,8 @@ service:
 config-data:
   payment-request-topic-name: payment-request
   payment-response-topic-name: payment-response
+  inventory-confirmation-request-topic-name: inventory-confirmation-request
+  inventory-confirmation-response-topic-name: inventory-confirmation-response
   fixed-delay-string: 5000
   init-delay-string: 10000
 spring:
