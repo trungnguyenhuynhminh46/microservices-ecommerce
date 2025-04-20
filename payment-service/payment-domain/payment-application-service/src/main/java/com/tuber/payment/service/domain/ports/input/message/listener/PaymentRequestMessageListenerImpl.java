@@ -1,7 +1,7 @@
 package com.tuber.payment.service.domain.ports.input.message.listener;
 
 import com.tuber.payment.service.domain.dto.message.broker.PaymentRequest;
-import com.tuber.payment.service.domain.helper.PaymentRequestHelper;
+import com.tuber.payment.service.domain.helper.PaymentMessageHelper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PaymentRequestMessageListenerImpl implements PaymentRequestMessageListener{
-    PaymentRequestHelper paymentRequestHelper;
+    PaymentMessageHelper paymentMessageHelper;
     @Override
     public void acceptPayment(PaymentRequest paymentRequest) {
-        paymentRequestHelper.persistPayment(paymentRequest);
+        paymentMessageHelper.persistPayment(paymentRequest);
     }
 
     @Override
     public void cancelPayment(PaymentRequest paymentRequest) {
-        paymentRequestHelper.persistCancelledPayment(paymentRequest);
+        paymentMessageHelper.persistCancelledPayment(paymentRequest);
     }
 }

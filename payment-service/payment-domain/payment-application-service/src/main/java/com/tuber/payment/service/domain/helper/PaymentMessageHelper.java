@@ -30,7 +30,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class PaymentRequestHelper {
+public class PaymentMessageHelper {
     PaymentMapper paymentMapper;
     PaymentCommonHelper paymentCommonHelper;
     PaymentDomainService paymentDomainService;

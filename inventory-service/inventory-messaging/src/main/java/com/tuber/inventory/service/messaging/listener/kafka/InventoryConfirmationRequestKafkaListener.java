@@ -4,6 +4,7 @@ import com.tuber.domain.constant.response.code.ResponseCode;
 import com.tuber.domain.exception.InventoryDomainException;
 import com.tuber.inventory.service.domain.dto.message.broker.InventoryConfirmationRequest;
 import com.tuber.inventory.service.domain.exception.NotFoundInventoryException;
+import com.tuber.inventory.service.domain.ports.input.message.listerner.InventoryConfirmationMessageListener;
 import com.tuber.inventory.service.messaging.mapper.InventoryMessageMapper;
 import com.tuber.kafka.order.avro.model.InventoryConfirmationRequestAvroModel;
 import com.tuber.ordering.system.kafka.consumer.KafkaConsumer;
@@ -29,7 +30,9 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class InventoryConfirmationRequestKafkaListener implements KafkaConsumer<InventoryConfirmationRequestAvroModel> {
     private static final String MYSQL_UNIQUE_CONSTRAINT_VIOLATION = "23000";
+
     InventoryMessageMapper inventoryMessageMapper;
+    InventoryConfirmationMessageListener inventoryConfirmationMessageListener;
 
     @Override
     @KafkaListener(id = "${kafka-consumer-config.inventory-confirmation-consumer-group-id}",
@@ -71,7 +74,7 @@ public class InventoryConfirmationRequestKafkaListener implements KafkaConsumer<
         switch (message.getInventoryOrderStatus()) {
             case PAID -> {
                 log.info("Processing paid inventory confirmation request for order id: {}", message.getOrderId());
-                //TODO: Handle paid inventory confirmation request
+                inventoryConfirmationMessageListener.confirmGoodsAvailable(inventoryConfirmationRequest);
             }
             default -> {
                 log.warn("Unknown inventory order status: {} for order id: {}", message.getInventoryOrderStatus(), message.getOrderId());
