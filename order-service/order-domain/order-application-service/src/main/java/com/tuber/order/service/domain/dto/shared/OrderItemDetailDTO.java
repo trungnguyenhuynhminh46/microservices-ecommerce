@@ -17,6 +17,7 @@ public class OrderItemDetailDTO {
     Long id;
     UUID orderId;
     UUID productId;
+    UUID inventoryId;
     String sku;
     String name;
     UUID warehouseId;

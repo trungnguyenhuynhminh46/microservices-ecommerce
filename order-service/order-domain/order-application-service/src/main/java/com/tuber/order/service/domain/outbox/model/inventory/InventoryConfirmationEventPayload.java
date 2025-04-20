@@ -20,9 +20,7 @@ public class InventoryConfirmationEventPayload {
     @JsonProperty
     UUID orderId;
     @JsonProperty
-    UUID inventoryId;
-    @JsonProperty
-    BigDecimal price;
+    BigDecimal finalPrice;
     @JsonProperty
     LocalDate createdAt;
     @JsonProperty

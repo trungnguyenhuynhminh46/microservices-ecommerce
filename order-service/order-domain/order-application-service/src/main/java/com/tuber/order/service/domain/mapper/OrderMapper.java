@@ -72,6 +72,7 @@ public abstract class OrderMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "warehouse", source = "warehouseId")
+    @Mapping(target = "inventoryId", source = "id")
     protected abstract OrderItem inventoryResponseDataToOrderItem(InternalInventoryDetailResponseData inventoryDetail);
 
     @Mapping(target = "productId", source = "product.id")

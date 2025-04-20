@@ -19,6 +19,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
     UUID orderId;
     Product product;
     String sku;
+    UUID inventoryId;
     Warehouse warehouse;
     Integer quantity;
     Money subTotal;
@@ -28,6 +29,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         orderId = builder.orderId;
         product = builder.product;
         sku = builder.sku;
+        inventoryId = builder.inventoryId;
         quantity = builder.quantity;
         subTotal = builder.subTotal;
     }
@@ -64,6 +66,13 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         this.sku = sku;
     }
 
+    public UUID getInventoryId() {
+        return inventoryId;
+    }
+
+    public void setInventoryId(UUID inventoryId) {
+        this.inventoryId = inventoryId;
+    }
     public Warehouse getWarehouse() {
         return warehouse;
     }
@@ -93,6 +102,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         private UUID orderId;
         private Product product;
         private String sku;
+        private UUID inventoryId;
         private Warehouse warehouse;
         private Integer quantity;
         private Money subTotal;
@@ -122,6 +132,11 @@ public class OrderItem extends BaseEntity<OrderItemId> {
 
         public Builder sku(String val) {
             sku = val;
+            return this;
+        }
+
+        public Builder inventoryId(UUID val) {
+            inventoryId = val;
             return this;
         }
 

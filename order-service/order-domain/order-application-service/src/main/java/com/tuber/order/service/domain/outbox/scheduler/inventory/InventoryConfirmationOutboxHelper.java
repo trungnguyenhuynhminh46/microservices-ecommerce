@@ -40,9 +40,10 @@ public class InventoryConfirmationOutboxHelper {
     ) throws OrderDomainException {
         OrderDomainException throwable = new OrderDomainException(
                 new OrderResponseCode(
-                        String.format("Failed to create InventoryConfirmationEventPayload object for order id: %s, inventory id: %s",
-                                inventoryConfirmationEventPayload.getOrderId(),
-                                inventoryConfirmationEventPayload.getInventoryId())),
+                        String.format("Failed to create InventoryConfirmationEventPayload object for order id: %s",
+                                inventoryConfirmationEventPayload.getOrderId()
+                        )
+                ),
                 HttpStatus.INTERNAL_SERVER_ERROR.value()
         );
 
@@ -79,15 +80,13 @@ public class InventoryConfirmationOutboxHelper {
 
         InventoryConfirmationOutboxMessage savedMessage = inventoryConfirmationOutboxRepository.save(inventoryConfirmationOutboxMessage);
         if (savedMessage == null) {
-            log.error("Could not save outbox inventory confirmation  message, order with orderId: {}, inventoryId: {}",
-                    inventoryConfirmationEventPayload.getOrderId(),
-                    inventoryConfirmationEventPayload.getInventoryId()
+            log.error("Could not save outbox inventory confirmation  message, order with orderId: {}",
+                    inventoryConfirmationEventPayload.getOrderId()
             );
             throw new OrderDomainException(
                     OrderResponseCode.FAILED_TO_SAVE_INVENTORY_OUTBOX,
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    inventoryConfirmationEventPayload.getOrderId(),
-                    inventoryConfirmationEventPayload.getInventoryId()
+                    inventoryConfirmationEventPayload.getOrderId()
             );
         }
     }

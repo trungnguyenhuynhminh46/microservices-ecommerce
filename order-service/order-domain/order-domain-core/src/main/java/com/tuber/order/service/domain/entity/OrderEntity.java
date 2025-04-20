@@ -105,6 +105,10 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
         this.updatedAt = updatedAt;
     }
 
+    public UUID getOrderId() {
+        return this.getId().getValue();
+    }
+
 
     public static final class Builder {
         private UniqueUUID id;
