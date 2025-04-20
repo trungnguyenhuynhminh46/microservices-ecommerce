@@ -13,4 +13,6 @@ import org.springframework.context.annotation.Configuration;
 public class OrderServiceConfigurationData {
     String paymentRequestTopicName;
     String paymentResponseTopicName;
+    String inventoryConfirmationRequestTopicName;
+    String inventoryResponseTopicName;
 }

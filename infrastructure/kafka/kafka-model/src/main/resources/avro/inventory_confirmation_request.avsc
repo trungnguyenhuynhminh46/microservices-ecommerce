@@ -1,0 +1,92 @@
+{
+  "namespace": "com.tuber.kafka.order.avro.model",
+  "type": "record",
+  "name": "InventoryConfirmationRequestAvroModel",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "sagaId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "orderId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "finalPrice",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 10,
+        "scale": 2
+      }
+    },
+    {
+      "name": "createdAt",
+      "type": {
+        "type": "int",
+        "logicalType": "date"
+      }
+    },
+    {
+      "name": "inventoryOrderStatus",
+      "type": {
+        "type": "enum",
+        "name": "InventoryOrderStatus",
+        "symbols": [
+          "PAID"
+        ]
+      }
+    },
+    {
+      "name": "exportInformationList",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "ExportInformation",
+          "type": "record",
+          "fields": [
+            {
+              "name": "inventoryId",
+              "type": {
+                "type": "string",
+                "logicalType": "uuid"
+              }
+            },
+            {
+              "name": "productId",
+              "type": {
+                "type": "string",
+                "logicalType": "uuid"
+              }
+            },
+            {
+              "name": "sku",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "requiredQuantity",
+              "type": {
+                "type": "int"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

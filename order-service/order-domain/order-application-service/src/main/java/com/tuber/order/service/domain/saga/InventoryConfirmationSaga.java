@@ -1,6 +1,6 @@
 package com.tuber.order.service.domain.saga;
 
-import com.tuber.order.service.domain.dto.message.broker.InventoryConfirmation;
+import com.tuber.order.service.domain.dto.message.broker.InventoryConfirmationResponse;
 import com.tuber.saga.SagaStep;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class InventoryConfirmationSaga implements SagaStep<InventoryConfirmation> {
+public class InventoryConfirmationSaga implements SagaStep<InventoryConfirmationResponse> {
     @Override
-    public void process(InventoryConfirmation data) {
+    public void process(InventoryConfirmationResponse data) {
 
     }
 
     @Override
-    public void rollback(InventoryConfirmation data) {
+    public void rollback(InventoryConfirmationResponse data) {
 
     }
 }

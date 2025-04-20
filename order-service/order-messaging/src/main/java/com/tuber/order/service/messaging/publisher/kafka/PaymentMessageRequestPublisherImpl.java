@@ -55,6 +55,10 @@ public class PaymentMessageRequestPublisherImpl implements PaymentMessageRequest
                             onSuccessOutbox
                     )
             );
+            log.info("OrderPaymentOutboxMessage with order id: {} and saga id: {} sent to message bus",
+                    paymentPayload.getOrderId(),
+                    sagaId
+            );
         } catch (Exception e) {
             log.error("Something wrong happened while sending OrderPaymentOutboxMessage" +
                             " to message bus with order id: {} and saga id: {}, error: {}",
