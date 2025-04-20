@@ -46,7 +46,7 @@ public class GetInventoryDetailsHelper {
                 .collect(Collectors.toSet());
     }
 
-    protected GetProductsRecord getProductsDetails(Set<UUID> productIds) {
+    public GetProductsRecord getProductsDetails(Set<UUID> productIds) {
         log.info("Getting products details from cache");
         Map<UUID, Product> cachedProducts = productCachingRepository.getProductsMapById(productIds);
         log.info("Getting non-cached products details through feign client");

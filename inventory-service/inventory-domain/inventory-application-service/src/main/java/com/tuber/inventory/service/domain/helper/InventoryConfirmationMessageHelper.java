@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class InventoryConfirmationMessageHelper {
     //TODO: Implement this class
-    public void confirmGoodsAvailable(InventoryConfirmationRequest inventoryConfirmationRequest) {
+    public void persistFulfillmentHistory(InventoryConfirmationRequest inventoryConfirmationRequest) {
 
     }
 }

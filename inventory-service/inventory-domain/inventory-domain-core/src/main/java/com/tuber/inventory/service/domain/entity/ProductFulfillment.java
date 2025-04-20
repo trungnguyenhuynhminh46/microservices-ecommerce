@@ -12,6 +12,7 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
     private UUID orderId;
     private UUID productId;
     private UUID inventoryId;
+    private String sku;
     private Money price;
     private Integer quantity;
     private ProductFulfillStatus fulfillStatus;
@@ -22,6 +23,7 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
         orderId = builder.orderId;
         productId = builder.productId;
         inventoryId = builder.inventoryId;
+        sku = builder.sku;
         price = builder.price;
         quantity = builder.quantity;
         fulfillStatus = builder.fulfillStatus;
@@ -37,6 +39,7 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
         private UUID orderId;
         private UUID productId;
         private UUID inventoryId;
+        private String sku;
         private Money price;
         private Integer quantity;
         private ProductFulfillStatus fulfillStatus;
@@ -74,6 +77,11 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
             return this;
         }
 
+        public Builder sku(String val) {
+            sku = val;
+            return this;
+        }
+
         public Builder price(Money val) {
             price = val;
             return this;
@@ -104,6 +112,9 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
 
     public UUID getProductId() {
         return productId;
+    }
+    public String getSku() {
+        return sku;
     }
 
     public UUID getInventoryId() {

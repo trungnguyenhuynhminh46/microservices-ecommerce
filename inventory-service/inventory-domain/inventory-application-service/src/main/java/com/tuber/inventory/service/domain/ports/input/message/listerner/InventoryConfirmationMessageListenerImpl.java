@@ -16,6 +16,6 @@ public class InventoryConfirmationMessageListenerImpl implements InventoryConfir
     InventoryConfirmationMessageHelper inventoryConfirmationMessageHelper;
     @Override
     public void confirmGoodsAvailable(InventoryConfirmationRequest inventoryConfirmationRequest) {
-        inventoryConfirmationMessageHelper.confirmGoodsAvailable(inventoryConfirmationRequest);
+        inventoryConfirmationMessageHelper.persistFulfillmentHistory(inventoryConfirmationRequest);
     }
 }

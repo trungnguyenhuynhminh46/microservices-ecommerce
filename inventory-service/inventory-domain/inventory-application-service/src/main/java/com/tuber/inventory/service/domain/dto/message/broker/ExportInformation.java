@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -16,5 +17,6 @@ public class ExportInformation {
     UUID inventoryId;
     UUID productId;
     String sku;
+    BigDecimal basePrice;
     int requiredQuantity;
 }

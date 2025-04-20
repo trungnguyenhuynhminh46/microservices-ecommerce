@@ -92,7 +92,7 @@ public class Product extends AggregateRoot<UniqueUUID> {
         }
     }
 
-    public List<ProductAssignedAttribute> validateAttributes(List<ProductAssignedAttribute> attributes) {
-        return attributes;
+    public static void validateSku(String sku) {
+        //TODO: Implement this method
     }
 }

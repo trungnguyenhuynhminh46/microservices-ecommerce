@@ -105,5 +105,11 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
         return productFulfillments;
     }
 
+    public FulfillmentHistory selfValidate() {
+        return this;
+    }
 
+    public FulfillmentHistory selfInitialize() {
+        return this;
+    }
 }

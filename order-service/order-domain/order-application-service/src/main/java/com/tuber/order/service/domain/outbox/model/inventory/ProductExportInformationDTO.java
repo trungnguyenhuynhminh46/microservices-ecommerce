@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -20,6 +21,8 @@ public class ProductExportInformationDTO {
     UUID productId;
     @JsonProperty
     String sku;
+    @JsonProperty
+    BigDecimal basePrice;
     @JsonProperty
     Integer requiredQuantity;
 }

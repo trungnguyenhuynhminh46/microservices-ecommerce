@@ -20,6 +20,7 @@ public abstract class OutboxMessageMapper {
 
     @Mapping(target = "inventoryId", source = "orderItem.inventoryId")
     @Mapping(target = "productId", source = "orderItem.product.id.value")
+    @Mapping(target = "basePrice", source = "orderItem.product.price.amount")
     @Mapping(target = "sku", source = "orderItem.sku")
     @Mapping(target = "requiredQuantity", source = "orderItem.quantity")
     protected abstract ProductExportInformationDTO orderItemToProductExportInformationDTO(OrderItem orderItem);

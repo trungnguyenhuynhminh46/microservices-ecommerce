@@ -28,6 +28,7 @@ public class CreateOrderHelper {
     OrderDomainService orderDomainService;
 
     public OrderCreatedEvent persistOrder(CreateOrderCommand createOrderCommand) {
+        //TODO: Alternate get inventory details by user input data to reduce the number of HTTP calls
         Set<InternalInventoryDetailResponseData> inventoryDetails = commonOrderHelper.getSetOfInventoryDetails(
                 orderMapper.orderIdDTOsToSetOfProductIdWithSkuDTO(
                         createOrderCommand.getOrderItems()
