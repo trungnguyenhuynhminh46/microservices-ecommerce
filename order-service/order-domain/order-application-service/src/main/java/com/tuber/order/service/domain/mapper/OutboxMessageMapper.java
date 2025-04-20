@@ -12,7 +12,7 @@ public abstract class OutboxMessageMapper {
     @Mapping(target = "orderId", source = "order.orderId")
     @Mapping(target = "finalPrice", source = "order.finalPrice.amount")
     @Mapping(target = "createdAt", source = "createdAt")
-    @Mapping(target = "inventoryOrderStatus", expression = "java(com.tuber.order.service.domain.valueobject.enums.InventoryOrderStatus.PAID.name())")
+    @Mapping(target = "inventoryOrderStatus", expression = "java(com.tuber.domain.valueobject.enums.InventoryOrderStatus.PAID.name())")
     @Mapping(target = "productExportInformationDTOList", source = "order.orderItems")
     public abstract InventoryConfirmationEventPayload orderPaymentCompleteEventToInventoryConfirmationEventPayload(
             OrderPaymentCompleteEvent orderPaymentCompleteEvent
