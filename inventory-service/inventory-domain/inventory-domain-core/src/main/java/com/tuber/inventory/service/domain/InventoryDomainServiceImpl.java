@@ -1,5 +1,6 @@
 package com.tuber.inventory.service.domain;
 
+import com.tuber.inventory.service.domain.entity.FulfillmentHistory;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.InventoryTransaction;
 import com.tuber.domain.entity.Warehouse;
@@ -31,5 +32,11 @@ public class InventoryDomainServiceImpl implements InventoryDomainService {
         inventoryTransaction.initialize();
         log.info("Initialize inventory transaction with id: {}", inventoryTransaction.getId());
         return inventoryTransaction;
+    }
+
+    //TODO: Implement this method
+    @Override
+    public FulfillmentHistory validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory) {
+        return null;
     }
 }

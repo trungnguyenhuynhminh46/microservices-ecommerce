@@ -1,6 +1,7 @@
 package com.tuber.inventory.service.domain.helper;
 
 import com.tuber.domain.constant.response.code.InventoryResponseCode;
+import com.tuber.inventory.service.domain.entity.FulfillmentHistory;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.domain.exception.InventoryDomainException;
 import com.tuber.inventory.service.domain.ports.output.repository.InventoryRepository;
@@ -25,5 +26,10 @@ public class CommonInventoryHelper {
             throw new InventoryDomainException(InventoryResponseCode.INVENTORY_SAVED_FAILED, HttpStatus.INTERNAL_SERVER_ERROR.value(), inventory.getProduct().getProductId());
         }
         return savedInventory;
+    }
+
+    //TODO: Implement this method
+    public FulfillmentHistory saveFulfillmentHistory(FulfillmentHistory fulfillmentHistory) {
+        return null;
     }
 }
