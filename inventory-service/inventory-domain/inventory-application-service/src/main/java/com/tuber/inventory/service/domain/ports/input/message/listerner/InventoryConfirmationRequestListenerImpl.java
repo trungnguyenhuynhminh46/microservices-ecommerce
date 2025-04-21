@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class InventoryConfirmationMessageListenerImpl implements InventoryConfirmationMessageListener {
+public class InventoryConfirmationRequestListenerImpl implements InventoryConfirmationRequestListener {
     InventoryConfirmationMessageHelper inventoryConfirmationMessageHelper;
     @Override
     public void confirmGoodsAvailable(InventoryConfirmationRequest inventoryConfirmationRequest) {

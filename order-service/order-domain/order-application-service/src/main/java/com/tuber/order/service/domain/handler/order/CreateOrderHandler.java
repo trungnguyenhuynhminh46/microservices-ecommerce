@@ -7,7 +7,7 @@ import com.tuber.order.service.domain.dto.order.OrderResponseData;
 import com.tuber.order.service.domain.event.OrderCreatedEvent;
 import com.tuber.order.service.domain.helper.order.CreateOrderHelper;
 import com.tuber.order.service.domain.mapper.OrderMapper;
-import com.tuber.order.service.domain.outbox.scheduler.payment.OutboxPaymentHelper;
+import com.tuber.order.service.domain.outbox.scheduler.payment.PaymentOutboxHelper;
 import com.tuber.outbox.OutboxStatus;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +25,14 @@ import java.util.UUID;
 public class CreateOrderHandler {
     CreateOrderHelper createOrderHelper;
     OrderMapper orderMapper;
-    OutboxPaymentHelper outboxPaymentHelper;
+    PaymentOutboxHelper paymentOutboxHelper;
 
     @Transactional
     public ApiResponse<OrderResponseData> createOrder(CreateOrderCommand createOrderCommand) {
         OrderCreatedEvent orderCreatedEvent = createOrderHelper.persistOrder(createOrderCommand);
         log.info("Order is created with id: {}", orderCreatedEvent.getOrder().getId().getValue());
 
-        outboxPaymentHelper.savePaymentOutboxMessage(
+        paymentOutboxHelper.savePaymentOutboxMessage(
                 orderMapper.orderCreatedEventToOrderPaymentEventPayload(orderCreatedEvent),
                 orderCreatedEvent.getOrder().getOrderStatus(),
                 orderMapper.orderStatusToSagaStatus(orderCreatedEvent.getOrder().getOrderStatus()),

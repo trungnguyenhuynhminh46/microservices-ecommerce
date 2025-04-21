@@ -28,6 +28,14 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.tuber</groupId>
+            <artifactId>saga</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.tuber</groupId>
+            <artifactId>outbox</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -2,7 +2,7 @@ package com.tuber.inventory.service.domain.entity;
 
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.valueobject.id.UniqueUUID;
-import com.tuber.inventory.service.domain.valueobject.enums.ProductFulfillStatus;
+import com.tuber.inventory.service.domain.valueobject.enums.OrderInventoryConfirmationStatus;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -11,6 +11,7 @@ import java.util.UUID;
 public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
     private String trackingId;
     private UUID orderId;
+    private OrderInventoryConfirmationStatus orderInventoryConfirmationStatus;
     private LocalDate createdAt;
     private LocalDate updatedAt;
     private Set<ProductFulfillment> productFulfillments;
@@ -19,6 +20,7 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
         super.setId(builder.id);
         trackingId = builder.trackingId;
         orderId = builder.orderId;
+        orderInventoryConfirmationStatus = builder.orderInventoryConfirmationStatus;
         createdAt = builder.createdAt;
         updatedAt = builder.updatedAt;
         productFulfillments = builder.productFulfillments;
@@ -32,7 +34,7 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
         private UniqueUUID id;
         private String trackingId;
         private UUID orderId;
-        private ProductFulfillStatus fulfillStatus;
+        private OrderInventoryConfirmationStatus orderInventoryConfirmationStatus;
         private LocalDate createdAt;
         private LocalDate updatedAt;
         private Set<ProductFulfillment> productFulfillments;
@@ -60,8 +62,8 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
             return this;
         }
 
-        public Builder fulfillStatus(ProductFulfillStatus val) {
-            fulfillStatus = val;
+        public Builder orderInventoryConfirmationStatus(OrderInventoryConfirmationStatus val) {
+            orderInventoryConfirmationStatus = val;
             return this;
         }
 
@@ -91,6 +93,10 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
 
     public UUID getOrderId() {
         return orderId;
+    }
+
+    public OrderInventoryConfirmationStatus getOrderInventoryConfirmationStatus() {
+        return orderInventoryConfirmationStatus;
     }
 
     public LocalDate getCreatedAt() {

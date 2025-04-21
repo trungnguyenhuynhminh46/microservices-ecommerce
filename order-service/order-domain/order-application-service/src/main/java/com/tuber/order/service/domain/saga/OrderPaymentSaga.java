@@ -11,7 +11,7 @@ import com.tuber.order.service.domain.helper.CommonOrderHelper;
 import com.tuber.order.service.domain.mapper.OutboxMessageMapper;
 import com.tuber.order.service.domain.outbox.model.payment.PaymentOutboxMessage;
 import com.tuber.order.service.domain.outbox.scheduler.inventory.InventoryConfirmationOutboxHelper;
-import com.tuber.order.service.domain.outbox.scheduler.payment.OutboxPaymentHelper;
+import com.tuber.order.service.domain.outbox.scheduler.payment.PaymentOutboxHelper;
 import com.tuber.order.service.domain.ports.output.repository.OrderRepository;
 import com.tuber.order.service.domain.ports.output.repository.outbox.OutboxPaymentRepository;
 import com.tuber.outbox.OutboxStatus;
@@ -40,7 +40,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
     StatusMapper statusMapper;
     OutboxMessageMapper outboxMessageMapper;
     InventoryConfirmationOutboxHelper inventoryConfirmationOutboxHelper;
-    OutboxPaymentHelper outboxPaymentHelper;
+    PaymentOutboxHelper paymentOutboxHelper;
 
     protected OrderPaymentCompleteEvent completePaymentForOrder(OrderEntity order) {
         log.info("Completing payment for order with order id: {}", order.getId());
@@ -70,7 +70,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
 
         OrderPaymentCompleteEvent orderPaymentCompleteEvent = completePaymentForOrder(commonOrderHelper.verifyOrderExists(data.getOrderId()));
 
-        outboxPaymentHelper.updatePaymentOutboxMessage(
+        paymentOutboxHelper.updatePaymentOutboxMessage(
                 paymentOutboxMessage,
                 orderPaymentCompleteEvent.getOrder().getOrderStatus()
         );
@@ -109,7 +109,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
                         data.getFailureMessages()
                 );
 
-        outboxPaymentHelper.updatePaymentOutboxMessage(
+        paymentOutboxHelper.updatePaymentOutboxMessage(
                 paymentOutboxMessage,
                 orderCancelEvent.getOrder().getOrderStatus()
         );

@@ -24,9 +24,15 @@ public class InventoryResponseCode extends ResponseCodeBase {
     public static final InventoryResponseCode NO_GOODS_BE_EXPORTED = new InventoryResponseCode(1010, "No goods have been exported");
     public static final InventoryResponseCode NO_GOODS_BE_TRANSFERRED = new InventoryResponseCode(1011, "No goods have been transferred");
     public static final InventoryResponseCode NO_INVENTORY_FOR_SOME_PRODUCTS = new InventoryResponseCode(1012, "No inventory for some products");
-
+    public static final InventoryResponseCode CAN_NOT_SAVE_ORDER_OUTBOX_MESSAGE =
+            new InventoryResponseCode(1013, "Can not save order outbox message, sagaId: {}");
     protected InventoryResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
+        this.message = message;
+    }
+
+    public InventoryResponseCode(String message) {
+        this.code = formatErrorCode(GENERAL_CODE);
         this.message = message;
     }
 

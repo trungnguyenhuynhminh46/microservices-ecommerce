@@ -1,0 +1,14 @@
+package com.tuber.inventory.service.domain.ports.output.message.publisher;
+
+import com.tuber.inventory.service.domain.outbox.model.OrderOutboxMessage;
+import com.tuber.outbox.OutboxStatus;
+
+import java.util.function.BiConsumer;
+
+public class InventoryConfirmationResponsePublisherImpl implements InventoryConfirmationResponsePublisher {
+    //TODO: Implement this method
+    @Override
+    public void publish(OrderOutboxMessage orderOutboxMessage, BiConsumer<OrderOutboxMessage, OutboxStatus> outboxCallback) {
+
+    }
+}

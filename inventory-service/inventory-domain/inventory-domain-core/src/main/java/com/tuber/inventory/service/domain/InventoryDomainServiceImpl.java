@@ -4,6 +4,7 @@ import com.tuber.inventory.service.domain.entity.FulfillmentHistory;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.InventoryTransaction;
 import com.tuber.domain.entity.Warehouse;
+import com.tuber.inventory.service.domain.event.InventoryConfirmationEvent;
 import com.tuber.inventory.service.domain.event.InventoryCreatedEvent;
 import com.tuber.inventory.service.domain.event.WarehouseCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class InventoryDomainServiceImpl implements InventoryDomainService {
 
     //TODO: Implement this method
     @Override
-    public FulfillmentHistory validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory) {
+    public InventoryConfirmationEvent validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory) {
         return null;
     }
 }

@@ -26,5 +26,5 @@ public class InventoryConfirmationEventPayload {
     @JsonProperty
     String inventoryOrderStatus;
     @JsonProperty
-    private List<ProductExportInformationDTO> productExportInformationDTOList;
+    List<ProductExportInformationDTO> productExportInformationDTOList;
 }

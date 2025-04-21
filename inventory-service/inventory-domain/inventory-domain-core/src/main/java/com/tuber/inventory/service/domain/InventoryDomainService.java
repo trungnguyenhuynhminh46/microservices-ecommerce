@@ -4,6 +4,7 @@ import com.tuber.inventory.service.domain.entity.FulfillmentHistory;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.InventoryTransaction;
 import com.tuber.domain.entity.Warehouse;
+import com.tuber.inventory.service.domain.event.InventoryConfirmationEvent;
 import com.tuber.inventory.service.domain.event.InventoryCreatedEvent;
 import com.tuber.inventory.service.domain.event.WarehouseCreatedEvent;
 
@@ -14,5 +15,5 @@ public interface InventoryDomainService {
 
     InventoryTransaction validateAndInitializeInventoryTransaction(InventoryTransaction inventoryTransaction);
 
-    FulfillmentHistory validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory);
+    InventoryConfirmationEvent validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory);
 }
