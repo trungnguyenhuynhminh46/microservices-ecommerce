@@ -21,7 +21,9 @@ public class PaymentPayload {
     @JsonProperty
     UUID customerId;
     @JsonProperty
-    BigDecimal price;
+    BigDecimal totalPrice;
+    @JsonProperty
+    BigDecimal finalPrice;
     @JsonProperty
     LocalDate createdAt;
     @JsonProperty

@@ -31,7 +31,6 @@ public abstract class PaymentMapper {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Mapping(target = "totalPrice", source = "price")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "paymentStatus", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
@@ -40,7 +39,8 @@ public abstract class PaymentMapper {
     @Mapping(target = "paymentId", source = "payment.id")
     @Mapping(target = "orderId", source = "payment.orderId")
     @Mapping(target = "customerId", source = "payment.customerId")
-    @Mapping(target = "price", source = "payment.totalPrice")
+    @Mapping(target = "totalPrice", source = "payment.totalPrice")
+    @Mapping(target = "finalPrice", source = "payment.finalPrice")
     @Mapping(target = "paymentStatus", source = "payment.paymentStatus")
     public abstract PaymentResponsePayload paymentEventToPaymentResponseEventPayload(PaymentEvent paymentEvent);
 
@@ -57,6 +57,7 @@ public abstract class PaymentMapper {
                 .build();
     }
 
+    //TODO: Use common utility instead
     protected String createPayload(PaymentResponsePayload paymentPayload) {
         try {
             return objectMapper.writeValueAsString(paymentPayload);

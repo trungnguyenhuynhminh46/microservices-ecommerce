@@ -19,7 +19,8 @@ public class PaymentResponse {
     UUID paymentId;
     UUID orderId;
     UUID customerId;
-    BigDecimal price;
+    BigDecimal totalPrice;
+    BigDecimal finalPrice;
     LocalDate createdAt;
     PaymentStatus paymentStatus;
     List<String> failureMessages;

@@ -24,6 +24,7 @@ public class PaymentJpaEntity {
     UUID orderId;
     UUID customerId;
     BigDecimal totalPrice;
+    BigDecimal finalPrice;
     LocalDate createdAt;
     @Enumerated(EnumType.STRING)
     PaymentStatus paymentStatus;

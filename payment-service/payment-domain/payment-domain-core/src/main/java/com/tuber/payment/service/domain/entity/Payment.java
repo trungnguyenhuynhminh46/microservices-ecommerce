@@ -13,6 +13,7 @@ public class Payment extends AggregateRoot<UniqueUUID> {
     private final UUID orderId;
     private final UUID customerId;
     private final Money totalPrice;
+    private final Money finalPrice;
     private LocalDate createdAt;
     private PaymentStatus paymentStatus;
 
@@ -25,7 +26,10 @@ public class Payment extends AggregateRoot<UniqueUUID> {
 
     public Payment selfValidate(List<String> failureMessages) {
         if (totalPrice == null || !totalPrice.isGreaterThanZero()) {
-            failureMessages.add("Total price must be greater than zero!");
+            failureMessages.add("The total price must be greater than zero!");
+        }
+        if (finalPrice == null || !finalPrice.isGreaterThanZero()) {
+            failureMessages.add("The final price must be greater than zero!");
         }
         return this;
     }
@@ -39,6 +43,7 @@ public class Payment extends AggregateRoot<UniqueUUID> {
         orderId = builder.orderId;
         customerId = builder.customerId;
         totalPrice = builder.totalPrice;
+        finalPrice = builder.finalPrice;
         paymentStatus = builder.paymentStatus;
         createdAt = builder.createdAt;
     }
@@ -53,6 +58,7 @@ public class Payment extends AggregateRoot<UniqueUUID> {
         private UUID orderId;
         private UUID customerId;
         private Money totalPrice;
+        private Money finalPrice;
         private PaymentStatus paymentStatus;
         private LocalDate createdAt;
 
@@ -84,6 +90,11 @@ public class Payment extends AggregateRoot<UniqueUUID> {
             return this;
         }
 
+        public Builder finalPrice(Money val) {
+            finalPrice = val;
+            return this;
+        }
+
         public Builder paymentStatus(PaymentStatus val) {
             paymentStatus = val;
             return this;
@@ -109,6 +120,10 @@ public class Payment extends AggregateRoot<UniqueUUID> {
 
     public Money getTotalPrice() {
         return totalPrice;
+    }
+
+    public Money getFinalPrice() {
+        return finalPrice;
     }
 
     public PaymentStatus getPaymentStatus() {

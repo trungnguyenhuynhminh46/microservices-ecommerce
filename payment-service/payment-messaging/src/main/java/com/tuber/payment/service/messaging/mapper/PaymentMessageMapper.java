@@ -13,5 +13,7 @@ import java.util.UUID;
 public abstract class PaymentMessageMapper {
     public abstract PaymentRequest paymentRequestAvroModelToPaymentRequest(PaymentRequestAvroModel paymentRequestAvroModel);
     @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID())")
+    @Mapping(target = "totalPrice", source = "paymentResponsePayload.totalPrice")
+    @Mapping(target = "finalPrice", source = "paymentResponsePayload.finalPrice")
     public abstract PaymentResponseAvroModel paymentResponsePayloadToPaymentResponseAvroModel(PaymentResponsePayload paymentResponsePayload, UUID sagaId);
 }

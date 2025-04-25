@@ -17,6 +17,7 @@ public class InventoryConfirmationRequest {
     UUID id;
     UUID sagaId;
     UUID orderId;
+    BigDecimal totalPrice;
     BigDecimal finalPrice;
     LocalDate createdAt;
     @Setter

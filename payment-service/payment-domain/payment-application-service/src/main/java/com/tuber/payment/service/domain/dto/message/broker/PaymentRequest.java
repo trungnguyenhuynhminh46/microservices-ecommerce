@@ -17,7 +17,8 @@ public class PaymentRequest {
     UUID sagaId;
     UUID orderId;
     UUID customerId;
-    BigDecimal price;
+    BigDecimal totalPrice;
+    BigDecimal finalPrice;
     LocalDate createdAt;
     @Setter
     PaymentOrderStatus paymentOrderStatus;

@@ -83,7 +83,7 @@ public abstract class OrderMapper {
         return PaymentPayload.builder()
                 .orderId(orderCreatedEvent.getOrder().getId().getValue())
                 .customerId(orderCreatedEvent.getOrder().getCreatorId())
-                .price(orderCreatedEvent.getOrder().getFinalPrice().getAmount())
+                .finalPrice(orderCreatedEvent.getOrder().getFinalPrice().getAmount())
                 .createdAt(orderCreatedEvent.getOrder().getCreatedAt())
                 .paymentOrderStatus(PaymentOrderStatus.PENDING.name())
                 .build();

@@ -3,9 +3,11 @@ package com.tuber.inventory.service.domain.entity;
 import com.tuber.domain.constant.response.code.InventoryResponseCode;
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.exception.InventoryDomainException;
+import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.inventory.service.domain.valueobject.enums.OrderInventoryConfirmationStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
@@ -13,6 +15,7 @@ import java.util.UUID;
 public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
     private String trackingId;
     private UUID orderId;
+    private Money totalPrice;
     private OrderInventoryConfirmationStatus orderInventoryConfirmationStatus;
     private LocalDate createdAt;
     private LocalDate updatedAt;
@@ -22,6 +25,7 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
         super.setId(builder.id);
         trackingId = builder.trackingId;
         orderId = builder.orderId;
+        totalPrice = builder.totalPrice;
         orderInventoryConfirmationStatus = builder.orderInventoryConfirmationStatus;
         createdAt = builder.createdAt;
         updatedAt = builder.updatedAt;
@@ -36,6 +40,7 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
         private UniqueUUID id;
         private String trackingId;
         private UUID orderId;
+        private Money totalPrice;
         private OrderInventoryConfirmationStatus orderInventoryConfirmationStatus;
         private LocalDate createdAt;
         private LocalDate updatedAt;
@@ -61,6 +66,16 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
 
         public Builder orderId(UUID val) {
             orderId = val;
+            return this;
+        }
+
+        public Builder totalPrice(Money val) {
+            totalPrice = val;
+            return this;
+        }
+
+        public Builder totalPrice(BigDecimal amount) {
+            totalPrice = new Money(amount);
             return this;
         }
 
@@ -95,6 +110,10 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
 
     public UUID getOrderId() {
         return orderId;
+    }
+
+    public Money getTotalPrice() {
+        return totalPrice;
     }
 
     public OrderInventoryConfirmationStatus getOrderInventoryConfirmationStatus() {

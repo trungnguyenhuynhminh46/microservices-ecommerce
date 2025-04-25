@@ -39,7 +39,16 @@
       }
     },
     {
-      "name": "price",
+      "name": "totalPrice",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 10,
+        "scale": 2
+      }
+    },
+    {
+      "name": "finalPrice",
       "type": {
         "type": "bytes",
         "logicalType": "decimal",
