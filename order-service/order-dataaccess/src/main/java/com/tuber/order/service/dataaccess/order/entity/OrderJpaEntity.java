@@ -31,6 +31,7 @@ public class OrderJpaEntity {
     Set<OrderItemJpaEntity> orderItems = new HashSet<>();
     @ManyToMany(mappedBy = "ordersUsedVouchers", fetch = FetchType.LAZY)
     Set<VoucherJpaEntity> vouchers = new HashSet<>();
+    BigDecimal totalPrice;
     BigDecimal finalPrice;
     @Enumerated(EnumType.STRING)
     OrderStatus orderStatus;
