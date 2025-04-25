@@ -4,6 +4,7 @@ import com.tuber.domain.constant.response.code.InventoryResponseCode;
 import com.tuber.inventory.service.domain.entity.FulfillmentHistory;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.domain.exception.InventoryDomainException;
+import com.tuber.inventory.service.domain.ports.output.repository.FulfillmentHistoryRepository;
 import com.tuber.inventory.service.domain.ports.output.repository.InventoryRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommonInventoryHelper {
     InventoryRepository inventoryRepository;
+    FulfillmentHistoryRepository fulfillmentHistoryRepository;
 
     public Inventory saveInventory(Inventory inventory) {
         Inventory savedInventory = inventoryRepository.save(inventory);
@@ -28,8 +30,11 @@ public class CommonInventoryHelper {
         return savedInventory;
     }
 
-    //TODO: Implement this method
     public FulfillmentHistory saveFulfillmentHistory(FulfillmentHistory fulfillmentHistory) {
-        return null;
+        FulfillmentHistory savedFulfillmentHistory = fulfillmentHistoryRepository.save(fulfillmentHistory);
+        if (savedFulfillmentHistory == null) {
+            log.error(String.format("Failed to save fulfillment history with id %s", fulfillmentHistory.getId()));
+        }
+        return savedFulfillmentHistory;
     }
 }

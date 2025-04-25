@@ -7,6 +7,7 @@ import com.tuber.inventory.service.domain.valueobject.enums.ProductFulfillStatus
 
 import java.util.UUID;
 
+//TODO: Implement this class
 public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
     private UUID fullfillmentHistoryId;
     private UUID orderId;

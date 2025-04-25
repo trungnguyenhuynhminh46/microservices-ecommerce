@@ -19,6 +19,7 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
     private UUID creatorId;
     private Set<OrderItem> orderItems = new HashSet<>();
     private Set<Voucher> vouchers = new HashSet<>();
+    private Money totalPrice;
     private Money finalPrice;
     private OrderStatus orderStatus;
     private List<String> failureMessages = new ArrayList<>();
@@ -31,6 +32,7 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
         setCreatorId(builder.creatorId);
         setOrderItems(builder.orderItems);
         setVouchers(builder.vouchers);
+        setTotalPrice(builder.totalPrice);
         setFinalPrice(builder.finalPrice);
         setOrderStatus(builder.orderStatus);
         setCreatedAt(builder.createdAt);
@@ -71,6 +73,14 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
 
     public void setVouchers(Set<Voucher> vouchers) {
         this.vouchers = vouchers;
+    }
+
+    public Money getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Money totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public Money getFinalPrice() {
@@ -116,6 +126,7 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
         private UUID creatorId;
         private Set<OrderItem> orderItems;
         private Set<Voucher> vouchers;
+        private Money totalPrice;
         private Money finalPrice;
         private OrderStatus orderStatus;
         private LocalDate createdAt;
@@ -151,6 +162,11 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
 
         public Builder vouchers(Set<Voucher> val) {
             vouchers = val;
+            return this;
+        }
+
+        public Builder totalPrice(Money totalPrice) {
+            this.totalPrice = totalPrice;
             return this;
         }
 
@@ -226,6 +242,14 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
         return String.format("%s_%s_%d", timestamp, username, randomNum);
     }
 
+    protected Money calculateTotalPrice() {
+        return orderItems.stream().reduce(
+                Money.ZERO,
+                (subtotal, orderItem) -> subtotal.add(orderItem.getSubTotal()),
+                Money::add
+        );
+    }
+
     protected Money calculateFinalPrice() {
         Money totalPrice = orderItems.stream().reduce(
                 Money.ZERO,
@@ -238,7 +262,8 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
     public boolean isValidForInitialization() {
         return getId() == null && getTrackingId() == null
                 && getCreatorId() != null && getOrderItems() != null
-                && getFinalPrice() == null && getOrderStatus() == OrderStatus.PENDING
+                && getFinalPrice() == null && getTotalPrice() == null
+                && getOrderStatus() == OrderStatus.PENDING
                 && getCreatedAt() == null && getUpdatedAt() == null;
     }
 
@@ -274,6 +299,7 @@ public class OrderEntity extends AggregateRoot<UniqueUUID> {
         setTrackingId(generateTrackingId(getCreatorId().toString()));
         initializeOrderItems();
         initializeVouchers();
+        setTotalPrice(calculateTotalPrice());
         setFinalPrice(calculateFinalPrice());
         setCreatedAt(LocalDate.now());
         setUpdatedAt(LocalDate.now());

@@ -25,7 +25,11 @@ public class InventoryResponseCode extends ResponseCodeBase {
     public static final InventoryResponseCode NO_GOODS_BE_TRANSFERRED = new InventoryResponseCode(1011, "No goods have been transferred");
     public static final InventoryResponseCode NO_INVENTORY_FOR_SOME_PRODUCTS = new InventoryResponseCode(1012, "No inventory for some products");
     public static final InventoryResponseCode CAN_NOT_SAVE_ORDER_OUTBOX_MESSAGE =
-            new InventoryResponseCode(1013, "Can not save order outbox message, sagaId: {}");
+            new InventoryResponseCode(1013, "Can not save order outbox message, sagaId: %s");
+    public static final InventoryResponseCode FULFILLMENT_SAVED_FAILED =
+            new InventoryResponseCode(1014, "Failed to save fulfillment history with id %s");
+    public static final InventoryResponseCode FULFILLMENT_HISTORY_IN_WRONG_STATE_FOR_INITIALIZATION =
+            new InventoryResponseCode(1015, "Fulfillment history is in wrong state for initialization");
     protected InventoryResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;

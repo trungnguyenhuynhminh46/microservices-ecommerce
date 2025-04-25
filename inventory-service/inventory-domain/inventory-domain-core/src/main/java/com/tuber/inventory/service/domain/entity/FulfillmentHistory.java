@@ -1,6 +1,8 @@
 package com.tuber.inventory.service.domain.entity;
 
+import com.tuber.domain.constant.response.code.InventoryResponseCode;
 import com.tuber.domain.entity.BaseEntity;
+import com.tuber.domain.exception.InventoryDomainException;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.inventory.service.domain.valueobject.enums.OrderInventoryConfirmationStatus;
 
@@ -111,10 +113,27 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
         return productFulfillments;
     }
 
+    public boolean isValidForInitialization() {
+        return getId() == null && getTrackingId() == null
+                && getCreatedAt() == null && getUpdatedAt() == null
+                && getOrderInventoryConfirmationStatus() == null
+                && getOrderId() != null && getProductFulfillments() != null;
+    }
+
+    //TODO: Implement this method
+    public void validateProductFulfillment() {
+
+    }
+
     public FulfillmentHistory selfValidate() {
+        if (!isValidForInitialization()) {
+            throw new InventoryDomainException(InventoryResponseCode.INVENTORY_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
+        }
+        validateProductFulfillment();
         return this;
     }
 
+    //TODO: Implement this method
     public FulfillmentHistory selfInitialize() {
         return this;
     }
