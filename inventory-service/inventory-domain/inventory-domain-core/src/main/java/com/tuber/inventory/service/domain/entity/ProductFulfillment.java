@@ -9,23 +9,23 @@ import java.util.UUID;
 
 //TODO: Implement this class
 public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
-    private UUID fullfillmentHistoryId;
+    private UUID fulfillmentHistoryId;
     private UUID orderId;
     private UUID productId;
     private UUID inventoryId;
     private String sku;
-    private Money price;
+    private Money basePrice;
     private Integer quantity;
     private ProductFulfillStatus fulfillStatus;
 
     private ProductFulfillment(Builder builder) {
         super.setId(builder.id);
-        fullfillmentHistoryId = builder.fullfillmentHistoryId;
+        fulfillmentHistoryId = builder.fulfillmentHistoryId;
         orderId = builder.orderId;
         productId = builder.productId;
         inventoryId = builder.inventoryId;
         sku = builder.sku;
-        price = builder.price;
+        basePrice = builder.basePrice;
         quantity = builder.quantity;
         fulfillStatus = builder.fulfillStatus;
     }
@@ -36,12 +36,12 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
 
     public static final class Builder {
         private ProductFulfillId id;
-        private UUID fullfillmentHistoryId;
+        private UUID fulfillmentHistoryId;
         private UUID orderId;
         private UUID productId;
         private UUID inventoryId;
         private String sku;
-        private Money price;
+        private Money basePrice;
         private Integer quantity;
         private ProductFulfillStatus fulfillStatus;
 
@@ -58,8 +58,8 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
             return this;
         }
 
-        public Builder fullfillmentHistoryId(UUID val) {
-            fullfillmentHistoryId = val;
+        public Builder fulfillmentHistoryId(UUID val) {
+            fulfillmentHistoryId = val;
             return this;
         }
 
@@ -83,8 +83,8 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
             return this;
         }
 
-        public Builder price(Money val) {
-            price = val;
+        public Builder basePrice(Money val) {
+            basePrice = val;
             return this;
         }
 
@@ -103,8 +103,8 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
         }
     }
 
-    public UUID getFullfillmentHistoryId() {
-        return fullfillmentHistoryId;
+    public UUID getFulfillmentHistoryId() {
+        return fulfillmentHistoryId;
     }
 
     public UUID getOrderId() {
@@ -122,8 +122,8 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
         return inventoryId;
     }
 
-    public Money getPrice() {
-        return price;
+    public Money getBasePrice() {
+        return basePrice;
     }
 
     public Integer getQuantity() {

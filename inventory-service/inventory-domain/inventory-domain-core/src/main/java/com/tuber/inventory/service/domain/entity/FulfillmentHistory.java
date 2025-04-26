@@ -9,6 +9,7 @@ import com.tuber.inventory.service.domain.valueobject.enums.OrderInventoryConfir
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -145,7 +146,8 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
 
     }
 
-    public FulfillmentHistory selfValidate() {
+    //TODO: Implement this method
+    public FulfillmentHistory selfValidate(List<String> failureMessages) {
         if (!isValidForInitialization()) {
             throw new InventoryDomainException(InventoryResponseCode.INVENTORY_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
         }

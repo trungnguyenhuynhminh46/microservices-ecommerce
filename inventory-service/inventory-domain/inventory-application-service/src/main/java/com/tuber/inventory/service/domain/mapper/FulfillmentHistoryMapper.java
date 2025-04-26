@@ -1,5 +1,7 @@
 package com.tuber.inventory.service.domain.mapper;
 
+import com.tuber.domain.valueobject.Money;
+import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.inventory.service.domain.dto.message.broker.ExportInformation;
 import com.tuber.inventory.service.domain.dto.message.broker.InventoryConfirmationRequest;
 import com.tuber.inventory.service.domain.dto.shared.ProductIdWithSkuDTO;
@@ -8,12 +10,15 @@ import com.tuber.inventory.service.domain.entity.ProductFulfillment;
 import com.tuber.inventory.service.domain.event.InventoryConfirmationEvent;
 import com.tuber.inventory.service.domain.outbox.model.OrderEventPayload;
 import com.tuber.inventory.service.domain.valueobject.enums.OrderInventoryConfirmationStatus;
+import com.tuber.inventory.service.domain.valueobject.enums.ProductFulfillStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public abstract class FulfillmentHistoryMapper {
@@ -29,34 +34,63 @@ public abstract class FulfillmentHistoryMapper {
             OrderInventoryConfirmationStatus orderInventoryConfirmationStatus
     );
 
-    //TODO: Implement this method
+    @Mapping(target = "orderId", source = "fulfillmentHistory.orderId")
+    @Mapping(target = "fulfillHistoryId", source = "fulfillmentHistory.id")
+    @Mapping(target = "orderInventoryConfirmationStatus", source = "orderInventoryConfirmationStatus")
     public abstract OrderEventPayload inventoryConfirmationEventToOrderEventPayload(
-            InventoryConfirmationEvent inventoryConfirmationEvent
+            InventoryConfirmationEvent inventoryConfirmationEvent,
+            List<String> failureMessages
     );
 
-    //TODO: Implement this method
     public OrderInventoryConfirmationStatus productFulfillInformationToConfirmationStatus(
             Set<ProductFulfillment> productFulfillments
     ) {
-        return null;
+        return productFulfillments.stream()
+                .anyMatch(productFulfillment -> productFulfillment.getFulfillStatus() == ProductFulfillStatus.REJECTED)
+                ? OrderInventoryConfirmationStatus.REJECTED
+                : OrderInventoryConfirmationStatus.CONFIRMED;
     }
 
-    //TODO: Implement this method
     public Set<UUID> exportInformationToProductIds(
             List<ExportInformation> exportInformationList
     ) {
-        return null;
+        return exportInformationList.stream()
+                .map(ExportInformation::getProductId)
+                .collect(Collectors.toSet());
     }
 
-    //TODO: Implement this method
     public Set<ProductFulfillment> exportInformationListToProductFulfillments(
             List<ExportInformation> exportInformationList
     ) {
-        return null;
+        return exportInformationList.stream()
+                .map(this::exportInformationToProductFulfillment)
+                .collect(Collectors.toSet());
     }
 
-    //TODO: Implement this method
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "fulfillmentHistoryId", ignore = true)
+    @Mapping(target = "orderId", ignore = true)
+    @Mapping(target = "inventoryId", ignore = true)
+    @Mapping(target = "quantity", source = "requiredQuantity")
+    @Mapping(target = "fulfillStatus", ignore = true)
+    protected abstract ProductFulfillment exportInformationToProductFulfillment(
+            ExportInformation exportInformation
+    );
+
     public Set<ProductIdWithSkuDTO> exportInformationToProductIdWithSkuDTO(List<ExportInformation> exportInformationList) {
-        return null;
+        return exportInformationList.stream()
+                .map(exportInformation -> ProductIdWithSkuDTO.builder()
+                        .productId(exportInformation.getProductId())
+                        .sku(exportInformation.getSku())
+                        .build())
+                .collect(Collectors.toSet());
+    }
+
+    protected UUID map(UniqueUUID id) {
+        return id.getValue();
+    }
+
+    protected Money map(BigDecimal amount) {
+        return new Money(amount);
     }
 }

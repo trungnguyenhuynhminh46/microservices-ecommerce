@@ -27,12 +27,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
+//TODO: Whenever throw an exception, update failure messages, then save an outbox message
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -55,13 +53,15 @@ public class InventoryConfirmationMessageHelper {
         log.info("Processing outbox message with saga id: {}",
                 inventoryConfirmationRequest.getSagaId());
 
-        FulfillmentHistory history = this.generateFulfillmentHistory(inventoryConfirmationRequest);
-        InventoryConfirmationEvent inventoryConfirmationEvent = inventoryDomainService.validateAndInitializeFulfillmentHistory(history);
+        List<String> failureMessages = new ArrayList<>();
+        FulfillmentHistory history = this.generateFulfillmentHistory(inventoryConfirmationRequest, failureMessages);
+        InventoryConfirmationEvent inventoryConfirmationEvent = inventoryDomainService.validateAndInitializeFulfillmentHistory(history, failureMessages);
         commonInventoryHelper.saveFulfillmentHistory(history);
         orderOutboxHelper.saveOrderOutboxMessage(
                 orderOutboxHelper.createOrderOutboxMessage(
                         fulfillmentHistoryMapper.inventoryConfirmationEventToOrderEventPayload(
-                                inventoryConfirmationEvent
+                                inventoryConfirmationEvent,
+                                failureMessages
                         ),
                         inventoryConfirmationEvent.getFulfillmentHistory().getOrderInventoryConfirmationStatus(),
                         OutboxStatus.STARTED,
@@ -80,7 +80,10 @@ public class InventoryConfirmationMessageHelper {
         return false;
     }
 
-    protected FulfillmentHistory generateFulfillmentHistory(InventoryConfirmationRequest inventoryConfirmationRequest) {
+    protected FulfillmentHistory generateFulfillmentHistory(
+            InventoryConfirmationRequest inventoryConfirmationRequest,
+            List<String> failureMessages
+    ) {
         Set<ProductFulfillment> productFulfillments = validateExportInformation(inventoryConfirmationRequest.getExportInformationList());
         return fulfillmentHistoryMapper.inventoryConfirmationRequestToFulfillmentHistory(
                 inventoryConfirmationRequest,

@@ -10,6 +10,7 @@ import com.tuber.inventory.service.domain.event.WarehouseCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 public class InventoryDomainServiceImpl implements InventoryDomainService {
@@ -38,8 +39,8 @@ public class InventoryDomainServiceImpl implements InventoryDomainService {
     }
 
     @Override
-    public InventoryConfirmationEvent validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory) {
-        fulfillmentHistory.selfValidate().selfInitialize();
+    public InventoryConfirmationEvent validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory, List<String> failureMessages) {
+        fulfillmentHistory.selfValidate(failureMessages).selfInitialize();
         return new InventoryConfirmationEvent(fulfillmentHistory, LocalDate.now());
     }
 }

@@ -1,6 +1,5 @@
 package com.tuber.inventory.service.domain.event;
 
-
 import com.tuber.domain.event.DomainEvent;
 import com.tuber.inventory.service.domain.entity.FulfillmentHistory;
 

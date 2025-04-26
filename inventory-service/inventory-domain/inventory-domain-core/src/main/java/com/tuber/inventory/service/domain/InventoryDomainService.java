@@ -8,6 +8,8 @@ import com.tuber.inventory.service.domain.event.InventoryConfirmationEvent;
 import com.tuber.inventory.service.domain.event.InventoryCreatedEvent;
 import com.tuber.inventory.service.domain.event.WarehouseCreatedEvent;
 
+import java.util.List;
+
 public interface InventoryDomainService {
     WarehouseCreatedEvent validateAndInitializeWarehouse(Warehouse warehouse);
 
@@ -15,5 +17,5 @@ public interface InventoryDomainService {
 
     InventoryTransaction validateAndInitializeInventoryTransaction(InventoryTransaction inventoryTransaction);
 
-    InventoryConfirmationEvent validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory);
+    InventoryConfirmationEvent validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory, List<String> failureMessages);
 }
