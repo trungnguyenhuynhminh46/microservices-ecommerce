@@ -95,4 +95,14 @@ public class Product extends AggregateRoot<UniqueUUID> {
     public static void validateSku(String sku) {
         //TODO: Implement this method
     }
+
+    public static Money getPriceFromSku(String sku) {
+        //TODO: Implement this method
+        return null;
+    }
+
+    public static Money getPriceFromAttributes(List<ProductAttribute> attributes) {
+        //TODO: Implement this method
+        return null;
+    }
 }

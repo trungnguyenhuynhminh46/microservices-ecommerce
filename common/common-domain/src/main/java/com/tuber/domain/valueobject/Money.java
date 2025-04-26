@@ -56,6 +56,10 @@ public class Money {
         return amount.compareTo(money.amount);
     }
 
+    public boolean equals(Money money) {
+        return amount != null && amount.compareTo(money.amount) == 0;
+    }
+
     public boolean isGreaterThanZero() {
         return amount != null && amount.compareTo(BigDecimal.ZERO) > 0;
     }
