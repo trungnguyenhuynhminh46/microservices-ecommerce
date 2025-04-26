@@ -9,6 +9,7 @@ import com.tuber.inventory.service.domain.dto.message.broker.InventoryConfirmati
 import com.tuber.inventory.service.domain.dto.shared.ProductIdWithSkuDTO;
 import com.tuber.inventory.service.domain.entity.FulfillmentHistory;
 import com.tuber.inventory.service.domain.entity.Inventory;
+import com.tuber.inventory.service.domain.entity.Product;
 import com.tuber.inventory.service.domain.entity.ProductFulfillment;
 import com.tuber.inventory.service.domain.event.InventoryConfirmationEvent;
 import com.tuber.inventory.service.domain.helper.inventory.GetProductsRecord;
@@ -90,11 +91,7 @@ public class InventoryConfirmationMessageHelper {
         );
     }
 
-    protected Set<ProductFulfillment> validateExportInformation(List<ExportInformation> exportInformationList) {
-        Set<UUID> productIds = fulfillmentHistoryMapper.exportInformationToProductIds(
-                exportInformationList
-        );
-        // Validate if there is unavailable product
+    protected Set<Product> validateProductsAreAvailable(Set<UUID> productIds) {
         GetProductsRecord record = commonInventoryHelper.getProductsDetails(productIds);
         if (record.hasUnavailableProducts()) {
             Set<UUID> unavailableProductIds = productIds.stream()
@@ -108,11 +105,17 @@ public class InventoryConfirmationMessageHelper {
                     unavailableProductIds.stream().map(UUID::toString).collect(Collectors.joining(", "))
             );
         }
-        // Validate product base price in export information valid
+        return record.products();
+    }
+
+    protected void validateExportInformationUpToDate(
+            List<ExportInformation> exportInformationList,
+            Set<Product> products
+    ) {
         List<ExportInformation> invalidExportInformationList =
                 exportInformationList.stream()
                         .filter(
-                                information -> record.products().stream().noneMatch(
+                                information -> products.stream().noneMatch(
                                         product -> product.getId().getValue().equals(information.getProductId())
                                                 && product.getPrice().equals(new Money(information.getBasePrice()))
                                 )
@@ -127,7 +130,9 @@ public class InventoryConfirmationMessageHelper {
                     invalidInformation
             );
         }
-        // Validate there is enough stock to export
+    }
+
+    protected void validateThereAreEnoughStock(List<ExportInformation> exportInformationList) {
         Set<ProductIdWithSkuDTO> productIdWithSku = fulfillmentHistoryMapper.exportInformationToProductIdWithSkuDTO(
                 exportInformationList
         );
@@ -158,6 +163,15 @@ public class InventoryConfirmationMessageHelper {
                     }
                 }
         );
+    }
+
+    protected Set<ProductFulfillment> validateExportInformation(List<ExportInformation> exportInformationList) {
+        Set<UUID> productIds = fulfillmentHistoryMapper.exportInformationToProductIds(
+                exportInformationList
+        );
+        Set<Product> products = validateProductsAreAvailable(productIds);
+        validateExportInformationUpToDate(exportInformationList, products);
+        validateThereAreEnoughStock(exportInformationList);
 
         return fulfillmentHistoryMapper.exportInformationListToProductFulfillments(
                 exportInformationList
