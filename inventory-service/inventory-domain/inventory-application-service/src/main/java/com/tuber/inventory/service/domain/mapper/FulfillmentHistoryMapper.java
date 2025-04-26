@@ -34,9 +34,9 @@ public abstract class FulfillmentHistoryMapper {
             OrderInventoryConfirmationStatus orderInventoryConfirmationStatus
     );
 
-    @Mapping(target = "orderId", source = "fulfillmentHistory.orderId")
-    @Mapping(target = "fulfillHistoryId", source = "fulfillmentHistory.id")
-    @Mapping(target = "orderInventoryConfirmationStatus", source = "orderInventoryConfirmationStatus")
+    @Mapping(target = "orderId", source = "inventoryConfirmationEvent.fulfillmentHistory.orderId")
+    @Mapping(target = "fulfillHistoryId", source = "inventoryConfirmationEvent.fulfillmentHistory.id")
+    @Mapping(target = "orderInventoryConfirmationStatus", source = "inventoryConfirmationEvent.fulfillmentHistory.orderInventoryConfirmationStatus")
     public abstract OrderEventPayload inventoryConfirmationEventToOrderEventPayload(
             InventoryConfirmationEvent inventoryConfirmationEvent,
             List<String> failureMessages
