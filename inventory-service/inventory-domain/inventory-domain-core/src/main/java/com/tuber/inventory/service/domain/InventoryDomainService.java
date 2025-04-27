@@ -1,5 +1,6 @@
 package com.tuber.inventory.service.domain;
 
+import com.tuber.domain.valueobject.enums.InventoryOrderStatus;
 import com.tuber.inventory.service.domain.entity.FulfillmentHistory;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.InventoryTransaction;
@@ -17,5 +18,5 @@ public interface InventoryDomainService {
 
     InventoryTransaction validateAndInitializeInventoryTransaction(InventoryTransaction inventoryTransaction);
 
-    InventoryConfirmationEvent validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory, List<String> failureMessages);
+    InventoryConfirmationEvent validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory, InventoryOrderStatus inventoryOrderStatus, List<String> failureMessages);
 }

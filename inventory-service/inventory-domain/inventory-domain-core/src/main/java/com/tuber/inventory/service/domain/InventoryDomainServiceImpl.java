@@ -1,5 +1,6 @@
 package com.tuber.inventory.service.domain;
 
+import com.tuber.domain.valueobject.enums.InventoryOrderStatus;
 import com.tuber.inventory.service.domain.entity.FulfillmentHistory;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.InventoryTransaction;
@@ -39,8 +40,9 @@ public class InventoryDomainServiceImpl implements InventoryDomainService {
     }
 
     @Override
-    public InventoryConfirmationEvent validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory, List<String> failureMessages) {
-        fulfillmentHistory.selfValidate(failureMessages).selfInitialize();
+    public InventoryConfirmationEvent validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory, InventoryOrderStatus inventoryOrderStatus, List<String> failureMessages) {
+        fulfillmentHistory.selfValidate(inventoryOrderStatus, failureMessages).selfInitialize(failureMessages);
+        log.info("Initialize fulfillment history with id: {}", fulfillmentHistory.getId());
         return new InventoryConfirmationEvent(fulfillmentHistory, LocalDate.now());
     }
 }

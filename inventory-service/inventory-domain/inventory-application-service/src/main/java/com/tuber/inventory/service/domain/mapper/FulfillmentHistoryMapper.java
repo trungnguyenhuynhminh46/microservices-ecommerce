@@ -47,7 +47,7 @@ public abstract class FulfillmentHistoryMapper {
     ) {
         return productFulfillments.stream()
                 .anyMatch(productFulfillment -> productFulfillment.getFulfillStatus() == ProductFulfillStatus.REJECTED)
-                ? OrderInventoryConfirmationStatus.REJECTED
+                ? OrderInventoryConfirmationStatus.FAILED
                 : OrderInventoryConfirmationStatus.CONFIRMED;
     }
 

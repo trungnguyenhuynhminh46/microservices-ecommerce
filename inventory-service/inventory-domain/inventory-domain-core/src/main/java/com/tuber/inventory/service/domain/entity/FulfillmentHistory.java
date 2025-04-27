@@ -4,16 +4,18 @@ import com.tuber.domain.constant.response.code.InventoryResponseCode;
 import com.tuber.domain.entity.BaseEntity;
 import com.tuber.domain.exception.InventoryDomainException;
 import com.tuber.domain.valueobject.Money;
+import com.tuber.domain.valueobject.enums.InventoryOrderStatus;
 import com.tuber.domain.valueobject.id.UniqueUUID;
 import com.tuber.inventory.service.domain.valueobject.enums.OrderInventoryConfirmationStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-//TODO: Implement this class
 public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
     private String trackingId;
     private UUID orderId;
@@ -110,6 +112,10 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
         return trackingId;
     }
 
+    public void setTrackingId(String trackingId) {
+        this.trackingId = trackingId;
+    }
+
     public UUID getOrderId() {
         return orderId;
     }
@@ -122,12 +128,24 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
         return orderInventoryConfirmationStatus;
     }
 
+    public void setOrderInventoryConfirmationStatus(OrderInventoryConfirmationStatus orderInventoryConfirmationStatus) {
+        this.orderInventoryConfirmationStatus = orderInventoryConfirmationStatus;
+    }
+
     public LocalDate getCreatedAt() {
         return createdAt;
     }
 
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public LocalDate getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public Set<ProductFulfillment> getProductFulfillments() {
@@ -137,26 +155,53 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
     public boolean isValidForInitialization() {
         return getId() == null && getTrackingId() == null
                 && getCreatedAt() == null && getUpdatedAt() == null
-                && getOrderInventoryConfirmationStatus() == null
+                && getOrderInventoryConfirmationStatus() != null
+                && getTotalPrice() != null
                 && getOrderId() != null && getProductFulfillments() != null;
     }
 
-    //TODO: Implement this method
     public void validateProductFulfillment() {
-
+        getProductFulfillments().forEach(ProductFulfillment::selfValidate);
     }
 
-    //TODO: Implement this method
-    public FulfillmentHistory selfValidate(List<String> failureMessages) {
+    public FulfillmentHistory selfValidate(InventoryOrderStatus inventoryOrderStatus, List<String> failureMessages) {
         if (!isValidForInitialization()) {
             throw new InventoryDomainException(InventoryResponseCode.INVENTORY_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
+        }
+        if (inventoryOrderStatus != InventoryOrderStatus.PAID) {
+            failureMessages.add(String.format("Payment is not completed for order with orderId: %s", getOrderId()));
+        }
+        Money totalPrice = getProductFulfillments().stream().map(ProductFulfillment::getBasePrice).reduce(Money.ZERO, Money::add);
+        if (getTotalPrice().equals(totalPrice)) {
+            failureMessages.add(String.format("Price total is not correct. Recorded total price: %s, calculated total price: %s", getTotalPrice(), totalPrice));
         }
         validateProductFulfillment();
         return this;
     }
 
-    //TODO: Implement this method
-    public FulfillmentHistory selfInitialize() {
+    public FulfillmentHistory selfInitialize(List<String> failureMessages) {
+        setId(new UniqueUUID(UUID.randomUUID()));
+        setTrackingId(generateTrackingId());
+        setCreatedAt(LocalDate.now());
+        setUpdatedAt(LocalDate.now());
+        initializeProductFulfillment();
+        if (!failureMessages.isEmpty()) {
+            setOrderInventoryConfirmationStatus(OrderInventoryConfirmationStatus.FAILED);
+        }
+
         return this;
+    }
+
+    protected String generateTrackingId() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
+        String timestamp = now.format(formatter);
+        return String.format("%s_%s", timestamp, orderId);
+    }
+
+    protected void initializeProductFulfillment() {
+        getProductFulfillments().forEach(
+                ProductFulfillment::selfInItialize
+        );
     }
 }

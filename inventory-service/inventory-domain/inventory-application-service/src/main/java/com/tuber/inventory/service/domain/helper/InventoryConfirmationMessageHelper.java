@@ -1,6 +1,5 @@
 package com.tuber.inventory.service.domain.helper;
 
-import com.tuber.domain.valueobject.Money;
 import com.tuber.inventory.service.domain.InventoryDomainService;
 import com.tuber.inventory.service.domain.dto.message.broker.ExportInformation;
 import com.tuber.inventory.service.domain.dto.message.broker.InventoryConfirmationRequest;
@@ -52,7 +51,7 @@ public class InventoryConfirmationMessageHelper {
 
         List<String> failureMessages = new ArrayList<>();
         FulfillmentHistory history = this.generateFulfillmentHistory(inventoryConfirmationRequest, failureMessages);
-        InventoryConfirmationEvent inventoryConfirmationEvent = inventoryDomainService.validateAndInitializeFulfillmentHistory(history, failureMessages);
+        InventoryConfirmationEvent inventoryConfirmationEvent = inventoryDomainService.validateAndInitializeFulfillmentHistory(history, inventoryConfirmationRequest.getInventoryOrderStatus(), failureMessages);
         commonInventoryHelper.saveFulfillmentHistory(history);
         orderOutboxHelper.saveOrderOutboxMessage(
                 orderOutboxHelper.createOrderOutboxMessage(
