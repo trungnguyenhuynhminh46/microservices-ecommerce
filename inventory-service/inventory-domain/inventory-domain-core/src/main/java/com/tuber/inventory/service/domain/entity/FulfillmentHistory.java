@@ -200,8 +200,10 @@ public class FulfillmentHistory extends BaseEntity<UniqueUUID> {
     }
 
     protected void initializeProductFulfillment() {
-        getProductFulfillments().forEach(
-                ProductFulfillment::selfInItialize
-        );
+        long itemId = 1;
+        for (ProductFulfillment productFulfillment : getProductFulfillments()) {
+            productFulfillment.selfInitialize(itemId, getId().getValue(), getOrderId());
+            itemId++;
+        }
     }
 }

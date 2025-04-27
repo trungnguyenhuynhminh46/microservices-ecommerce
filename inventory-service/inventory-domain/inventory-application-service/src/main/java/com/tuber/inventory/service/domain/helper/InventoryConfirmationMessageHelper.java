@@ -181,6 +181,7 @@ public class InventoryConfirmationMessageHelper {
                                 inventory.getStockQuantity()
                         );
                         matchedFulfillment.get().setFulfillStatus(ProductFulfillStatus.REJECTED);
+                        matchedFulfillment.get().setInventoryId(inventory.getId().getValue());
                         log.error(errorMessage);
                         failureMessages.add(errorMessage);
                     }

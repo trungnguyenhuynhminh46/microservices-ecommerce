@@ -1,13 +1,14 @@
 package com.tuber.inventory.service.domain.entity;
 
+import com.tuber.domain.constant.response.code.InventoryResponseCode;
 import com.tuber.domain.entity.BaseEntity;
+import com.tuber.domain.exception.InventoryDomainException;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.inventory.service.domain.valueobject.ProductFulfillId;
 import com.tuber.inventory.service.domain.valueobject.enums.ProductFulfillStatus;
 
 import java.util.UUID;
 
-//TODO: Implement this class
 public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
     private UUID fulfillmentHistoryId;
     private UUID orderId;
@@ -114,12 +115,17 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
     public UUID getProductId() {
         return productId;
     }
+
     public String getSku() {
         return sku;
     }
 
     public UUID getInventoryId() {
         return inventoryId;
+    }
+
+    public void setInventoryId(UUID inventoryId) {
+        this.inventoryId = inventoryId;
     }
 
     public Money getBasePrice() {
@@ -138,11 +144,27 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
         this.fulfillStatus = fulfillStatus;
     }
 
+    public boolean isValidForInitialization() {
+        return getId() == null && getFulfillmentHistoryId() == null && getOrderId() == null
+                && getProductId() != null && getInventoryId() != null && getSku() != null
+                && getBasePrice() != null && getQuantity() != null && getFulfillStatus() != null;
+    }
+
     public ProductFulfillment selfValidate() {
+        if (!isValidForInitialization()) {
+            throw new InventoryDomainException(InventoryResponseCode.PRODUCT_FULFILLMENT_IN_WRONG_STATE_FOR_INITIALIZATION, 406);
+        }
         return this;
     }
 
-    public ProductFulfillment selfInItialize() {
+    public ProductFulfillment selfInitialize(
+            long id,
+            UUID fulfillmentHistoryId,
+            UUID orderId
+    ) {
+        setId(new ProductFulfillId(id));
+        this.fulfillmentHistoryId = fulfillmentHistoryId;
+        this.orderId = orderId;
         return this;
     }
 }

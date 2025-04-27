@@ -36,7 +36,8 @@ public class InventoryResponseCode extends ResponseCodeBase {
             new InventoryResponseCode(1017, "Export information is outdated, outdated product information: %s");
     public static final InventoryResponseCode PRODUCT_OUT_OF_STOCK =
             new InventoryResponseCode(1018, "Product with id %s and sku %s is out of stock. Required entity: %s, current stock: %s");
-
+    public static final InventoryResponseCode PRODUCT_FULFILLMENT_IN_WRONG_STATE_FOR_INITIALIZATION =
+            new InventoryResponseCode(1019, "Product fulfillment is in wrong state for initialization");
     protected InventoryResponseCode(int code, String message) {
         this.code = formatErrorCode(code);
         this.message = message;
