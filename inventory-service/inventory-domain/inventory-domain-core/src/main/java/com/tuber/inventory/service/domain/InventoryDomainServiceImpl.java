@@ -5,9 +5,8 @@ import com.tuber.inventory.service.domain.entity.FulfillmentHistory;
 import com.tuber.inventory.service.domain.entity.Inventory;
 import com.tuber.inventory.service.domain.entity.InventoryTransaction;
 import com.tuber.domain.entity.Warehouse;
-import com.tuber.inventory.service.domain.event.InventoryConfirmationEvent;
-import com.tuber.inventory.service.domain.event.InventoryCreatedEvent;
-import com.tuber.inventory.service.domain.event.WarehouseCreatedEvent;
+import com.tuber.inventory.service.domain.event.*;
+import com.tuber.inventory.service.domain.valueobject.enums.OrderInventoryConfirmationStatus;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
@@ -39,10 +38,19 @@ public class InventoryDomainServiceImpl implements InventoryDomainService {
         return inventoryTransaction;
     }
 
+
     @Override
     public InventoryConfirmationEvent validateAndInitializeFulfillmentHistory(FulfillmentHistory fulfillmentHistory, InventoryOrderStatus inventoryOrderStatus, List<String> failureMessages) {
         fulfillmentHistory.selfValidate(inventoryOrderStatus, failureMessages).selfInitialize(failureMessages);
         log.info("Initialize fulfillment history with id: {}", fulfillmentHistory.getId());
-        return new InventoryConfirmationEvent(fulfillmentHistory, LocalDate.now());
+
+        OrderInventoryConfirmationStatus status = fulfillmentHistory.getOrderInventoryConfirmationStatus();
+        LocalDate now = LocalDate.now();
+
+        return switch (status) {
+            case CONFIRMED -> new InventoryConfirmationConfirmedEvent(fulfillmentHistory, now);
+            case FAILED -> new InventoryConfirmationRejectedEvent(fulfillmentHistory, now);
+            default -> throw new IllegalStateException("Unexpected confirmation status: " + status);
+        };
     }
 }
