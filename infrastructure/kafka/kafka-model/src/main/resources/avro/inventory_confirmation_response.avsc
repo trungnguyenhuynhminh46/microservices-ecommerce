@@ -25,6 +25,13 @@
       }
     },
     {
+      "name": "fulfillHistoryId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
       "name": "createdAt",
       "type": {
         "type": "int",

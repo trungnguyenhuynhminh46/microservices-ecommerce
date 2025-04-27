@@ -5,14 +5,14 @@ import com.tuber.inventory.service.domain.outbox.model.InventoryConfirmationResp
 import com.tuber.kafka.order.avro.model.InventoryConfirmationRequestAvroModel;
 import com.tuber.kafka.order.avro.model.InventoryConfirmationResponseAvroModel;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public abstract class InventoryMessageMapper {
-    //TODO: Implement this method
     public abstract InventoryConfirmationRequest inventoryConfirmationRequestAvroModelToInventoryConfirmationRequest(InventoryConfirmationRequestAvroModel inventoryConfirmationRequestAvroModel);
 
-    //TODO: Implement this method
+    @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID())")
     public abstract InventoryConfirmationResponseAvroModel inventoryConfirmationResponsePayloadToInventoryConfirmationResponseAvroModel(InventoryConfirmationResponsePayload inventoryConfirmationResponsePayload, UUID sagaId);
 }
