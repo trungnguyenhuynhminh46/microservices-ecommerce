@@ -16,6 +16,7 @@ import com.tuber.inventory.service.domain.outbox.model.OrderOutboxMessage;
 import com.tuber.inventory.service.domain.outbox.scheduler.OrderOutboxHelper;
 import com.tuber.inventory.service.domain.ports.output.message.publisher.InventoryConfirmationResponsePublisher;
 import com.tuber.inventory.service.domain.ports.output.repository.InventoryRepository;
+import com.tuber.inventory.service.domain.valueobject.enums.ProductFulfillStatus;
 import com.tuber.outbox.OutboxStatus;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
-//TODO: Whenever throw an exception, update failure messages (OK), update state value ()
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -95,16 +95,17 @@ public class InventoryConfirmationMessageHelper {
             List<ExportInformation> exportInformationList,
             List<String> failureMessages
     ) {
+        Set<ProductFulfillment> productFulfillments = fulfillmentHistoryMapper.exportInformationListToProductFulfillments(
+                exportInformationList
+        );
         Set<UUID> productIds = fulfillmentHistoryMapper.exportInformationToProductIds(
                 exportInformationList
         );
         Set<Product> products = validateProductsAreAvailable(productIds, failureMessages);
-        validateExportInformationUpToDate(exportInformationList, products, failureMessages);
-        validateThereAreEnoughStock(exportInformationList, failureMessages);
+        validateExportInformationUpToDate(productFulfillments, products, failureMessages);
+        validateThereAreEnoughStock(productFulfillments, failureMessages);
 
-        return fulfillmentHistoryMapper.exportInformationListToProductFulfillments(
-                exportInformationList
-        );
+        return productFulfillments;
     }
 
     protected Set<Product> validateProductsAreAvailable(
@@ -127,20 +128,22 @@ public class InventoryConfirmationMessageHelper {
     }
 
     protected void validateExportInformationUpToDate(
-            List<ExportInformation> exportInformationList,
+            Set<ProductFulfillment> productFulfillments,
             Set<Product> products,
             List<String> failureMessages
     ) {
-        List<ExportInformation> invalidExportInformationList =
-                exportInformationList.stream()
+        Set<ProductFulfillment> invalidFulfillments =
+                productFulfillments.stream()
                         .filter(
-                                information -> products.stream().noneMatch(
-                                        product -> product.getId().getValue().equals(information.getProductId())
-                                                && product.getPrice().equals(new Money(information.getBasePrice()))
+                                fulfillment -> products.stream().noneMatch(
+                                        product -> product.getId().getValue().equals(fulfillment.getProductId())
+                                                && product.getPrice().equals(fulfillment.getBasePrice())
                                 )
-                        ).toList();
-        if (!invalidExportInformationList.isEmpty()) {
-            String invalidInformation = invalidExportInformationList.stream()
+                        )
+                        .peek(invalidFulfillment -> invalidFulfillment.setFulfillStatus(ProductFulfillStatus.REJECTED))
+                        .collect(Collectors.toSet());
+        if (!invalidFulfillments.isEmpty()) {
+            String invalidInformation = invalidFulfillments.stream()
                     .map(information -> String.format("{%s, %s}", information.getProductId(), information.getBasePrice()))
                     .collect(Collectors.joining(", "));
             String errorMessage = String.format("Export information is outdated, outdated product information: %s", invalidInformation);
@@ -150,31 +153,35 @@ public class InventoryConfirmationMessageHelper {
     }
 
     protected void validateThereAreEnoughStock(
-            List<ExportInformation> exportInformationList,
+            Set<ProductFulfillment> productFulfillments,
             List<String> failureMessages
     ) {
-        Set<ProductIdWithSkuDTO> productIdWithSku = fulfillmentHistoryMapper.exportInformationToProductIdWithSkuDTO(
-                exportInformationList
+        Set<ProductIdWithSkuDTO> productIdWithSku = fulfillmentHistoryMapper.productFulfillmentToProductIdWithSkuDTO(
+                productFulfillments
         );
         Set<Inventory> inventories = inventoryRepository.findAllByProductIdsAndSkusSet(productIdWithSku);
         inventories.forEach(
                 inventory -> {
-                    Optional<ExportInformation> exportInformation = exportInformationList.stream()
-                            .filter(information -> information.getProductId().equals(inventory.getProduct().getId().getValue()))
+                    Optional<ProductFulfillment> matchedFulfillment = productFulfillments.stream()
+                            .filter(fulfillment -> fulfillment.getProductId().equals(inventory.getProduct().getId().getValue()))
                             .findFirst();
-                    if (exportInformation.isEmpty()) {
-                        String errorMessage = String.format("Something went wrong! export information for product with id %s is not found", inventory.getProduct().getId().getValue());
+                    if (matchedFulfillment.isEmpty()) {
+                        String errorMessage = String.format("Product with id %s and sku %s is not found in inventory",
+                                inventory.getProduct().getId().getValue(),
+                                inventory.getSku()
+                        );
                         log.error(errorMessage);
                         failureMessages.add(errorMessage);
                     }
-                    Integer requiredQuantity = exportInformation.get().getRequiredQuantity();
+                    Integer requiredQuantity = matchedFulfillment.get().getQuantity();
                     if (inventory.getStockQuantity() < requiredQuantity) {
                         String errorMessage = String.format("Product with id %s and sku %s is out of stock. Required entity: %s, current stock: %s",
                                 inventory.getProduct().getId().getValue(),
-                                exportInformation.get().getSku(),
+                                matchedFulfillment.get().getSku(),
                                 requiredQuantity,
                                 inventory.getStockQuantity()
                         );
+                        matchedFulfillment.get().setFulfillStatus(ProductFulfillStatus.REJECTED);
                         log.error(errorMessage);
                         failureMessages.add(errorMessage);
                     }

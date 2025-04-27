@@ -72,16 +72,16 @@ public abstract class FulfillmentHistoryMapper {
     @Mapping(target = "orderId", ignore = true)
     @Mapping(target = "inventoryId", ignore = true)
     @Mapping(target = "quantity", source = "requiredQuantity")
-    @Mapping(target = "fulfillStatus", ignore = true)
+    @Mapping(target = "fulfillStatus", constant = "APPROVED")
     protected abstract ProductFulfillment exportInformationToProductFulfillment(
             ExportInformation exportInformation
     );
 
-    public Set<ProductIdWithSkuDTO> exportInformationToProductIdWithSkuDTO(List<ExportInformation> exportInformationList) {
-        return exportInformationList.stream()
-                .map(exportInformation -> ProductIdWithSkuDTO.builder()
-                        .productId(exportInformation.getProductId())
-                        .sku(exportInformation.getSku())
+    public Set<ProductIdWithSkuDTO> productFulfillmentToProductIdWithSkuDTO(Set<ProductFulfillment> productFulfillments) {
+        return productFulfillments.stream()
+                .map(productFulfillment -> ProductIdWithSkuDTO.builder()
+                        .productId(productFulfillment.getProductId())
+                        .sku(productFulfillment.getSku())
                         .build())
                 .collect(Collectors.toSet());
     }

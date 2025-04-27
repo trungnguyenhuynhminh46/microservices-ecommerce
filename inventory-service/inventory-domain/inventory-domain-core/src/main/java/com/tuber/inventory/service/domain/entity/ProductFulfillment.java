@@ -134,6 +134,10 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
         return fulfillStatus;
     }
 
+    public void setFulfillStatus(ProductFulfillStatus fulfillStatus) {
+        this.fulfillStatus = fulfillStatus;
+    }
+
     public ProductFulfillment selfValidate() {
         return this;
     }
