@@ -3,7 +3,7 @@ package com.tuber.inventory.service.domain.outbox.scheduler;
 import com.tuber.application.helper.CommonHelper;
 import com.tuber.domain.constant.response.code.InventoryResponseCode;
 import com.tuber.domain.exception.InventoryDomainException;
-import com.tuber.inventory.service.domain.outbox.model.OrderEventPayload;
+import com.tuber.inventory.service.domain.outbox.model.InventoryConfirmationResponsePayload;
 import com.tuber.inventory.service.domain.outbox.model.OrderOutboxMessage;
 import com.tuber.inventory.service.domain.ports.output.repository.outbox.OrderOutboxRepository;
 import com.tuber.inventory.service.domain.valueobject.enums.OrderInventoryConfirmationStatus;
@@ -41,7 +41,7 @@ public class OrderOutboxHelper {
     }
 
     public OrderOutboxMessage createOrderOutboxMessage(
-            OrderEventPayload payload,
+            InventoryConfirmationResponsePayload payload,
             OrderInventoryConfirmationStatus orderInventoryConfirmationStatus,
             OutboxStatus outboxStatus,
             UUID sagaId) throws InventoryDomainException {

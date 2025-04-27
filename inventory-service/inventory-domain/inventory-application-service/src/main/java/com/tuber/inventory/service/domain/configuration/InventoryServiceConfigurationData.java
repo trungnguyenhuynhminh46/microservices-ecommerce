@@ -1,4 +1,4 @@
-package com.tuber.order.service.domain.config;
+package com.tuber.inventory.service.domain.configuration;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -10,9 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "config-data")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderServiceConfigurationData {
-    String paymentRequestTopicName;
-    String paymentResponseTopicName;
+public class InventoryServiceConfigurationData {
     String inventoryConfirmationRequestTopicName;
     String inventoryConfirmationResponseTopicName;
 }

@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,5 +26,17 @@ public class OrderOutboxRepositoryImpl implements OrderOutboxRepository {
     @Override
     public Optional<OrderOutboxMessage> findBySagaIdAndTypeAndOutboxStatus(UUID sagaId, String type, OutboxStatus outboxStatus) {
         return Optional.empty();
+    }
+
+    //TODO: Implement this method
+    @Override
+    public Optional<List<OrderOutboxMessage>> findByTypeAndOutboxStatus(String type, OutboxStatus outboxStatus) {
+        return Optional.empty();
+    }
+
+    //TODO: Implement this method
+    @Override
+    public void deleteByTypeAndOutboxStatus(String type, OutboxStatus outboxStatus) {
+
     }
 }

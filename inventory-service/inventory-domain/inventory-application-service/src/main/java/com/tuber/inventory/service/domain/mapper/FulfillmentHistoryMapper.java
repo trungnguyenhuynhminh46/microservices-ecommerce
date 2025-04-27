@@ -8,7 +8,7 @@ import com.tuber.inventory.service.domain.dto.shared.ProductIdWithSkuDTO;
 import com.tuber.inventory.service.domain.entity.FulfillmentHistory;
 import com.tuber.inventory.service.domain.entity.ProductFulfillment;
 import com.tuber.inventory.service.domain.event.InventoryConfirmationEvent;
-import com.tuber.inventory.service.domain.outbox.model.OrderEventPayload;
+import com.tuber.inventory.service.domain.outbox.model.InventoryConfirmationResponsePayload;
 import com.tuber.inventory.service.domain.valueobject.enums.OrderInventoryConfirmationStatus;
 import com.tuber.inventory.service.domain.valueobject.enums.ProductFulfillStatus;
 import org.mapstruct.Mapper;
@@ -37,7 +37,7 @@ public abstract class FulfillmentHistoryMapper {
     @Mapping(target = "orderId", source = "inventoryConfirmationEvent.fulfillmentHistory.orderId")
     @Mapping(target = "fulfillHistoryId", source = "inventoryConfirmationEvent.fulfillmentHistory.id")
     @Mapping(target = "orderInventoryConfirmationStatus", source = "inventoryConfirmationEvent.fulfillmentHistory.orderInventoryConfirmationStatus")
-    public abstract OrderEventPayload inventoryConfirmationEventToOrderEventPayload(
+    public abstract InventoryConfirmationResponsePayload inventoryConfirmationEventToOrderEventPayload(
             InventoryConfirmationEvent inventoryConfirmationEvent,
             List<String> failureMessages
     );

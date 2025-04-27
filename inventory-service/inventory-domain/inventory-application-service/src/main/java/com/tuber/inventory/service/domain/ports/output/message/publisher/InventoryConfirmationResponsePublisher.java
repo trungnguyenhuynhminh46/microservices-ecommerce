@@ -7,5 +7,5 @@ import java.util.function.BiConsumer;
 
 public interface InventoryConfirmationResponsePublisher {
     void publish(OrderOutboxMessage orderOutboxMessage,
-                 BiConsumer<OrderOutboxMessage, OutboxStatus> outboxCallback);
+                 BiConsumer<OrderOutboxMessage, OutboxStatus> onSuccessOutbox);
 }

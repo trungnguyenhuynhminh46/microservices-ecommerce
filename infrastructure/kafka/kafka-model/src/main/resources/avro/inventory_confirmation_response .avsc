@@ -1,0 +1,55 @@
+{
+  "namespace": "com.tuber.kafka.order.avro.model",
+  "type": "record",
+  "name": "InventoryConfirmationResponseAvroModel",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "sagaId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "orderId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "createdAt",
+      "type": {
+        "type": "int",
+        "logicalType": "date"
+      }
+    },
+    {
+      "name": "orderInventoryConfirmationStatus",
+      "type": {
+        "type": "enum",
+        "name": "OrderInventoryConfirmationStatus",
+        "symbols": [
+          "CONFIRMED",
+          "FAILED"
+        ]
+      }
+    },
+    {
+      "name": "failureMessages",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

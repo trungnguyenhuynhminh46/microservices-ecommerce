@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderEventPayload {
+public class InventoryConfirmationResponsePayload {
     @JsonProperty
     UUID orderId;
     @JsonProperty
