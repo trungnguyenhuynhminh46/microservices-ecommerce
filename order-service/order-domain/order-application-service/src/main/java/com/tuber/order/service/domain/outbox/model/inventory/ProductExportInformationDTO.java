@@ -16,8 +16,6 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductExportInformationDTO {
     @JsonProperty
-    UUID inventoryId;
-    @JsonProperty
     UUID productId;
     @JsonProperty
     String sku;

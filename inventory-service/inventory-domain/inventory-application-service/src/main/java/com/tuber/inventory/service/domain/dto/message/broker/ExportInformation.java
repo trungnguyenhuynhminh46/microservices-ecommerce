@@ -14,7 +14,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ExportInformation {
-    UUID inventoryId;
     UUID productId;
     String sku;
     BigDecimal basePrice;

@@ -19,7 +19,6 @@ public abstract class OutboxMessageMapper {
             OrderPaymentCompleteEvent orderPaymentCompleteEvent
     );
 
-    @Mapping(target = "inventoryId", source = "orderItem.inventoryId")
     @Mapping(target = "productId", source = "orderItem.product.id.value")
     @Mapping(target = "basePrice", source = "orderItem.product.price.amount")
     @Mapping(target = "sku", source = "orderItem.sku")

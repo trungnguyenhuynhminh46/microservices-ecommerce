@@ -68,13 +68,6 @@
           "type": "record",
           "fields": [
             {
-              "name": "inventoryId",
-              "type": {
-                "type": "string",
-                "logicalType": "uuid"
-              }
-            },
-            {
               "name": "productId",
               "type": {
                 "type": "string",
