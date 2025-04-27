@@ -1,7 +1,5 @@
 package com.tuber.inventory.service.domain.helper;
 
-import com.tuber.domain.constant.response.code.InventoryResponseCode;
-import com.tuber.domain.exception.InventoryDomainException;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.inventory.service.domain.InventoryDomainService;
 import com.tuber.inventory.service.domain.dto.message.broker.ExportInformation;
@@ -23,14 +21,13 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-//TODO: Whenever throw an exception, update failure messages, then save an outbox message
+//TODO: Whenever throw an exception, update failure messages (OK), update state value ()
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -84,7 +81,7 @@ public class InventoryConfirmationMessageHelper {
             InventoryConfirmationRequest inventoryConfirmationRequest,
             List<String> failureMessages
     ) {
-        Set<ProductFulfillment> productFulfillments = validateExportInformation(inventoryConfirmationRequest.getExportInformationList());
+        Set<ProductFulfillment> productFulfillments = validateExportInformation(inventoryConfirmationRequest.getExportInformationList(), failureMessages);
         return fulfillmentHistoryMapper.inventoryConfirmationRequestToFulfillmentHistory(
                 inventoryConfirmationRequest,
                 productFulfillments,
@@ -94,26 +91,45 @@ public class InventoryConfirmationMessageHelper {
         );
     }
 
-    protected Set<Product> validateProductsAreAvailable(Set<UUID> productIds) {
+    protected Set<ProductFulfillment> validateExportInformation(
+            List<ExportInformation> exportInformationList,
+            List<String> failureMessages
+    ) {
+        Set<UUID> productIds = fulfillmentHistoryMapper.exportInformationToProductIds(
+                exportInformationList
+        );
+        Set<Product> products = validateProductsAreAvailable(productIds, failureMessages);
+        validateExportInformationUpToDate(exportInformationList, products, failureMessages);
+        validateThereAreEnoughStock(exportInformationList, failureMessages);
+
+        return fulfillmentHistoryMapper.exportInformationListToProductFulfillments(
+                exportInformationList
+        );
+    }
+
+    protected Set<Product> validateProductsAreAvailable(
+            Set<UUID> productIds,
+            List<String> failureMessages
+    ) {
         GetProductsRecord record = commonInventoryHelper.getProductsDetails(productIds);
         if (record.hasUnavailableProducts()) {
-            Set<UUID> unavailableProductIds = productIds.stream()
+            String unavailableProductIds = productIds.stream()
                     .filter(productId -> record.products().stream().noneMatch(
                             product -> product.getId().getValue().equals(productId)
                     ))
-                    .collect(Collectors.toSet());
-            throw new InventoryDomainException(
-                    InventoryResponseCode.THERE_IS_UNAVAILABLE_PRODUCTS,
-                    HttpStatus.BAD_REQUEST.value(),
-                    unavailableProductIds.stream().map(UUID::toString).collect(Collectors.joining(", "))
-            );
+                    .map(UUID::toString)
+                    .collect(Collectors.joining(", "));
+            String errorMessage = String.format("Products with ids: %s are unavailable", unavailableProductIds);
+            log.error(errorMessage);
+            failureMessages.add(errorMessage);
         }
         return record.products();
     }
 
     protected void validateExportInformationUpToDate(
             List<ExportInformation> exportInformationList,
-            Set<Product> products
+            Set<Product> products,
+            List<String> failureMessages
     ) {
         List<ExportInformation> invalidExportInformationList =
                 exportInformationList.stream()
@@ -127,15 +143,16 @@ public class InventoryConfirmationMessageHelper {
             String invalidInformation = invalidExportInformationList.stream()
                     .map(information -> String.format("{%s, %s}", information.getProductId(), information.getBasePrice()))
                     .collect(Collectors.joining(", "));
-            throw new InventoryDomainException(
-                    InventoryResponseCode.OUTDATED_EXPORT_INFORMATION,
-                    HttpStatus.BAD_REQUEST.value(),
-                    invalidInformation
-            );
+            String errorMessage = String.format("Export information is outdated, outdated product information: %s", invalidInformation);
+            log.error(errorMessage);
+            failureMessages.add(errorMessage);
         }
     }
 
-    protected void validateThereAreEnoughStock(List<ExportInformation> exportInformationList) {
+    protected void validateThereAreEnoughStock(
+            List<ExportInformation> exportInformationList,
+            List<String> failureMessages
+    ) {
         Set<ProductIdWithSkuDTO> productIdWithSku = fulfillmentHistoryMapper.exportInformationToProductIdWithSkuDTO(
                 exportInformationList
         );
@@ -146,38 +163,22 @@ public class InventoryConfirmationMessageHelper {
                             .filter(information -> information.getProductId().equals(inventory.getProduct().getId().getValue()))
                             .findFirst();
                     if (exportInformation.isEmpty()) {
-                        throw new InventoryDomainException(
-                                new InventoryResponseCode(
-                                        String.format("Something went wrong! export information for product with id %s is not found", inventory.getProduct().getId().getValue())),
-                                HttpStatus.BAD_REQUEST.value()
-
-                        );
+                        String errorMessage = String.format("Something went wrong! export information for product with id %s is not found", inventory.getProduct().getId().getValue());
+                        log.error(errorMessage);
+                        failureMessages.add(errorMessage);
                     }
                     Integer requiredQuantity = exportInformation.get().getRequiredQuantity();
                     if (inventory.getStockQuantity() < requiredQuantity) {
-                        throw new InventoryDomainException(
-                                InventoryResponseCode.NOT_ENOUGH_STOCK,
-                                HttpStatus.BAD_REQUEST.value(),
+                        String errorMessage = String.format("Product with id %s and sku %s is out of stock. Required entity: %s, current stock: %s",
                                 inventory.getProduct().getId().getValue(),
                                 exportInformation.get().getSku(),
                                 requiredQuantity,
                                 inventory.getStockQuantity()
                         );
+                        log.error(errorMessage);
+                        failureMessages.add(errorMessage);
                     }
                 }
-        );
-    }
-
-    protected Set<ProductFulfillment> validateExportInformation(List<ExportInformation> exportInformationList) {
-        Set<UUID> productIds = fulfillmentHistoryMapper.exportInformationToProductIds(
-                exportInformationList
-        );
-        Set<Product> products = validateProductsAreAvailable(productIds);
-        validateExportInformationUpToDate(exportInformationList, products);
-        validateThereAreEnoughStock(exportInformationList);
-
-        return fulfillmentHistoryMapper.exportInformationListToProductFulfillments(
-                exportInformationList
         );
     }
 }
