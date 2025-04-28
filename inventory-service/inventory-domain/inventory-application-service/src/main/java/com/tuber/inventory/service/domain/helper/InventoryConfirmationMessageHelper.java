@@ -135,8 +135,12 @@ public class InventoryConfirmationMessageHelper {
                 productFulfillments.stream()
                         .filter(
                                 fulfillment -> products.stream().noneMatch(
-                                        product -> product.getId().getValue().equals(fulfillment.getProductId())
-                                                && product.getPrice().equals(fulfillment.getBasePrice())
+                                        product -> {
+                                            Boolean isProductIdMatch = product.getId().getValue().equals(fulfillment.getProductId());
+                                            Boolean isProductBasePriceMatch = product.getPrice().equals(fulfillment.getBasePrice());
+                                            Boolean isSkuValid = product.validateSku(fulfillment.getSku());
+                                            return isProductIdMatch && isProductBasePriceMatch && isSkuValid;
+                                        }
                                 )
                         )
                         .peek(invalidFulfillment -> invalidFulfillment.setFulfillStatus(ProductFulfillStatus.REJECTED))
