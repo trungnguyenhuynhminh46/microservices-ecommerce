@@ -1,5 +1,7 @@
 package com.tuber.inventory.service.dataaccess.outbox.order.adapter;
 
+import com.tuber.inventory.service.dataaccess.outbox.order.mapper.OrderOutboxMessageJpaMapper;
+import com.tuber.inventory.service.dataaccess.outbox.order.repository.OrderOutboxMessageJpaRepository;
 import com.tuber.inventory.service.domain.outbox.model.OrderOutboxMessage;
 import com.tuber.inventory.service.domain.ports.output.repository.outbox.OrderOutboxRepository;
 import com.tuber.outbox.OutboxStatus;
@@ -16,27 +18,39 @@ import java.util.UUID;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderOutboxRepositoryImpl implements OrderOutboxRepository {
-    //TODO: Implement this method
+    OrderOutboxMessageJpaRepository orderOutboxMessageJpaRepository;
+    OrderOutboxMessageJpaMapper orderOutboxMessageJpaMapper;
+
     @Override
     public OrderOutboxMessage save(OrderOutboxMessage orderOutboxMessage) {
-        return null;
+        return orderOutboxMessageJpaMapper.orderOutboxMessageJpaEntityToOrderOutboxMessage(
+                orderOutboxMessageJpaRepository.save(
+                        orderOutboxMessageJpaMapper.orderOutboxMessageToOrderOutboxMessageJpaEntity(
+                                orderOutboxMessage
+                        )
+                )
+        );
     }
 
-    //TODO: Implement this method
     @Override
     public Optional<OrderOutboxMessage> findBySagaIdAndTypeAndOutboxStatus(UUID sagaId, String type, OutboxStatus outboxStatus) {
-        return Optional.empty();
+        return orderOutboxMessageJpaRepository
+                .findBySagaIdAndTypeAndOutboxStatus(sagaId, type, outboxStatus)
+                .map(orderOutboxMessageJpaMapper::orderOutboxMessageJpaEntityToOrderOutboxMessage);
     }
 
-    //TODO: Implement this method
     @Override
     public Optional<List<OrderOutboxMessage>> findByTypeAndOutboxStatus(String type, OutboxStatus outboxStatus) {
-        return Optional.empty();
+        return orderOutboxMessageJpaRepository
+                .findByTypeAndOutboxStatus(type, outboxStatus)
+                .map(orderOutboxMessageJpaEntities -> orderOutboxMessageJpaEntities
+                        .stream()
+                        .map(orderOutboxMessageJpaMapper::orderOutboxMessageJpaEntityToOrderOutboxMessage)
+                        .toList());
     }
 
-    //TODO: Implement this method
     @Override
     public void deleteByTypeAndOutboxStatus(String type, OutboxStatus outboxStatus) {
-
+        orderOutboxMessageJpaRepository.deleteByTypeAndOutboxStatus(type, outboxStatus);
     }
 }
