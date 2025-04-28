@@ -7,6 +7,7 @@ import com.tuber.domain.valueobject.Money;
 import com.tuber.inventory.service.domain.valueobject.ProductFulfillId;
 import com.tuber.inventory.service.domain.valueobject.enums.ProductFulfillStatus;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
@@ -86,6 +87,11 @@ public class ProductFulfillment extends BaseEntity<ProductFulfillId> {
 
         public Builder basePrice(Money val) {
             basePrice = val;
+            return this;
+        }
+
+        public Builder basePrice(BigDecimal amount) {
+            basePrice = new Money(amount);
             return this;
         }
 

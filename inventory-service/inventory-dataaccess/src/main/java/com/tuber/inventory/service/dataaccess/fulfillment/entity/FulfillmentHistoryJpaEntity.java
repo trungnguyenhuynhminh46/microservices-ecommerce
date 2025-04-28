@@ -1,7 +1,6 @@
-package com.tuber.order.service.dataaccess.order.entity;
+package com.tuber.inventory.service.dataaccess.fulfillment.entity;
 
-import com.tuber.order.service.dataaccess.voucher.entity.VoucherJpaEntity;
-import com.tuber.domain.valueobject.enums.OrderStatus;
+import com.tuber.inventory.service.domain.valueobject.enums.OrderInventoryConfirmationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,22 +17,19 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "t_order")
+@Table(name = "fulfillment_history")
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderJpaEntity {
+public class FulfillmentHistoryJpaEntity {
     @Id
     UUID id;
     String trackingId;
-    UUID creatorId;
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    Set<OrderItemJpaEntity> orderItems = new HashSet<>();
-    @ManyToMany(mappedBy = "ordersUsedVouchers", fetch = FetchType.LAZY)
-    Set<VoucherJpaEntity> vouchers = new HashSet<>();
+    UUID orderId;
     BigDecimal totalPrice;
-    BigDecimal finalPrice;
+    @OneToMany(mappedBy = "fulfillmentHistory", cascade = CascadeType.ALL)
+    Set<ProductFulfillmentJpaEntity> productFulfillments = new HashSet<>();
     @Enumerated(EnumType.STRING)
-    OrderStatus orderStatus;
+    OrderInventoryConfirmationStatus orderInventoryConfirmationStatus;
     @Column(columnDefinition = "DATE")
     LocalDate createdAt;
     @Column(columnDefinition = "DATE")
@@ -43,7 +39,7 @@ public class OrderJpaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderJpaEntity that = (OrderJpaEntity) o;
+        FulfillmentHistoryJpaEntity that = (FulfillmentHistoryJpaEntity) o;
         return Objects.equals(id, that.id);
     }
 

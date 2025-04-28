@@ -23,6 +23,7 @@ public abstract class OrderItemDataAccessMapper {
     @Mapping(target = "orderId", source = "order.id")
     @Mapping(target = "product", source = "productId")
     @Mapping(target = "warehouse", source = "warehouseId")
+    @Mapping(target = "inventoryId", ignore = true)
     public abstract OrderItem orderItemJpaEntityToOrderItemEntity(OrderItemJpaEntity orderItemJpaEntity);
 
     protected Long mapId(OrderItemId id) {
