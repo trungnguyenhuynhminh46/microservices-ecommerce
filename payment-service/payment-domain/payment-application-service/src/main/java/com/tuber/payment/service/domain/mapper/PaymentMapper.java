@@ -1,8 +1,8 @@
 package com.tuber.payment.service.domain.mapper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tuber.application.helper.CommonHelper;
 import com.tuber.domain.constant.response.code.OrderResponseCode;
+import com.tuber.domain.exception.DomainException;
 import com.tuber.domain.exception.OrderDomainException;
 import com.tuber.domain.valueobject.Money;
 import com.tuber.domain.valueobject.id.UniqueUUID;
@@ -29,7 +29,7 @@ import static com.tuber.saga.order.SagaName.ORDER_PROCESSING_SAGA;
 @Mapper(componentModel = "spring")
 public abstract class PaymentMapper {
     @Autowired
-    ObjectMapper objectMapper;
+    CommonHelper commonHelper;
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "paymentStatus", ignore = true)
@@ -45,29 +45,22 @@ public abstract class PaymentMapper {
     public abstract PaymentResponsePayload paymentEventToPaymentResponseEventPayload(PaymentEvent paymentEvent);
 
     public OutboxOrderMessage paymentResponsePayloadToOutboxOrderMessage(PaymentResponsePayload paymentResponsePayload, PaymentStatus paymentStatus, OutboxStatus outboxStatus, UUID sagaId) {
+        OrderResponseCode responseCode = new OrderResponseCode(String.format("Could not create OrderPaymentEventPayload object for order id: %s",
+                paymentResponsePayload.getOrderId()));
+        DomainException throwable = new OrderDomainException(responseCode, HttpStatus.INTERNAL_SERVER_ERROR.value());
+
         return OutboxOrderMessage.builder()
                 .id(UUID.randomUUID())
                 .sagaId(sagaId)
                 .createdAt(paymentResponsePayload.getCreatedAt())
                 .processedAt(LocalDate.now())
                 .type(ORDER_PROCESSING_SAGA.name())
-                .payload(createPayload(paymentResponsePayload))
+                .payload(commonHelper.mapObjectIntoString(
+                        paymentResponsePayload,
+                        throwable))
                 .paymentStatus(paymentStatus)
                 .outboxStatus(outboxStatus)
                 .build();
-    }
-
-    //TODO: Use common utility instead
-    protected String createPayload(PaymentResponsePayload paymentPayload) {
-        try {
-            return objectMapper.writeValueAsString(paymentPayload);
-        } catch (JsonProcessingException e) {
-            log.error("Could not create order payment event payload object for order with order id: {}",
-                    paymentPayload.getOrderId(), e);
-            OrderResponseCode responseCode = new OrderResponseCode(String.format("Could not create OrderPaymentEventPayload object for order id: %s",
-                    paymentPayload.getOrderId()));
-            throw new OrderDomainException(responseCode, HttpStatus.INTERNAL_SERVER_ERROR.value());
-        }
     }
 
     protected UUID map(UniqueUUID id) {
