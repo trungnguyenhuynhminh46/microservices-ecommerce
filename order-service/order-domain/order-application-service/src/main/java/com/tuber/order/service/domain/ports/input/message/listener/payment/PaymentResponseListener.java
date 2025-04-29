@@ -1,4 +1,4 @@
-package com.tuber.order.service.domain.ports.input.message.listener.inventory;
+package com.tuber.order.service.domain.ports.input.message.listener.payment;
 
 import com.tuber.order.service.domain.dto.message.broker.PaymentResponse;
 

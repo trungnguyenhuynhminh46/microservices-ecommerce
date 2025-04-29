@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -58,9 +59,9 @@ public class PaymentOutboxHelper {
     @Transactional
     public void savePaymentOutboxMessage(PaymentPayload paymentEventPayload,
                                          OrderStatus orderStatus,
-                                         SagaStatus sagaStatus,
                                          OutboxStatus outboxStatus,
                                          UUID sagaId) {
+        SagaStatus sagaStatus = statusMapper.orderStatusToSagaStatus(orderStatus);
         PaymentOutboxMessage paymentOutboxMessage = createOutboxMessage(paymentEventPayload, orderStatus, sagaStatus, outboxStatus, sagaId);
         PaymentOutboxMessage savedMessage = outboxPaymentRepository.save(createOutboxMessage(paymentEventPayload, orderStatus, sagaStatus, outboxStatus, sagaId));
         if (savedMessage == null) {
@@ -68,6 +69,25 @@ public class PaymentOutboxHelper {
             throw new OrderDomainException(OrderResponseCode.FAILED_TO_SAVE_PAYMENT_OUTBOX, HttpStatus.INTERNAL_SERVER_ERROR.value(), paymentEventPayload.getOrderId());
         }
         log.info("Could not save out box payment message with outbox id: {}", paymentOutboxMessage.getId());
+    }
+
+    public PaymentOutboxMessage verifyPaymentOutboxMessageExists(
+            UUID sagaId,
+            SagaStatus... sagaStatus
+    ) {
+        Optional<PaymentOutboxMessage> response =
+                outboxPaymentRepository.findBySagaIdAndTypeAndSagaStatuses(
+                        sagaId,
+                        SagaName.ORDER_PROCESSING_SAGA.name(),
+                        sagaStatus
+                );
+
+        if (response.isEmpty()) {
+            log.error("Payment outbox message with saga id: {} and saga status: {} could not be found!",
+                    sagaId, sagaStatus);
+            throw new OrderDomainException(OrderResponseCode.PAYMENT_OUTBOX_MESSAGE_NOT_FOUND, HttpStatus.NOT_FOUND.value(), sagaId, sagaStatus);
+        }
+        return response.get();
     }
 
     public void updatePaymentOutboxMessage(

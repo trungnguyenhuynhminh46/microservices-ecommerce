@@ -117,8 +117,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         if (data.getPaymentStatus() == PaymentStatus.CANCELLED) {
             inventoryConfirmationOutboxHelper.updateInventoryConfirmationOutboxMessage(
                     inventoryConfirmationOutboxHelper.verifyInventoryConfirmationOutboxMessageExists(data.getSagaId(), SagaStatus.COMPENSATING),
-                    orderCancelEvent.getOrder().getOrderStatus(),
-                    statusMapper.orderStatusToSagaStatus(orderCancelEvent.getOrder().getOrderStatus())
+                    orderCancelEvent.getOrder().getOrderStatus()
             );
         }
 

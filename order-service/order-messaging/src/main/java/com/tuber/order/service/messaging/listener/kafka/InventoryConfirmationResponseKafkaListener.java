@@ -2,15 +2,15 @@ package com.tuber.order.service.messaging.listener.kafka;
 
 import com.tuber.domain.constant.response.code.ResponseCode;
 import com.tuber.domain.exception.OrderDomainException;
-import com.tuber.kafka.order.avro.model.PaymentResponseAvroModel;
-import com.tuber.order.service.domain.dto.message.broker.PaymentResponse;
+import com.tuber.kafka.order.avro.model.InventoryConfirmationResponseAvroModel;
+import com.tuber.order.service.domain.dto.message.broker.InventoryConfirmationResponse;
 import com.tuber.order.service.domain.exception.NotFoundOrderException;
-import com.tuber.order.service.domain.ports.input.message.listener.payment.PaymentResponseListener;
-import com.tuber.order.service.messaging.mapper.OrderPaymentMessageMapper;
-import com.tuber.ordering.system.kafka.consumer.KafkaConsumer;
+import com.tuber.order.service.domain.ports.input.message.listener.inventory.InventoryConfirmationResponseListener;
+import com.tuber.order.service.messaging.mapper.InventoryConfirmationMessageMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import com.tuber.ordering.system.kafka.consumer.KafkaConsumer;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -27,17 +27,17 @@ import static lombok.AccessLevel.PRIVATE;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class PaymentResponseKafkaListener implements KafkaConsumer<PaymentResponseAvroModel> {
-    PaymentResponseListener paymentResponseListener;
-    OrderPaymentMessageMapper orderPaymentMessageMapper;
+public class InventoryConfirmationResponseKafkaListener implements KafkaConsumer<InventoryConfirmationResponseAvroModel> {
+    InventoryConfirmationMessageMapper inventoryConfirmationMessageMapper;
+    InventoryConfirmationResponseListener inventoryConfirmationResponseListener;
 
     @Override
     @KafkaListener(
-            id = "${kafka-consumer-config.payment-consumer-group-id}",
-            topics = "${config-data.payment-response-topic-name}"
+            id = "${kafka-consumer-config.inventory-confirmation-consumer-group-id}",
+            topics = "${config-data.inventory-confirmation-response-topic-name}"
     )
     public void receive(
-            @Payload List<PaymentResponseAvroModel> messages,
+            @Payload List<InventoryConfirmationResponseAvroModel> messages,
             @Header(KafkaHeaders.RECEIVED_KEY) List<String> keys,
             @Header(KafkaHeaders.RECEIVED_PARTITION) List<Integer> partitions,
             @Header(KafkaHeaders.OFFSET) List<Long> offsets) {
@@ -45,7 +45,7 @@ public class PaymentResponseKafkaListener implements KafkaConsumer<PaymentRespon
         processMessages(messages);
     }
 
-    private void logReceivedMessages(List<PaymentResponseAvroModel> messages,
+    private void logReceivedMessages(List<InventoryConfirmationResponseAvroModel> messages,
                                      List<String> keys,
                                      List<Integer> partitions,
                                      List<Long> offsets) {
@@ -53,33 +53,35 @@ public class PaymentResponseKafkaListener implements KafkaConsumer<PaymentRespon
                 messages.size(), keys, partitions, offsets);
     }
 
-    private void processMessages(List<PaymentResponseAvroModel> messages) {
+    private void processMessages(List<InventoryConfirmationResponseAvroModel> messages) {
         messages.forEach(this::processSingleMessage);
     }
 
-    private void processSingleMessage(PaymentResponseAvroModel message) {
+    private void processSingleMessage(InventoryConfirmationResponseAvroModel message) {
         try {
-            handlePaymentResponse(message);
+            handleInventoryConfirmationResponse(message);
         } catch (Exception exception) {
             handleProcessingException(message, exception);
         }
     }
 
-    private void handlePaymentResponse(PaymentResponseAvroModel message) {
-        PaymentResponse paymentResponse = orderPaymentMessageMapper.paymentResponseAvroModelToPaymentResponse(message);
-        switch (message.getPaymentStatus()) {
-            case COMPLETED -> {
-                log.info("Continuing processing order after successfully payment for order with order id: {}", message.getOrderId());
-                paymentResponseListener.updateOrderAfterPaymentCompleted(paymentResponse);
+    private void handleInventoryConfirmationResponse(InventoryConfirmationResponseAvroModel message) {
+        InventoryConfirmationResponse inventoryConfirmationResponse = inventoryConfirmationMessageMapper.inventoryConfirmationResponseAvroModelToInventoryConfirmationResponse(message);
+        switch (message.getOrderInventoryConfirmationStatus()) {
+            case CONFIRMED -> {
+                log.info("Finishing order processing after inventory confirmed for order with order id: {}",
+                        message.getOrderId());
+                inventoryConfirmationResponseListener.updateOrderAfterInventoryConfirmed(inventoryConfirmationResponse);
             }
-            case CANCELLED, FAILED -> {
-                log.info("Reverting order after unsuccessfully payment for order with order id: {}", message.getOrderId());
-                paymentResponseListener.updateOrderAfterPaymentCancelled(paymentResponse);
+            case FAILED -> {
+                log.info("Cancelling order processing after inventory confirmation rejected for order with order id: {}",
+                        message.getOrderId());
+                inventoryConfirmationResponseListener.updateOrderAfterInventoryRejected(inventoryConfirmationResponse);
             }
         }
     }
 
-    private void handleProcessingException(PaymentResponseAvroModel message, Exception exception) {
+    private void handleProcessingException(InventoryConfirmationResponseAvroModel message, Exception exception) {
         if (exception instanceof OptimisticLockingFailureException) {
             // Do not throw error for optimistic locking.
             log.error("Caught optimistic locking exception in PaymentResponseKafkaListener for order id: {}",
@@ -94,7 +96,7 @@ public class PaymentResponseKafkaListener implements KafkaConsumer<PaymentRespon
         }
 
         throw new OrderDomainException(
-                new ResponseCode(String.format("Failed to handle payment response for order wiht order id: %s", message.getOrderId())),
+                new ResponseCode(String.format("Failed to handle inventory confirmation response for order with order id: %s", message.getOrderId())),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 exception
         );

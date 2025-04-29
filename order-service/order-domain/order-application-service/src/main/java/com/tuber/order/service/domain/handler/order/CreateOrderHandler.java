@@ -1,6 +1,7 @@
 package com.tuber.order.service.domain.handler.order;
 
 import com.tuber.application.handler.ApiResponse;
+import com.tuber.application.mapper.StatusMapper;
 import com.tuber.domain.constant.response.code.OrderResponseCode;
 import com.tuber.order.service.domain.dto.order.CreateOrderCommand;
 import com.tuber.order.service.domain.dto.order.OrderResponseData;
@@ -26,6 +27,7 @@ public class CreateOrderHandler {
     CreateOrderHelper createOrderHelper;
     OrderMapper orderMapper;
     PaymentOutboxHelper paymentOutboxHelper;
+    StatusMapper statusMapper;
 
     @Transactional
     public ApiResponse<OrderResponseData> createOrder(CreateOrderCommand createOrderCommand) {
@@ -35,7 +37,6 @@ public class CreateOrderHandler {
         paymentOutboxHelper.savePaymentOutboxMessage(
                 orderMapper.orderCreatedEventToOrderPaymentEventPayload(orderCreatedEvent),
                 orderCreatedEvent.getOrder().getOrderStatus(),
-                orderMapper.orderStatusToSagaStatus(orderCreatedEvent.getOrder().getOrderStatus()),
                 OutboxStatus.STARTED,
                 UUID.randomUUID()
         );

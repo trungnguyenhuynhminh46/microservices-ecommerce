@@ -1,6 +1,8 @@
 package com.tuber.order.service.messaging.mapper;
 
 import com.tuber.kafka.order.avro.model.InventoryConfirmationRequestAvroModel;
+import com.tuber.kafka.order.avro.model.InventoryConfirmationResponseAvroModel;
+import com.tuber.order.service.domain.dto.message.broker.InventoryConfirmationResponse;
 import com.tuber.order.service.domain.outbox.model.inventory.InventoryConfirmationEventPayload;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,5 +16,9 @@ public abstract class InventoryConfirmationMessageMapper {
     public abstract InventoryConfirmationRequestAvroModel inventoryConfirmationEventToInventoryConfirmationRequestAvroModel(
             InventoryConfirmationEventPayload inventoryConfirmationEventPayload,
             UUID sagaId
+    );
+
+    public abstract InventoryConfirmationResponse inventoryConfirmationResponseAvroModelToInventoryConfirmationResponse(
+            InventoryConfirmationResponseAvroModel inventoryConfirmationRequestAvroModel
     );
 }

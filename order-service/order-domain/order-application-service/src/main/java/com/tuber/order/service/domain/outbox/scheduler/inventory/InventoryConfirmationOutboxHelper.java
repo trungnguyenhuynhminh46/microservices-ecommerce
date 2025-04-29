@@ -1,6 +1,7 @@
 package com.tuber.order.service.domain.outbox.scheduler.inventory;
 
 import com.tuber.application.helper.CommonHelper;
+import com.tuber.application.mapper.StatusMapper;
 import com.tuber.domain.constant.response.code.OrderResponseCode;
 import com.tuber.domain.exception.OrderDomainException;
 import com.tuber.domain.valueobject.enums.OrderStatus;
@@ -30,6 +31,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class InventoryConfirmationOutboxHelper {
     InventoryConfirmationOutboxRepository inventoryConfirmationOutboxRepository;
     CommonHelper commonHelper;
+    StatusMapper statusMapper;
 
     private InventoryConfirmationOutboxMessage createOutboxMessage(
             InventoryConfirmationEventPayload inventoryConfirmationEventPayload,
@@ -114,12 +116,11 @@ public class InventoryConfirmationOutboxHelper {
 
     public void updateInventoryConfirmationOutboxMessage(
             InventoryConfirmationOutboxMessage message,
-            OrderStatus orderStatus,
-            SagaStatus sagaStatus
+            OrderStatus orderStatus
     ) {
         message.setProcessedAt(LocalDate.now());
         message.setOrderStatus(orderStatus);
-        message.setSagaStatus(sagaStatus);
+        message.setSagaStatus(statusMapper.orderStatusToSagaStatus(orderStatus));
         inventoryConfirmationOutboxRepository.save(message);
     }
 }

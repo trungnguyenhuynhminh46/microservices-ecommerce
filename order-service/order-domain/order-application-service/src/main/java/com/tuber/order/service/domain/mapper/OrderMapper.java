@@ -12,6 +12,7 @@ import com.tuber.order.service.domain.dto.shared.ProductIdWithSkuDTO;
 import com.tuber.order.service.domain.entity.OrderEntity;
 import com.tuber.order.service.domain.entity.OrderItem;
 import com.tuber.order.service.domain.entity.Voucher;
+import com.tuber.order.service.domain.event.OrderBeginCancellingEvent;
 import com.tuber.order.service.domain.event.OrderCreatedEvent;
 import com.tuber.order.service.domain.outbox.model.payment.PaymentPayload;
 import com.tuber.order.service.domain.valueobject.OrderItemId;
@@ -89,14 +90,14 @@ public abstract class OrderMapper {
                 .build();
     }
 
-    public SagaStatus orderStatusToSagaStatus(OrderStatus orderStatus) {
-        return switch (orderStatus) {
-            case PAID -> SagaStatus.PROCESSING;
-            case READY_FOR_FULFILLMENT -> SagaStatus.SUCCEEDED;
-            case CANCELLING -> SagaStatus.COMPENSATING;
-            case CANCELLED -> SagaStatus.COMPENSATED;
-            default -> SagaStatus.STARTED;
-        };
+    public PaymentPayload orderBeginCancellingEventToPaymentEventPayload(OrderBeginCancellingEvent event) {
+        return PaymentPayload.builder()
+                .orderId(event.getOrder().getId().getValue())
+                .customerId(event.getOrder().getCreatorId())
+                .finalPrice(event.getOrder().getFinalPrice().getAmount())
+                .createdAt(event.getOrder().getCreatedAt())
+                .paymentOrderStatus(PaymentOrderStatus.CANCELLED.name())
+                .build();
     }
 
     protected UUID map(UniqueUUID id) {
