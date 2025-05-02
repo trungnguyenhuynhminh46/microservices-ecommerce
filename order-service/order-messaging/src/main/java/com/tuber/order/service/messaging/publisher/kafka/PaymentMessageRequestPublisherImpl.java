@@ -42,15 +42,15 @@ public class PaymentMessageRequestPublisherImpl implements PaymentMessageRequest
                 sagaId
         );
         try {
-            PaymentRequestAvroModel PaymentRequestAvroModel =
+            PaymentRequestAvroModel paymentRequestAvroModel =
                     orderPaymentMessageMapper.orderPaymentPayloadToPaymentRequestAvroModel(paymentPayload, sagaId);
             kafkaProducer.send(
                     orderServiceConfigurationData.getPaymentRequestTopicName(),
                     sagaId.toString(),
-                    PaymentRequestAvroModel,
+                    paymentRequestAvroModel,
                     kafkaProducerHelper.getOnSuccessKafka(
                             orderServiceConfigurationData.getPaymentRequestTopicName(),
-                            PaymentRequestAvroModel,
+                            paymentRequestAvroModel,
                             paymentOutboxMessage,
                             onSuccessOutbox
                     )

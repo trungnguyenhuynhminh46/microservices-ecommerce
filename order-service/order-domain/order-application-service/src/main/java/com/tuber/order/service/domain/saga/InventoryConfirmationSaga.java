@@ -103,6 +103,8 @@ public class InventoryConfirmationSaga implements SagaStep<InventoryConfirmation
                 orderStatus
         );
 
+        // Save an outbox message with PaymentStatus is CANCELLED
+        // At this stage, the payment status for this order is COMPLETED (Otherwise, can't reach this stage)
         paymentOutboxHelper.savePaymentOutboxMessage(
                 orderMapper.orderBeginCancellingEventToPaymentEventPayload(event),
                 orderStatus,
