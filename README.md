@@ -57,7 +57,7 @@ All services communicate asynchronously using **Apache Kafka**, and each service
 ```bash
  mvn com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage=true -DreduceEdges=false -Dscope=compile "-Dincludes=com.tuber*:*"
 ```
-![dependency-graph.png](dependency-graph.png)
+![dependency-graph.png](resources%2Freadme%2Fdependency-graph.png)
 
 ---
 
@@ -94,61 +94,84 @@ The application is expected to support the following core functionalities:
 
 This system includes a rich set of features to deliver a seamless e-commerce experience:
 
-- ✅ **User Management**: Secure registration, authentication (OAuth2), and profile updates.
-- 📦 **Product Catalog**: Manage products static information.
-- 🛒 **Order Processing**: Support placing orders.
-- 💳 **Payments Integration**: Seamless simulated payment integration and status tracking.
-- 📉 **Inventory Management**: Automatic stock deduction and validation during order placement, manage export and import goods.
-- 📬 **Asynchronous Messaging**: Kafka-based event communication between services (saga pattern).
-- 🧾 **Outbox**: Reliable messaging with Outbox pattern for consistency across services.
-- 🔐 **Role-based Access Control (RBAC)**: Protect sensitive operations with role permissions.
+- **User Management**: Secure registration, authentication (OAuth2), and profile updates.
+- **Product Catalog**: Manage products static information.
+- **Order Processing**: Support placing orders.
+- **Payments Integration**: Seamless simulated payment integration and status tracking.
+- **Inventory Management**: Automatic stock deduction and validation during order placement, manage export and import goods.
+- **Asynchronous Messaging**: Kafka-based event communication between services (saga pattern).
+- **Outbox**: Reliable messaging with Outbox pattern for consistency across services.
+- **Role-based Access Control (RBAC)**: Protect sensitive operations with role permissions.
 
 ---
 
 ## 🏗️ Architecture Overview
 
-![tuber diagram.jpg](tuber%20diagram.jpg)
+This is a simplified e-commerce system built with Spring Boot, following the microservices architecture.
+The system consists of 6 independent services, each with its own dedicated database, ensuring clear separation of concerns and better scalability. These services communicate with each other asynchronously via Kafka as the message broker, enabling reliable message delivery and improving the system's fault tolerance.
+
+- The below image illustrates the architecture of the system, including Gateway, several services, message brokers, databases, caching, ...
+
+![tuber diagram.jpg](resources%2Freadme%2Ftuber%20diagram.jpg)
 
 ---
 
-## 🔄 Order State Transition
+### Identity Service
+
+![Identity Service.png](resources%2Freadme%2FIdentity%20Service.png)
 
 ---
 
-## 📁 Folder Structure
+### Profile Service
+
+![Profile Service.png](resources%2Freadme%2FProfile%20Service.png)
 
 ---
 
-## 🛒 Order Placement Flow (Using Saga Pattern)
+### Product Service
 
-This flow demonstrates how the system coordinates a distributed transaction across multiple services when a user places an order.
+![Product Service.png](resources%2Freadme%2FProduct%20Service.png)
 
-### 1. `OrderService` (Command Side - CQRS)
-- Receives a REST API request to create an order.
-- Saves the order in `PENDING` state.
-- Writes an `OrderCreated` event into the outbox table.
-- A background worker reads the outbox and publishes the event to Kafka.
+---
 
-### 2. `InventoryService`
-- Listens to `OrderCreated` events.
-- Checks stock availability:
-   - If sufficient: reserves items and emits `InventoryReserved`.
-   - If not: emits `InventoryReservationFailed`.
+### Inventory Service
 
-### 3. `PaymentService`
-- Listens to `InventoryReserved`.
-- Simulates payment processing:
-   - On success: emits `PaymentCompleted`.
-   - On failure: emits `PaymentFailed`.
+![Invetory Service.png](resources%2Freadme%2FInvetory%20Service.png)
 
-### 4. `OrderService`
-- Listens to final outcome events:
-   - If `PaymentCompleted`: updates order status to `COMPLETED`.
-   - If `InventoryReservationFailed` or `PaymentFailed`: marks order as `CANCELLED`.
+---
 
-### 5. Compensation Logic (Saga rollback)
-- On failure, a `OrderCancelled` event is emitted.
-- `InventoryService` listens to this and releases previously reserved stock.
+### Payment Service
+
+---
+
+### Order Service
+
+![Order Service.png](resources%2Freadme%2FOrder%20Service.png)
+
+---
+
+## 🔄 Order State transitions
+
+This system defines an application that operates across five distinct states:
+- **PENDING**: The initial state triggered when a request is first submitted to the system.
+- **PAID**: The state entered once the customer successfully completes the payment.
+- **APPROVED**: The state achieved when the restaurant confirms the order after payment is processed.
+- **CANCELLING**: An intermediate state indicating the order is in the process of being canceled, which may occur if the restaurant rejects the order or the customer requests cancellation, requiring a refund.
+- **CANCELLED**: A final state where order processing ceases due to non-payment, restaurant rejection, or customer-initiated cancellation.
+
+The image below illustrates the order state machine.
+
+![State transitions.jpg](resources%2Freadme%2FState%20transitions.jpg)
+---
+
+## 🛒 Order Placement Flow
+When a send a request in order to create a new order. The process create and complete the order basically consists of two main stages:
+1. **Complete payment**: The Order Service send a complete payment request for the payment service.
+2. **Inventory confirmation**: The Order Service send a confirmation request to the Inventory Service to confirm if the goods are available for fulfillment.
+
+Despite the simplicity of these two stages, the microservices-based architecture, which delegates tasks across multiple services, demands robust mechanisms to maintain transaction consistency and address potential errors. To achieve this, the solution implements the SAGA pattern. The diagram provided below outlines the complete transaction process, encompassing a total of 14 distinct steps.
+
+![Screenshot 2025-05-03 at 15.18.11.png](Screenshot%202025-05-03%20at%2015.18.11.png)
 
 ---
 
