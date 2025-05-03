@@ -1,5 +1,16 @@
 version: '3.7'
 services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456789
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+
   neo4j:
     image: neo4j
     ports:
@@ -10,6 +21,7 @@ services:
     environment:
       - NEO4J_AUTH=neo4j/password
     user: "1000:1000"
+
   redis:
     image: docker.io/bitnami/redis:7.4
     environment:
@@ -22,5 +34,7 @@ services:
       - 'redis_data:/bitnami/redis/data'
 
 volumes:
+  mysql_data:
+    driver: local
   redis_data:
     driver: local
