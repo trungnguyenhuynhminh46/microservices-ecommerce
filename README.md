@@ -68,7 +68,7 @@ The system must meet the following nonfunctional requirements to ensure high per
 - **Scalability**: The architecture must support horizontal scaling to handle increased load during peak usage.
 - **Availability**: The system should maintain a high availability rate using redundancy and fault-tolerant services.
 - **Resilience**: One failure should not cascade to other services. Each service should be able to recover independently.
-- **Performance**: The apis should be fast and responsive, with low latency and high throughput.
+- **Performance**: The APIs should be fast and responsive, with low latency and high throughput.
 - **Maintainability**: The codebase must follow clean architecture principles and be modular to enable easy updates and testing.
 - **Consistency**: Eventual consistency should be ensured across microservices through asynchronous communication patterns (e.g., Kafka + Outbox pattern).
 - **Message Driven**: The system should be designed to handle asynchronous events and messages, allowing for decoupled communication between services.
@@ -142,6 +142,8 @@ The system consists of 6 independent services, each with its own dedicated datab
 
 ### Payment Service
 
+![Payment Service.png](resources%2Freadme%2FPayment%20Service.png)
+
 ---
 
 ### Order Service
@@ -155,9 +157,9 @@ The system consists of 6 independent services, each with its own dedicated datab
 This system defines an application that operates across five distinct states:
 - **PENDING**: The initial state triggered when a request is first submitted to the system.
 - **PAID**: The state entered once the customer successfully completes the payment.
-- **APPROVED**: The state achieved when the restaurant confirms the order after payment is processed.
-- **CANCELLING**: An intermediate state indicating the order is in the process of being canceled, which may occur if the restaurant rejects the order or the customer requests cancellation, requiring a refund.
-- **CANCELLED**: A final state where order processing ceases due to non-payment, restaurant rejection, or customer-initiated cancellation.
+- **APPROVED**: The state achieved when the inventory confirms stock availability after payment is processed.
+- **CANCELLING**: An intermediate state indicating the order is in the process of being canceled, which may occur if the inventories don't have enough stock to fulfill the order, require a refund.
+- **CANCELLED**: A final state where order processing ceases due to non-payment, the inventories not having enough stock to fulfill the order, and the payment is cancelled successfully.
 
 The image below illustrates the order state machine.
 
@@ -165,14 +167,13 @@ The image below illustrates the order state machine.
 ---
 
 ## 🛒 Order Placement Flow
-When a send a request in order to create a new order. The process create and complete the order basically consists of two main stages:
+When a user send a request in order to create a new order. The process create and complete the order basically consists of two main stages:
 1. **Complete payment**: The Order Service send a complete payment request for the payment service.
 2. **Inventory confirmation**: The Order Service send a confirmation request to the Inventory Service to confirm if the goods are available for fulfillment.
 
 Despite the simplicity of these two stages, the microservices-based architecture, which delegates tasks across multiple services, demands robust mechanisms to maintain transaction consistency and address potential errors. To achieve this, the solution implements the SAGA pattern. The diagram provided below outlines the complete transaction process, encompassing a total of 14 distinct steps.
 
-![Screenshot 2025-05-03 at 15.18.11.png](Screenshot%202025-05-03%20at%2015.18.11.png)
-
+![Order placement flow.png](resources%2Freadme%2FOrder%20placement%20flow.png)
 ---
 
 ## 📋 Prerequisites
@@ -258,13 +259,66 @@ Each module within the monorepo (e.g., `identity-service`, `profile-service`, `o
 
 ## 🚀 Getting Started
 
-```bash
-# Clone the repository
-git clone https://github.com/your-username/ecommerce-microservices.git
-cd ecommerce-microservices
+**Step 1**: Install Docker & Docker compose
 
-# Start all services
-docker-compose up --build
-``` 
+Docker and docker-compose must be installed and running on your local machine in order to build the images for the four services (Order, Payment, Restaurant, and Customer) and set up the local Kafka cluster.
+
+Run the commands in a terminal and verify that the output matches the expected results:
+
+```
+$ docker --version
+Docker version 24.0.7, build afdd53b4e3
+
+$ docker-compose --version
+Docker Compose version 2.23.3
+```
+
+**Step 2**: Install Databases, including Mysql, Neo4j and Redis
+
+Follow belows script to initialize database by docker. You can skip this step if you want to use your own local database.
+
+```bash
+cd ./infrastructure/docker-compose
+docker-compose -f init_databases.yml up -d
+```
+
+**Step 3**: Initialize kafka cluster on docker
+- Once you have Docker and Docker-compose installed on your computer, run the following commands to initialize the kafka cluster:
+```bash
+cd ./infrastructure/docker-compose
+docker-compose -f kafka_cluster.yml up -d
+docker-compose -f init_kafka.yml up -d
+```
+
+**Step 4**: Configure CMAK
+
+- Open your browser and navigate to [http://localhost:9001/](http://localhost:9001/);
+- Once the page loads, go to the **Cluster** menu at the top and select **Add Cluster**;
+- In the **Cluster Name** input, type `tuber-cluster` or choose another name you prefer;
+- For the **Cluster Zookeeper Hosts** field, provide the Zookeeper hostname and port. For example: `zookeeper:2181`;
+- Click **Save** to complete the process;
+- Return to the homepage — the newly added cluster should now appear in the list of active clusters.
+
+
+**Step 5**: Building
+
+In the terminal, run the following command line:
+```
+$ mvn clean install
+```
+
+**Step 6**: Running the micro-services in IDE
+
+You can run microservices directly from your preferred IDE, such as Eclipse, IntelliJ, VS Code, or any other.
+
+To do so, execute the file ServiceApplication.java located within the *-container submodule, here are those files:
+- [ProfileServiceApplication.java](profile-service%2Fprofile-container%2Fsrc%2Fmain%2Fjava%2Fcom%2Ftuber%2Fprofile%2Fservice%2Fdomain%2FProfileServiceApplication.java)
+- [IdentityServiceApplication.java](identity-service%2Fidentity-container%2Fsrc%2Fmain%2Fjava%2Fcom%2Ftuber%2Fidentity%2Fservice%2Fdomain%2FIdentityServiceApplication.java)
+- [ProductServiceApplication.java](product-service%2Fproduct-container%2Fsrc%2Fmain%2Fjava%2Fcom%2Ftuber%2Fproduct%2Fservice%2Fdomain%2FProductServiceApplication.java)
+- [InventoryServiceApplication.java](inventory-service%2Finventory-container%2Fsrc%2Fmain%2Fjava%2Fcom%2Ftuber%2Finventory%2Fservice%2Fdomain%2FInventoryServiceApplication.java)
+- [PaymentServiceApplication.java](payment-service%2Fpayment-container%2Fsrc%2Fmain%2Fjava%2Fcom%2Ftuber%2Fpayment%2Fservice%2Fdomain%2FPaymentServiceApplication.java)
+- [OrderServiceApplication.java](order-service%2Forder-container%2Fsrc%2Fmain%2Fjava%2Fcom%2Ftuber%2Forder%2Fservice%2Fdomain%2FOrderServiceApplication.java)
+
 ---
 ## 📬 API Documentation
+
