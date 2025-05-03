@@ -16,6 +16,24 @@ This project consists of multiple backend APIs responsible for managing product 
 
 ---
 
+## 📚 Table of Contents
+
+- [Motivation](#-motivation)
+- [System Overview](#-system-overview)
+- [Nonfunctional Requirements](#-nonfunctional-requirements)
+- [Functional Requirements](#-functional-requirements)
+- [Features](#-features)
+- [Architecture Overview](#-architecture-overview)
+- [Order State transitions](#-order-state-transitions)
+- [Order Placement Flow](#-order-placement-flow)
+- [Prerequisites](#-prerequisites)
+- [Dependencies](#-dependencies)
+- [Getting Started](#-getting-started)
+- [Future Enhancements](#-future-enhancements)
+- [API Documentation](#-api-documentation)
+
+---
+
 ## 💡 Motivation
 
 The motivation behind this project stems from my desire to gain practical experience in designing distributed systems that are not only functional, but also scalable, resilient, and aligned with real-world architectural principles. Rather than stopping at theoretical knowledge, I wanted to build a system that forces me to solve problems commonly encountered in production — such as service coordination, data consistency, and domain complexity.
@@ -80,7 +98,7 @@ The system must meet the following nonfunctional requirements to ensure high per
 The application is expected to support the following core functionalities:
 
 - User registration, login, and authentication.
-- Managing user profiles including view, update, and deactivate.
+- Managing user profiles including view, update.
 - Product listing with detailed information and availability.
 - Inventory tracking and adjustment on order placement or cancellation.
 - Placing, viewing, and cancelling customer orders.
@@ -94,14 +112,12 @@ The application is expected to support the following core functionalities:
 
 This system includes a rich set of features to deliver a seamless e-commerce experience:
 
-- **User Management**: Secure registration, authentication (OAuth2), and profile updates.
-- **Product Catalog**: Manage products static information.
-- **Order Processing**: Support placing orders.
-- **Payments Integration**: Seamless simulated payment integration and status tracking.
-- **Inventory Management**: Automatic stock deduction and validation during order placement, manage export and import goods.
-- **Asynchronous Messaging**: Kafka-based event communication between services (saga pattern).
-- **Outbox**: Reliable messaging with Outbox pattern for consistency across services.
-- **Role-based Access Control (RBAC)**: Protect sensitive operations with role permissions.
+- **Authentication**: Supports secure authentication with OAuth integration, token rotation, and robust access control, including role-based authentication with comprehensive role and permission management.
+- **Order processing**: The order placement feature coordinates multiple services through asynchronous messaging to handle tasks like inventory, payment, and order creation. It ensures fault tolerance and stability using patterns like Saga and Outbox for reliable communication and eventual consistency.
+- **Products management**: Supports product information management, including name, pricing, images, and product categorization.
+- **Inventory management**: Tracks product availability, stock levels, and manages stock inbound and outbound processes, ensuring accurate inventory data across services.
+- **Payment management**: Manages the storage of payment information, user credit history, and related transactional data.
+- **Order management**: Manages the storage and processing of order information, along with related details such as vouchers and invoices.
 
 ---
 
@@ -320,5 +336,13 @@ To do so, execute the file ServiceApplication.java located within the *-containe
 - [OrderServiceApplication.java](order-service%2Forder-container%2Fsrc%2Fmain%2Fjava%2Fcom%2Ftuber%2Forder%2Fservice%2Fdomain%2FOrderServiceApplication.java)
 
 ---
+
+## 🚀 Future Enhancements
+
+- **Additional Services**: Recommendation Service, Search Service, Notification Service, etc.
+- **Logging & Monitoring**: Prometheus, Grafana, Elastic Stack, Zipkin...
+
+---
+
 ## 📬 API Documentation
 
