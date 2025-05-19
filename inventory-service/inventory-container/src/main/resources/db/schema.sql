@@ -54,3 +54,19 @@ CREATE TABLE inventory_transaction (
 ALTER TABLE inventory_transaction ADD CONSTRAINT FK_INVENTORY_TRANSACTION_ON_DEST_WAREHOUSE FOREIGN KEY (dest_warehouse_id) REFERENCES warehouse (id);
 
 ALTER TABLE inventory_transaction ADD CONSTRAINT FK_INVENTORY_TRANSACTION_ON_SRC_WAREHOUSE FOREIGN KEY (src_warehouse_id) REFERENCES warehouse (id);
+
+-- outbox
+DROP TABLE IF EXISTS order_outbox CASCADE;
+CREATE TABLE order_outbox (
+  id BINARY(16) NOT NULL,
+   saga_id BINARY(16) NULL,
+   created_at date NULL,
+   processed_at date NULL,
+   type VARCHAR(255) NULL,
+   payload VARCHAR(255) NULL,
+   saga_status VARCHAR(255) NULL,
+   outbox_status VARCHAR(255) NULL,
+   order_inventory_confirmation_status VARCHAR(255) NULL,
+   version INT NOT NULL,
+   CONSTRAINT pk_order_outbox1 PRIMARY KEY (id)
+);

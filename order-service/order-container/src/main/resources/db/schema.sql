@@ -55,3 +55,34 @@ CREATE TABLE order_item (
 );
 
 ALTER TABLE order_item ADD CONSTRAINT FK_ORDER_ITEM_ON_ORDER FOREIGN KEY (order_id) REFERENCES t_order (id);
+
+--outbox
+DROP TABLE IF EXISTS inventory_confirmation_outbox;
+CREATE TABLE inventory_confirmation_outbox (
+  id BINARY(16) NOT NULL,
+   saga_id BINARY(16) NULL,
+   created_at date NULL,
+   processed_at date NULL,
+   type VARCHAR(255) NULL,
+   payload VARCHAR(255) NULL,
+   saga_status VARCHAR(255) NULL,
+   order_status VARCHAR(255) NULL,
+   outbox_status VARCHAR(255) NULL,
+   version INT NOT NULL,
+   CONSTRAINT pk_inventory_confirmation_outbox PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS payment_outbox;
+CREATE TABLE payment_outbox (
+  id BINARY(16) NOT NULL,
+   saga_id BINARY(16) NULL,
+   created_at date NULL,
+   processed_at date NULL,
+   type VARCHAR(255) NULL,
+   payload VARCHAR(255) NULL,
+   saga_status VARCHAR(255) NULL,
+   order_status VARCHAR(255) NULL,
+   outbox_status VARCHAR(255) NULL,
+   version INT NOT NULL,
+   CONSTRAINT pk_payment_outbox PRIMARY KEY (id)
+);

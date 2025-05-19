@@ -1,25 +1,25 @@
 -- category data
 INSERT INTO category (id, code, name, description, created_at, updated_at) VALUES
-  (UUID_TO_BIN(UUID()), 'CAT001', 'Electronics', 'Electronic items', NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'CAT002', 'Books', 'Books and literature', NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'CAT003', 'Clothing', 'Apparel and accessories', NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'CAT004', 'Home & Kitchen', 'Furniture and appliances', NOW(), NOW());
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358971'), 'CAT001', 'Electronics', 'Electronic items', NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358972'), 'CAT002', 'Books', 'Books and literature', NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358973'), 'CAT003', 'Clothing', 'Apparel and accessories', NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358974'), 'CAT004', 'Home & Kitchen', 'Furniture and appliances', NOW(), NOW());
 
 -- product data
 INSERT INTO product (id, name, price, description, tags, rating, category_id, created_at, updated_at) VALUES
-  (UUID_TO_BIN(UUID()), 'Smartphone', 699.99, 'Latest model smartphone', 'electronics,phone', 4.5, (SELECT id FROM category WHERE code = 'CAT001'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'Laptop', 999.99, 'High performance laptop', 'electronics,computer', 4.7, (SELECT id FROM category WHERE code = 'CAT001'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'Tablet', 499.99, 'Portable tablet for work and play', 'electronics,tablet', 4.6, (SELECT id FROM category WHERE code = 'CAT001'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'Smartwatch', 199.99, 'Wearable smartwatch for fitness', 'electronics,watch', 4.3, (SELECT id FROM category WHERE code = 'CAT001'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'Novel Book', 15.99, 'Fiction novel', 'books,fiction', 4.2, (SELECT id FROM category WHERE code = 'CAT002'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'Textbook', 49.99, 'Educational textbook for students', 'books,education', 4.7, (SELECT id FROM category WHERE code = 'CAT002'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'E-book', 9.99, 'Digital book for e-readers', 'books,ebook', 4.4, (SELECT id FROM category WHERE code = 'CAT002'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'Blender', 49.99, 'High-speed blender', 'home,appliance', 4.3, (SELECT id FROM category WHERE code = 'CAT004'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'Microwave', 79.99, 'Compact microwave oven', 'home,appliance', 4.6, (SELECT id FROM category WHERE code = 'CAT004'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'Refrigerator', 499.99, 'Energy efficient refrigerator', 'home,appliance', 4.8, (SELECT id FROM category WHERE code = 'CAT004'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'T-shirt', 19.99, 'Cotton T-shirt', 'clothing,apparel', 4.0, (SELECT id FROM category WHERE code = 'CAT003'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'Jeans', 39.99, 'Comfortable denim jeans', 'clothing,apparel', 4.2, (SELECT id FROM category WHERE code = 'CAT003'), NOW(), NOW()),
-  (UUID_TO_BIN(UUID()), 'Jacket', 79.99, 'Warm winter jacket', 'clothing,apparel', 4.5, (SELECT id FROM category WHERE code = 'CAT003'), NOW(), NOW());
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358971'), 'Smartphone', 699.99, 'Latest model smartphone', 'electronics,phone', 4.5, (SELECT id FROM category WHERE code = 'CAT001'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358972'), 'Laptop', 999.99, 'High performance laptop', 'electronics,computer', 4.7, (SELECT id FROM category WHERE code = 'CAT001'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358973'), 'Tablet', 499.99, 'Portable tablet for work and play', 'electronics,tablet', 4.6, (SELECT id FROM category WHERE code = 'CAT001'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358974'), 'Smartwatch', 199.99, 'Wearable smartwatch for fitness', 'electronics,watch', 4.3, (SELECT id FROM category WHERE code = 'CAT001'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358975'), 'Novel Book', 15.99, 'Fiction novel', 'books,fiction', 4.2, (SELECT id FROM category WHERE code = 'CAT002'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358976'), 'Textbook', 49.99, 'Educational textbook for students', 'books,education', 4.7, (SELECT id FROM category WHERE code = 'CAT002'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358977'), 'E-book', 9.99, 'Digital book for e-readers', 'books,ebook', 4.4, (SELECT id FROM category WHERE code = 'CAT002'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358978'), 'Blender', 49.99, 'High-speed blender', 'home,appliance', 4.3, (SELECT id FROM category WHERE code = 'CAT004'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358979'), 'Microwave', 79.99, 'Compact microwave oven', 'home,appliance', 4.6, (SELECT id FROM category WHERE code = 'CAT004'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358980'), 'Refrigerator', 499.99, 'Energy efficient refrigerator', 'home,appliance', 4.8, (SELECT id FROM category WHERE code = 'CAT004'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358981'), 'T-shirt', 19.99, 'Cotton T-shirt', 'clothing,apparel', 4.0, (SELECT id FROM category WHERE code = 'CAT003'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358982'), 'Jeans', 39.99, 'Comfortable denim jeans', 'clothing,apparel', 4.2, (SELECT id FROM category WHERE code = 'CAT003'), NOW(), NOW()),
+  (UUID_TO_BIN('45e3281c-05f8-4a5c-8bd8-cbf99e358983'), 'Jacket', 79.99, 'Warm winter jacket', 'clothing,apparel', 4.5, (SELECT id FROM category WHERE code = 'CAT003'), NOW(), NOW());
 
 -- attribute data
 INSERT INTO p_attribute (id, product_id, name, default_value, options) VALUES
